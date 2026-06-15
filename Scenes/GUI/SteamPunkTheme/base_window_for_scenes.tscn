@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ckrmqq6qvlduj"]
+[gd_scene format=3 uid="uid://ckrmqq6qvlduj"]
 
 [ext_resource type="Script" uid="uid://c70281lpw3v0q" path="res://Scenes/GUI/base_animatable_window.gd" id="1_rsa1n"]
 [ext_resource type="Texture2D" uid="uid://du5ul2f1bik77" path="res://Assets/Images/GUI/main_background.png" id="2_12tdt"]
@@ -112,7 +112,7 @@ stacked_outline_0/size = 1
 stacked_outline_0/color = Color(0.21230483, 0.21230483, 0.21230483, 1)
 stacked_outline_1/size = 4
 
-[node name="BaseAnimatableWindow" type="Control"]
+[node name="BaseAnimatableWindow" type="Control" unique_id=1740912168]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,6 +120,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(576, 320)
+mouse_filter = 2
 script = ExtResource("1_rsa1n")
 move_in_direction = 2
 move_in_trans_type = 5
@@ -139,16 +140,17 @@ shake_in_duration = 1.0
 auto_play_on_start = true
 metadata/_custom_type_script = "uid://c70281lpw3v0q"
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1690054795]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="SceneMainContainer" type="Control" parent="."]
+[node name="SceneMainContainer" type="Control" parent="." unique_id=808530636]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -157,7 +159,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="BottomLayer" type="Control" parent="SceneMainContainer"]
+[node name="BottomLayer" type="Control" parent="SceneMainContainer" unique_id=507352788]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -171,10 +173,10 @@ metadata/_custom_type_script = "uid://c70281lpw3v0q"
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="SubViewport" type="SubViewport" parent="SceneMainContainer/BottomLayer"]
+[node name="SubViewport" type="SubViewport" parent="SceneMainContainer/BottomLayer" unique_id=1611430864]
 size = Vector2i(1152, 640)
 
-[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer/SubViewport"]
+[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=1830413573]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -184,7 +186,7 @@ mouse_filter = 2
 texture = ExtResource("2_12tdt")
 expand_mode = 1
 
-[node name="VideoBackground" type="VideoStreamPlayer" parent="SceneMainContainer/BottomLayer/SubViewport"]
+[node name="VideoBackground" type="VideoStreamPlayer" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=409251738]
 modulate = Color(0.24, 0.07800001, 0.024000006, 1)
 offset_left = -40.0
 offset_right = 1192.0
@@ -196,7 +198,7 @@ expand = true
 loop = true
 script = ExtResource("4_ljgjw")
 
-[node name="BackgroundEffect" type="ColorRect" parent="SceneMainContainer/BottomLayer/SubViewport"]
+[node name="BackgroundEffect" type="ColorRect" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=1808476383]
 material = SubResource("ShaderMaterial_01fnq")
 offset_left = 4.0
 offset_top = 4.0
@@ -205,16 +207,17 @@ offset_bottom = 636.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
-[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer"]
+[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer" unique_id=814727480]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("ViewportTexture_kyksk")
 
-[node name="ParticleContainer" type="Control" parent="SceneMainContainer/BottomLayer"]
+[node name="ParticleContainer" type="Control" parent="SceneMainContainer/BottomLayer" unique_id=823818857]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -228,7 +231,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer"]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer" unique_id=474680678]
 z_index = 1
 position = Vector2(483, 287.5)
 amount = 200
@@ -239,7 +242,7 @@ speed_scale = 0.1
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_n1s0o")
 
-[node name="BackgroundDecorationContainer" type="MarginContainer" parent="SceneMainContainer/BottomLayer"]
+[node name="BackgroundDecorationContainer" type="MarginContainer" parent="SceneMainContainer/BottomLayer" unique_id=433102845]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -252,56 +255,59 @@ theme_override_constants/margin_top = 18
 theme_override_constants/margin_right = 18
 theme_override_constants/margin_bottom = 18
 
-[node name="BackgroundDecorationTopLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+[node name="BackgroundDecorationTopLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer" unique_id=91439852]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_b03tl")
 
-[node name="BackgroundDecorationTopRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+[node name="BackgroundDecorationTopRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer" unique_id=950913596]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 2
 texture = SubResource("AtlasTexture_b03tl")
 
-[node name="BackgroundDecorationBottomLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+[node name="BackgroundDecorationBottomLeft" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer" unique_id=2132466783]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 mouse_filter = 2
 texture = SubResource("AtlasTexture_b03tl")
 
-[node name="BackgroundDecorationBottomRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer"]
+[node name="BackgroundDecorationBottomRight" type="TextureRect" parent="SceneMainContainer/BottomLayer/BackgroundDecorationContainer" unique_id=533099268]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2
 texture = SubResource("AtlasTexture_b03tl")
 
-[node name="MainContainer" type="MarginContainer" parent="SceneMainContainer"]
+[node name="MainContainer" type="MarginContainer" parent="SceneMainContainer" unique_id=1863900863]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 64
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 64
 
-[node name="ContentsContainer" type="MarginContainer" parent="SceneMainContainer/MainContainer"]
+[node name="ContentsContainer" type="MarginContainer" parent="SceneMainContainer/MainContainer" unique_id=109990462]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="MainSceneContainer" type="ScrollContainer" parent="SceneMainContainer/MainContainer/ContentsContainer"]
+[node name="MainSceneContainer" type="ScrollContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" unique_id=2086978186]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 script = ExtResource("4_emh68")
@@ -310,7 +316,7 @@ custom_vscroll_size = Vector2(12, 420)
 custom_vscroll_offset = Vector2(1033, 22.32)
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="TopFrame" type="NinePatchRect" parent="SceneMainContainer/MainContainer"]
+[node name="TopFrame" type="NinePatchRect" parent="SceneMainContainer/MainContainer" unique_id=637314501]
 z_index = 4
 layout_mode = 2
 texture = ExtResource("3_aaad5")
@@ -321,15 +327,16 @@ patch_margin_right = 68
 patch_margin_bottom = 61
 metadata/_edit_lock_ = true
 
-[node name="Title" type="Control" parent="SceneMainContainer/MainContainer"]
+[node name="Title" type="Control" parent="SceneMainContainer/MainContainer" unique_id=973961125]
 z_index = 5
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+mouse_filter = 2
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" instance=ExtResource("6_n21jk")]
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" unique_id=2079863752 instance=ExtResource("6_n21jk")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -343,11 +350,12 @@ offset_right = 160.0
 offset_bottom = 37.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 title = "TITLE"
 initial_position = Vector2(-160, -106)
 end_position = Vector2(-160, -3)
 
-[node name="CRTEffect" type="ColorRect" parent="SceneMainContainer"]
+[node name="CRTEffect" type="ColorRect" parent="SceneMainContainer" unique_id=798313326]
 modulate = Color(0.763958, 0.893715, 0.952629, 1)
 material = SubResource("ShaderMaterial_tlu36")
 layout_mode = 1
@@ -360,7 +368,7 @@ grow_vertical = 2
 mouse_filter = 2
 metadata/_edit_lock_ = true
 
-[node name="BackButton" type="Control" parent="SceneMainContainer"]
+[node name="BackButton" type="Control" parent="SceneMainContainer" unique_id=1109773286]
 unique_name_in_owner = true
 z_index = 50
 custom_minimum_size = Vector2(64, 64)
@@ -399,7 +407,7 @@ on_hover_animation = 4
 on_pressed_animation = 11
 preview_animation = 11
 
-[node name="ToolTipLayers" type="Control" parent="SceneMainContainer"]
+[node name="ToolTipLayers" type="Control" parent="SceneMainContainer" unique_id=415181966]
 z_index = 20
 layout_mode = 1
 anchors_preset = 15
@@ -407,10 +415,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="TopTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+[node name="TopTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers" unique_id=739064200]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 1
@@ -436,7 +445,7 @@ label_settings = SubResource("LabelSettings_n1s0o")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BottomTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+[node name="BottomTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers" unique_id=1992967253]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 1

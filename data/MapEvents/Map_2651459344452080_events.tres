@@ -3861,6 +3861,43 @@ pressure_targets = PackedInt64Array(0)
 
 [sub_resource type="Resource" id="Resource_o5qkx"]
 script = ExtResource("4_4d10c")
+code = 300
+parameters = {
+&"action_type": 0,
+&"level": 1.0,
+&"preserve_level": true,
+&"profession_id": 7532951531010598,
+&"reset_level": false,
+&"type": 1
+}
+
+[sub_resource type="Resource" id="Resource_xp0ms"]
+script = ExtResource("5_r4f3p")
+
+[sub_resource type="Resource" id="Resource_eneba"]
+script = ExtResource("4_4d10c")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_xp0ms"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_3qpmn"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Profesion añadida"
+}
+
+[sub_resource type="Resource" id="Resource_r75ka"]
+script = ExtResource("4_4d10c")
 code = 1
 parameters = {
 "character_delay": 0.03,
@@ -3904,11 +3941,12 @@ parameters = {
 &"length": 8.0
 }
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_xp0ms"]
+[sub_resource type="Resource" id="Resource_ca78l"]
 script = ExtResource("5_r4f3p")
 
-[sub_resource type="Resource" id="Resource_eneba"]
+[sub_resource type="Resource" id="Resource_2puwf"]
 script = ExtResource("4_4d10c")
 code = 2
 parameters = {
@@ -3916,197 +3954,176 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_xp0ms"),
+&"face": SubResource("Resource_ca78l"),
 &"height": 0.0,
 &"is_floating_dialog": true,
 &"position": 0,
 &"width": 0.0
 }
-
-[sub_resource type="Resource" id="Resource_3qpmn"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[showbox type=0 val=\"Left name\" pos=0]"
-}
-
-[sub_resource type="Resource" id="Resource_r75ka"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[showbox type=0 val=\"Right name\" pos=1]"
-}
-
-[sub_resource type="Resource" id="Resource_ca78l"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0] "
-}
-
-[sub_resource type="Resource" id="Resource_2puwf"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
-}
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_8yikx"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "[randomypos min_offset_y=-2 max_offset_y=2 fix_letters=false]Test Message. Lina primera del mensaje."
+"line": "[showbox type=0 val=\"Left name\" pos=0]"
 }
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_3atke"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "Esta seria la segunda linea del mensaje, bastante larga para ver si se corta correctamente y tengo mas lineas  [/randomypos]"
-}
-
-[sub_resource type="Resource" id="Resource_7kxf2"]
-script = ExtResource("5_r4f3p")
-
-[sub_resource type="Resource" id="Resource_62trq"]
-script = ExtResource("4_4d10c")
-code = 2
-parameters = {
-&"character_name": {
-"type": 0,
-"value": ""
-},
-&"face": SubResource("Resource_7kxf2"),
-&"height": 0.0,
-&"is_floating_dialog": false,
-&"position": 0,
-&"width": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_0cl5x"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "Esto es un mensage pequeño o extremadamente largo, segun como se vea           ."
-}
-
-[sub_resource type="Resource" id="Resource_camtb"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "por eso espero que se lea completo y no tarde mucho"
-}
-
-[sub_resource type="Resource" id="Resource_i5010"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "si no vamos a tener que corregirlo"
-}
-
-[sub_resource type="Resource" id="Resource_l1hx2"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "vamos a ello?"
-}
-
-[sub_resource type="Resource" id="Resource_q6ctf"]
-script = ExtResource("5_r4f3p")
-
-[sub_resource type="Resource" id="Resource_ojrqi"]
-script = ExtResource("4_4d10c")
-code = 2
-parameters = {
-&"character_name": {
-"type": 0,
-"value": ""
-},
-&"face": SubResource("Resource_q6ctf"),
-&"height": 0.0,
-&"is_floating_dialog": false,
-&"position": 0,
-&"width": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_buu0b"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[showbox type=0 val=\"Left name\" pos=0]"
-}
-
-[sub_resource type="Resource" id="Resource_jwqu2"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
 "line": "[showbox type=0 val=\"Right name\" pos=1]"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_1blgv"]
+[sub_resource type="Resource" id="Resource_7kxf2"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]"
+"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0] "
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_450ba"]
+[sub_resource type="Resource" id="Resource_62trq"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
 "line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
 }
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_0cl5x"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[randomypos min_offset_y=-2 max_offset_y=2 fix_letters=false]Test Message. Lina primera del mensaje."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_camtb"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Esta seria la segunda linea del mensaje, bastante larga para ver si se corta correctamente y tengo mas lineas  [/randomypos]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_i5010"]
+script = ExtResource("5_r4f3p")
+
+[sub_resource type="Resource" id="Resource_l1hx2"]
+script = ExtResource("4_4d10c")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_i5010"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_q6ctf"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Esto es un mensage pequeño o extremadamente largo, segun como se vea           ."
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_ojrqi"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "por eso espero que se lea completo y no tarde mucho"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_buu0b"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "si no vamos a tener que corregirlo"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_jwqu2"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "vamos a ello?"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_1blgv"]
+script = ExtResource("5_r4f3p")
+
+[sub_resource type="Resource" id="Resource_450ba"]
+script = ExtResource("4_4d10c")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_1blgv"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_y7yaq"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "Test Message. Comprendes?.Sí"
-}
-
-[sub_resource type="Resource" id="Resource_d1fcd"]
-script = ExtResource("5_r4f3p")
-
-[sub_resource type="Resource" id="Resource_agw3w"]
-script = ExtResource("4_4d10c")
-code = 2
-parameters = {
-&"character_name": {
-"type": 0,
-"value": ""
-},
-&"face": SubResource("Resource_d1fcd"),
-&"height": 0.0,
-&"is_floating_dialog": false,
-&"position": 0,
-&"width": 0.0
-}
-
-[sub_resource type="Resource" id="Resource_3ri7x"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
 "line": "[showbox type=0 val=\"Left name\" pos=0]"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_6yfpc"]
+[sub_resource type="Resource" id="Resource_d1fcd"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
 "line": "[showbox type=0 val=\"Right name\" pos=1]"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_jd77s"]
+[sub_resource type="Resource" id="Resource_agw3w"]
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "Test Message."
+"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0]"
 }
+ignore_command = true
 
-[sub_resource type="Resource" id="Resource_telbv"]
+[sub_resource type="Resource" id="Resource_3ri7x"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_6yfpc"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Test Message. Comprendes?.Sí"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_jd77s"]
 script = ExtResource("5_r4f3p")
 
-[sub_resource type="Resource" id="Resource_e8xij"]
+[sub_resource type="Resource" id="Resource_telbv"]
 script = ExtResource("4_4d10c")
 code = 2
 parameters = {
@@ -4114,11 +4131,19 @@ parameters = {
 "type": 0,
 "value": ""
 },
-&"face": SubResource("Resource_telbv"),
+&"face": SubResource("Resource_jd77s"),
 &"height": 0.0,
 &"is_floating_dialog": false,
 &"position": 0,
 &"width": 0.0
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_e8xij"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[showbox type=0 val=\"Left name\" pos=0]"
 }
 ignore_command = true
 
@@ -4126,7 +4151,7 @@ ignore_command = true
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "[showbox type=0 val=\"Left name\" pos=0]"
+"line": "[showbox type=0 val=\"Right name\" pos=1]"
 }
 ignore_command = true
 
@@ -4134,23 +4159,26 @@ ignore_command = true
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "[showbox type=0 val=\"Right name\" pos=1]"
+"line": "Test Message."
 }
 ignore_command = true
 
 [sub_resource type="Resource" id="Resource_o65sx"]
-script = ExtResource("4_4d10c")
-code = 3
-parameters = {
-"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0] "
-}
-ignore_command = true
+script = ExtResource("5_r4f3p")
 
 [sub_resource type="Resource" id="Resource_x2657"]
 script = ExtResource("4_4d10c")
-code = 3
+code = 2
 parameters = {
-"line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_o65sx"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
 }
 ignore_command = true
 
@@ -4158,7 +4186,7 @@ ignore_command = true
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "[randomypos min_offset_y=-2 max_offset_y=2 fix_letters=false]Test Message. Lina primera del mensaje."
+"line": "[showbox type=0 val=\"Left name\" pos=0]"
 }
 ignore_command = true
 
@@ -4166,69 +4194,101 @@ ignore_command = true
 script = ExtResource("4_4d10c")
 code = 3
 parameters = {
-"line": "Esta seria la segunda linea dle mensaje, bastante larga para ver si se corta correctamente y tengo mas lineas  [/randomypos]"
+"line": "[showbox type=0 val=\"Right name\" pos=1]"
 }
 ignore_command = true
 
 [sub_resource type="Resource" id="Resource_aforn"]
 script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[face path=\"res://icon.png\" trans_type=1 trans_time=0 trans_wait=0] "
+}
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_nqt6s"]
-script = ExtResource("7_nw8pp")
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[face path=\"res://icon.png\" position=1 trans_type=1 trans_time=0 trans_wait=0]"
+}
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_ykkya"]
-script = ExtResource("8_oon1j")
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "[randomypos min_offset_y=-2 max_offset_y=2 fix_letters=false]Test Message. Lina primera del mensaje."
+}
+ignore_command = true
 
 [sub_resource type="Resource" id="Resource_rd0l8"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Esta seria la segunda linea dle mensaje, bastante larga para ver si se corta correctamente y tengo mas lineas  [/randomypos]"
+}
+ignore_command = true
+
+[sub_resource type="Resource" id="Resource_04gde"]
+script = ExtResource("4_4d10c")
+
+[sub_resource type="Resource" id="Resource_is0hu"]
+script = ExtResource("7_nw8pp")
+
+[sub_resource type="Resource" id="Resource_6vnt5"]
+script = ExtResource("8_oon1j")
+
+[sub_resource type="Resource" id="Resource_5u2bb"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 5258328105507961
 id = 3
-list = Array[ExtResource("4_4d10c")]([SubResource("Resource_o5qkx"), SubResource("Resource_eneba"), SubResource("Resource_3qpmn"), SubResource("Resource_r75ka"), SubResource("Resource_ca78l"), SubResource("Resource_2puwf"), SubResource("Resource_8yikx"), SubResource("Resource_3atke"), SubResource("Resource_62trq"), SubResource("Resource_0cl5x"), SubResource("Resource_camtb"), SubResource("Resource_i5010"), SubResource("Resource_l1hx2"), SubResource("Resource_ojrqi"), SubResource("Resource_buu0b"), SubResource("Resource_jwqu2"), SubResource("Resource_1blgv"), SubResource("Resource_450ba"), SubResource("Resource_y7yaq"), SubResource("Resource_agw3w"), SubResource("Resource_3ri7x"), SubResource("Resource_6yfpc"), SubResource("Resource_jd77s"), SubResource("Resource_e8xij"), SubResource("Resource_t3t7w"), SubResource("Resource_a6grm"), SubResource("Resource_o65sx"), SubResource("Resource_x2657"), SubResource("Resource_3s1y3"), SubResource("Resource_lsmab"), SubResource("Resource_aforn")])
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_o5qkx"), SubResource("Resource_eneba"), SubResource("Resource_3qpmn"), SubResource("Resource_r75ka"), SubResource("Resource_2puwf"), SubResource("Resource_8yikx"), SubResource("Resource_3atke"), SubResource("Resource_7kxf2"), SubResource("Resource_62trq"), SubResource("Resource_0cl5x"), SubResource("Resource_camtb"), SubResource("Resource_l1hx2"), SubResource("Resource_q6ctf"), SubResource("Resource_ojrqi"), SubResource("Resource_buu0b"), SubResource("Resource_jwqu2"), SubResource("Resource_450ba"), SubResource("Resource_y7yaq"), SubResource("Resource_d1fcd"), SubResource("Resource_agw3w"), SubResource("Resource_3ri7x"), SubResource("Resource_6yfpc"), SubResource("Resource_telbv"), SubResource("Resource_e8xij"), SubResource("Resource_t3t7w"), SubResource("Resource_a6grm"), SubResource("Resource_x2657"), SubResource("Resource_3s1y3"), SubResource("Resource_lsmab"), SubResource("Resource_aforn"), SubResource("Resource_nqt6s"), SubResource("Resource_ykkya"), SubResource("Resource_rd0l8"), SubResource("Resource_04gde")])
 condition = SubResource("Resource_uwcgy")
-movement_route = SubResource("Resource_nqt6s")
-options = SubResource("Resource_ykkya")
+movement_route = SubResource("Resource_is0hu")
+options = SubResource("Resource_6vnt5")
 event_trigger_list = PackedInt64Array()
 event_tool_list = PackedInt32Array()
 event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/Npc_1/npc_1_data.tres"
 
-[sub_resource type="Resource" id="Resource_04gde"]
+[sub_resource type="Resource" id="Resource_4rp4j"]
 script = ExtResource("12_7i1fv")
 
-[sub_resource type="Resource" id="Resource_is0hu"]
+[sub_resource type="Resource" id="Resource_vi2a6"]
 script = ExtResource("12_7i1fv")
 
-[sub_resource type="Resource" id="Resource_6vnt5"]
+[sub_resource type="Resource" id="Resource_m40gu"]
 script = ExtResource("9_sopbs")
 _uniq_id = 6429838736844576
 id = 5010894098523170
 override_name = "mi super quest"
 required_pages = PackedInt64Array(9550728391727168)
-start_page = SubResource("Resource_04gde")
-target_page = SubResource("Resource_is0hu")
+start_page = SubResource("Resource_4rp4j")
+target_page = SubResource("Resource_vi2a6")
 dialogue_on_start = "hola quieres hacer un trabajito para mi?"
 dialogue_on_finish = "grande!"
 use_confirm_message = false
 confirm_ok_option = "Accept quest"
 confirm_cancel_option = "Decline"
 
-[sub_resource type="Resource" id="Resource_5u2bb"]
+[sub_resource type="Resource" id="Resource_sekx4"]
 script = ExtResource("10_k8bko")
 
-[sub_resource type="Resource" id="Resource_4rp4j"]
+[sub_resource type="Resource" id="Resource_ipcge"]
 script = ExtResource("11_8au4t")
-levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_5u2bb")])
+levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_sekx4")])
 
-[sub_resource type="Resource" id="Resource_vi2a6"]
+[sub_resource type="Resource" id="Resource_1tmdu"]
 script = ExtResource("1_546u1")
 _uniq_id = 1129373089051834
 name = "EV0013"
 id = 13
 x = 13
 y = 11
-pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_vjxbx"), SubResource("Resource_sx4mc"), SubResource("Resource_njmpn"), SubResource("Resource_rd0l8")])
-quests = Array[ExtResource("9_sopbs")]([SubResource("Resource_6vnt5")])
-relationship = SubResource("Resource_4rp4j")
+pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_vjxbx"), SubResource("Resource_sx4mc"), SubResource("Resource_njmpn"), SubResource("Resource_5u2bb")])
+quests = Array[ExtResource("9_sopbs")]([SubResource("Resource_m40gu")])
+relationship = SubResource("Resource_ipcge")
 _editor_last_page_used = 3
 legacy_mode = true
 
@@ -4378,4 +4438,4 @@ legacy_mode = true
 
 [resource]
 script = ExtResource("12_m2ele")
-events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_vi2a6"), SubResource("Resource_ps66w")])
+events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_1tmdu"), SubResource("Resource_ps66w")])

@@ -305,6 +305,10 @@ theme_override_constants/margin_right = -21
 initial_container = NodePath("../../../..")
 help_label = NodePath("../../../../MarginContainer/ChapterNameAutoScrollContainer/MarginContainer/HelpLabel")
 
+[node name="MainMenuItems" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer" parent_id_path=PackedInt32Array(366509411, 2059168714) index="0" unique_id=1714222971]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 18
+
 [node name="MainContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/MainMenuScene/HBoxContainer/MarginContainer/PartyMenu" parent_id_path=PackedInt32Array(366509411, 2098459704) index="0" unique_id=1446304813]
 offset_left = -12.5
 offset_right = 12.5
@@ -374,6 +378,7 @@ theme_override_constants/margin_bottom = 86
 [node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer/MarginContainer" index="0" unique_id=647627442]
 z_as_relative = false
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = -59
 theme_override_constants/margin_top = -11
 theme_override_constants/margin_right = -61
@@ -381,6 +386,7 @@ theme_override_constants/margin_bottom = -13
 
 [node name="TextureRect" type="TextureRect" parent="SceneMainContainer/MarginContainer/MarginContainer" index="0" unique_id=86077783]
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("GradientTexture2D_0m31r")
 
 [node name="ChapterNameAutoScrollContainer" type="Container" parent="SceneMainContainer/MarginContainer" index="1" unique_id=578002997]
@@ -388,11 +394,13 @@ unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 script = ExtResource("6_3uh6u")
 scroll_direction = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer" index="0" unique_id=1067341199]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_top = 23
 metadata/current_size = Vector2(925, 40)
 metadata/current_size_flags = {

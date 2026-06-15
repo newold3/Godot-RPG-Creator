@@ -211,9 +211,10 @@ func _input(event: InputEvent) -> void:
 					action_found = true
 					break
 				
-			elif node.get_class() == "RPGExtractionScene":
-				if not node.extraction_data.is_depleted():
-					GameManager.manage_extraction_scene(node)
+			elif node is RPGExtractionItem:
+				var scene = node.scene
+				if scene and not scene.extraction_data.is_depleted():
+					GameManager.manage_extraction_scene(scene)
 					action_found = true
 					break
 			

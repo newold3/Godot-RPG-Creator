@@ -99,6 +99,8 @@ var action_manager: RPGActionManager
 
 var is_transfer_animating: bool = false
 
+var is_simulation: bool = false
+
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
 
 @warning_ignore("unused_private_class_variable")
@@ -1124,6 +1126,22 @@ func has_profession(profession_id: int) -> bool:
 
 func add_profession_experience(event_data: RPGExtractionItem, experience: float) -> void:
 	if extraction_manager: extraction_manager.add_profession_experience(event_data, experience)
+
+
+func get_profession_experience_info(event_data: RPGExtractionItem) -> Dictionary:
+	if extraction_manager: return extraction_manager.get_profession_experience_info(event_data)
+	return {}
+
+
+func get_profession_extraction_text_color(data: RPGExtractionItem, profession: RPGProfession) -> Color:
+	if extraction_manager: return extraction_manager.get_extraction_text_color(data, profession)
+	return Color.RED
+
+
+func get_profession_absolute_item_level(data: RPGExtractionItem, profession: RPGProfession) -> int:
+	if extraction_manager: return extraction_manager.get_absolute_item_level(data, profession)
+	return 1
+
 #endregion
 
 

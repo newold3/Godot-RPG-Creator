@@ -37,6 +37,9 @@ extends Resource
 @export var experience_base: int = 1
 
 
+var scene
+
+
 
 ## Hides the real exported variables from the inspector while keeping them serialized.
 func _validate_property(property: Dictionary) -> void:
@@ -87,10 +90,7 @@ func _init(p_id: int = 0, px: int = 0, py: int = 0) -> void:
 
 ## Returns the profession required to extract this item.
 func get_profession() -> RPGProfession:
-	if required_profession > 0 and RPGSYSTEM.database.professions.size() > required_profession:
-		return RPGSYSTEM.database.professions[required_profession]
-	
-	return null
+	return RPGSYSTEM.get_data("professions", required_profession)
 
 
 

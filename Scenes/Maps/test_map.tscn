@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://jy4tlmnmv3dk" path="res://addons/RPGData/ModulesRPG/rpg_icon.gd" id="6_ewx0n"]
 [ext_resource type="Script" uid="uid://dvbel4d37a2dd" path="res://addons/RPGData/ModulesRPG/rpg_event.gd" id="13_11apb"]
 [ext_resource type="Script" uid="uid://cs2wo26n1y1p6" path="res://addons/RPGData/ModulesRPG/rpg_extraction_item.gd" id="15_otpcx"]
+[ext_resource type="Shader" uid="uid://da8lehvsx2217" path="res://Assets/Shaders/hexagon_transition.gdshader" id="16_i3lja"]
 [ext_resource type="Script" uid="uid://cxflyuts5e3t5" path="res://addons/RPGData/ModulesRPG/rpg_item_drop.gd" id="16_m0d5v"]
 [ext_resource type="Script" uid="uid://bvjjq6wigbjit" path="res://addons/RPGData/ModulesRPG/rpg_component.gd" id="17_m0d5v"]
 [ext_resource type="Script" uid="uid://btwxgat1h51k6" path="res://addons/RPGData/ModulesRPG/rpg_sound.gd" id="17_mppu7"]
@@ -16,56 +17,57 @@
 [ext_resource type="Script" uid="uid://xelmmknmjo8n" path="res://addons/RPGMap/Scripts/troop_spawn_data.gd" id="20_6yorc"]
 [ext_resource type="Script" uid="uid://45qsey742juw" path="res://addons/RPGMap/Scripts/floor_auto_shaders.gd" id="23_bvf2a"]
 
-[sub_resource type="Resource" id="Resource_kn7g7"]
+[sub_resource type="Resource" id="Resource_f6s5d"]
 script = ExtResource("3_kxphi")
 
-[sub_resource type="Resource" id="Resource_hekhd"]
+[sub_resource type="Resource" id="Resource_udsps"]
 script = ExtResource("17_m0d5v")
 data_id = 1
 
-[sub_resource type="Resource" id="Resource_c01xp"]
+[sub_resource type="Resource" id="Resource_xosb5"]
 script = ExtResource("16_m0d5v")
-item = SubResource("Resource_hekhd")
+item = SubResource("Resource_udsps")
 
-[sub_resource type="Resource" id="Resource_sxka5"]
+[sub_resource type="Resource" id="Resource_54pvn"]
 script = ExtResource("17_mppu7")
 filename = "res://Assets/Sounds/BGS/wind1.ogg"
 
-[sub_resource type="Resource" id="Resource_s6b7x"]
+[sub_resource type="Resource" id="Resource_otpcx"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_1oglb"]
+[sub_resource type="Resource" id="Resource_m0d5v"]
 script = ExtResource("15_otpcx")
 id = 1
 name = "Mineral 2"
-icon = SubResource("Resource_s6b7x")
+icon = SubResource("Resource_otpcx")
 scene_path = "res://Scenes/ExtractionScenes/default_extraction_scene.tscn"
-max_uses = 6
+max_uses = 1
 respawn_time = 5
-drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_c01xp")])
-extraction_fx = SubResource("Resource_sxka5")
+drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_xosb5")])
+extraction_fx = SubResource("Resource_54pvn")
 x = 12
 y = 11
+experience_base = 400
 
-[sub_resource type="Resource" id="Resource_3qosp"]
+[sub_resource type="Resource" id="Resource_mppu7"]
 script = ExtResource("17_m0d5v")
 
-[sub_resource type="Resource" id="Resource_0brm5"]
+[sub_resource type="Resource" id="Resource_vu4kc"]
 script = ExtResource("16_m0d5v")
-item = SubResource("Resource_3qosp")
+item = SubResource("Resource_mppu7")
 
-[sub_resource type="Resource" id="Resource_2r2f5"]
+[sub_resource type="Resource" id="Resource_bvf2a"]
 script = ExtResource("17_mppu7")
 filename = "res://Assets/Sounds/BGS/wind1.ogg"
 
-[sub_resource type="Resource" id="Resource_dtcl0"]
+[sub_resource type="Resource" id="Resource_6yorc"]
 script = ExtResource("6_ewx0n")
 
-[sub_resource type="Resource" id="Resource_bsx76"]
+[sub_resource type="Resource" id="Resource_fdakd"]
 script = ExtResource("15_otpcx")
 id = 2
 name = "Mineral 1"
-icon = SubResource("Resource_dtcl0")
+icon = SubResource("Resource_6yorc")
 scene_path = "res://Scenes/ExtractionScenes/default_extraction_scene.tscn"
 min_required_profession_level = 2
 max_required_profession_level = 3
@@ -73,10 +75,11 @@ no_level_restrictions = false
 current_level = 9
 max_uses = 8
 respawn_time = 5
-drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_0brm5")])
-extraction_fx = SubResource("Resource_2r2f5")
+drop_table = Array[ExtResource("16_m0d5v")]([SubResource("Resource_vu4kc")])
+extraction_fx = SubResource("Resource_bvf2a")
 x = 7
 y = 11
+experience_base = 400
 
 [sub_resource type="Resource" id="Resource_upqxx"]
 script = ExtResource("19_bvf2a")
@@ -101,7 +104,6 @@ id = 3
 color = Color(0.0900245, 0.8312938, 0.9135385, 0.4)
 rect = Rect2i(30, 7, 4, 5)
 damage_frequency = 0.15000000000000002
-trigger_mode = null
 triggers = PackedInt32Array(-1)
 
 [sub_resource type="Resource" id="Resource_o0x6m"]
@@ -110,7 +112,6 @@ id = 1
 color = Color(0.3864961, 0.35614142, 0.9456966, 0.4)
 rect = Rect2i(7, 3, 10, 6)
 damage_frequency = 0.15000000000000002
-trigger_mode = null
 always_passable = true
 triggers = PackedInt32Array(-1)
 
@@ -119,19 +120,33 @@ tile_size = Vector2i(32, 32)
 custom_data_layer_0/name = "Passability"
 custom_data_layer_0/type = 24
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_udsps"]
+shader = ExtResource("16_i3lja")
+shader_parameter/progress = 0.0
+shader_parameter/hex_scale = 5.0
+shader_parameter/aspect_ratio = 1.777777
+shader_parameter/hex_radius = 0.37500001455262
+shader_parameter/border_thickness = 0.1650000078375
+shader_parameter/border_color = Color(1, 1, 1, 1)
+shader_parameter/start_scale = 2.0
+shader_parameter/target_scale = 5.0
+shader_parameter/phase_appear_duration = 0.4
+shader_parameter/phase_rest_duration = 0.5
+shader_parameter/phase_disappear_duration = 0.5
+
 [node name="TestMap" type="Node2D" unique_id=264368788]
 y_sort_enabled = true
 script = ExtResource("1_didij")
 grid_gradient = ExtResource("2_kukki")
 enable_minimap = true
 use_dynamic_day_night = true
-events = SubResource("Resource_kn7g7")
-extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_1oglb"), SubResource("Resource_bsx76")])
+events = SubResource("Resource_f6s5d")
+extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_m0d5v"), SubResource("Resource_fdakd")])
 regions = Array[ExtResource("19_bvf2a")]([SubResource("Resource_upqxx")])
 event_regions = Array[ExtResource("19_mppu7")]([SubResource("Resource_i3lja"), SubResource("Resource_3o0ny"), SubResource("Resource_o0x6m")])
 internal_id = 2651459344452080
-current_edit_button_pressed = 0
-_last_edit_button_pressed = 0
+current_edit_button_pressed = 1
+_last_edit_button_pressed = 1
 
 [node name="GroundBase" type="TileMapLayer" parent="." unique_id=1610878107]
 unique_name_in_owner = true
@@ -170,4 +185,12 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.21)
 z_index = 1
 tile_set = SubResource("TileSet_i3lja")
+metadata/original_opacity = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=401368107]
+modulate = Color(1, 1, 1, 0.21)
+z_index = 20
+material = SubResource("ShaderMaterial_udsps")
+offset_right = 1147.0
+offset_bottom = 616.0
 metadata/original_opacity = 1.0

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="3_u3vo0"]
 [ext_resource type="Texture2D" uid="uid://dwcnj2mbl2v2y" path="res://addons/CustomControls/Images/magnifying_glass.png" id="4_0qk3h"]
 [ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="4_n0dqb"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_3b4r4"]
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="5_pfj2n"]
 [ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="6_kd2ju"]
 
@@ -85,6 +86,22 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yqloq"]
+atlas = ExtResource("5_3b4r4")
+region = Rect2(48, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l433a"]
+atlas = ExtResource("5_3b4r4")
+region = Rect2(72, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ildlt"]
+atlas = ExtResource("5_3b4r4")
+region = Rect2(96, 120, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bb7ta"]
+atlas = ExtResource("5_3b4r4")
+region = Rect2(120, 120, 24, 24)
 
 [sub_resource type="Curve" id="Curve_gwuns"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
@@ -180,6 +197,86 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="Develop" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=110860382]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop" unique_id=1238348575]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer" unique_id=1505790744]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer" unique_id=151036770]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Header:"
+
+[node name="DevelopHeader" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer" unique_id=1912020393 instance=ExtResource("3_soxgs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HeaderList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer" unique_id=621784070 instance=ExtResource("5_pfj2n")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+tooltip_text = "List of headers added to the list."
+fit_to_longest_item = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer" unique_id=316628942]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer2" unique_id=1620404359]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Term:"
+
+[node name="Label2" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer2" unique_id=31620444]
+layout_mode = 2
+text = "ID:"
+
+[node name="DevelopID" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer2" unique_id=1132011295 instance=ExtResource("3_soxgs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer2" unique_id=691074183]
+layout_mode = 2
+text = " Term:"
+
+[node name="DevelopTerm" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer/HBoxContainer2" unique_id=1997274097 instance=ExtResource("3_soxgs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop" unique_id=369320502]
+layout_mode = 2
+alignment = 1
+
+[node name="ExportList" type="TextureButton" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer2" unique_id=665090014]
+layout_mode = 2
+tooltip_text = "Export List"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_yqloq")
+texture_hover = SubResource("AtlasTexture_l433a")
+
+[node name="ImportList" type="TextureButton" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer2" unique_id=968005088]
+layout_mode = 2
+tooltip_text = "Import List"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ildlt")
+texture_hover = SubResource("AtlasTexture_bb7ta")
+
+[node name="DevelopAddTerm" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop" unique_id=225668214 instance=ExtResource("6_kd2ju")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+tooltip_text = "Add a fixed text entry to the list under the specified heading (create one if it doesn't exist)"
+text = "Add Term"
+text_overrun_behavior = 3
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=417394391]
 layout_mode = 2
 
@@ -206,24 +303,24 @@ layout_mode = 2
 layout_mode = 2
 text = "Term List:"
 
-[node name="Reset" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=225668214 instance=ExtResource("6_kd2ju")]
+[node name="Reset" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2115777158 instance=ExtResource("6_kd2ju")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 tooltip_text = "Removes and re-adds all default terms. User-added terms are preserved and will not be changed."
 text = "Reset Default Terms"
-text_overrun_behavior = 3
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1075494787]
+[node name="TermsListContainer" type="ScrollContainer" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1075494787]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_u3vo0")
 curve = SubResource("Curve_gwuns")
 
-[node name="TermList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer" unique_id=1703897042 instance=ExtResource("4_n0dqb")]
+[node name="TermList" parent="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TermsListContainer" unique_id=1703897042 instance=ExtResource("4_n0dqb")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(368, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -241,9 +338,10 @@ deselect_when_lost_focus = true
 itemlist_tooltip = "[title]Term List[/title]
 List of Words / Phrases Used in Different Parts of the Game"
 
+[connection signal="pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer2/ExportList" to="." method="_on_export_list_pressed"]
+[connection signal="pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Develop/VBoxContainer2/ImportList" to="." method="_on_import_list_pressed"]
 [connection signal="gui_input" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_gui_input"]
 [connection signal="text_changed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Filter" to="." method="_on_filter_text_changed"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/FastSelection" to="." method="_on_fast_selection_item_selected"]
 [connection signal="pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Reset" to="." method="_on_reset_pressed"]
-[connection signal="delete_pressed" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_delete_pressed"]
-[connection signal="item_activated" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SmoothScrollContainer/TermList" to="." method="_on_term_list_item_activated"]
+[connection signal="item_activated" from="MainColumn/MarginContainer/CustomPanel/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TermsListContainer/TermList" to="." method="_on_term_list_item_activated"]

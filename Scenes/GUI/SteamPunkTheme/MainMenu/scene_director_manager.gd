@@ -46,8 +46,11 @@ var pending_item_data: Dictionary = {}
 var pending_skill_data: Dictionary = {}
 
 
-
 #region Others
+func _ready() -> void:
+	if GameManager.inventory_manager and not GameManager.inventory_manager.perishable_item_rotted.is_connected(_on_global_item_rotted):
+		GameManager.inventory_manager.perishable_item_rotted.connect(_on_global_item_rotted)
+
 ## Initializes core menu components when the parent becomes visible
 func _on_parent_visibility_changed() -> void:
 	if Engine.is_editor_hint(): return
@@ -186,6 +189,7 @@ func show_item_menu(id: String) -> void:
 			collection = cache.get("collection", 0)
 			items_menu_scene.set_tabs(tabs, collection)
 			items = GameManager.get_items(false, cache.get("sort_type", 0), collection)
+			items_menu_scene.set_meta("visual_item_cache", items)
 		elif id == "skills":
 			var tabs: PackedStringArray = [
 				tr("Skills")
@@ -198,7 +202,6 @@ func show_item_menu(id: String) -> void:
 	if animation_player and animation_player.has_animation("Show Item Menu"):
 		animation_player.speed_scale = 1.7
 		animation_player.play("Show Item Menu")
-
 
 ## Hides the item menu and restores control to the appropriate previous menu
 func hide_item_menu() -> void:
@@ -258,29 +261,50 @@ func _on_item_list_item_focused(obj: Dictionary) -> void:
 			"id": obj.get("item_id", -1),
 			"type": obj.get("item_type", -1)
 		}
+	
+	var actors = []
+	for id: int in GameManager.game_state.current_party:
+		var actor: GameActor = GameManager.get_actor(id)
+		actors.append(actor)
+	
+	print(evaluate_item_for_actors(obj, actors))
 
 
 ## Resets the state and UI if the currently active perishable item rots
 func _on_ingame_item_list_active_item_rotted() -> void:
+	var holding_item_rotted: bool = false
 	if previous_active_item == MenuState.ITEM_TARGET:
-		var current_qty = 0
+		var current_qty: int = 0
 		if pending_item_type == 0:
 			current_qty = GameManager.inventory_manager.get_item_amount(pending_item_id)
-		if current_qty > 0 and items_menu_scene and items_menu_scene.has_method("refresh_and_get_next_perishable"):
+		if current_qty > 0:
+			if items_menu_scene:
+				var cache = items_menu_scene.get_list_cache()
+				var previous_items = items_menu_scene.get_items()
+				var items_array = GameManager.inventory_manager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0), previous_items)
+				items_menu_scene.set_items(items_array)
+			return
+		holding_item_rotted = true
+		if items_menu_scene and items_menu_scene.has_method("refresh_and_get_next_perishable"):
 			var next_item = await items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
 			if not next_item.is_empty():
 				pending_item_data = next_item
 				return
 		previous_active_item = MenuState.ITEMS
 		party_scene.disabled()
+		GameManager.play_fx("cancel")
+	if previous_active_item == MenuState.ITEMS:
 		if items_menu_scene:
 			var cache = items_menu_scene.get_list_cache()
-			var items_array = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
+			var previous_items = items_menu_scene.get_items()
+			var items_array = GameManager.inventory_manager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0), previous_items)
 			items_menu_scene.set_items(items_array)
 			await get_tree().process_frame
 			items_menu_scene.set_enabled()
 			items_menu_scene.select_current()
-	GameManager.call_deferred("toast_message", tr("Oops! The item you were trying to use got consumed right in front of you!"), ToastManager.ToastPos.BOTTOM_CENTER)
+	if holding_item_rotted:
+		GameManager.call_deferred("toast_message", tr("Oops!\nThe item you were trying to use got consumed right in front of you!"), ToastManager.ToastPos.BOTTOM_CENTER)
+
 #endregion
 
 
@@ -316,6 +340,7 @@ func _on_main_menu_items_clicked(id: int) -> void:
 	left_buttons_scene.disabled()
 	party_scene.set_order_mode(left_buttons_scene.current_button_index == 4)
 	previous_active_item = id as MenuState
+	print(id)
 	match left_buttons_scene.current_button_index:
 		0: # Items
 			show_item_menu("items")
@@ -340,6 +365,18 @@ func _on_main_menu_items_clicked(id: int) -> void:
 			_select_buttons()
 		8: # Quit game
 			GameManager.restart()
+		9: # Proffesions
+			print("⚠️ This function is under construction.")
+			button.keep_selected_state = false
+			_select_buttons()
+		10: # Encyclopedia
+			print("⚠️ This function is under construction.")
+			button.keep_selected_state = false
+			_select_buttons()
+		11: # ???????????
+			print("⚠️ This function is under construction.")
+			button.keep_selected_state = false
+			_select_buttons()
 
 
 func _select_buttons() -> void:
@@ -370,66 +407,107 @@ func _on_party_menu_clicked(id: int) -> void:
 	var result: bool = false
 	if previous_active_item == MenuState.ITEM_TARGET and pending_item_data:
 		var target_id = pending_item_data.get("target_id", InventoryManager.SCOPE.NONE)
+		var targets: Array = []
+		
 		if target_id == InventoryManager.SCOPE.ONE:
 			var actor: GameActor = party_scene.get_actor_selected()
-			result = await _execute_item_use(actor)
-			_animate_party_panel(actor)
+			targets.append(actor)
+			
 		elif target_id == InventoryManager.SCOPE.ALL:
-			var actors = party_scene.get_actors()
-			for actor: GameActor in actors:
-				result = await _execute_item_use(actor, actor == actors[-1])
-				_animate_party_panel(actor)
+			targets = party_scene.get_actors()
+			
 		elif target_id == InventoryManager.SCOPE.RANDOM:
 			var number = pending_item_data.get("targets_amount", 0)
 			if number > 0:
-				var new_actors: Array[GameActor] = []
 				var actors = party_scene.get_actors()
-				if actors.size <= number:
-					new_actors = actors
+				if actors.size() <= number:
+					GameManager.is_simulation = true
+					targets = actors.duplicate()
+					GameManager.is_simulation = false
 				else:
-					while new_actors.size() < number:
+					while targets.size() < number:
 						var actor: GameActor = actors.pick_random()
-						if not actor in new_actors:
-							new_actors.append(actor)
-					
-				for actor: GameActor in new_actors:
-					if not result:
-						result = await _execute_item_use(actor, actor == new_actors[-1])
-					else:
-						await _execute_item_use(actor, actor == new_actors[-1])
-					_animate_party_panel(actor)
+						if not actor in targets:
+							targets.append(actor)
+							
+		if not targets.is_empty():
+			result = await _execute_item_use(targets)
+			
+			for actor in targets:
+				_animate_party_panel(actor)
 		
 		if result:
 			GameManager.play_fx("ok")
 		else:
 			GameManager.play_fx("error")
 		return
+		
 	elif previous_active_item == MenuState.SKILL_TARGET:
-		_execute_skill_use(id)
+		var target_id = pending_skill_data.get("target_id", InventoryManager.SCOPE.NONE)
+		var targets: Array = []
+		
+		if target_id == InventoryManager.SCOPE.ONE:
+			var actor: GameActor = party_scene.get_actor_selected()
+			targets.append(actor)
+			
+		elif target_id == InventoryManager.SCOPE.ALL:
+			targets = party_scene.get_actors()
+			
+		elif target_id == InventoryManager.SCOPE.RANDOM:
+			var number = pending_skill_data.get("targets_amount", 0)
+			if number > 0:
+				var actors = party_scene.get_actors()
+				if actors.size() <= number:
+					GameManager.is_simulation = true
+					targets = actors.duplicate()
+					GameManager.is_simulation = false
+				else:
+					while targets.size() < number:
+						var actor: GameActor = actors.pick_random()
+						if not actor in targets:
+							targets.append(actor)
+							
+		if not targets.is_empty():
+			result = _execute_skill_use(targets)
+			
+			for actor in targets:
+				_animate_party_panel(actor)
+				
+		if result:
+			GameManager.play_fx("ok")
+		else:
+			GameManager.play_fx("error")
 		return
+		
 	match left_buttons_scene.current_button_index:
-		0: # items
+		0:
 			pass
-		1: # Skills
+		1:
 			if party_scene:
 				current_skill_user = party_scene.get_actor_selected()
 				party_scene.disabled()
 				party_scene.hightlight_selected()
 			previous_active_item = MenuState.SKILLS_LIST
 			show_item_menu("skills")
-		2: # Equipment
+		2:
 			_show_equip_menu()
-		3: # Status
-			print("⚠️ This function is under construction.")
-		4: # Formation
+		3:
+			pass
+		4:
 			_on_party_formation_request(id)
-		5: # Quests
+		5:
 			pass
-		6: # Save / Load
+		6:
 			pass
-		7: # Options
+		7:
 			pass
-		8: # Quit Game
+		8:
+			pass
+		9:
+			pass
+		10:
+			pass
+		11:
 			pass
 
 
@@ -486,29 +564,121 @@ func _on_party_menu_cancel() -> void:
 
 
 
+
+#region Party Menu
+## Called globally when any item rots to update the lists immediately and handle target cancellation
+func _on_global_item_rotted(_item: Variant, _converted_id: int) -> void:
+	if not items_menu_scene or not items_menu_scene.is_started: return
+	if items_menu_scene.get("itemlist_id") != "items": return
+	
+	var cache = items_menu_scene.get_list_cache()
+	var previous_items = items_menu_scene.get_items()
+	var items_array = GameManager.inventory_manager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0), previous_items)
+	items_menu_scene.set_items(items_array)
+	
+	var item_list = null
+	if items_menu_scene.has_node("%ItemList"):
+		item_list = items_menu_scene.get_node("%ItemList")
+		item_list.queue_redraw()
+		
+	if previous_active_item == MenuState.ITEM_TARGET:
+		var current_qty = 0
+		if pending_item_type == 0:
+			current_qty = GameManager.inventory_manager.get_item_amount(pending_item_id)
+			
+		if current_qty <= 0:
+			if items_menu_scene.has_method("refresh_and_get_next_perishable"):
+				var next_item = await items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
+				if not next_item.is_empty():
+					pending_item_data = next_item
+					return
+					
+			previous_active_item = MenuState.ITEMS
+			party_scene.disabled()
+			GameManager.play_fx("cancel")
+			
+			if item_list:
+				while item_list.is_restoring:
+					await get_tree().process_frame
+			else:
+				await get_tree().process_frame
+				
+			items_menu_scene.set_enabled()
+			items_menu_scene.select_current()
+			GameManager.call_deferred("toast_message", tr("Oops!\nThe item you were trying to use got consumed right in front of you!"), ToastManager.ToastPos.BOTTOM_CENTER)
+
+
 ## Consumes an item and updates lists checking if quantities have reached zero
 func _execute_item_use(entity: Variant, remove_item: bool = true) -> bool:
-	var simulation = GameManager.action_manager.simulate_use_item(
-		null, entity, pending_item_data.item
-	)
-	if not simulation.callables.is_empty():
-		for callable in simulation.callables:
-			callable.call()
-		if entity.has_signal("parameter_changed"):
-			entity.parameter_changed.emit()
+	var targets: Array = []
+	if typeof(entity) == TYPE_ARRAY:
+		targets = entity
 	else:
+		targets = [entity]
+
+	var any_success: bool = false
+	var all_callables: Array[Callable] = []
+	var successful_targets: Array = []
+
+	for t in targets:
+		if pending_item_type == 0:
+			var scope_status = pending_item_data.get("scope_status", 0)
+			
+			var is_dead = false
+			if t.has_method("get_current_parameter"):
+				is_dead = t.get_current_parameter("hp") <= 0
+			elif "params" in t:
+				is_dead = t.params.hp <= 0
+			elif "current_states" in t:
+				for s in t.current_states:
+					if s.id == 1:
+						is_dead = true
+						break
+						
+			if scope_status == 0 and is_dead:
+				continue
+			if scope_status == 1 and not is_dead:
+				continue
+
+		var simulation = GameManager.action_manager.simulate_use_item(null, t, pending_item_data.item)
+
+		if simulation.get("success", false):
+			any_success = true
+			if simulation.has("callables"):
+				all_callables.append_array(simulation.callables)
+			successful_targets.append(t)
+
+	if not any_success:
 		return false
-		
+
+	if not all_callables.is_empty():
+		for callable in all_callables:
+			callable.call()
+			
+		for t in successful_targets:
+			if t.has_signal("parameter_changed"):
+				t.parameter_changed.emit()
+
 	if pending_item_type == 0 and remove_item:
 		GameManager.inventory_manager.remove_item_amount(pending_item_id, 1)
+
 	var current_qty = 1 
+
 	if pending_item_type == 0:
 		current_qty = GameManager.inventory_manager.get_item_amount(pending_item_id)
+
 	if current_qty <= 0:
 		if items_menu_scene:
 			var cache = items_menu_scene.get_list_cache()
-			var items_array = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
+			var previous_items = items_menu_scene.get_items()
+			var items_array = GameManager.inventory_manager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0), previous_items)
 			items_menu_scene.set_items(items_array)
+			
+			if items_menu_scene.has_node("%ItemList"):
+				var item_list = items_menu_scene.get_node("%ItemList")
+				while item_list.is_restoring:
+					await get_tree().process_frame
+
 		if party_scene.has_method("execute_cancel"):
 			party_scene.execute_cancel.call_deferred()
 		else:
@@ -517,6 +687,7 @@ func _execute_item_use(entity: Variant, remove_item: bool = true) -> bool:
 		if pending_item_data.get("is_perishable", false):
 			if items_menu_scene and items_menu_scene.has_method("refresh_and_get_next_perishable"):
 				var next_item = await items_menu_scene.refresh_and_get_next_perishable(pending_item_id)
+
 				if not next_item.is_empty():
 					pending_item_data = next_item
 					if party_scene.has_method("config_hand"):
@@ -528,33 +699,270 @@ func _execute_item_use(entity: Variant, remove_item: bool = true) -> bool:
 						_on_party_menu_cancel.call_deferred()
 		else:
 			pending_item_data["quantity"] = current_qty
-			if items_menu_scene and items_menu_scene.has_node("%ItemList"):
-				var item_list = items_menu_scene.get_node("%ItemList")
-				item_list.queue_redraw()
-				
+
+			if items_menu_scene:
+				var cache = items_menu_scene.get_list_cache()
+				var previous_items = items_menu_scene.get_items()
+				var items_array = GameManager.inventory_manager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0), previous_items)
+				items_menu_scene.set_items(items_array)
+
+				if items_menu_scene.has_node("%ItemList"):
+					var item_list = items_menu_scene.get_node("%ItemList")
+					item_list.queue_redraw()
+					while item_list.is_restoring:
+						await get_tree().process_frame
+
 	return true
 
 
 ## Consumes skill MP and updates lists checking if the actor can still cast
-func _execute_skill_use(_target_id: int) -> void:
-	return
-	@warning_ignore("unreachable_code")
-	if not current_skill_user: return
-	var real_skill = current_skill_user.get_real_skill(pending_skill_id)
-	if not real_skill: return
+func _execute_skill_use(targets: Array) -> bool:
+	if not current_skill_user: return false
+	
+	var real_skill = pending_skill_data.get("real_item")
+	
+	if not real_skill:
+		if current_skill_user.has_method("get_real_skill"):
+			real_skill = current_skill_user.get_real_skill(pending_skill_id)
+		else:
+			var uid = RPGSYSTEM.id_to_uid("skills", pending_skill_id)
+			real_skill = RPGSYSTEM.get_data("skills", uid if uid != -1 else pending_skill_id)
+		
+	if not real_skill: return false
+	
 	var mp_cost = real_skill.mp_cost if "mp_cost" in real_skill else 0
-	var current_mp = current_skill_user.get_parameter("mp")
-	if current_mp >= mp_cost:
-		current_skill_user.set_parameter("mp", current_mp - mp_cost)
-	current_mp = current_skill_user.get_parameter("mp")
-	if current_mp < mp_cost:
-		if items_menu_scene:
-			var cache = items_menu_scene.get_list_cache()
-			var items = GameManager.get_skills_for_actor(current_skill_user, cache.get("sort_type", 0))
-			items_menu_scene.set_items(items)
-		_on_party_menu_cancel()
-	else:
-		if items_menu_scene and items_menu_scene.has_node("%ItemList"):
+	var tp_cost = real_skill.tp_cost if "tp_cost" in real_skill else 0
+	
+	var current_mp = current_skill_user.get_current_parameter("mp") if current_skill_user.has_method("get_current_parameter") else current_skill_user.params.mp
+	var current_tp = current_skill_user.get_current_parameter("tp") if current_skill_user.has_method("get_current_parameter") else current_skill_user.params.tp
+	
+	if current_mp < mp_cost or current_tp < tp_cost:
+		return false
+
+	var any_success: bool = false
+	var all_callables: Array[Callable] = []
+	var successful_targets: Array = []
+
+	for t in targets:
+		var scope_status = real_skill.scope.status if real_skill.scope else 0
+		
+		var is_dead = false
+		if t.has_method("get_current_parameter"):
+			is_dead = t.get_current_parameter("hp") <= 0
+		elif "params" in t:
+			is_dead = t.params.hp <= 0
+		elif "current_states" in t:
+			for s in t.current_states:
+				if s.id == 1:
+					is_dead = true
+					break
+					
+		if scope_status == 0 and is_dead:
+			continue
+		if scope_status == 1 and not is_dead:
+			continue
+
+		var simulation = GameManager.action_manager.simulate_use_skill(current_skill_user, t, pending_skill_id)
+
+		if simulation.get("success", false):
+			any_success = true
+			if simulation.has("callables"):
+				all_callables.append_array(simulation.callables)
+			successful_targets.append(t)
+
+	if not any_success:
+		return false
+
+	if not all_callables.is_empty():
+		for callable in all_callables:
+			callable.call()
+			
+		for t in successful_targets:
+			if t.has_signal("parameter_changed"):
+				t.parameter_changed.emit()
+
+	if mp_cost > 0:
+		if current_skill_user.has_method("set_current_parameter"):
+			current_skill_user.set_current_parameter("mp", current_mp - mp_cost)
+		else:
+			current_skill_user.params.mp -= mp_cost
+			
+	if tp_cost > 0:
+		if current_skill_user.has_method("set_current_parameter"):
+			current_skill_user.set_current_parameter("tp", current_tp - tp_cost)
+		else:
+			current_skill_user.params.tp -= tp_cost
+			
+	if current_skill_user.has_signal("parameter_changed"):
+		current_skill_user.parameter_changed.emit()
+
+	current_mp = current_skill_user.get_current_parameter("mp") if current_skill_user.has_method("get_current_parameter") else current_skill_user.params.mp
+	current_tp = current_skill_user.get_current_parameter("tp") if current_skill_user.has_method("get_current_parameter") else current_skill_user.params.tp
+	
+	if items_menu_scene:
+		var cache = items_menu_scene.get_list_cache()
+		var items_array = GameManager.get_skills_for_actor(current_skill_user, cache.get("sort_type", 0)) if GameManager.has_method("get_skills_for_actor") else []
+		if items_array.is_empty() and is_instance_valid(GameManager.get("actor_stats_manager")):
+			items_array = GameManager.actor_stats_manager.get_skills_for_actor(current_skill_user, cache.get("sort_type", 0))
+		items_menu_scene.set_items(items_array)
+		
+		if items_menu_scene.has_node("%ItemList"):
 			var item_list = items_menu_scene.get_node("%ItemList")
+			item_list.select_current.call_deferred()
 			item_list.queue_redraw()
+	
+	if current_mp < mp_cost or current_tp < tp_cost:
+		if party_scene.has_method("execute_cancel"):
+			party_scene.execute_cancel.call_deferred()
+		else:
+			_on_party_menu_cancel.call_deferred()
+
+	return true
+
+
+#endregion
+
+
+#region ItemEvaluation
+## Evaluates the selected item against a list of available actors to determine equip status and stat changes.
+func evaluate_item_for_actors(item_data: Dictionary, available_actors: Array) -> Array:
+	var evaluation_results: Array = []
+	
+	if not item_data.has("item") or not item_data.has("real_item"):
+		return evaluation_results
+		
+	var game_item = item_data["item"]
+	var item_id = item_data["item_id"]
+	var slot_id = 0
+	
+	for actor in available_actors:
+		var can_equip_item: bool = false
+		
+		if actor.has_method("can_equip"):
+			for i in actor.current_gear.size():
+				can_equip_item = actor.can_equip(i, item_id)
+				if can_equip_item:
+					slot_id = i
+					break
+			
+		if not can_equip_item:
+			evaluation_results.append({
+				"actor": actor,
+				"can_equip": false,
+				"comparison_result": -1
+			})
+			continue
+			
+		GameManager.is_simulation = true
+		var copy_actor = actor.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+		GameManager.is_simulation = false
+		
+		var level = game_item.level if "level" in game_item else 1
+		copy_actor._set_equip(slot_id, game_item.id, level)
+		
+		var result: int = _compare_actor_stats(actor, copy_actor)
+		
+		evaluation_results.append({
+			"actor": actor,
+			"can_equip": true,
+			"comparison_result": result,
+			"slot": slot_id
+		})
+		
+	return evaluation_results
+
+
+
+## Compares the stats between the original actor and a copy with the new item equipped to determine if it is an upgrade.
+func _compare_actor_stats(original_actor: GameActor, copy_actor: GameActor) -> int:
+	var class_id = original_actor.current_class
+	var weights: Dictionary = {}
+	var current_class_data = RPGSYSTEM.get_data("classes", class_id)
+	
+	if current_class_data:
+		weights = current_class_data.weights
+	else:
+		weights = {
+			"HP": 1.5,
+			"MP": 1.0,
+			"ATK": 2.0,
+			"DEF": 1.8,
+			"MATK": 1.5,
+			"MDEF": 1.2,
+			"AGI": 1.3,
+			"LUCK": 0.8
+		}
+		
+	var main_stats: Array = []
+	var display_names = RPGSYSTEM.database.types.main_parameters
+	var internal_keys = RPGActor.get_parameter_list(true)
+	
+	for i in range(min(8, display_names.size())):
+		main_stats.append({
+			"name": display_names[i],
+			"internal": internal_keys[i]
+		})
+		
+	var current_score: float = 0.0
+	var new_score: float = 0.0
+	var stats_found: int = 0
+	
+	var hp_current: float = 0.0
+	var hp_new: float = 0.0
+	
+	if main_stats.size() > 0:
+		var hp_key = main_stats[0]["internal"]
+		hp_current = original_actor.get_parameter(hp_key)
+		hp_new = copy_actor.get_parameter(hp_key)
+		
+	var hp_percentage: float = float(hp_new) / float(hp_current) if hp_current > 0 else 1.0
+	var is_hp_critical: bool = hp_percentage <= 0.1
+	
+	var stat_name_mapping: Dictionary = {
+		0: "HP",
+		1: "MP",
+		2: "ATK",
+		3: "DEF",
+		4: "MATK",
+		5: "MDEF",
+		6: "AGI",
+		7: "LUCK"
+	}
+	
+	for i in range(main_stats.size()):
+		var internal_key = main_stats[i]["internal"]
+		var current_value = original_actor.get_parameter(internal_key)
+		var new_value = copy_actor.get_parameter(internal_key)
+		
+		var weight_key = stat_name_mapping.get(i, "HP")
+		var weight: float = weights.get(weight_key, 1.0)
+		
+		var current_weighted: float = current_value * weight
+		var new_weighted: float = new_value * weight
+		
+		if i == 0 and is_hp_critical:
+			var hp_difference: float = new_value - current_value
+			var penalty_multiplier: float = 1.0 + (7.0 * (0.1 - hp_percentage) / 0.1)
+			penalty_multiplier = min(penalty_multiplier, 8.0)
+			var critical_penalty: float = abs(hp_difference) * penalty_multiplier
+			new_weighted -= critical_penalty
+			
+		current_score += current_weighted
+		new_score += new_weighted
+		stats_found += 1
+		
+	if stats_found == 0:
+		return -1
+		
+	var score_difference: float = new_score - current_score
+	var tolerance: float = 2.0
+	
+	if is_hp_critical:
+		return 1
+	elif abs(score_difference) <= tolerance:
+		return -1
+	elif score_difference > 0:
+		return 0
+	else:
+		return 1
 #endregion

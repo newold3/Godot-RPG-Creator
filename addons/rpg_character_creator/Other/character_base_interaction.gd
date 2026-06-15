@@ -29,6 +29,7 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 	var events = map.get_in_game_events_in(tile)
 
 	for ev in events:
+		print(ev)
 		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle or ev.has_method("interact"):
 			current_entity._auto_target_event = ev
 			break
@@ -799,5 +800,11 @@ func get_events_at_adjacent_tile() -> Array:
 				if not region.can_entry and region.trigger_mode != EventRegion.TriggerMode.NONE:
 					nodes_found.append(region)
 					break
+		
+		if node.has_method("get_extraction_event_in"):
+			var extracton_event = node.get_extraction_event_in(target_pos)
+			
+			if extracton_event and extracton_event.scene and not extracton_event in nodes_found:
+				nodes_found.append(extracton_event)
 	
 	return nodes_found

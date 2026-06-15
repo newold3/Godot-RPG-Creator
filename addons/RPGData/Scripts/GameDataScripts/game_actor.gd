@@ -267,10 +267,11 @@ func _init_equipment(actor_data: RPGActor) -> void:
 		new_weapon.total_equipped += 1
 		current_gear[0] = new_weapon
 		
-		if not GameManager.game_state.weapons.has(weapon_id):
-			GameManager.game_state.weapons[weapon_id] = []
-			
-		GameManager.game_state.weapons[weapon_id].append(new_weapon)
+		if not GameManager.is_simulation:
+			if not GameManager.game_state.weapons.has(weapon_id):
+				GameManager.game_state.weapons[weapon_id] = []
+				
+			GameManager.game_state.weapons[weapon_id].append(new_weapon)
 	
 	for i in range(1, actor_data.equipment.size()):
 		var armor_id = actor_data.equipment[i]
@@ -284,10 +285,11 @@ func _init_equipment(actor_data: RPGActor) -> void:
 			new_armor.total_equipped += 1
 			current_gear[i] = new_armor
 			
-			if not GameManager.game_state.armors.has(armor_id):
-				GameManager.game_state.armors[armor_id] = []
-				
-			GameManager.game_state.armors[armor_id].append(new_armor)
+			if not GameManager.is_simulation:
+				if not GameManager.game_state.armors.has(armor_id):
+					GameManager.game_state.armors[armor_id] = []
+					
+				GameManager.game_state.armors[armor_id].append(new_armor)
 
 
 ## Attempts to change an equipment slot to a new item (used to preview equipment, avoid using directly).

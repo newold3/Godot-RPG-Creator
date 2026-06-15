@@ -1,19 +1,27 @@
 class_name GameExtractionItem
 extends Resource
 
-@export var id: int = 0 # Real id in map
+## Real id in map
+@export var id: int = 0
+## Current extraction uses left
 @export var current_uses: int = 3
+## Date when the item was depleted
 @export var depleted_date: float = 0.0
+## Time required for the item to respawn
 @export var current_respawn_time: float = 0.0
 
 
+
+## Initializes the extraction item with the given ID and sets up max uses.
 func _init(p_id: int = 0) -> void:
 	id = p_id
 	var current_item = get_item()
-	if current_item:
+	if current_item and "max_uses" in current_item:
 		current_uses = current_item.max_uses
 
 
+
+## Retrieves the corresponding RPGExtractionItem from the current map data.
 func get_item() -> RPGExtractionItem:
 	if GameManager.current_map:
 		var data =  GameManager.current_map.extraction_events
@@ -24,17 +32,24 @@ func get_item() -> RPGExtractionItem:
 	return null
 
 
+
+## Checks if the extraction item is currently depleted and awaiting respawn.
 func is_depleted() -> bool:
 	return current_respawn_time > 0
 
 
+
+## Calculates the experience gained based on the absolute level difference.
 # Calcular experiencia ganada basada en niveles
 func calculate_experience(character_level: int) -> int:
 	var current_item = get_item()
 	if not current_item: return -1
-		
+	
+	var profession = current_item.get_profession()
+	var absolute_item_level = GameManager.get_profession_absolute_item_level(current_item, profession)
+	
 	var experience_base = current_item.experience_base
-	var level_difference = current_item.current_level - character_level
+	var level_difference = absolute_item_level - character_level
 	
 	# Caso 1: Ítem 10+ niveles menor → Sin experiencia
 	if level_difference <= -10:
@@ -60,12 +75,16 @@ func calculate_experience(character_level: int) -> int:
 	return -1  # Código para "no permitido"
 
 
+
+## Calculates the success rate percentage based on the absolute level difference.
 # Calcular porcentaje de éxito
 func calculate_success_rate(character_level: int) -> float:
 	var current_item = get_item()
 	if not current_item: return -1
 	
-	var level_difference = current_item.current_level - character_level
+	var profession = current_item.get_profession()
+	var absolute_item_level = GameManager.get_profession_absolute_item_level(current_item, profession)
+	var level_difference = absolute_item_level - character_level
 	
 	# Ítem 10+ niveles mayor → No se puede recolectar
 	if level_difference >= 10:
@@ -84,19 +103,29 @@ func calculate_success_rate(character_level: int) -> float:
 	return clamp(success_rate, 10.0, 100.0)
 
 
+
+## Calculates the failure rate percentage based on the success rate.
 # Calcular porcentaje de fallo
 func calculate_failure_rate(character_level: int) -> float:
 	return 100.0 - calculate_success_rate(character_level)
 
 
+
+## Checks if the character level is high enough to harvest this item.
 # Verificar si se puede recolectar
 func can_harvest(character_level: int) -> bool:
 	var current_item = get_item()
-	if not current_item: return -1
-	var level_difference = current_item.current_level - character_level
+	if not current_item: return false
+	
+	var profession = current_item.get_profession()
+	var absolute_item_level = GameManager.get_profession_absolute_item_level(current_item, profession)
+	var level_difference = absolute_item_level - character_level
+	
 	return level_difference < 10
 
 
+
+## Simulates the harvesting process and returns a dictionary with the results.
 func harvest(character_level: int) -> Dictionary:
 	var result: Dictionary = {
 		"final_success": false,
@@ -122,8 +151,11 @@ func harvest(character_level: int) -> Dictionary:
 	var current_item = get_item()
 	if not current_item: return result
 	
+	var profession = current_item.get_profession()
+	var absolute_item_level = GameManager.get_profession_absolute_item_level(current_item, profession)
+	
 	# Calcular los pasos según la diferencia de niveles
-	var level_difference = current_item.current_level - character_level
+	var level_difference = absolute_item_level - character_level
 	var success_step_size = calculate_success_step_size(level_difference)
 	var failure_step_size = calculate_failure_step_size(level_difference)
 	
@@ -225,6 +257,9 @@ func harvest(character_level: int) -> Dictionary:
 	
 	return result
 
+
+
+## Calculates the size of a success step progression based on level difference.
 # Calcular tamaño de paso para éxitos según diferencia de niveles
 func calculate_success_step_size(level_difference: int) -> float:
 	# Ítems más fáciles = pasos más grandes (termina más rápido)
@@ -249,6 +284,9 @@ func calculate_success_step_size(level_difference: int) -> float:
 	else:
 		return 0.065  # Muy difícil pero no imposible
 
+
+
+## Calculates the size of a failure step progression based on level difference.
 func calculate_failure_step_size(level_difference: int) -> float:
 	# Ítems más fáciles = fallos dan pasos pequeños (es difícil fallar completamente)
 	# Ítems más difíciles = fallos dan pasos grandes (fallas más rápido)
@@ -272,6 +310,9 @@ func calculate_failure_step_size(level_difference: int) -> float:
 	else:
 		return 0.38  # Muy peligroso pero no imposiblee
 
+
+
+## Returns a formatted string summary of the extraction harvest results.
 # Método auxiliar para obtener un resumen legible del harvest
 func get_harvest_summary(harvest_result: Dictionary) -> String:
 	if not harvest_result.has("final_success"):
@@ -295,6 +336,9 @@ func get_harvest_summary(harvest_result: Dictionary) -> String:
 	
 	return summary
 
+
+
+## Tests the stepped harvest probabilities for debugging purposes.
 # Ejemplo de uso y testing
 func test_stepped_harvest(character_level: int):
 	#print("=== Prueba de Harvest por Pasos ===")

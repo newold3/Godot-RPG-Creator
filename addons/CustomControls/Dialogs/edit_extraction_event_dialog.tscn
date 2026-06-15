@@ -222,7 +222,6 @@ size_flags_horizontal = 3
 tooltip_text = "Maximun level required of the chosen profession in order to attempt to extract this resource.
 
 [Note] Level = Profession Rank (novice, expert, ...)"
-mouse_default_cursor_shape = 1
 min_value = 1.0
 _custom_value = 0.0
 
@@ -271,24 +270,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Current level of this resource.
 
-[Note]: The level can never be lower than the \"minimum level\" required or higher than the \"maximum level\" required for the profession if \"No level restrictions\" is unselected.
-
-[Note 2]: The level will automatically adjust to the correct value when you save your changes if you are using level restrictions."
-min_value = 1.0
+[Note]: The final level of the item is determined by the sum of all the levels at which this item can start being extracted, plus its own item level."
+allow_greater = true
 _custom_value = 0.0
-
-[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/CurrentLevel" unique_id=1713300870]
-layout_mode = 2
-text = "/"
-
-[node name="ProfessionMaxLevels" type="Label" parent="MarginContainer/VBoxContainer/CurrentLevel" unique_id=487639988]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "Maximun levels for the profession selected"
-mouse_filter = 0
-mouse_default_cursor_shape = 16
-theme_override_colors/font_color = Color(0.678944, 0.678944, 0.678944, 1)
-text = "5"
 
 [node name="HSeparator4" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=283436259]
 layout_mode = 2
@@ -305,8 +289,10 @@ text = "Max Uses:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Number of times that can be extracted until the resource is depleted and enters recharge time."
-min_value = 1.0
+tooltip_text = "Number of times that can be extracted until the resource is depleted and enters recharge time.
+
+[Note]: Setting this value to 0 means the item can be extracted indefinitely and will never run out."
+allow_greater = true
 _custom_value = 0.0
 
 [node name="HSeparator5" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=21474956]
@@ -376,6 +362,7 @@ size_flags_vertical = 3
 
 [node name="DropList" parent="MarginContainer/VBoxContainer/Drops/ScrollContainer" unique_id=1161674986 instance=ExtResource("6_1ehxp")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(720, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

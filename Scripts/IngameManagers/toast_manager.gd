@@ -21,7 +21,8 @@ var toast_canvas: CanvasLayer
 ## Initializes the dedicated canvas layer for toasts and attaches it to the scene root
 func _ready() -> void:
 	toast_canvas = CanvasLayer.new()
-	toast_canvas.layer = 124
+	toast_canvas.name = "ToastCanvas"
+	toast_canvas.layer = 127
 	get_tree().root.call_deferred("add_child", toast_canvas)
 
 

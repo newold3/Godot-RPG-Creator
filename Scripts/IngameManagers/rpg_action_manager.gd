@@ -58,6 +58,8 @@ signal action_failure(target: Variant)
 signal action_canceled(target: Variant)
 
 
+var is_simulating: bool = false
+
 
 ## Returns a default dictionary structure for simulation results.
 func _get_default_simulate_data() -> Dictionary:
@@ -127,12 +129,25 @@ func _parse_formula(formula: String, user: Variant, target: Variant) -> int:
 	return int(result)
 
 
-
 ## Simulates the effects of an action on a target to determine success and collect callables.
 func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dictionary:
 	var result_data = _get_default_simulate_data()
+	var state = GameManager.game_state
+	
+	var snap_items = _take_inventory_snapshot(state.items) if state else {}
+	var snap_weapons = _take_inventory_snapshot(state.weapons) if state else {}
+	var snap_armors = _take_inventory_snapshot(state.armors) if state else {}
+	var snap_sets = _take_inventory_snapshot(state.sets) if state else {}
 	
 	var clone = target.clone() if target.has_method("clone") else target.duplicate(true)
+	
+	_mute_node_recursively(clone)
+	
+	if state:
+		_restore_inventory_snapshot(state.items, snap_items)
+		_restore_inventory_snapshot(state.weapons, snap_weapons)
+		_restore_inventory_snapshot(state.armors, snap_armors)
+		_restore_inventory_snapshot(state.sets, snap_sets)
 	
 	if "temp_buffs" in target and "temp_buffs" in clone:
 		clone.temp_buffs = target.temp_buffs.duplicate(true)
@@ -176,13 +191,13 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 		match effect.code:
 			EffectCode.RECOVER_HP:
 				if clone.has_method("apply_recovery_effect"):
-					clone.apply_recovery_effect(true, effect.value1, effect.value2)
-					result_data["callables"].append(target.apply_recovery_effect.bind(true, effect.value1, effect.value2))
+					clone.apply_recovery_effect("hp", effect.value1, effect.value2)
+					result_data["callables"].append(target.apply_recovery_effect.bind("hp", effect.value1, effect.value2))
 					
 			EffectCode.RECOVER_MP:
 				if clone.has_method("apply_recovery_effect"):
-					clone.apply_recovery_effect(false, effect.value1, effect.value2)
-					result_data["callables"].append(target.apply_recovery_effect.bind(false, effect.value1, effect.value2))
+					clone.apply_recovery_effect("mp", effect.value1, effect.value2)
+					result_data["callables"].append(target.apply_recovery_effect.bind("mp", effect.value1, effect.value2))
 					
 			EffectCode.GAIN_TP:
 				var tp_val = effect.value1 if effect.value1 != 0 else effect.value2
@@ -315,27 +330,70 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 	result_data["added_debuffs"] = debuffs_to_check_added
 	result_data["removed_debuffs"] = debuffs_to_check_removed
 	
-	for key in result_data:
-		match typeof(result_data[key]):
-			TYPE_ARRAY:
-				if not result_data[key].is_empty():
-					result_data["success"] = true
-					break
-			TYPE_INT, TYPE_FLOAT:
-				if result_data[key] != 0:
-					result_data["success"] = true
-					break
-			TYPE_CALLABLE:
-				result_data["success"] = true
-				break
+	result_data["success"] = false
+	if result_data.get("hp_change", 0) != 0: result_data["success"] = true
+	elif result_data.get("mp_change", 0) != 0: result_data["success"] = true
+	elif result_data.get("tp_change", 0) != 0: result_data["success"] = true
+	elif not result_data.get("added_states", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("removed_states", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("added_buffs", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("removed_buffs", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("added_debuffs", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("removed_debuffs", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("special_effects", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("growth", []).is_empty(): result_data["success"] = true
+	elif not result_data.get("learned_skills", []).is_empty(): result_data["success"] = true
+	elif result_data.get("common_event", 0) > 0: result_data["success"] = true
 
-	if clone is Node and clone != target:
-		clone.queue_free()
-	elif clone is Object and not clone is RefCounted and clone != target:
+	if clone is Object and clone != target and not clone is RefCounted:
+		if clone is Node and clone.is_inside_tree():
+			var parent = clone.get_parent()
+			if parent:
+				parent.remove_child(clone)
 		clone.free()
+	
+	clone = null 
+	
+	if state:
+		_restore_inventory_snapshot(state.items, snap_items)
+		_restore_inventory_snapshot(state.weapons, snap_weapons)
+		_restore_inventory_snapshot(state.armors, snap_armors)
+		_restore_inventory_snapshot(state.sets, snap_sets)
 	
 	return result_data
 
+
+## Recursively blocks all signals from an object and its children to prevent ghost events during simulation
+func _mute_node_recursively(obj: Object) -> void:
+	if obj:
+		obj.set_block_signals(true)
+		if obj is Node:
+			for child in obj.get_children():
+				_mute_node_recursively(child)
+
+
+## Takes a shallow copy snapshot of a dictionary containing arrays
+func _take_inventory_snapshot(collection: Dictionary) -> Dictionary:
+	var snap = {}
+	for k in collection:
+		if typeof(collection[k]) == TYPE_ARRAY:
+			snap[k] = collection[k].duplicate()
+	return snap
+
+
+## Restores a dictionary containing arrays to its snapshot state
+func _restore_inventory_snapshot(collection: Dictionary, snapshot: Dictionary) -> void:
+	var to_remove = []
+	for k in collection:
+		if not snapshot.has(k):
+			to_remove.append(k)
+		else:
+			collection[k] = snapshot[k].duplicate()
+	for k in to_remove:
+		collection.erase(k)
+
+
+#endregion
 
 
 ## Simulates using an item on a target to evaluate success and potential parameter changes.
@@ -351,8 +409,7 @@ func simulate_use_item(user: Variant, target: Variant, item: GameItem) -> Dictio
 
 ## Simulates using a skill on a target to evaluate success and potential parameter changes.
 func simulate_use_skill(user: Variant, target: Variant, skill_id: int) -> Dictionary:
-	var real_skill: RPGSkill = RPGSYSTEM.database.skills[skill_id] \
-		if skill_id > 0 and RPGSYSTEM.database.skills.size() > skill_id else null
+	var real_skill = RPGSYSTEM.get_data("skills", skill_id)
 		
 	if not real_skill:
 		return _get_default_simulate_data()

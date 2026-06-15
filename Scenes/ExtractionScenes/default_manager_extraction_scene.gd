@@ -98,24 +98,46 @@ func _set_item_info(data: RPGExtractionItem) -> void:
 	name_label.text = data.name
 	# Set  Item Level
 	var item_level_label = %ItemLevel
-	item_level_label.text = " (" + str(data.current_level) + ")"
+	item_level_label.text = " (" + "1" + ")"
 	
 	var profession: RPGProfession = data.get_profession()
 	if profession:
+		var item_level = str(GameManager.get_profession_absolute_item_level(data, profession))
+		item_level_label.text = " (" + item_level + ")"
 		# Set Profession Name
 		var profession_label = %Profession
 		profession_label.text = profession.name
-		var actor_profession_level = GameManager.get_profession_level(profession)
-		%PlayerLevel.text = str(actor_profession_level)
 		
-		var text_color: Color = profession.get_interpolated_color(data.current_level, actor_profession_level)
+		var current_sub_level: int = 1
+		var player_major_level: int = 1
+		if GameManager.game_state and profession._uniq_id in GameManager.game_state.profession_levels:
+			current_sub_level = GameManager.game_state.profession_levels[profession._uniq_id].get("sub_level", 1)
+			player_major_level = GameManager.game_state.profession_levels[profession._uniq_id].get("level", 1)
+			
+		%PlayerLevel.text = str(current_sub_level)
 		
-		var level_name = profession.levels[data.current_level].name if  profession.levels.size() > data.current_level and data.current_level >= 0 else tr("Level")
+		var text_color: Color = GameManager.get_profession_extraction_text_color(data, profession)
+		
+		var major_level_index: int = player_major_level - 1
+		var level_name = tr("Level")
+		if major_level_index >= 0 and major_level_index < profession.levels.size():
+			level_name = profession.levels[major_level_index].name
+
 		%LevelName.text = level_name
 
 		# Set Label Colors
 		name_label.set("theme_override_colors/font_color", text_color)
 		item_level_label.set("theme_override_colors/font_color", text_color)
+		
+		var experience_info = GameManager.get_profession_experience_info(data)
+		var current_exp = experience_info.get("current", 0)
+		var max_exp = experience_info.get("needed", 0)
+		
+		if max_exp == 0 or current_exp == max_exp:
+			%ExperienceDisplay.value = 100.0
+		else:
+			var value = remap(current_exp, 0.0, max_exp, 0.0, 100.0)
+			%ExperienceDisplay.value = value
 
 	# Draw Item Icon
 	var scene_path = data.scene_path.get_basename() + "_preview" + ".png"

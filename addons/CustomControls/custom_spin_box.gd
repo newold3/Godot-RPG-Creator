@@ -35,7 +35,7 @@ signal text_changed(text: String)
 
 
 ## Returns the custom properties of the script for the inspector
-func _get_property_list() -> Array:
+func _get_property_list() -> Array[Dictionary]:
 	return [
 		{
 			"name": "_custom_value",

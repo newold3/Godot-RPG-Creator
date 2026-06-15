@@ -165,7 +165,7 @@ func _init() -> void:
 
 ## === PROPERTY LIST ===
 ## Dynamically generate animation enum in inspector based on sprite_frames
-func _get_property_list() -> Array:
+func _get_property_list() -> Array[Dictionary]:
 	var properties = []
 	if sprite_frames:
 		var anim_names = sprite_frames.get_animation_names()

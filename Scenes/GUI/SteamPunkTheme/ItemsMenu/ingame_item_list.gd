@@ -25,6 +25,8 @@ var is_started: bool = false
 
 var right_decoration_spin: Tween
 
+var current_items: Array
+
 var itemlist_id: String :
 	set(value):
 		itemlist_id = value
@@ -137,7 +139,9 @@ func _on_item_list_item_focused(obj: Dictionary) -> void:
 		var col = cache.get("collection", 0)
 		cache["tabs"][col] = {
 			"uid": %ItemList.target_uid,
-			"index": %ItemList.target_global_index
+			"index": %ItemList.target_global_index,
+			"item_id": obj.get("item_id", -1),
+			"item_type": obj.get("item_type", -1)
 		}
 	item_focused.emit(obj)
 
@@ -199,9 +203,15 @@ func _on_sort_selected(mod: int) -> void:
 
 
 func set_items(items: Array) -> void:
+	current_items = items
 	var cache = get_list_cache()
 	%ItemList.itemlist_id = itemlist_id
 	var col = cache.get("collection", 0)
+	
+	var tab_data = cache["tabs"].get(col, {})
+	var target_item_id = tab_data.get("item_id", -1)
+	var target_item_type = tab_data.get("item_type", -1)
+	var target_uid = tab_data.get("uid", "")
 	
 	if itemlist_id == "items" and GameManager.inventory_manager.get("has_new_items_pending_view"):
 		if cache.get("sort_type", 0) == 0:
@@ -209,11 +219,26 @@ func set_items(items: Array) -> void:
 		
 		GameManager.inventory_manager.has_new_items_pending_view = false
 	
-	var tab_data = cache["tabs"].get(col, {})
-	%ItemList.target_uid = tab_data.get("uid", "")
-	%ItemList.target_global_index = tab_data.get("index", 0)
+	if target_item_id != -1 and target_item_type != -1:
+		for i in range(items.size()):
+			if items[i].get("item_id") == target_item_id and items[i].get("item_type") == target_item_type:
+				if not cache["tabs"].has(col):
+					cache["tabs"][col] = {"uid": target_uid, "index": i, "item_id": target_item_id, "item_type": target_item_type}
+				else:
+					cache["tabs"][col]["index"] = i
+					cache["tabs"][col]["item_id"] = target_item_id
+					cache["tabs"][col]["item_type"] = target_item_type
+				break
+				
+	var updated_tab_data = cache["tabs"].get(col, {})
+	%ItemList.target_uid = updated_tab_data.get("uid", "")
+	%ItemList.target_global_index = updated_tab_data.get("index", 0)
 	%ItemList.add_items(items)
 	_update_sort_ui()
+
+
+func get_items() -> Array:
+	return current_items
 
 
 func get_list_cache() -> Dictionary:
@@ -272,7 +297,10 @@ func _on_item_list_active_item_rotted() -> void:
 ## Refreshes the list and commands the ItemList to find the next available perishable item
 func refresh_and_get_next_perishable(target_item_id: int) -> Dictionary:
 	var cache = get_list_cache()
-	var items_array = GameManager.get_items(false, cache.get("sort_type", 0), cache.get("collection", 0))
+	var sort_type = cache.get("sort_type", 0)
+	
+	var previous_items = get_items()
+	var items_array = GameManager.inventory_manager.get_items(false, sort_type, cache.get("collection", 0), previous_items)
 	set_items(items_array)
 	return await %ItemList.select_next_perishable(target_item_id)
 

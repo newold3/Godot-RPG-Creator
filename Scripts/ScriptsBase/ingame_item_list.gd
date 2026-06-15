@@ -329,6 +329,7 @@ func _process(delta: float) -> void:
 		
 	var needs_redraw = false
 	var current_offset = _get_local_scroll_offset()
+	
 	if current_offset != _last_scroll_offset:
 		_last_scroll_offset = current_offset
 		needs_redraw = true
@@ -337,15 +338,19 @@ func _process(delta: float) -> void:
 			
 	if is_active and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var current_global_mouse = get_global_mouse_position()
+		
 		if current_global_mouse == _last_real_mouse_pos:
 			var scroll_node = _get_valid_scroll_node()
+			
 			if scroll_node and scroll_node.get_global_rect().has_point(current_global_mouse):
 				var pos = get_local_mouse_position()
 				var idx = _get_item_at_pos(pos)
+				
 				if idx != -1 and idx != selected_index:
-					_select_item(idx, false)
+					_select_item(idx, false, false, false)
 					
 	var count = _get_current_page_count()
+	
 	if anim_states.size() != count:
 		anim_states.resize(count)
 		anim_states.fill(0.95)
@@ -597,25 +602,34 @@ func _get_current_page_count() -> int:
 func _gui_input(event: InputEvent) -> void:
 	if not enabled or GameManager.get_cursor_manipulator() != manipulator: return
 	if Engine.is_editor_hint(): return
+	
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 			return
+			
 		var current_global_mouse = get_global_mouse_position()
+		
 		if current_global_mouse == _last_real_mouse_pos:
 			return
+			
 		_last_real_mouse_pos = current_global_mouse
 		var pos = get_local_mouse_position()
 		var idx = _get_item_at_pos(pos)
+		
 		if idx != selected_index and idx != -1:
-			_select_item(idx, true)
+			_select_item(idx, true, false, false)
+			
 	elif event is InputEventMouseButton:
 		var pos = get_local_mouse_position()
+		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			var idx = _get_item_at_pos(pos)
+			
 			if event.pressed:
 				var count = _get_current_page_count()
 				var ipp = _get_items_per_page()
 				var page_offset = 0 if ipp <= 0 else _get_current_page() * ipp
+				
 				if idx != -1 and idx < count and not items[page_offset + idx].get("is_disabled", false):
 					pressed_index = idx
 					if is_instance_valid(ghost_cursor):
@@ -749,7 +763,7 @@ func _get_item_at_pos(pos: Vector2) -> int:
 
 ## Selects an item forcefully based on index
 func select_item(idx: int, snap_camera: bool = false) -> void:
-	_select_item(idx, true, snap_camera)
+	_select_item(idx, true, snap_camera, true)
 
 	if not enabled or not is_visible_in_tree():
 		return
@@ -760,7 +774,7 @@ func select_item(idx: int, snap_camera: bool = false) -> void:
 
 
 ## Updates selection and synchronizes the cursor and sounds based on true interaction
-func _select_item(idx: int, force_focus: bool = false, snap_camera: bool = false) -> void:
+func _select_item(idx: int, force_focus: bool = false, snap_camera: bool = false, auto_scroll: bool = true) -> void:
 	if selected_index == idx:
 		if force_focus and enabled and is_visible_in_tree():
 			_focus_ghost_cursor(true)
@@ -785,14 +799,21 @@ func _select_item(idx: int, force_focus: bool = false, snap_camera: bool = false
 		target_global_index = page_offset + idx
 		item_focused.emit(item)
 		
-	if scroll_container_node and scroll_container_node.has_method("bring_focus_target_into_view"):
+	if auto_scroll and scroll_container_node and scroll_container_node.has_method("bring_focus_target_into_view"):
 		var smooth = not snap_camera
 		scroll_container_node.call_deferred("bring_focus_target_into_view", true, smooth)
 
 
 ## Selects the current stored index manually
 func select_current() -> void:
-	_select_item(selected_index, true)
+	#_select_item(selected_index, true)
+	if is_restoring:
+		return
+		
+	if selected_index >= 0 and selected_index < items.size():
+		_select_item(selected_index, true)
+	elif items.size() > 0:
+		_select_item(0, true)
 
 
 
@@ -906,6 +927,7 @@ func restore_selection() -> void:
 ## Replaces all current items with a new array of items
 func add_items(new_items: Array) -> void:
 	is_restoring = true
+	_clear_connections()
 	items = new_items.duplicate(true)
 	if items.is_empty():
 		items.append({
@@ -972,12 +994,15 @@ func _on_item_rotted(_real_item: GameItem, _item: Dictionary) -> void:
 
 
 func _fetch_and_refresh_data() -> void:
+	if itemlist_id != "items":
+		return
+		
 	var cache = {}
 	if GameManager.game_state.in_game_options.has("lists_cache") and GameManager.game_state.in_game_options["lists_cache"].has(itemlist_id):
 		cache = GameManager.game_state.in_game_options["lists_cache"][itemlist_id]
 	var sort_type = cache.get("sort_type", 0)
 	var collection = cache.get("collection", 0)
-	var new_items = GameManager.inventory_manager.get_items(false, sort_type, collection)
+	var new_items = GameManager.inventory_manager.get_items(false, sort_type, collection, items)
 	add_items(new_items)
 
 

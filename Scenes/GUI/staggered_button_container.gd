@@ -2,10 +2,17 @@
 extends Container
 class_name StaggeredButtonContainer
 
+enum StaggerDirection { RIGHT, LEFT }
+enum StaggerPattern { TOP_TO_BOTTOM, BOTTOM_TO_TOP, CENTER_OUT }
+
 ## Left margin for all buttons
 @export var margin_left: int = 11 : set = set_margin_left
 ## Vertical separation between buttons
 @export var vertical_separation: int = 8 : set = set_vertical_separation
+## Direction of the staggered steps
+@export var stagger_direction: StaggerDirection = StaggerDirection.RIGHT : set = set_stagger_direction
+## Pattern of the staggered steps
+@export var stagger_pattern: StaggerPattern = StaggerPattern.TOP_TO_BOTTOM : set = set_stagger_pattern
 ## Curve to define horizontal position distribution
 @export var horizontal_curve: Curve = preload("res://Assets/Resourcers/CustomResources/staggered_container_default_curve.tres") : set = set_horizontal_curve
 ## If there is no defined curve, the value of this variable will be used to calculate the horizontal offset of the buttons.
@@ -41,6 +48,7 @@ var main_tween: Tween
 signal animation_completed(animation_type: String)
 
 
+#region Functions
 ## Initialize container and connect child signals
 func _init():
 	child_entered_tree.connect(_on_child_added)
@@ -92,6 +100,22 @@ func set_margin_left(value: float) -> void:
 ## Set vertical separation and recalculate positions
 func set_vertical_separation(value: float):
 	vertical_separation = value
+	_calculate_positions()
+	_set_buttons_to_initial_positions()
+	queue_redraw()
+
+
+## Set stagger direction and recalculate positions
+func set_stagger_direction(value: StaggerDirection) -> void:
+	stagger_direction = value
+	_calculate_positions()
+	_set_buttons_to_initial_positions()
+	queue_redraw()
+
+
+## Set stagger pattern and recalculate positions
+func set_stagger_pattern(value: StaggerPattern) -> void:
+	stagger_pattern = value
 	_calculate_positions()
 	_set_buttons_to_initial_positions()
 	queue_redraw()
@@ -171,6 +195,7 @@ func _calculate_positions():
 		return
 	
 	var container_size = get_rect().size
+	
 	if container_size == Vector2.ZERO:
 		container_size = _get_minimum_size()
 	
@@ -180,28 +205,49 @@ func _calculate_positions():
 	
 	target_positions.clear()
 	initial_positions.clear()
-	var accumulated_height = 0.0
 	
-	for i in range(buttons.size()):
+	var accumulated_height = 0.0
+	var total = buttons.size()
+	
+	for i in range(total):
 		var button = buttons[i]
+		
 		if not button.item_rect_changed.is_connected(queue_redraw):
 			button.item_rect_changed.connect(queue_redraw)
+			
 		var button_size = button.get_combined_minimum_size()
-		
 		var y_pos = container_size.y - accumulated_height - button_size.y
 		accumulated_height += button_size.y + vertical_separation
 		
-		var target_x = margin_left
-		if horizontal_curve and buttons.size() > 1:
-			var t = float(i) / float(buttons.size() - 1)
-			var offset = horizontal_curve.sample(t)
-			target_x += i * offset
-		elif horizontal_curve:
-			var offset = horizontal_curve.sample(0.0)
-			target_x += i * offset
-		else:
-			target_x += i * horizontal_offset_fallback
+		var offset_multiplier: float = 0.0
+		var mid = (total - 1) / 2.0
+		var max_multiplier: float = float(total - 1)
 		
+		match stagger_pattern:
+			StaggerPattern.BOTTOM_TO_TOP:
+				offset_multiplier = float(i)
+			StaggerPattern.TOP_TO_BOTTOM:
+				offset_multiplier = float(total - 1 - i)
+			StaggerPattern.CENTER_OUT:
+				offset_multiplier = abs(float(i) - mid)
+				max_multiplier = mid
+		
+		var base_offset: float = 0.0
+		
+		if horizontal_curve and total > 1:
+			var t = 0.0
+			if max_multiplier > 0.0:
+				t = offset_multiplier / max_multiplier
+			base_offset = horizontal_curve.sample(t) * offset_multiplier
+		elif horizontal_curve:
+			base_offset = horizontal_curve.sample(0.0) * offset_multiplier
+		else:
+			base_offset = horizontal_offset_fallback * offset_multiplier
+		
+		if stagger_direction == StaggerDirection.LEFT:
+			base_offset = -base_offset
+			
+		var target_x = margin_left + base_offset
 		var initial_x = 0
 		
 		target_positions.append(Vector2(target_x, y_pos))
@@ -222,6 +268,7 @@ func _set_buttons_to_target_positions():
 			buttons[i].position = target_positions[i]
 
 
+## Restart the animation sequence
 func restart() -> void:
 	is_animating = false
 	_set_buttons_to_initial_positions()
@@ -239,7 +286,6 @@ func start():
 	if invert_animation:
 		animation_order.reverse()
 	
-	
 	if main_tween:
 		main_tween.kill()
 	
@@ -254,7 +300,6 @@ func start():
 		var delay = delay_index * animation_delay
 		
 		button.set_meta("original_position", target_pos)
-		
 		main_tween.tween_property(button, "position", target_pos, animation_duration).set_delay(delay)
 		
 		if i == animation_order[-1]:
@@ -302,25 +347,47 @@ func _get_minimum_size() -> Vector2:
 	
 	var min_width: float = 0
 	var min_height: float = 0
+	var total = buttons.size()
 	
-	for i in range(buttons.size()):
+	for i in range(total):
 		var button = buttons[i]
 		var button_size = button.get_combined_minimum_size()
 		
-		var button_x = margin_left
-		if horizontal_curve and buttons.size() > 1:
-			var t = float(i) / float(buttons.size() - 1)
-			var offset = horizontal_curve.sample(t)
-			button_x += i * offset
+		var offset_multiplier: float = 0.0
+		var mid = (total - 1) / 2.0
+		var max_multiplier: float = float(total - 1)
+		
+		match stagger_pattern:
+			StaggerPattern.BOTTOM_TO_TOP:
+				offset_multiplier = float(i)
+			StaggerPattern.TOP_TO_BOTTOM:
+				offset_multiplier = float(total - 1 - i)
+			StaggerPattern.CENTER_OUT:
+				offset_multiplier = abs(float(i) - mid)
+				max_multiplier = mid
+		
+		var base_offset: float = 0.0
+		
+		if horizontal_curve and total > 1:
+			var t = 0.0
+			if max_multiplier > 0.0:
+				t = offset_multiplier / max_multiplier
+			base_offset = horizontal_curve.sample(t) * offset_multiplier
 		elif horizontal_curve:
-			var offset = horizontal_curve.sample(0.0)
-			button_x += i * offset
+			base_offset = horizontal_curve.sample(0.0) * offset_multiplier
+		else:
+			base_offset = horizontal_offset_fallback * offset_multiplier
 		
+		if stagger_direction == StaggerDirection.LEFT:
+			base_offset = -base_offset
+			
+		var button_x = margin_left + base_offset
 		var button_right = button_x + button_size.x
-		min_width = max(min_width, button_right)
 		
+		min_width = max(min_width, button_right)
 		min_height += button_size.y
-		if i < buttons.size() - 1:
+		
+		if i < total - 1:
 			min_height += vertical_separation
 	
 	return Vector2(min_width, min_height)
@@ -341,7 +408,6 @@ func _notification(what: int):
 
 
 ## Draw background styleboxes for each button
-## Draw background styleboxes for each button
 func _draw_styleboxes():
 	if not background_stylebox or buttons.is_empty() or target_positions.is_empty():
 		return
@@ -360,9 +426,9 @@ func _draw_styleboxes():
 		
 		var stylebox_y = content_center_y - stylebox_height * 0.5
 		
-		# Stylebox desde la posición actual del botón hasta el centro del botón
 		var stylebox_width = button.position.x + button_size.x * 0.5
 		
+		# Stylebox desde la posición actual del botón hasta el centro del botón
 		var stylebox_rect = Rect2(
 			0, 
 			stylebox_y, 
@@ -372,10 +438,10 @@ func _draw_styleboxes():
 		
 		background_stylebox.draw(get_canvas_item(), stylebox_rect)
 		
-		# Stylebox desde la parte derecha del control hasta el lado derecho de la pantalla
 		var viewport_size = get_viewport_rect().size
 		var extended_stylebox_width = viewport_size.x - (button.position.x + button_size.x * 0.5)
 		
+		# Stylebox desde la parte derecha del control hasta el lado derecho de la pantalla
 		var extended_stylebox_rect = Rect2(
 			button.position.x + button_size.x * 0.5,
 			stylebox_y,
@@ -404,3 +470,4 @@ func _gui_input(_event: InputEvent):
 ## Override to prevent base container interference
 func fit_child_in_rect(_child: Control, _rect: Rect2):
 	pass
+#endregion

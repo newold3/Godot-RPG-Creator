@@ -505,18 +505,21 @@ func apply_damage(raw_amount: float, damage_type: int, element_id: int) -> void:
 
 
 ## Applies a recovery effect based on a percentage of the max parameter plus a flat amount.
-func apply_recovery_effect(is_hp: bool, percent: float, flat: int) -> void:
-	var max_val = get_parameter("HP") if is_hp else get_parameter("MP")
+func apply_recovery_effect(param: String, percent: float, flat: int) -> void:
+	param = param.to_upper()
+	var max_val = get_parameter(param)
 	
 	if max_val <= 0:
 		max_val = 999999
 		
 	var heal_amount = int((max_val * (percent / 100.0)) + flat)
 	
-	if is_hp:
+	if param == "HP":
 		params.hp = clamp(params.hp + heal_amount, 0, max_val)
-	else:
+	elif param == "MP":
 		params.mp = clamp(params.mp + heal_amount, 0, max_val)
+	elif param == "TP":
+		params.tp = clamp(params.tp + heal_amount, 0, max_val)
 
 
 
@@ -554,6 +557,28 @@ func apply_grow_effect(param_id: int, amount: int) -> void:
 
 
 #region ParameterGetters
+## Retrieves the current value of vital parameters like HP, MP, or TP.
+func get_current_parameter(param_id: String) -> float:
+	var search_param = param_id.strip_edges().to_upper()
+	match search_param:
+		"HP": return params.hp
+		"MP": return params.mp
+		"TP": return params.tp if "tp" in params else 0.0
+		_: return get_parameter(param_id)
+
+
+## Safely modifies the current vital parameters without exceeding their maximum values.
+func set_current_parameter(param_id: String, value: float) -> void:
+	var search_param = param_id.strip_edges().to_upper()
+	match search_param:
+		"HP": params.hp = clamp(value, 0, get_parameter("HP"))
+		"MP": params.mp = clamp(value, 0, get_parameter("MP"))
+		"TP":
+			if "tp" in params:
+				params.tp = clamp(value, 0, get_parameter("TP"))
+	parameter_changed.emit()
+
+
 ## Calculates a specific parameter value by combining base stats, traits, gear, and state effects.
 func get_parameter(param_id: String) -> float:
 	var search_param = _get_unified_param_key(param_id)
@@ -841,6 +866,8 @@ func restore_permanent_states_after_battle() -> void:
 
 
 func clone() -> GameBattler:
+	var last_gamemanager_simulation = GameManager.is_simulation
+	GameManager.is_simulation = true
 	var new_battler = duplicate(true)
 	
 	new_battler.id = id
@@ -859,6 +886,8 @@ func clone() -> GameBattler:
 			
 	new_battler.temp_buffs = temp_buffs.duplicate(true)
 	new_battler.temp_debuff = temp_debuff.duplicate(true)
+	
+	GameManager.is_simulation = last_gamemanager_simulation
 	
 	return new_battler
 #endregion

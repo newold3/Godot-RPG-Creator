@@ -20,6 +20,7 @@ func build() -> void:
 	
 	if ResourceLoader.exists(event.scene_path):
 		scene = load(event.scene_path).instantiate()
+		event.scene = scene
 		scene.data = event
 	
 	if scene:

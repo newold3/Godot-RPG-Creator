@@ -119,12 +119,7 @@ func _update_min_and_max_levels() -> void:
 		%MinRequiredLevel.value = current_event.min_required_profession_level
 		%MaxRequiredLevel.value = current_event.max_required_profession_level
 		%ProfessionMaxRanks.text = str(profession.levels.size())
-		var max_levels: int = 0
-		for i in profession.levels.size():
-			max_levels += profession.levels[i].max_levels
-		%ProfessionMaxLevels.text = str(max_levels)
-		%CurrentItemLevel.min_value = 1
-		%CurrentItemLevel.max_value = max_levels
+		%CurrentItemLevel.min_value = 0
 		%CurrentItemLevel.value = current_event.current_level
 	busy = false
 

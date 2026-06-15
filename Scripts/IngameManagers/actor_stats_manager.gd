@@ -73,20 +73,30 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 	var items: Array = []
 	if not actor: 
 		return items
+		
 	var raw_skills = actor.get_skills()
 	for skill_id in raw_skills:
 		var skill_info = raw_skills[skill_id]
 		var real_skill: RPGSkill = actor.get_real_skill(skill_id)
+		
 		if not real_skill:
 			continue
+			
 		var mp_cost = real_skill.mp_cost if "mp_cost" in real_skill else 0
+		var tp_cost = real_skill.tp_cost if "tp_cost" in real_skill else 0
+		
 		var usable_in_menu = true
 		if "occasion" in real_skill:
 			var occasion = real_skill.occasion
-			usable_in_menu = RPGActionManager.Ocassion.ALWAYS or occasion ==  RPGActionManager.Ocassion.MENU_SCREEN or (GameManager.is_on_battle and occasion ==  RPGActionManager.Ocassion.BATTLE_SCREEN)
-		var current_mp = actor.get_parameter("mp")
-		var has_enough_mp = current_mp >= mp_cost
-		var is_disabled = skill_info.get("sealed", false) or not usable_in_menu or not has_enough_mp
+			var is_battle = GameManager.get("is_on_battle") if GameManager.get("is_on_battle") != null else false
+			usable_in_menu = (occasion == RPGActionManager.Ocassion.ALWAYS) or (occasion == RPGActionManager.Ocassion.MENU_SCREEN and not is_battle) or (occasion == RPGActionManager.Ocassion.BATTLE_SCREEN and is_battle)
+			
+		var current_mp = actor.get_current_parameter("mp") if actor.has_method("get_current_parameter") else actor.get_parameter("mp")
+		var current_tp = actor.get_current_parameter("tp") if actor.has_method("get_current_parameter") else actor.get_parameter("tp")
+		
+		var has_enough_cost = current_mp >= mp_cost and current_tp >= tp_cost
+		var is_disabled = skill_info.get("sealed", false) or not usable_in_menu or not has_enough_cost
+		
 		var dict_item = {
 			"item": null,
 			"real_item": real_skill,
@@ -103,6 +113,7 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 			"mp_cost": mp_cost,
 			"description": skill_info.get("description", "")
 		}
+		
 		if "occasion" in real_skill:
 			var scope: RPGScope = real_skill.scope
 			var target_id = SCOPE.ONE if scope.number == 0 \
@@ -111,10 +122,14 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 			var targets_amount = scope.random
 			dict_item["target_id"] = target_id
 			dict_item["targets_amount"] = targets_amount
+			dict_item["scope_status"] = scope.status
+			
 		items.append(dict_item)
+		
 	var sort_func: Callable = func(a, b):
 		if a.is_disabled != b.is_disabled: return not a.is_disabled
 		return a.name.nocasecmp_to(b.name) < 0
+		
 	items.sort_custom(sort_func)
 	return items
 

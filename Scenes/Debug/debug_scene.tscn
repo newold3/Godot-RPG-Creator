@@ -361,6 +361,46 @@ theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
 theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
 text = "Set"
 
+[node name="SetAllValuesButton2" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=445600471 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "+5"
+
+[node name="SetAllValuesButton3" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=2038452014 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "+10"
+
+[node name="SetAllValuesButton4" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=1383485566 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "+20"
+
+[node name="SetAllValuesButton5" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=532459491 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "+50"
+
 [node name="FunctionButtonContainer" type="Control" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer" unique_id=1279345176]
 unique_name_in_owner = true
 visible = false
@@ -454,6 +494,10 @@ horizontal_alignment = 1
 [connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_activated"]
 [connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_selected"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton" to="." method="_on_set_all_values_button_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton2" to="." method="_on_set_all_values_button_2_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton3" to="." method="_on_set_all_values_button_3_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton4" to="." method="_on_set_all_values_button_4_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton5" to="." method="_on_set_all_values_button_5_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/AddValue" to="." method="_on_add_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/SubtractValue" to="." method="_on_subtract_value_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/FunctionButtonContainer/HBoxContainer/ToggleValue" to="." method="_on_toggle_value_pressed"]

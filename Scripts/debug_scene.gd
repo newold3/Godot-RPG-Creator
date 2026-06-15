@@ -85,7 +85,17 @@ func _ready() -> void:
 					_update_map_actors()
 				%GoldNumber.apply()
 	)
+	
+	if GameManager.inventory_manager:
+		GameManager.inventory_manager.perishable_item_rotted.connect(_refresh_item_list.unbind(2), CONNECT_DEFERRED)
+	
 	hide()
+
+
+func _refresh_item_list() -> void:
+	if current_tab == "Item":
+		_load_data(true, current_tab)
+		
 
 
 func _update_map_actors()-> void:
@@ -168,6 +178,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			end()
 	elif is_enabled and (event.is_action_pressed("ui_cancel") or event.is_action_pressed("DebugKey")):
 		end()
+
+func _input(event: InputEvent) -> void:
+	if is_enabled and event.is_action_pressed("Mouse Right"):
+		end()
+
 
 #endregion
 
@@ -837,4 +852,21 @@ func _on_set_all_values_value_changed(value: float) -> void:
 
 
 func _on_set_all_values_button_pressed() -> void:
+	%SetAllValues.apply()
 	_on_set_all_values_value_changed(%SetAllValues.value)
+
+
+func _on_set_all_values_button_2_pressed() -> void:
+	_on_set_all_values_value_changed(5)
+
+
+func _on_set_all_values_button_3_pressed() -> void:
+	_on_set_all_values_value_changed(10)
+
+
+func _on_set_all_values_button_4_pressed() -> void:
+	_on_set_all_values_value_changed(20)
+
+
+func _on_set_all_values_button_5_pressed() -> void:
+	_on_set_all_values_value_changed(50)

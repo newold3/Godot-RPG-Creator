@@ -86,19 +86,16 @@ func refresh() -> void:
 
 func _set_data(p_data: RPGExtractionItem) -> void:
 	data = p_data
-	
 	if name_label:
-		name_label.text = data.name + " (" + str(int(data.current_level)) + ")"
+		var absolute_level: int = data.current_level
 		var profession: RPGProfession = data.get_profession()
+		
 		if profession:
-			var actor_profession_level = GameManager.get_profession_level(profession)
-			var text_color: Color
-			if actor_profession_level <= 0 or (not data.no_level_restrictions and (actor_profession_level < data.min_required_profession_level or actor_profession_level > data.max_required_profession_level)):
-				text_color = profession.name_color_requirement_not_met
-			else:
-				text_color = profession.get_interpolated_color(data.current_level, actor_profession_level)
-			
+			absolute_level = GameManager.get_profession_absolute_item_level(data, profession)
+			var text_color: Color = GameManager.get_profession_extraction_text_color(data, profession)
 			name_label.set("theme_override_colors/font_color", text_color)
+			
+		name_label.text = data.name + " (" + str(absolute_level) + ")"
 
 
 func start(ignore_animations: bool = false) -> void:

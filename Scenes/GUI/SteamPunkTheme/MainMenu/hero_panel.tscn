@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bufr30r24ixhe" path="res://Scenes/GUI/SteamPunkTheme/MainMenu/hero_panel.gd" id="1_use6n"]
 [ext_resource type="Texture2D" uid="uid://c8guerd3v0l6t" path="res://Assets/Images/SceneMenu/part8.png" id="2_iuciu"]
+[ext_resource type="Texture2D" uid="uid://ccdytk3ibdol" path="res://Assets/Images/GUI/upgrade_icons.png" id="4_breh1"]
 [ext_resource type="Script" uid="uid://bhkluedefy5rg" path="res://Scripts/auto_scroll_container.gd" id="7_0vjr3"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_eh0sd"]
 [ext_resource type="Shader" uid="uid://dxjc8yq6x2dvg" path="res://Assets/Shaders/gray_scale_with_mask.gdshader" id="14_x5bo0"]
@@ -59,6 +60,10 @@ region = Rect2(438, 13, 156, 228)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tpt2p"]
 resource_local_to_scene = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kadtt"]
+atlas = ExtResource("4_breh1")
+region = Rect2(0, 0, 52, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t5m22"]
 atlas = ExtResource("15_f4mn4")
@@ -590,6 +595,29 @@ mouse_filter = 2
 texture = SubResource("AtlasTexture_tpt2p")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="UpgradeIconContainer" type="MarginContainer" parent="MainViewport/Control/MainLayout/HeroPanel" unique_id=1491309184]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -61.0
+offset_top = -41.0
+offset_bottom = 6.1035156e-05
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 9
+theme_override_constants/margin_bottom = 9
+
+[node name="UpgradeIcon" type="TextureRect" parent="MainViewport/Control/MainLayout/HeroPanel/UpgradeIconContainer" unique_id=1277165951]
+unique_name_in_owner = true
+z_index = 5
+layout_mode = 2
+texture = SubResource("AtlasTexture_kadtt")
+stretch_mode = 2
 
 [node name="MidContainer" type="VBoxContainer" parent="MainViewport/Control/MainLayout" unique_id=1179591302]
 layout_mode = 0

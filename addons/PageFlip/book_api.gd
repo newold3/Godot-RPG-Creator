@@ -68,26 +68,48 @@ static func get_book_by_id(book_id: String) -> PageFlip2D:
 # ==============================================================================
 # NAVIGATION CONTROLS
 # ==============================================================================
+static func set_book_speed(_book: PageFlip2D = null, _speed: float = 1.0) -> void:
+	if not _book: _book = _current_book
+	if is_instance_valid(_book):
+		_book.set_speed_scale(_speed)
+
 
 ## Turns the page forward (to the next page/spread).
 ## Does nothing if the book is animating or at the end.
-static func next_page() -> void:
-	if is_instance_valid(_current_book):
-		force_release_control(_current_book)
-		_current_book.next_page()
+static func next_page(_book: PageFlip2D = null) -> void:
+	if not _book: _book = _current_book
+	if is_instance_valid(_book):
+		force_release_control(_book)
+		_book.next_page()
 
 
 ## Turns the page backward (to the previous page/spread).
 ## Does nothing if the book is animating or at the beginning.
-static func prev_page() -> void:
-	if is_instance_valid(_current_book):
-		force_release_control(_current_book)
-		_current_book.prev_page()
+static func prev_page(_book: PageFlip2D = null) -> void:
+	if not _book: _book = _current_book
+	if is_instance_valid(_book):
+		force_release_control(_book)
+		_book.prev_page()
+
+
+## Disable a book (a disabled book cannot handle input).
+static func disable_book(_book: PageFlip2D = null) -> void:
+	if not _book: _book = _current_book
+	if is_instance_valid(_book):
+		_book.disabled = true
+
+
+## Enable a book (an enabled book can handle input).
+static func enable_book(_book: PageFlip2D = null) -> void:
+	if not _book: _book = _current_book
+	if is_instance_valid(_book):
+		_book.disabled = false
 
 
 ## Forces the active book to close towards a specific cover.
 ## [param to_front_cover]: If true, closes to the Front Cover (Right to Left). If false, closes to Back Cover.
-static func force_close_book(to_front_cover: bool) -> void:
+static func force_close_book(to_front_cover: bool, _book: PageFlip2D = null) -> void:
+	if not _book: _book = _current_book
 	if is_instance_valid(_current_book):
 		force_release_control(_current_book)
 		_current_book.force_close_book(to_front_cover)
@@ -98,8 +120,8 @@ static func force_close_book(to_front_cover: bool) -> void:
 ## [b]ASYNC:[/b] Must be called with 'await' if animated is true.
 ## [param page_num]: The 1-based page number (1 = first texture in pages_paths).
 ## [param target]: Specifies if the target is a content page or a cover.
-static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE, animated: bool = true) -> void:
-	var book = _current_book
+static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE, animated: bool = true, _book: PageFlip2D = null) -> void:
+	var book = _current_book if not _book else _book
 	if not is_instance_valid(book): return
 	
 	var target_spread_idx: int = 0
@@ -122,8 +144,10 @@ static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTEN
 ## [b]ASYNC:[/b] Must be called with 'await' if animated is true.
 ## - Animated: Fast-forwards through pages with dynamic speed.
 ## - Instant: Snaps to page and manually triggers the scene activation handshake.
-static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = true) -> void:
+static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = true, ease_curve: Curve = null) -> void:
 	if not is_instance_valid(book): return
+	
+	if not ease_curve: ease_curve = preload("uid://sc80vo3tu71s")
 	
 	# Clamp target
 	var final_target = clampi(target_spread, -1, book.total_spreads)
@@ -150,21 +174,30 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 		
 		# --- DYNAMIC SPEED CALCULATION ---
 		var steps = abs(diff)
-		# Base speed: 1.5x -> Max speed: 10.0x
-		var dynamic_speed = remap(float(steps), 0.0, float(book.total_spreads), 1.5, 10.0)
-		book.anim_player.speed_scale = dynamic_speed
-		
+		# Base speed: 1.0x -> Max speed: 7.0x
+		var max_speed = 7.0
+		var min_speed = 1.0
+		var dynamic_speed_mod = 0.35
+		var max_cover_speed = 1.8
 		var going_forward = diff > 0
-		
+
 		for i in range(steps):
 			if not is_instance_valid(book): break
+			
+			if steps <= 1:
+				book.anim_player.speed_scale = min_speed
+			else:
+				var t = float(i+1) / float(steps)
+				t = ease_curve.sample(t)
+				var _current_speed = remap(t, 0.0, 1.0, min_speed, max_speed)
+				book.anim_player.speed_scale = _current_speed
 			
 			if going_forward: book.next_page()
 			else: book.prev_page()
 			
 			# Wait for the physical page turn to finish before starting the next one.
-			if book.anim_player.is_playing():
-				await book.anim_player.animation_finished
+			if book.is_animating:
+				await book.ended_page_flip_animation
 			else:
 				await book.get_tree().process_frame
 		

@@ -6,6 +6,7 @@ var active_perishable_items: Array[GameItem] = []
 var active_overflow_bags: Array[OverflowBag] = []
 var interacting_bag: OverflowBag = null
 var has_new_items_pending_view: bool = false
+var last_converted_uid: int = -1
 
 enum SCOPE {
 	NONE,
@@ -15,6 +16,9 @@ enum SCOPE {
 }
 
 const OVER_FLOW_BAG = preload("uid://bsnxdk683a0qq")
+
+## Emitted when any perishable item rots completely.
+signal perishable_item_rotted(item: GameItem, conversion_id: int)
 #endregion
 
 
@@ -57,10 +61,18 @@ func _handle_rotted_item(item: GameItem) -> void:
 			GameManager.game_state.items.erase(item_id)
 			
 	var real_data = item.get_real_data()
+	var conversion_id: int = -1
 	if real_data and "perishable" in real_data and real_data.perishable is RPGPerishable:
 		var obj: RPGPerishable = real_data.perishable
 		if obj.action == 1 and obj.conversion_item_id > 0:
-			add_item_amount(real_data.perishable.conversion_item_id, 1)
+			conversion_id = real_data.perishable.conversion_item_id
+			last_converted_uid = conversion_id
+			add_item_amount(conversion_id, 1)
+			
+	sync_perishable_items()
+	perishable_item_rotted.emit(item, conversion_id)
+
+
 #endregion
 
 
@@ -295,7 +307,6 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 	return added_amount
 
 
-
 func _remove_generic_amount(collection: Dictionary, id: int, amount: int, include_equipment: bool = false, use_perishable_logic: bool = false) -> void:
 	amount = abs(amount)
 	
@@ -414,7 +425,7 @@ func clean_inventory_pending_stacks() -> void:
 #region SortingAndQueries
 ## Sort modes: 0 = Smart/Default, 1 = A-Z, 2 = Z-A, 3 = Usable first + A-Z, 4 = Rarity + A-Z, 5 = Quantity + A-Z
 ## collection: 0 = items + weapons + armors + sets, 1 = items, 2 = weapons, 3 = armors, 4 = sets, 5 = key items
-func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0) -> Array:
+func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collection: int = 0, previous_list: Array = []) -> Array:
 	var items: Array = []
 	if GameManager.game_state:
 		var raw_items: Array = []
@@ -500,9 +511,45 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				var targets_amount = scope.random
 				dict_item["target_id"] = target_id
 				dict_item["targets_amount"] = targets_amount
+				dict_item["scope_status"] = scope.status
 				
 			items.append(dict_item)
 			
+	if not previous_list.is_empty():
+		var new_ordered_list: Array = []
+		var to_push_to_top: Array = []
+		var mapped_current: Dictionary = {}
+		
+		for dict_item in items:
+			mapped_current[dict_item["item"]] = dict_item
+			
+		for p_item in previous_list:
+			var p_ref = p_item["item"]
+			if mapped_current.has(p_ref):
+				var updated_dict = mapped_current[p_ref]
+				mapped_current.erase(p_ref)
+				
+				if last_converted_uid != -1 and updated_dict["item_id"] == last_converted_uid and updated_dict["item_type"] == 0:
+					to_push_to_top.append(updated_dict)
+				else:
+					new_ordered_list.append(updated_dict)
+					
+		for ref in mapped_current.keys():
+			var updated_dict = mapped_current[ref]
+			if last_converted_uid != -1 and updated_dict["item_id"] == last_converted_uid and updated_dict["item_type"] == 0:
+				to_push_to_top.append(updated_dict)
+			else:
+				new_ordered_list.append(updated_dict)
+				
+		if last_converted_uid != -1:
+			last_converted_uid = -1
+			
+		to_push_to_top.reverse()
+		for top_item in to_push_to_top:
+			new_ordered_list.push_front(top_item)
+			
+		return new_ordered_list
+
 	var sort_func: Callable
 	match sort_mode:
 		1:

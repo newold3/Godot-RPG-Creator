@@ -665,7 +665,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Equipment"
 text_overrun_behavior = 3
 
 [node name="RemoveItem6Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1/EquipmentTypesContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=1955735399 instance=ExtResource("4_wnm54")]
@@ -674,7 +674,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Equipment"
 text_overrun_behavior = 3
 
 [node name="Tab2" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1274771541]
@@ -869,7 +869,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Weapon"
 text_overrun_behavior = 3
 
 [node name="RemoveItem3Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab3/WeaponTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=562589014 instance=ExtResource("4_wnm54")]
@@ -878,7 +878,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Weapon"
 text_overrun_behavior = 3
 
 [node name="Tab4" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=578782604]
@@ -971,7 +971,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Armor"
 text_overrun_behavior = 3
 
 [node name="RemoveItem4Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab4/ArmorTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1987144029 instance=ExtResource("4_wnm54")]
@@ -980,7 +980,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Armor"
 text_overrun_behavior = 3
 
 [node name="Tab5" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1957242709]
@@ -1023,7 +1023,9 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 10
 tooltip_text = "[title]Tool Types[/title]
-List of tool types to define and manage different tool categories."
+List of tool types to define and manage different tool categories.
+
+[Note]: Tool types can be added to weapons so that events can identify and react to them."
 mouse_default_cursor_shape = 16
 texture_normal = SubResource("AtlasTexture_nfmol")
 texture_hover = SubResource("AtlasTexture_tbecf")
@@ -1051,7 +1053,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "[title]Armor Name[/title]
+tooltip_text = "[title]Tool Name[/title]
 Enter name for this data"
 
 [node name="IconPicker20" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1194878880 instance=ExtResource("5_m5jdy")]
@@ -1073,7 +1075,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Tool"
 text_overrun_behavior = 3
 
 [node name="RemoveItem20Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab5/ToolTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=494089053 instance=ExtResource("4_wnm54")]
@@ -1082,7 +1084,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Tool"
 text_overrun_behavior = 3
 
 [node name="Tab6" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=477600892]
@@ -1175,7 +1177,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Skill"
 text_overrun_behavior = 3
 
 [node name="RemoveItem2Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab6/SkillTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=441933220 instance=ExtResource("4_wnm54")]
@@ -1184,7 +1186,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Skill"
 text_overrun_behavior = 3
 
 [node name="Tab7" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=297100074]
@@ -1291,7 +1293,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Element"
 text_overrun_behavior = 3
 
 [node name="RemoveItem1Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab7/ElementTypeContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1279014744 instance=ExtResource("4_wnm54")]
@@ -1300,7 +1302,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Element"
 text_overrun_behavior = 3
 
 [node name="Tab8" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=538758952]
@@ -1394,7 +1396,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Rarity"
 text_overrun_behavior = 3
 
 [node name="RemoveItem5bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ItemRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1592876746 instance=ExtResource("4_wnm54")]
@@ -1403,7 +1405,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Rarity"
 text_overrun_behavior = 3
 
 [node name="WeaponjRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8" unique_id=1812594939]
@@ -1491,7 +1493,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Rarity"
 text_overrun_behavior = 3
 
 [node name="RemoveItem3bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/WeaponjRariryContainer/MarginContainer/VboxContainer/HBoxContainer" unique_id=147316890 instance=ExtResource("4_wnm54")]
@@ -1500,7 +1502,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Rarity"
 text_overrun_behavior = 3
 
 [node name="ArmorRariryContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8" unique_id=1738220466]
@@ -1588,7 +1590,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Rarity"
 text_overrun_behavior = 3
 
 [node name="RemoveItem4bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/ArmorRariryContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=134382743 instance=ExtResource("4_wnm54")]
@@ -1597,7 +1599,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Rarity"
 text_overrun_behavior = 3
 
 [node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=44579119]
@@ -1708,7 +1710,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add User Parameter"
 text_overrun_behavior = 3
 
 [node name="RemoveItem6bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1389694609 instance=ExtResource("4_wnm54")]
@@ -1717,7 +1719,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove User Parameter"
 text_overrun_behavior = 3
 
 [node name="Tab10" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=870134904]
@@ -1799,7 +1801,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Stat"
 text_overrun_behavior = 3
 
 [node name="RemoveItem7bButton" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab10/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1474637355 instance=ExtResource("4_wnm54")]
@@ -1808,7 +1810,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Stat"
 text_overrun_behavior = 3
 
 [node name="Tab11" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=1590068013]
@@ -1879,7 +1881,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "[title]User Parameter Name[/title]
+tooltip_text = "[title]Main Parameter Name[/title]
 Enter name for this data"
 
 [node name="IconPicker10" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab11/MainParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1473767880 instance=ExtResource("5_m5jdy")]
@@ -1971,7 +1973,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Add Data[/title]
 Add a new entry to the selected list."
-text = "Add Item"
+text = "Add Gender"
 text_overrun_behavior = 3
 
 [node name="RemoveItem50Button" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab12/UserStatsContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1145344087 instance=ExtResource("4_wnm54")]
@@ -1980,7 +1982,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Remove Data[/title]
 Remove entry from the selected list."
-text = "Remove Item"
+text = "Remove Gender"
 text_overrun_behavior = 3
 
 [connection signal="tab_changed" from="MainColumn/MarginContainer/VBoxContainer/HBoxContainer/ConfigDataTabs" to="." method="_on_config_data_tabs_tab_changed"]

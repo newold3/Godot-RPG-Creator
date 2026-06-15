@@ -18,7 +18,7 @@ func get_event() -> Node2D:
 	return null
 
 
-func _get_property_list() -> Array:
+func _get_property_list() -> Array[Dictionary]:
 	var properties: Array = []
 	
 	# We only generate the dynamic dropdown inside the Editor

@@ -26,12 +26,18 @@ var current_base_texture: Texture2D
 var current_preview_font: FontFile
 var current_image_path: String = ""
 
+var busy: bool = false
+
 const CACHE_KEY := "bitmap_to_font"
 
 
 func _ready() -> void:
 	if not RPGDialogFunctions.there_are_any_dialog_open(): return
-	close_requested.connect(queue_free)
+	close_requested.connect(
+		func():
+			if not busy:
+				queue_free()
+	)
 	preview_line_edit.text_changed.connect(_on_preview_text_changed)
 	_on_preview_text_changed(tr("Preview Text"))
 	%CommandConrtainer.propagate_call("set_disabled", [true])
@@ -51,19 +57,19 @@ func _cache_dialog_path(path: String) -> void:
 
 
 func _setup_toolbar() -> void:
-	selection_option.add_item("Seleccionar...")
+	selection_option.add_item("Select...")
 	selection_option.add_separator()
-	selection_option.add_item("Seleccionar Todo")
-	selection_option.add_item("Seleccionar Letras")
-	selection_option.add_item("Seleccionar Números")
-	selection_option.add_item("Seleccionar Minúsculas")
-	selection_option.add_item("Seleccionar Mayúsculas")
+	selection_option.add_item("Select All")
+	selection_option.add_item("Select Letters")
+	selection_option.add_item("Select Numbers")
+	selection_option.add_item("Select Lowercase")
+	selection_option.add_item("Select Uppercase")
 	selection_option.add_separator()
-	selection_option.add_item("Deseleccionar Todo")
-	selection_option.add_item("Deseleccionar Letras")
-	selection_option.add_item("Deseleccionar Números")
-	selection_option.add_item("Deseleccionar Minúsculas")
-	selection_option.add_item("Deseleccionar Mayúsculas")
+	selection_option.add_item("Deselect All")
+	selection_option.add_item("Deselect Letters")
+	selection_option.add_item("Deselect Numbers")
+	selection_option.add_item("Deselect Lowercase")
+	selection_option.add_item("Deselect Uppercase")
 	
 	selection_option.item_selected.connect(_on_selection_option_selected)
 	
@@ -123,6 +129,7 @@ func _on_import_button_pressed() -> void:
 
 
 func _open_import_file_dialog() -> void:
+	busy = true
 	var file_dialog := FileDialog.new()
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
@@ -136,11 +143,13 @@ func _open_import_file_dialog() -> void:
 	file_dialog.file_selected.connect(func(path: String):
 		_cache_dialog_path(path)
 		_import_bitmap_font(path)
+		set_deferred("busy", false)
+		file_dialog.queue_free()
 	)
 	
-	file_dialog.visibility_changed.connect(func():
-		if not file_dialog.visible:
-			file_dialog.queue_free()
+	file_dialog.canceled.connect(func():
+		set_deferred("busy", false)
+		file_dialog.queue_free()
 	)
 	
 	file_dialog.popup_centered(Vector2i(800, 600))
@@ -394,9 +403,11 @@ func _on_select_new_image_pressed() -> void:
 		add_child(confirm)
 		
 		confirm.confirmed.connect(_open_image_file_dialog)
-		confirm.visibility_changed.connect(func():
-			if not confirm.visible:
-				confirm.queue_free()
+		confirm.visibility_changed.connect(
+			func():
+				if not confirm.visible:
+					confirm.queue_free()
+					await get_tree().process_frame
 		)
 		
 		confirm.popup_centered()
@@ -405,6 +416,7 @@ func _on_select_new_image_pressed() -> void:
 
 
 func _open_image_file_dialog() -> void:
+	busy = true
 	var file_dialog := FileDialog.new()
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
@@ -418,11 +430,13 @@ func _open_image_file_dialog() -> void:
 	file_dialog.file_selected.connect(func(path: String):
 		_cache_dialog_path(path)
 		_process_image(path)
+		set_deferred("busy", false)
+		file_dialog.queue_free()
 	)
 	
-	file_dialog.visibility_changed.connect(func():
-		if not file_dialog.visible:
-			file_dialog.queue_free()
+	file_dialog.canceled.connect(func():
+		set_deferred("busy", false)
+		file_dialog.queue_free()
 	)
 	
 	file_dialog.popup_centered(Vector2i(800, 600))
