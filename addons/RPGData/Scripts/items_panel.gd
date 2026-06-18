@@ -410,6 +410,7 @@ func _on_animation_button_pressed() -> void:
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	dialog.database = database
 	dialog.destroy_on_hide = true
+	dialog.set_animation_mode()
 	
 	var uid = get_data().invocation.animation
 	var classic_id = RPGSYSTEM.uid_to_id("animations", uid) if uid > 0 else 1

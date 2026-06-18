@@ -6,6 +6,7 @@ signal command_selected(value: int)
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
+	reset_size.call_deferred()
 
 
 func set_data(value: int) -> void:

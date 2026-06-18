@@ -10,7 +10,3 @@ func _get_recognized_extensions() -> PackedStringArray:
 	)
 	
 	return extensions
-
-
-func _load(path, original_path, options, _recurse):
-	print([path, original_path, options, _recurse])

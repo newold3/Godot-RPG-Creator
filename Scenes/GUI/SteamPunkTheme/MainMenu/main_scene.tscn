@@ -245,10 +245,10 @@ items_menu_scene = NodePath("../IngameItemListContainer/IngameItemList")
 animation_player = NodePath("../ExternalAnimator")
 help_label = NodePath("../SceneMainContainer/MarginContainer/ChapterNameAutoScrollContainer/MarginContainer/HelpLabel")
 
-[node name="BottomLayer" parent="SceneMainContainer" index="0"]
+[node name="BottomLayer" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="0" unique_id=507352788]
 pivot_offset = Vector2(576.001, 320)
 
-[node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1" unique_id=814727480]
 texture = SubResource("ViewportTexture_3uh6u")
 
 [node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4" unique_id=16428217]
@@ -286,16 +286,7 @@ offset_bottom = 574.48047
 texture = SubResource("AtlasTexture_3mn25")
 flip_h = true
 
-[node name="MainContainer" parent="SceneMainContainer" index="1"]
-mouse_filter = 2
-
-[node name="ContentsContainer" parent="SceneMainContainer/MainContainer" index="0"]
-mouse_filter = 2
-
-[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" index="0"]
-mouse_filter = 2
-
-[node name="MainMenuScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" unique_id=366509411 node_paths=PackedStringArray("initial_container", "help_label") instance=ExtResource("5_0m31r")]
+[node name="MainMenuScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" parent_id_path=PackedInt32Array(2086978186) index="0" unique_id=366509411 node_paths=PackedStringArray("initial_container", "help_label") instance=ExtResource("5_0m31r")]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
@@ -341,25 +332,20 @@ glow_intensity = 1.3
 glow_duration = 0.3
 shake_vibrations = 5
 
-[node name="TopFrame" parent="SceneMainContainer/MainContainer" index="1"]
+[node name="TopFrame" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="1" unique_id=637314501]
 z_index = 10
 
-[node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+[node name="Title" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="2" unique_id=973961125]
 z_index = 15
-mouse_filter = 2
 
-[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
-mouse_filter = 2
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0" unique_id=2079863752]
 title = "MAIN MENU"
 
-[node name="BackButton" parent="SceneMainContainer" index="3"]
+[node name="BackButton" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="3" unique_id=1109773286]
 visible = false
 on_hover_selected_animation = 4
 
-[node name="ToolTipLayers" parent="SceneMainContainer" index="4"]
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer" index="5" unique_id=754646840]
+[node name="MarginContainer" type="MarginContainer" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="5" unique_id=754646840]
 z_index = 100
 z_as_relative = false
 layout_mode = 1
@@ -430,7 +416,7 @@ metadata/current_size_flags = {
 }
 metadata/base_position = Vector2(0, 12)
 
-[node name="BottomMainMenu" parent="SceneMainContainer" index="6" unique_id=509091457 instance=ExtResource("7_x1cck")]
+[node name="BottomMainMenu" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="6" unique_id=509091457 instance=ExtResource("7_x1cck")]
 unique_name_in_owner = true
 layout_mode = 1
 mouse_filter = 2

@@ -75,20 +75,44 @@ var preview_counter: int = 0
 ## Regex used to parse the return value of get_class() from script source code.
 static var _class_regex: RegEx = RegEx.new()
 
+## Thread used for asynchronous file processing to prevent editor freezes.
+var cache_thread: Thread
+
+## Mutex to protect shared cache data during multithreaded operations.
+var cache_mutex: Mutex
+
+## Semaphore to wake the processing thread when new files are pending.
+var cache_semaphore: Semaphore
+
+## Flag indicating whether the background thread should terminate.
+var thread_exit: bool = false
+
+
+#region Lifecycle Methods
 
 ## Initializes the plugin, loads existing cache and options, and sets up file system monitoring.
 func _enter_tree() -> void:
 	# Compile regex once on startup to save performance
 	_class_regex.compile("func\\s+get_class[\\s\\S]*?return\\s*[\"']([^\"']+)[\"']")
 	main_scene = self
+	
+	cache_mutex = Mutex.new()
+	cache_semaphore = Semaphore.new()
+	cache_thread = Thread.new()
+	thread_exit = false
+	cache_thread.start(_thread_process_loop)
+	
 	tree_exiting.connect(_on_tree_exiting)
 
 
+## Rebuilds the internal dictionary of known files to optimize future scans.
 func _rebuild_known_files() -> void:
+	cache_mutex.lock()
 	_known_files.clear()
 	for category in cache.values():
 		for file_path in category.keys():
 			_known_files[file_path] = true
+	cache_mutex.unlock()
 
 
 ## Called when the scene tree is ready and marks the cache as fully initialized.
@@ -98,12 +122,15 @@ func _ready() -> void:
 	_initial_setup.call_deferred()
 
 
+## Performs the initial data loading, validation, and connection of file system signals.
 func _initial_setup() -> void:
 	if FileAccess.file_exists(CACHE_FILE_PATH):
 		var f = FileAccess.open(CACHE_FILE_PATH, FileAccess.READ)
+		cache_mutex.lock()
 		cache = f.get_var()
-		f.close()
 		cache_setted = true
+		cache_mutex.unlock()
+		f.close()
 		_rebuild_known_files()
 	else:
 		build_cache()
@@ -122,129 +149,200 @@ func _initial_setup() -> void:
 	fs.filesystem_changed.connect(_rescan_files)
 	fs.resources_reimported.connect(_on_resources_imports)
 	fs.resources_reload.connect(_on_resources_imports)
+	
 	scene_saved.connect(_on_scene_saved)
 	resource_saved.connect(_on_resource_save)
 	resource_saved.connect(save_options)
+	
+	cache_mutex.lock()
 	cache_setted = true
+	cache_mutex.unlock()
 
 
-## Main processing loop that handles deferred cache refresh operations and file batch processing.
+## Main processing loop that handles delayed cache refresh operations.
 func _process(delta: float) -> void:
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		return
-		
 	if refresh_timer > 0.0:
 		refresh_timer -= delta
 		if refresh_timer <= 0.0:
 			refresh_timer = 0.0
+			cache_mutex.lock()
 			cache_setted = false
-			fix_cache.call_deferred()
-			process_pending_files.call_deferred()
-			cache_setted = true
-
-	if !is_processing_files and !pending_files_to_process.is_empty():
-		process_pending_files.call_deferred()
-	
-	if pending_files_to_process.is_empty():
-		set_process(false)
-
-
-## Processes pending files in batches to maintain editor responsiveness.
-func process_pending_files() -> void:
-	if is_processing_files:
-		return
-		
-	if Engine.is_editor_hint():
-		if EditorInterface.get_resource_filesystem().is_scanning():
-			return
+			cache_mutex.unlock()
 			
-	is_processing_files = true
-	var files_to_process = min(file_batch_size, pending_files_to_process.size())
-	var processed = 0
-	
-	while processed < files_to_process and !pending_files_to_process.is_empty():
-		var file_path = pending_files_to_process.pop_front()
-		cache_file(file_path)
-		processed += 1
-		
-	if !pending_files_to_process.is_empty():
-		get_tree().create_timer(scan_throttle_time).timeout.connect(func(): is_processing_files = false)
-	else:
-		is_processing_files = false
-		save()
-		cache_ready.emit()
+			fix_cache.call_deferred()
+			cache_semaphore.post()
+			
+			cache_mutex.lock()
+			cache_setted = true
+			cache_mutex.unlock()
+			
+			set_process(false)
 
 
 ## Removes invalid or deleted file entries from the cache.
 func fix_cache() -> void:
+	cache_mutex.lock()
 	for key in cache:
 		var file_paths = cache[key].keys()
 		for file_path in file_paths:
 			if not ZipMediaLoader.file_exists(file_path):
 				cache[key].erase(file_path)
+	cache_mutex.unlock()
 
 
+## Final cleanup method called when the editor is closing.
+func _on_tree_exiting() -> void:
+	cache_mutex.lock()
+	thread_exit = true
+	cache_mutex.unlock()
+	
+	cache_semaphore.post()
+	
+	if cache_thread and cache_thread.is_started():
+		cache_thread.wait_to_finish()
+		
+	cache_mutex.lock()
+	var remaining = pending_files_to_process.duplicate()
+	pending_files_to_process.clear()
+	cache_mutex.unlock()
+	
+	for file_path in remaining:
+		cache_file(file_path)
+		
+	save()
+#endregion
+#region Threading & Queuing
+
+
+## Adds a file to the processing queue in a thread-safe manner.
+func _queue_file_for_processing(file_path: String) -> void:
+	cache_mutex.lock()
+	if !pending_files_to_process.has(file_path):
+		pending_files_to_process.append(file_path)
+	cache_mutex.unlock()
+	cache_semaphore.post()
+
+
+## Continuous loop executed by the background thread to process files.
+func _thread_process_loop() -> void:
+	while true:
+		cache_semaphore.wait()
+		
+		cache_mutex.lock()
+		var should_exit = thread_exit
+		cache_mutex.unlock()
+		
+		if should_exit:
+			break
+			
+		var has_files = true
+		var processed_any = false
+		
+		while has_files:
+			cache_mutex.lock()
+			should_exit = thread_exit
+			if should_exit:
+				cache_mutex.unlock()
+				break
+				
+			var file_path = ""
+			if pending_files_to_process.size() > 0:
+				file_path = pending_files_to_process.pop_front()
+			else:
+				has_files = false
+				
+			cache_mutex.unlock()
+			
+			if file_path != "":
+				cache_file(file_path)
+				processed_any = true
+				
+		if not should_exit and processed_any:
+			call_deferred("_on_batch_finished")
+
+
+## Called asynchronously when a batch of files finishes processing in the thread.
+func _on_batch_finished() -> void:
+	save()
+	cache_ready.emit()
+
+
+## Thread-safe method to add a file to a specific cache category.
+func _add_to_cache(category: String, file_path: String) -> void:
+	cache_mutex.lock()
+	if cache.has(category):
+		cache[category][file_path] = true
+	cache_mutex.unlock()
+
+
+## Thread-safe method to remove a file from all cache categories.
+func _remove_from_cache_all(file_path: String) -> void:
+	cache_mutex.lock()
+	for key in cache.keys():
+		if cache[key].has(file_path):
+			cache[key].erase(file_path)
+	cache_mutex.unlock()
+#endregion
 #region File Manipulation
+
 
 ## Updates the cache when a resource is saved in the editor.
 func _on_resource_save(resource) -> void:
 	var path = resource.get_path()
-	if !pending_files_to_process.has(path):
-		pending_files_to_process.append(path)
-		set_process(true)
+	_queue_file_for_processing(path)
 
 
 ## Updates cache entries when files are moved or renamed in the file system.
 func _on_files_moved(old_file: String, new_file: String) -> void:
-	var rpg_maps_info = get_node_or_null("/root/RPGMapsInfo")
+	var rpg_maps_info = main_scene.get_node_or_null("/root/RPGMapsInfo")
 	if is_instance_valid(rpg_maps_info):
 		rpg_maps_info.update_file_path.call_deferred(old_file, new_file)
 		
+	cache_mutex.lock()
 	cache_setted = false
 	for key in cache:
 		if cache[key].has(old_file):
 			cache[key][new_file] = cache[key][old_file]
 			cache[key].erase(old_file)
 			cache_setted = true
+			cache_mutex.unlock()
 			return
+			
 	cache_setted = true
+	cache_mutex.unlock()
 
 
 ## Removes deleted files from the cache when they are deleted from the file system.
 func _on_file_removed(removed_file: String) -> void:
-	var rpg_maps_info = get_node_or_null("/root/RPGMapsInfo")
+	var rpg_maps_info = main_scene.get_node_or_null("/root/RPGMapsInfo")
 	if is_instance_valid(rpg_maps_info):
 		rpg_maps_info.update_file_path.call_deferred(removed_file, "")
 		
+	cache_mutex.lock()
 	cache_setted = false
 	for key in cache:
 		if cache[key].has(removed_file):
 			cache[key].erase(removed_file)
 			cache_setted = true
+			cache_mutex.unlock()
 			return
+			
 	cache_setted = true
+	cache_mutex.unlock()
 
 
 ## Re-caches resources when they are imported or reloaded by the Godot editor.
 func _on_resources_imports(paths: PackedStringArray) -> void:
 	for path in paths:
-		if !pending_files_to_process.has(path):
-			pending_files_to_process.append(path)
-			
-	if not pending_files_to_process.is_empty():
-		set_process(true)
+		_queue_file_for_processing(path)
 
 
 ## Updates the cache when a scene file is saved in the editor.
 func _on_scene_saved(path: String) -> void:
-	if !pending_files_to_process.has(path):
-		pending_files_to_process.append(path)
-		set_process(true)
-
+	_queue_file_for_processing(path)
 #endregion
-
-
 #region Building Dialog Options
+
 
 ## Initializes default configuration settings for known dialog types.
 func build_options() -> void:
@@ -254,23 +352,24 @@ func build_options() -> void:
 		"enemy_spawn_region_dialog": {"detached": false, "position": Vector2i.ZERO, "size": Vector2i.ZERO},
 		"event_region_dialog": {"detached": false, "position": Vector2i.ZERO, "size": Vector2i.ZERO}
 	}
-
 #endregion
-
-
 #region Building Cache
+
 
 ## Static method to trigger a complete cache rebuild from anywhere in the codebase.
 static func rebuild(full_scan: bool = false) -> void:
 	if main_scene:
 		if full_scan:
+			main_scene.cache_mutex.lock()
 			cache.clear()
+			main_scene.cache_mutex.unlock()
 		main_scene.set_process(true)
 		main_scene.build_cache()
 
 
 ## Initializes the cache structure and begins scanning using EditorFileSystem.
 func build_cache() -> void:
+	cache_mutex.lock()
 	cache_setted = false
 	cache = {
 		"animated_images": {}, "images": {}, "sounds": {}, "animations": {}, "maps": {},
@@ -282,13 +381,15 @@ func build_cache() -> void:
 		"battle_background_scenes": {}, "tilesets": {}, "timer_scenes": {},
 		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}, "label_settings": {}
 	}
+	cache_mutex.unlock()
 	
-	# Use EditorFileSystem memory for physical files
+	var temp_files = []
 	var fs = get_editor_interface().get_resource_filesystem().get_filesystem()
+	
 	if fs:
-		pending_files_to_process = _scan_filesystem_recursively(fs)
+		temp_files = _scan_filesystem_recursively(fs)
 	else:
-		pending_files_to_process = collect_all_files("res://")
+		temp_files = collect_all_files("res://")
 		
 	# Inject virtual files from ZipMediaLoader
 	if not ZipMediaLoader._initialized:
@@ -296,10 +397,16 @@ func build_cache() -> void:
 		
 	for zip_file in ZipMediaLoader._files_index.keys():
 		var full_path = "res://" + zip_file
-		if not pending_files_to_process.has(full_path):
-			pending_files_to_process.append(full_path)
+		if not temp_files.has(full_path):
+			temp_files.append(full_path)
 			
-	process_pending_files()
+	cache_mutex.lock()
+	for f in temp_files:
+		if !pending_files_to_process.has(f):
+			pending_files_to_process.append(f)
+	cache_mutex.unlock()
+	
+	cache_semaphore.post()
 
 
 ## Recursively collects all file paths from the EditorFileSystem (In-Memory).
@@ -310,11 +417,13 @@ func _scan_filesystem_recursively(dir: EditorFileSystemDirectory) -> Array:
 		if file_path.ends_with(".import") or file_path.begins_with("res://."):
 			continue
 		files.append(file_path)
+		
 	for i in range(dir.get_subdir_count()):
 		var subdir = dir.get_subdir(i)
 		var subdir_path = subdir.get_path()
 		if !should_skip_directory(subdir_path):
 			files.append_array(_scan_filesystem_recursively(subdir))
+			
 	return files
 
 
@@ -364,24 +473,32 @@ func _rescan_files() -> void:
 	var new_files = _find_new_files_only(fs.get_filesystem())
 	
 	for file_path in new_files:
-		if !pending_files_to_process.has(file_path):
-			pending_files_to_process.append(file_path)
-			_known_files[file_path] = true
-			
-	if !pending_files_to_process.is_empty():
-		set_process(true)
+		_queue_file_for_processing(file_path)
+		
+		cache_mutex.lock()
+		_known_files[file_path] = true
+		cache_mutex.unlock()
+		
+	if !new_files.is_empty():
 		rescan_files()
 
 
+## Recursively identifies new files that have not been previously cached.
 func _find_new_files_only(dir: EditorFileSystemDirectory) -> Array:
 	var new_files = []
 	for i in range(dir.get_file_count()):
 		var file_path = dir.get_file_path(i)
-		if file_path not in _known_files:
+		
+		cache_mutex.lock()
+		var known = file_path in _known_files
+		cache_mutex.unlock()
+		
+		if not known:
 			new_files.append(file_path)
 	
 	for i in range(dir.get_subdir_count()):
 		new_files.append_array(_find_new_files_only(dir.get_subdir(i)))
+		
 	return new_files
 
 
@@ -400,30 +517,40 @@ static func rescan_files() -> void:
 func cache_file(file_path: String, force_rescan: bool = false) -> void:
 	if should_skip_file(file_path):
 		return
+		
 	if !force_rescan:
+		cache_mutex.lock()
+		var already_cached = false
 		for key in cache:
 			if cache[key].has(file_path):
-				return
+				already_cached = true
+				break
+		cache_mutex.unlock()
+		
+		if already_cached:
+			return
 	else:
-		for key in cache:
-			if cache[key].has(file_path):
-				cache[key].erase(file_path)
+		_remove_from_cache_all(file_path)
 				
 	var extension = file_path.get_extension().to_lower()
 	if extension in image_extensions:
-		if !cache.images.has(file_path): cache.images[file_path] = true
+		_add_to_cache("images", file_path)
 		return
+		
 	if extension in sound_extensions:
-		if !cache.sounds.has(file_path): cache.sounds[file_path] = true
+		_add_to_cache("sounds", file_path)
 		return
+		
 	if extension in font_extensions:
-		if !cache.fonts.has(file_path): cache.fonts[file_path] = true
+		_add_to_cache("fonts", file_path)
 		return
+		
 	if extension in video_extensions:
-		if !cache.videos.has(file_path): cache.videos[file_path] = true
+		_add_to_cache("videos", file_path)
 		return
+		
 	if extension == "efkefc":
-		if !cache.animations.has(file_path): cache.animations[file_path] = true
+		_add_to_cache("animations", file_path)
 	elif extension in ["res", "tres"]:
 		classify_resource_file(file_path)
 	elif extension == "tscn":
@@ -445,14 +572,15 @@ func classify_script_file(file_path: String) -> void:
 		while current_script:
 			var global_name = current_script.get_global_name()
 			var script_name = current_script.resource_path.get_file()
+			
 			if global_name == "CombatActionBase" or script_name == "combat_action_base.gd":
-				cache.weapon_attack_scripts[file_path] = true
+				_add_to_cache("weapon_attack_scripts", file_path)
 				return
 				
 			current_script = current_script.get_base_script()
 
 
-## Loads and analyzes a Godot resource file.
+## Loads and analyzes a Godot resource file safely from the processing thread.
 func classify_resource_file(file_path: String) -> void:
 	if !ResourceLoader.exists(file_path):
 		return
@@ -461,98 +589,150 @@ func classify_resource_file(file_path: String) -> void:
 	
 	match file_type:
 		"CompressedTexture2D", "ImageTexture", "GradientTexture2D":
-			cache.images[file_path] = true; return
+			_add_to_cache("images", file_path)
+			return
 		"AudioStreamMP3", "AudioStreamWAV", "AudioStreamOggVorbis":
-			cache.sounds[file_path] = true; return
+			_add_to_cache("sounds", file_path)
+			return
 		"FontFile", "SystemFont":
-			cache.fonts[file_path] = true; return
+			_add_to_cache("fonts", file_path)
+			return
 		"TileSet":
-			cache.tilesets[file_path] = true; return
+			_add_to_cache("tilesets", file_path)
+			return
 		"Curve":
-			cache.curves[file_path] = true; return
+			_add_to_cache("curves", file_path)
+			return
 		"VideoStreamTheora":
-			cache.videos[file_path] = true; return
+			_add_to_cache("videos", file_path)
+			return
 		"LabelSettings":
-			cache.label_settings[file_path] = true; return
+			_add_to_cache("label_settings", file_path)
+			return
 	
 	var res = load(file_path)
 	if res == null:
 		return
 
 	if res is AudioStream:
-		cache.sounds[file_path] = true
+		_add_to_cache("sounds", file_path)
 	elif res is IngameCostume:
-		cache.costumes[file_path] = true
+		_add_to_cache("costumes", file_path)
 	elif res is RPGLPCCharacter:
 		if res.event_preview:
-			cache.events[file_path] = true
+			_add_to_cache("events", file_path)
 		else:
-			cache.characters[file_path] = true
+			_add_to_cache("characters", file_path)
 	elif res is IngameGearSet:
-		cache.sets[file_path] = true
+		_add_to_cache("sets", file_path)
 	elif res is RPGLPCEquipmentPart:
 		if res.layer_id == "mainhand":
-			cache.equipment_parts_weapons[file_path] = true
+			_add_to_cache("equipment_parts_weapons", file_path)
 		else:
-			cache.equipment_parts_others[file_path] = true
+			_add_to_cache("equipment_parts_others", file_path)
 	elif res is Curve:
-		cache.curves[file_path] = true
+		_add_to_cache("curves", file_path)
 	elif res is Font:
-		cache.fonts[file_path] = true
+		_add_to_cache("fonts", file_path)
 	elif res is Texture2D:
-		cache.images[file_path] = true
+		_add_to_cache("images", file_path)
 	elif res is TileSet:
-		cache.tilesets[file_path] = true
+		_add_to_cache("tilesets", file_path)
 	elif res is VideoStream:
-		cache.videos[file_path] = true
+		_add_to_cache("videos", file_path)
 	
 	res = null
 
 
-## Analyzes a scene file by examining its root node's script.
-## Uses a hybrid approach: Fast property check first, instantiation fallback for inherited scenes.
+## Analyzes a scene file by traversing its node structure without explicitly instantiating scenes.
 func classify_scene_file(file_path: String) -> void:
-	# Quick map check
-	var node = get_node_or_null("/root/RPGMapsInfo")
-	if node and node.map_infos.maps.has(file_path):
-		cache.maps[file_path] = true
+	var map_node = main_scene.get_node_or_null("/root/RPGMapsInfo")
+	
+	if map_node and map_node.map_infos.maps.has(file_path):
+		_add_to_cache("maps", file_path)
 		return
 
-	var packed_scene = load(file_path)
-	if not packed_scene:
+	_analyze_scene_recursive(file_path, file_path)
+
+
+func _analyze_scene_recursive(original_file_path: String, current_scene_path: String) -> void:
+	var data = _parse_tscn_root_data(current_scene_path)
+	
+	if data["type"] in ["Sprite2D", "AnimatedSprite2D", "TextureRect"]:
+		_add_to_cache("animated_images", original_file_path)
 		return
-
-	var state = packed_scene.get_state()
-
-	# 1. Native Node Type check
-	var root_node_type = state.get_node_type(0)
-	if root_node_type in ["Sprite2D", "AnimatedSprite2D", "TextureRect"]:
-		cache.animated_images[file_path] = true
-		return
-
-	# 2. Script Type check (Fast: Parsing source file properties)
-	for prop_idx in state.get_node_property_count(0):
-		if state.get_node_property_name(0, prop_idx) == "script":
-			var script_res = state.get_node_property_value(0, prop_idx)
-			if script_res == null:
-				continue
-
-			if _check_and_cache_script(file_path, script_res):
+		
+	if data["script_path"] != "":
+		if ResourceLoader.exists(data["script_path"]):
+			var script_res = load(data["script_path"])
+			
+			if script_res and _check_and_cache_script(original_file_path, script_res):
 				return
+				
+	if data["instance_path"] != "":
+		_analyze_scene_recursive(original_file_path, data["instance_path"])
 
-	# 3. Inheritance Fallback (Slow: Instantiation)
-	# If we reach here, no explicit script property was found on the root node.
-	# This usually happens with inherited scenes where the script is defined in the parent.
-	if packed_scene.can_instantiate():
-		var instance = packed_scene.instantiate()
-		if instance:
-			var script_res = instance.get_script()
-			if script_res:
-				if _check_and_cache_script(file_path, script_res):
-					instance.free()
-					return
 
-			instance.free()
+func _parse_tscn_root_data(file_path: String) -> Dictionary:
+	var result = {"type": "", "script_path": "", "instance_path": ""}
+	var f = FileAccess.open(file_path, FileAccess.READ)
+	
+	if not f:
+		return result
+		
+	var ext_resources = {}
+	
+	while not f.eof_reached():
+		var line = f.get_line().strip_edges()
+		
+		if line.begins_with("[ext_resource "):
+			var id_start = line.find(" id=\"")
+			var path_start = line.find(" path=\"")
+			
+			if id_start != -1 and path_start != -1:
+				id_start += 5
+				var id_end = line.find("\"", id_start)
+				var id = line.substr(id_start, id_end - id_start)
+				
+				path_start += 7
+				var path_end = line.find("\"", path_start)
+				var path = line.substr(path_start, path_end - path_start)
+				
+				ext_resources[id] = path
+				
+		elif line.begins_with("[node "):
+			var type_start = line.find(" type=\"")
+			
+			if type_start != -1:
+				type_start += 7
+				var type_end = line.find("\"", type_start)
+				result["type"] = line.substr(type_start, type_end - type_start)
+				
+			var script_start = line.find(" script=ExtResource(\"")
+			
+			if script_start != -1:
+				script_start += 21
+				var script_end = line.find("\")", script_start)
+				var script_id = line.substr(script_start, script_end - script_start)
+				
+				if ext_resources.has(script_id):
+					result["script_path"] = ext_resources[script_id]
+					
+			var instance_start = line.find(" instance=ExtResource(\"")
+			
+			if instance_start != -1:
+				instance_start += 23
+				var instance_end = line.find("\")", instance_start)
+				var instance_id = line.substr(instance_start, instance_end - instance_start)
+				
+				if ext_resources.has(instance_id):
+					result["instance_path"] = ext_resources[instance_id]
+					
+			break
+			
+	f.close()
+	
+	return result
 
 
 ## Helper to identify script class (including inheritance) and update cache.
@@ -600,25 +780,27 @@ func _is_valid_cache_class(_class_name: String) -> bool:
 ## Helper to assign file path to the correct cache dictionary.
 func _match_identifier_to_cache(file_path: String, class_identifier: String) -> bool:
 	match class_identifier:
-		"BattleAnimation": cache.animations[file_path] = true
-		"RPGMap": cache.maps[file_path] = true
-		"LPCEnemy": cache.enemies[file_path] = true
-		"DialogBase": cache.message_dialogs[file_path] = true
-		"ScrollText": cache.scroll_scenes[file_path] = true
-		"RPGVehicle": cache.vehicles[file_path] = true
-		"GameTransition": cache.transition_scenes[file_path] = true
-		"TimerScene": cache.timer_scenes[file_path] = true
-		"WeatherScene": cache.weather[file_path] = true
-		"ExpressiveBubble": cache.expressive_bubbles[file_path] = true
-		"ChoiceScene": cache.choice_scenes[file_path] = true
-		"SelectDigitsScene": cache.numerical_input_scenes[file_path] = true
-		"SelectTextsScene": cache.text_input_scenes[file_path] = true
-		"MapParallaxScene": cache.map_parallax_scenes[file_path] = true
-		"BattleBackgroundScene": cache.battle_background_scenes[file_path] = true
-		"GeneralShopScene": cache.shop_scene[file_path] = true
-		"RPGExtractionScene": cache.extraction_scenes[file_path] = true
+		"BattleAnimation": _add_to_cache("animations", file_path)
+		"RPGMap": _add_to_cache("maps", file_path)
+		"LPCEnemy": _add_to_cache("enemies", file_path)
+		"DialogBase": _add_to_cache("message_dialogs", file_path)
+		"ScrollText": _add_to_cache("scroll_scenes", file_path)
+		"RPGVehicle": _add_to_cache("vehicles", file_path)
+		"GameTransition": _add_to_cache("transition_scenes", file_path)
+		"TimerScene": _add_to_cache("timer_scenes", file_path)
+		"WeatherScene": _add_to_cache("weather", file_path)
+		"ExpressiveBubble": _add_to_cache("expressive_bubbles", file_path)
+		"ChoiceScene": _add_to_cache("choice_scenes", file_path)
+		"SelectDigitsScene": _add_to_cache("numerical_input_scenes", file_path)
+		"SelectTextsScene": _add_to_cache("text_input_scenes", file_path)
+		"MapParallaxScene": _add_to_cache("map_parallax_scenes", file_path)
+		"BattleBackgroundScene": _add_to_cache("battle_background_scenes", file_path)
+		"GeneralShopScene": _add_to_cache("shop_scene", file_path)
+		"RPGExtractionScene": _add_to_cache("extraction_scenes", file_path)
 		_: return false
 	return true
+#endregion
+#region Saving
 
 
 ## Saves the dialog options configuration to disk.
@@ -628,23 +810,27 @@ func save_options(_resource: Resource = null) -> void:
 	f.close()
 
 
-## Saves both the cache and options data to disk.
+## Saves both the cache and options data to disk safely.
 func save() -> void:
 	save_options()
-	if !cache_setted:
+	
+	cache_mutex.lock()
+	var is_setted = cache_setted
+	cache_mutex.unlock()
+	
+	if !is_setted:
 		await get_tree().create_timer(0.1).timeout
 		if not is_instance_valid(self) or not is_inside_tree(): return
-	var f = FileAccess.open(CACHE_FILE_PATH, FileAccess.WRITE)
-	f.store_var(cache)
-	f.close()
+		
+	cache_mutex.lock()
+	var cache_copy = cache.duplicate(true)
 	cache_setted = true
+	cache_mutex.unlock()
+	
+	var f = FileAccess.open(CACHE_FILE_PATH, FileAccess.WRITE)
+	f.store_var(cache_copy)
+	f.close()
+	
 	cache_ready.emit()
 	if _show_prints:
 		print("Cache saved!")
-
-
-## Final cleanup method called when the editor is closing.
-func _on_tree_exiting() -> void:
-	if !pending_files_to_process.is_empty():
-		process_pending_files()
-	save()

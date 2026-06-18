@@ -7,6 +7,7 @@ signal command_changed(parameter: String)
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
+	reset_size.call_deferred()
 
 
 func set_data(magnitude: float = 1.1, frequency: float = 10, duration: float = 0.6, wait: bool = false) -> void:

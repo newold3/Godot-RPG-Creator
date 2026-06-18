@@ -8,6 +8,7 @@ signal OK()
 
 func _ready() -> void:
 	close_requested.connect(queue_free)
+	reset_size.call_deferred()
 
 
 func set_text(text: String) -> void:

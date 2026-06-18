@@ -11,6 +11,7 @@ static var _initialized: bool = false
 func _init() -> void:
 	if not _initialized:
 		_mount_system()
+		
 
 
 ## Mounts all archives defined in AssetConfig.

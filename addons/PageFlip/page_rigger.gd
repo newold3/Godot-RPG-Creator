@@ -55,7 +55,7 @@ var _custom_cache: Dictionary = {}
 ## Horizontal mesh subdivision. Higher values create smoother bends.
 @export_range(1, 20) var subdivision_x: int = 8
 ## Vertical mesh subdivision. Higher values allow for better corner curling.
-@export_range(1, 10) var subdivision_y: int = 5
+@export_range(1, 20) var subdivision_y: int = 5
 ## Generates the mesh, skeleton, weights and animations.
 @export var rebuild_all: bool = false : set = _on_generate_pressed
 
@@ -110,9 +110,12 @@ var _custom_cache: Dictionary = {}
 @export_range(0.05, 0.45, 0.01) var timing_peak_lift: float = 0.15
 ## Normalized time (0.0 - 1.0) for the landing contact.
 @export_range(0.55, 0.95, 0.01) var timing_peak_land: float = 0.85
+## Proportion of the total duration used for the first half of the animation.
+@export_range(0.1, 0.9, 0.01) var timing_midpoint_ratio: float = 0.5
 
 ## Generates the animations for the player.
 @export var generate_anims_btn: bool = false : set = _on_anim_pressed
+
 
 
 #region Runtime Initialization
@@ -123,6 +126,7 @@ func _ready():
 		_save_state_to_cache()
 
 
+
 ## Rebuilds the rigging and animation sequences.
 func rebuild(current_page_size: Vector2 = Vector2.ZERO) -> void:
 	if not anim_player: return
@@ -130,6 +134,7 @@ func rebuild(current_page_size: Vector2 = Vector2.ZERO) -> void:
 	_create_rig_logic(current_page_size)
 	_generate_animations_logic()
 #endregion
+
 
 
 #region Preset Logic
@@ -147,7 +152,6 @@ func _on_preset_changed(val):
 		notify_property_list_changed()
 		return
 	
-	# Defaults
 	curl_mode = CurlMode.BOTTOM_CORNER_FIRST
 	curl_lag = 0.3
 	enable_shadow = true
@@ -205,14 +209,17 @@ func _on_preset_changed(val):
 		print("[PageRigger] Preset Applied: ", PagePreset.keys()[val])
 
 
+
 ## Saves the current custom variables to the cache dictionary.
 func _save_state_to_cache():
 	_custom_cache = {
 		"stiffness": paper_stiffness, "lift": lift_bend, "land": land_bend,
 		"curl_m": curl_mode, "curl_l": curl_lag,
 		"t_lift": timing_peak_lift, "t_land": timing_peak_land,
+		"t_mid": timing_midpoint_ratio,
 		"dur": anim_duration, "shadow": enable_shadow
 	}
+
 
 
 ## Loads the custom variables from the cache dictionary.
@@ -224,9 +231,11 @@ func _load_state_from_cache():
 	curl_lag = _custom_cache.get("curl_l", 0.3)
 	timing_peak_lift = _custom_cache.get("t_lift", 0.15)
 	timing_peak_land = _custom_cache.get("t_land", 0.85)
+	timing_midpoint_ratio = _custom_cache.get("t_mid", 0.5)
 	anim_duration = _custom_cache.get("dur", 1.0)
 	enable_shadow = _custom_cache.get("shadow", true)
 #endregion
+
 
 
 #region Rigging Logic
@@ -247,6 +256,7 @@ func _calculate_polygon_rect() -> Rect2:
 	return Rect2(min_v, max_v - min_v)
 
 
+
 ## Generates the full rig logic including mesh and bones.
 func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 	self.z_index = 10
@@ -263,7 +273,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 	var step_x = tex_size.x / subdivision_x
 	var step_y = tex_size.y / subdivision_y
 	
-	# Prepare Gradient Texture for Background Shadow
 	var applied_shadow_tex: Texture2D = null
 	if not shadow_gradient:
 		shadow_gradient = preload("uid://rm7bporlv3cf")
@@ -272,7 +281,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 		dup.width = int(tex_size.x)
 	applied_shadow_tex = dup
 	
-	# --- 0. BACKGROUND SHADOW ---
 	if enable_shadow:
 		var shadow = Polygon2D.new()
 		shadow.name = SHADOW_NAME
@@ -294,7 +302,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 		if Engine.is_editor_hint() and get_tree().edited_scene_root:
 			shadow.owner = get_tree().edited_scene_root
 
-	# --- 1. MESH & UV ---
 	var new_uvs = PackedVector2Array()
 	for y in range(subdivision_y + 1):
 		for x in range(subdivision_x + 1):
@@ -310,7 +317,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 			new_polygons.append(PackedInt32Array([i, i + 1, i + rc + 1, i + rc]))
 	self.polygons = new_polygons
 	
-	# --- 2. SKELETON ---
 	var sk = Skeleton2D.new()
 	sk.name = SKELETON_NAME
 	add_child(sk)
@@ -318,7 +324,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 		sk.owner = get_tree().edited_scene_root
 	self.skeleton = NodePath(SKELETON_NAME)
 	
-	# --- 3. BONES (Structured Hierarchy) ---
 	for y in range(subdivision_y + 1):
 		var parent_bone: Bone2D = null
 		
@@ -329,11 +334,9 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 			b.set_length(step_x)
 			
 			if x == 0:
-				# Root bone (Spine)
 				sk.add_child(b)
 				b.position = Vector2(0, y * step_y)
 			else:
-				# Child bone
 				if parent_bone:
 					parent_bone.add_child(b)
 				b.position = Vector2(step_x, 0)
@@ -344,11 +347,11 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 			b.set_rest(b.transform)
 			parent_bone = b
 	
-	# --- 4. WEIGHTS (Gradient Skinning) ---
 	_apply_weights_to_polygon(self, sk)
 
 	queue_redraw()
 	notify_property_list_changed()
+
 
 
 ## Applies the calculated skinning weights to the generated skeleton.
@@ -402,9 +405,8 @@ func _apply_weights_to_polygon(poly: Polygon2D, sk: Skeleton2D):
 
 	for bpath in weights_per_bone:
 		poly.add_bone(bpath, weights_per_bone[bpath])
-
-
 #endregion
+
 
 
 #region Animation Logic
@@ -419,6 +421,7 @@ func _generate_animations_logic():
 	_create_single_anim(library, "turn_flexible_page_mirror", false, true)
 	_create_single_anim(library, "turn_rigid_page_mirror", true, true)
 	notify_property_list_changed()
+
 
 
 ## Creates a single track animation and adds it to the player.
@@ -436,27 +439,25 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 	var my_path = anim_player.get_node(anim_player.root_node).get_path_to(self)
 	var path_prefix = str(my_path)
 	if path_prefix == "": path_prefix = "."
-	
 	var visible_col = Color(1, 1, 1, 1)
 	var invisible_col = Color(1, 1, 1, 0)
 	var faded_col = Color(1, 1, 1, shadow_mid_opacity)
 	
-	var t_mid = anim_duration * 0.5
+	var t_mid = anim_duration * timing_midpoint_ratio
 	var t_end_snap = anim_duration * 0.95
 	
 	var z_track = anim.add_track(Animation.TYPE_VALUE)
 	anim.track_set_path(z_track, path_prefix + ":z_index")
 	anim.track_set_interpolation_type(z_track, Animation.INTERPOLATION_NEAREST)
 	anim.track_insert_key(z_track, 0.0, 10)
-	anim.track_insert_key(z_track, anim_duration * 0.15, 25)
-	anim.track_insert_key(z_track, anim_duration * 0.65, 10)
+	anim.track_insert_key(z_track, t_mid * 0.3, 25)
+	anim.track_insert_key(z_track, t_mid + ((anim_duration - t_mid) * 0.3), 10)
 
 	var shadow_node = find_child(SHADOW_NAME, true, false)
 	if shadow_node and enable_shadow:
 		var shadow_path = anim_player.get_node(anim_player.root_node).get_path_to(shadow_node)
 		var shadow_path_prefix = str(shadow_path)
 		if shadow_path_prefix == "": shadow_path_prefix = "."
-		
 		var t_scale = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t_scale, shadow_path_prefix + ":scale")
 		anim.track_set_interpolation_type(t_scale, Animation.INTERPOLATION_LINEAR)
@@ -469,7 +470,7 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		
 		anim.track_insert_key(t_scale, 0.0, s_start)
 		anim.track_insert_key(t_mod, 0.0, invisible_col)
-		anim.track_insert_key(t_mod, anim_duration * 0.1, visible_col)
+		anim.track_insert_key(t_mod, t_mid * 0.2, visible_col)
 		
 		anim.track_insert_key(t_scale, t_mid, s_mid)
 		anim.track_insert_key(t_mod, t_mid, faded_col)
@@ -512,7 +513,6 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 			var path = anim_player.get_node(anim_player.root_node).get_path_to(bone)
 			var bone_path_prefix = str(path)
 			if bone_path_prefix == "": bone_path_prefix = "."
-			
 			anim.track_set_path(t_idx, bone_path_prefix + ":rotation_degrees")
 			anim.track_set_interpolation_type(t_idx, Animation.INTERPOLATION_CUBIC)
 			
@@ -524,7 +524,7 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 					var e = deg_flat_right if is_mirror else deg_flat_left
 					anim.track_insert_key(t_idx, 0.0, s)
 					anim.track_insert_key(t_idx, 0.01, s)
-					anim.track_insert_key(t_idx, anim_duration * 0.5, deg_mid)
+					anim.track_insert_key(t_idx, t_mid, deg_mid)
 					anim.track_insert_key(t_idx, anim_duration - 0.01, e)
 					anim.track_insert_key(t_idx, anim_duration, e)
 				else:
@@ -533,9 +533,9 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 			else:
 				var x_ratio = float(x) / float(subdivision_x)
 				var influence = pow(x_ratio, paper_stiffness)
-				var t_lift = clamp((anim_duration * timing_peak_lift) + time_offset, 0.0, (anim_duration * 0.5) - 0.05)
-				var t_mid_bone = anim_duration * 0.5
-				var t_land = clamp((anim_duration * timing_peak_land) - time_offset, t_mid_bone + 0.05, anim_duration)
+				var t_lift = clamp((anim_duration * timing_peak_lift) + time_offset, 0.0, t_mid - 0.05)
+				var t_mid_bone = t_mid
+				var t_land = clamp((anim_duration * timing_peak_land) - time_offset, t_mid + 0.05, anim_duration)
 				
 				if x == 0:
 					var s = deg_flat_left if is_mirror else deg_flat_right
@@ -581,17 +581,16 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		
 		anim.track_insert_key(t_main_scale, 0.0, Vector2(1, 1))
 		anim.track_insert_key(t_main_scale, t_mid, Vector2(1, 1))
-		anim.track_insert_key(t_main_scale, t_mid + (anim_duration * 0.1), Vector2(squash_x, 1))
+		anim.track_insert_key(t_main_scale, t_mid + ((anim_duration - t_mid) * 0.2), Vector2(squash_x, 1))
 		anim.track_insert_key(t_main_scale, anim_duration * 0.85, Vector2(1, 1))
 		anim.track_insert_key(t_main_scale, anim_duration, Vector2(1, 1))
 
 	var method_track = anim.add_track(Animation.TYPE_METHOD)
 	anim.track_set_path(method_track, path_prefix)
-	anim.track_insert_key(method_track, anim_duration * 0.5, {"method": "_trigger_midpoint", "args": []})
+	anim.track_insert_key(method_track, t_mid, {"method": "_trigger_midpoint", "args": []})
 	anim.track_insert_key(method_track, anim_duration, {"method": "_trigger_end", "args": []})
-
-
 #endregion
+
 
 
 #region Helper Functions
@@ -600,9 +599,11 @@ func _trigger_midpoint():
 	emit_signal("change_page_requested")
 
 
+
 ## Triggers the end animation signal.
 func _trigger_end():
 	emit_signal("end_animation")
+
 
 
 ## Rebuilds logic when the property is clicked in the inspector.
@@ -614,6 +615,7 @@ func _on_generate_pressed(val):
 		_generate_animations_logic()
 
 
+
 ## Animates the property when pressed in the inspector.
 func _on_anim_pressed(val):
 	if val:
@@ -622,6 +624,8 @@ func _on_anim_pressed(val):
 			_generate_animations_logic()
 
 
+
+## Resets all skeleton bones back to their original zeroed rest rotations.
 func reset_bones_to_rest() -> void:
 	var sk_node = find_child(SKELETON_NAME, true, false)
 	if not sk_node: return
@@ -631,12 +635,15 @@ func reset_bones_to_rest() -> void:
 		_reset_bone_recursive(child)
 
 
+
+## Recursively resets bones starting from the given node down the hierarchy.
 func _reset_bone_recursive(node: Node) -> void:
 	if node is Bone2D:
 		node.rotation = 0.0
 		node.rotation_degrees = 0.0
 	for i in range(node.get_child_count()):
 		_reset_bone_recursive(node.get_child(i))
+
 
 
 ## Cleans previous rig nodes.

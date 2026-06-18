@@ -1,29 +1,35 @@
 @tool
 extends Label
 
+## Controls if the text size should adjust automatically
 @export var auto_adjust_text: bool = true
+
+## The minimum font size allowed
 @export var min_font_size: int = 8 : 
 	set(value):
 		min_font_size = value
 		if is_node_ready():
 			adjust_text_fit(3)
-		
+
+## The maximum font size allowed
 @export var max_font_size: int = 500 : 
 	set(value):
 		max_font_size = value
 		if is_node_ready():
 			adjust_text_fit(3)
-		
+
+## Forces a specific font size, ignoring the auto-fit logic if greater than -1
 @export var force_text_size: int = -1 : 
 	set(value):
 		force_text_size = value
 		if is_node_ready():
 			adjust_text_fit(3)
-		
 
+## When true, marks the current size as the original default size
 @export var mark_current_size_as_default: bool = false :
 	set(value):
 		set_meta("original_size", size)
+
 
 var old_text: String
 var busy: bool = false
@@ -33,10 +39,12 @@ signal font_size_changed(new_size: int)
 
 
 
+#region Lifecycle Functions
 ## Initializes the label and triggers the first text fit adjustment
 func _ready() -> void:
 	old_text = text
 	adjust_text_fit.call_deferred(3)
+
 
 
 ## Processes changes in text dynamically and updates shader brightness
@@ -51,6 +59,18 @@ func _process(_delta: float) -> void:
 			get_material().set_shader_parameter("brightness", brightness)
 
 
+
+## Handles specific node notifications to update layout dynamically
+func _notification(what: int) -> void:
+	if busy: return
+	if auto_adjust_text:
+		if what == NOTIFICATION_RESIZED:
+			adjust_text_fit(3)
+#endregion
+
+
+
+#region Text Adjustment Logic
 ## Retrieves the actual font used by the label or the current theme
 func get_actual_font() -> Font:
 	var custom_font = get("theme_override_fonts/font")
@@ -63,12 +83,15 @@ func get_actual_font() -> Font:
 		return get_theme_default_font()
 
 
+
 ## Calculates the maximum available size inside the parent container taking theme margins into account
 func get_effective_target_size() -> Vector2:
 	var parent = get_parent() as Control
 	if not parent:
 		return size
+	
 	var available_size = parent.size
+	
 	if parent is MarginContainer:
 		var m_left = parent.get_theme_constant("margin_left")
 		var m_top = parent.get_theme_constant("margin_top")
@@ -83,7 +106,9 @@ func get_effective_target_size() -> Vector2:
 			available_size.y -= (style.get_margin(SIDE_TOP) + style.get_margin(SIDE_BOTTOM))
 	elif parent is Container:
 		return size
+	
 	return available_size
+
 
 
 ## Adapts the font size to fit the text perfectly inside the target bounds using a binary search
@@ -94,13 +119,41 @@ func adjust_text_fit(loops: int = 0) -> void:
 			adjust_text_fit(loops - 1)
 		return
 		
+	if !text:
+		if custom_minimum_size != Vector2(-1, -1):
+			custom_minimum_size = Vector2(-1, -1)
+			
+		var current_font_size = get("theme_override_font_sizes/font_size")
+		if current_font_size != min_font_size:
+			set("theme_override_font_sizes/font_size", min_font_size)
+			
+		if label_settings and label_settings.font_size != min_font_size:
+			label_settings.font_size = min_font_size
+			
+		font_size_changed.emit(min_font_size)
+		return
+		
 	if force_text_size != -1:
-		set("theme_override_font_sizes/font_size", force_text_size)
-		if label_settings:
+		var current_font_size = get("theme_override_font_sizes/font_size")
+		if current_font_size != force_text_size:
+			set("theme_override_font_sizes/font_size", force_text_size)
+			
+		if label_settings and label_settings.font_size != force_text_size:
 			label_settings.font_size = force_text_size
+			
 		font_size_changed.emit(force_text_size)
+		
+		var font = get_actual_font()
+		var final_text_size = font.get_string_size(text + " ", HORIZONTAL_ALIGNMENT_LEFT, -1, force_text_size)
+		if custom_minimum_size != final_text_size:
+			custom_minimum_size = final_text_size
+		
 		await get_tree().process_frame
-		pivot_offset = size * 0.5
+		
+		var current_pivot = size * 0.5
+		if pivot_offset != current_pivot:
+			pivot_offset = current_pivot
+			
 		if loops > 0:
 			adjust_text_fit(loops - 1)
 		return
@@ -112,19 +165,13 @@ func adjust_text_fit(loops: int = 0) -> void:
 			await RenderingServer.frame_post_draw
 			adjust_text_fit(loops - 1)
 		return
-		
-	if !text:
-		set("theme_override_font_sizes/font_size", min_font_size)
-		if label_settings:
-			label_settings.font_size = min_font_size
-		font_size_changed.emit(min_font_size)
-		return
 	
 	busy = true
-	clip_text = true
+	if clip_text != true:
+		clip_text = true
+	
 	var font = get_actual_font()
 	var target_size = get_effective_target_size()
-			
 	var font_size = min_font_size
 	var min_size := min_font_size
 	var max_size := max_font_size
@@ -139,24 +186,29 @@ func adjust_text_fit(loops: int = 0) -> void:
 			min_size = mid_size + 1
 			font_size = mid_size
 	
-	set("theme_override_font_sizes/font_size", font_size + 1)
-	if label_settings:
-		label_settings.font_size = font_size + 1
-	font_size_changed.emit(font_size + 1)
-	custom_minimum_size = target_size
-	set.call_deferred("clip_text", false)
+	var final_font_size = font_size + 1
+	var current_font_size = get("theme_override_font_sizes/font_size")
+	if current_font_size != final_font_size:
+		set("theme_override_font_sizes/font_size", final_font_size)
+		
+	if label_settings and label_settings.font_size != final_font_size:
+		label_settings.font_size = final_font_size
+		
+	font_size_changed.emit(final_font_size)
+	
+	var final_text_size = font.get_string_size(text + " ", HORIZONTAL_ALIGNMENT_LEFT, -1, final_font_size)
+	if custom_minimum_size != final_text_size:
+		custom_minimum_size = final_text_size
+		
+	if clip_text != false:
+		set.call_deferred("clip_text", false)
 	
 	if is_inside_tree():
 		await get_tree().process_frame
-		pivot_offset = size * 0.5
+		var current_pivot = size * 0.5
+		if pivot_offset != current_pivot:
+			pivot_offset = current_pivot
 		busy = false
 		if loops > 0:
 			adjust_text_fit(loops - 1)
-
-
-## Handles specific node notifications to update layout dynamically
-func _notification(what: int) -> void:
-	if busy: return
-	if auto_adjust_text:
-		if what == NOTIFICATION_RESIZED:
-			adjust_text_fit(3)
+#endregion

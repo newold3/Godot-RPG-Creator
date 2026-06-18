@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://co46egqdekn7p"]
+[gd_scene format=3 uid="uid://co46egqdekn7p"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_2y4h0"]
 [ext_resource type="PackedScene" uid="uid://bwgf6rhx3a6cq" path="res://addons/CustomControls/custom_panel.tscn" id="1_cje7d"]
@@ -20,7 +20,7 @@ gradient = SubResource("Gradient_xvnf6")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fktj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wltu2"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -38,17 +38,17 @@ corner_radius_bottom_left = 12
 [sub_resource type="Gradient" id="Gradient_ctwx1"]
 colors = PackedColorArray(0.286275, 0.301961, 0.309804, 1, 0.337255, 0.34902, 0.356863, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_odtsu"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_paonk"]
 resource_local_to_scene = true
 gradient = SubResource("Gradient_ctwx1")
 fill_from = Vector2(0.542735, 0.995726)
 fill_to = Vector2(0.58547, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exlro"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bolai"]
 resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_odtsu")
+texture = SubResource("GradientTexture2D_paonk")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bxs7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rirso"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -101,18 +101,19 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="OtherCommandDialog" type="Window"]
+[node name="OtherCommandDialog" type="Window" unique_id=1119788671]
 oversampling_override = 1.0
 title = "Other Commands"
 position = Vector2i(0, 36)
-size = Vector2i(567, 270)
+size = Vector2i(560, 270)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_2y4h0")
 script = ExtResource("1_fewbt")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=261451710]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -120,7 +121,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_jowpr")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1963259514]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -131,14 +132,14 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=586901319]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1510146171]
 layout_mode = 2
 text = "Select Command:"
 
-[node name="CommandType" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+[node name="CommandType" type="OptionButton" parent="MarginContainer/VBoxContainer" unique_id=1282639573]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Select the desired command from this list."
@@ -171,46 +172,46 @@ popup/item_11/text = "Show Profession Level"
 popup/item_11/id = 11
 script = ExtResource("2_veg16")
 
-[node name="CustomPanel" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_cje7d")]
+[node name="CustomPanel" parent="MarginContainer/VBoxContainer" unique_id=1864432245 instance=ExtResource("1_cje7d")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0fktj")
-style1 = SubResource("StyleBoxFlat_0fktj")
-style2 = SubResource("StyleBoxTexture_exlro")
-style3 = SubResource("StyleBoxFlat_0bxs7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wltu2")
+style1 = SubResource("StyleBoxFlat_wltu2")
+style2 = SubResource("StyleBoxTexture_bolai")
+style3 = SubResource("StyleBoxFlat_rirso")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CustomPanel" unique_id=848374463]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=482711361]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=437145216]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=454064226]
 layout_mode = 2
 text = "ID:"
 
-[node name="ID" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_0673p")]
+[node name="ID" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2110662534 instance=ExtResource("2_0673p")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "ID for the command selected"
 min_value = 1.0
-value = 1.0
 allow_greater = true
+_custom_value = 0.0
 
-[node name="SetValue" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+[node name="SetValue" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=524484491 instance=ExtResource("3_ullnk")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Take the desired ID by selecting it from a list."
 text = "Set"
 
-[node name="ShowIcon" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+[node name="ShowIcon" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1169945324]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[title]Show Extra data[/title]
@@ -222,7 +223,7 @@ tooltip_text = "[title]Show Extra data[/title]
 mouse_default_cursor_shape = 2
 text = "Show variable name to the left of the value?"
 
-[node name="ShowIcon2" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+[node name="ShowIcon2" type="CheckBox" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=968973466]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -232,45 +233,45 @@ Displays the gold icon to the right of the quantity"
 mouse_default_cursor_shape = 2
 text = "Show gold icon?"
 
-[node name="SizeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer"]
+[node name="SizeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer" unique_id=1684474016]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=169749111]
 layout_mode = 2
 text = "Icon size: "
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=1717889693]
 layout_mode = 2
 text = "Width"
 
-[node name="Width" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" instance=ExtResource("2_0673p")]
+[node name="Width" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=2131139954 instance=ExtResource("2_0673p")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Displays the icon with the specified size. Set to 0 to use the actual size of the icon image."
 mouse_filter = 2
-value = 26.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=1404066605]
 layout_mode = 2
 text = " Height"
 
-[node name="Height" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" instance=ExtResource("2_0673p")]
+[node name="Height" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=957621664 instance=ExtResource("2_0673p")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Displays the icon with the specified size. Set to 0 to use the actual size of the icon image."
 mouse_filter = 2
-value = 26.0
 allow_greater = true
 editable = false
 disabled = true
+_custom_value = 0.0
 
-[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer"]
+[node name="ChainSize" type="TextureButton" parent="MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/SizeContainer" unique_id=1228411549]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -282,16 +283,16 @@ texture_normal = SubResource("AtlasTexture_2wgph")
 texture_pressed = SubResource("AtlasTexture_58rao")
 texture_hover = SubResource("AtlasTexture_ei5ax")
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=868426842]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1599486455]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=484889468 instance=ExtResource("3_ullnk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -304,7 +305,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_krib4")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_03cbx")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ullnk")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1019958283 instance=ExtResource("3_ullnk")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

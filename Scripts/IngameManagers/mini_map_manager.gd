@@ -96,8 +96,6 @@ func setup(map: RPGMap) -> void:
 	
 	if not entities_drawer.draw.is_connected(_on_entities_drawer_draw):
 		entities_drawer.draw.connect(_on_entities_drawer_draw)
-	
-	%MiniMapContainer
 
 
 

@@ -17,6 +17,8 @@ extends Node2D
 ## - Slot 4: Dynamic Page Face B (Back).[br]
 ## - The Shader handles the visibility of Face A vs Face B automatically.
 
+
+
 ## Defines how textures are stretched within the page boundaries.
 enum PageStretchOption {
 	## Scales the texture to fit the page rect, potentially distorting aspect ratio.
@@ -326,10 +328,12 @@ func _validate_property(property: Dictionary) -> void:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
 
 
+
 ## Sets the behavior executed upon closing the book.
 func _set_close_behavior(value):
 	close_behavior = value
 	notify_property_list_changed()
+
 
 
 ## Sets the start option for the book.
@@ -338,10 +342,12 @@ func _set_start_option(value):
 	notify_property_list_changed()
 
 
+
 ## Set Book Speed Scale
 func set_speed_scale(_speed: float) -> void:
 	if anim_player:
 		anim_player.speed_scale = _speed
+
 
 
 ## Applies the custom Newold configuration preset.
@@ -386,6 +392,7 @@ func _apply_newold_config(val):
 	notify_property_list_changed()
 
 
+
 ## Triggered when the preview in editor button is pressed.
 func _on_preview_in_editor_pressed(value: bool) -> void:
 	if not value:
@@ -395,6 +402,7 @@ func _on_preview_in_editor_pressed(value: bool) -> void:
 	
 	if Engine.is_editor_hint():
 		_force_editor_preview()
+
 
 
 ## Forces an editor preview of the book.
@@ -430,6 +438,7 @@ func _force_editor_preview() -> void:
 	_init_perspective_material()
 	_initial_config()
 	_set_flying_slots_active(false)
+
 
 
 ## Initializes the node structure and viewports.
@@ -482,6 +491,7 @@ func __init():
 		_apply_new_size()
 
 
+
 ## Ensures a child node exists by finding it or creating it.
 func __ensure_node(target_name: String, type: Variant, parent_node: Node) -> Node:
 	var node = parent_node.get_node_or_null(target_name)
@@ -494,6 +504,7 @@ func __ensure_node(target_name: String, type: Variant, parent_node: Node) -> Nod
 	return node
 
 
+
 ## Called when the node enters the scene tree.
 func _enter_tree() -> void:
 	if not is_in_group("FlipBook2D"):
@@ -501,10 +512,12 @@ func _enter_tree() -> void:
 	BookAPI.set_current_book(self)
 
 
+
 ## Called when the node leaves the scene tree.
 func _exit_tree() -> void:
 	if BookAPI.get_current_book() == self:
 		BookAPI.set_current_book(null)
+
 
 
 ## Called when the node is ready. Sets up visuals, logic, and internal references.
@@ -567,6 +580,7 @@ func _ready():
 	get_tree().process_frame.connect(_force_initial_transform.bind(), CONNECT_ONE_SHOT)
 
 
+
 ## Forces the initial transform after the AnimationPlayer's automatic RESET phase.
 func _force_initial_transform():
 	var is_closed = (current_spread == -1 or current_spread == total_spreads)
@@ -578,8 +592,8 @@ func _force_initial_transform():
 	_stack_scale_left = 0.0 if current_spread <= 1 else 1.0
 	_stack_scale_right = 0.0 if current_spread >= total_spreads - 1 else 1.0
 	
-	var cam = get_viewport().get_camera_2d()
-	var screen_center = cam.get_screen_center_position() if cam else (get_viewport().get_visible_rect().size / 2.0)
+	var camera = get_viewport().get_camera_2d()
+	var screen_center = get_viewport().get_camera_2d().get_screen_center_position() if camera else get_viewport().size * 0.5
 	
 	if is_closed:
 		var offset = _get_compensation_offset(true, is_back)
@@ -597,10 +611,12 @@ func _force_initial_transform():
 	_update_volume_visuals()
 
 
+
 ## Applies initial state configurations for visuals and positions.
 func _initial_config():
 	page_width = target_page_size.x
-	var screen_center = get_viewport().get_camera_2d().get_screen_center_position()
+	var camera = get_viewport().get_camera_2d()
+	var screen_center = get_viewport().get_camera_2d().get_screen_center_position() if camera else get_viewport().size * 0.5
 
 	_set_page_visible(dynamic_poly, false)
 
@@ -632,6 +648,7 @@ func _initial_config():
 	_check_scene_activation.call_deferred()
 
 
+
 ## Fills the internal arrays based on the requested images or scenes.
 func _prepare_book_content():
 	_runtime_pages = pages_paths.duplicate()
@@ -641,6 +658,7 @@ func _prepare_book_content():
 	if num == 0: total_spreads = 1
 	else: total_spreads = (num / 2) + 1
 #endregion
+
 
 
 #region Visual and Volume Management Block
@@ -658,6 +676,7 @@ func _init_perspective_material() -> void:
 		static_right.material.shader = perspective_shader
 
 
+
 ## Sets the spine color and updates its visual.
 func _set_spine_color(color: Color) -> void:
 	spine_color = color
@@ -669,12 +688,14 @@ func _set_spine_color(color: Color) -> void:
 		_build_spine()
 
 
+
 ## Sets the spine texture and updates its visual.
 func _set_spine_texture(texture: Texture2D) -> void:
 	spine_texture = texture
 	var node = find_child("RuntimeSpine")
 	if node: node.texture = spine_texture
 	if volume_spine: volume_spine.texture = spine_texture
+
 
 
 ## Sets the spine width and rebuilds it.
@@ -684,11 +705,13 @@ func _set_spine_value(value: float) -> void:
 		_build_spine()
 
 
+
 ## Triggers size rebuild from the editor inspector.
 func _on_apply_size_pressed(val):
 	if not val: return
 	apply_size_change = false
 	_apply_new_size()
+
 
 
 ## Rebuilds the visual meshes, viewports, and arrays for a new page size.
@@ -745,12 +768,15 @@ func _apply_new_size():
 	_fit_camera_to_book()
 
 
+
 ## Recursively updates the size of all subviewports inside a given node.
 func _update_viewports_recursive(node: Node, new_size: Vector2):
 	for child in node.get_children():
 		if child is SubViewport:
-			child.size = new_size; child.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+			child.size = new_size;
+			child.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 		if child.get_child_count() > 0: _update_viewports_recursive(child, new_size)
+
 
 
 ## Fits the editor camera precisely to the size of the book.
@@ -768,6 +794,7 @@ func _fit_camera_to_book():
 	var zoom_y = screen_size.y / required_height
 	var final_zoom = min(zoom_x, zoom_y)
 	cam.zoom = Vector2(final_zoom, final_zoom)
+
 
 
 ## Rebuilds the geometry of the central spine to match sizes and offsets.
@@ -802,14 +829,16 @@ func _build_spine():
 	visuals_container.add_child(_spine_poly)
 	_spine_poly.position = Vector2.ZERO
 	
-	if Engine.is_editor_hint(): _spine_poly.owner = get_tree().edited_scene_root
+	if is_inside_tree() and Engine.is_editor_hint(): _spine_poly.owner = get_tree().edited_scene_root
 	
 	_update_perspective(_current_expansion_factor)
+
 
 
 ## Safely sets visibility on a node.
 func _set_page_visible(node: Node2D, show: bool):
 	if node: node.visible = show
+
 
 
 ## Renders visuals out instantly bypassing natural timing delays.
@@ -826,11 +855,13 @@ func _update_static_visuals_immediate():
 	_set_page_visible(static_right, valid_r)
 
 
+
 ## Refreshes the book's visual state and spine parameters immediately.
 func refresh() -> void:
 	_update_static_visuals_immediate()
 	_set_spine_texture(spine_texture)
 	_set_spine_color(spine_color)
+
 
 
 ## Generates the simulated 3D volume layers under the book.
@@ -909,6 +940,7 @@ func _generate_volume_layers() -> void:
 		_volume_root.add_child(layer_node)
 
 
+
 ## Calculates floating-point fractional layer count for smooth spine tweening.
 func _get_layer_count_for_spread_float(spread_idx: float, total_layers: int) -> float:
 	if total_spreads <= 2: return 0.0
@@ -918,6 +950,7 @@ func _get_layer_count_for_spread_float(spread_idx: float, total_layers: int) -> 
 	var safe_spread = clamp(adjusted_idx, 0.0, real_max)
 	var ratio = safe_spread / real_max
 	return ratio * float(total_layers)
+
 
 
 ## Updates the visual stack volume rendering and positions.
@@ -1130,9 +1163,11 @@ func _update_stack_direct(expansion_factor: float, visual_spread: float):
 		current_layer_index += 1
 
 
+
 ## Helper wrapper for tweening the volume expansion factor.
 func _tween_expansion_only(factor: float):
 	_update_stack_direct(factor, _visual_spread_index)
+
 
 
 ## Updates the position of the volume root visually.
@@ -1141,9 +1176,11 @@ func _update_volume_visuals():
 	_volume_root.position = volume_stack_offset
 
 
+
 ## Calculates how many volume layers should be drawn for a specific spread.
 func _get_layer_count_for_spread(spread_idx: float, total_layers: int) -> int:
 	return int(round(_get_layer_count_for_spread_float(spread_idx, total_layers)))
+
 
 
 ## Applies the perspective material parameters to a node.
@@ -1162,6 +1199,7 @@ func _apply_perspective_to_node(node: Node2D, tl: Vector2, tr: Vector2, bl: Vect
 		node.material.set_shader_parameter("node_y_offset", node.position.y)
 		node.material.set_shader_parameter("node_scale", node.scale)
 		node.material.set_shader_parameter("dynamic_scale_corr", 1.0)
+
 
 
 ## Updates the perspective parameters based on the current expansion factor.
@@ -1194,6 +1232,7 @@ func _update_perspective(factor: float) -> void:
 				_apply_perspective_to_node(r_node, tl, tr, bl, br, bw, bh)
 
 
+
 ## Retrieves alignment offsets relative to the book structure parameters and center points.
 func _get_compensation_offset(is_closed: bool, is_back: bool) -> Vector2:
 	var target_local_x = 0.0
@@ -1208,6 +1247,7 @@ func _get_compensation_offset(is_closed: bool, is_back: bool) -> Vector2:
 	target_vec *= t_scale
 	target_vec = target_vec.rotated(deg_to_rad(t_rot))
 	return -target_vec
+
 
 
 ## Manages container tween values natively supporting book orientations.
@@ -1225,6 +1265,7 @@ func _animate_container_transform(target_is_closed: bool, is_back: bool, duratio
 		tween.tween_property(visuals_container, "skew", t_skew, duration)
 		tween.tween_property(visuals_container, "rotation", deg_to_rad(t_rot), duration)
 #endregion
+
 
 
 #region Input and Interaction Block
@@ -1253,6 +1294,7 @@ func _inject_event_to_viewport(viewport: SubViewport, polygon: Polygon2D, event:
 		DisplayServer.cursor_set_shape.call_deferred(DisplayServer.CursorShape.CURSOR_ARROW)
 
 
+
 ## Clears the viewport input state. Call this when interaction stops.
 func _reset_viewport_input_state() -> void:
 	for viewport in _active_viewports_state:
@@ -1260,6 +1302,7 @@ func _reset_viewport_input_state() -> void:
 			viewport.notify_mouse_exited()
 	
 	_active_viewports_state.clear()
+
 
 
 ## Handles standard inputs passed directly down the tree.
@@ -1293,6 +1336,7 @@ func _input(event):
 		if _active_interactive_is_right: _slot_2.push_input(event.duplicate(true))
 
 
+
 ## Triggers unhandled inputs such as navigation keys.
 func _unhandled_input(event):
 	if Engine.is_editor_hint(): return
@@ -1313,6 +1357,7 @@ func _unhandled_input(event):
 		else: prev_page(); get_viewport().set_input_as_handled()
 
 
+
 ## Manages transferring input controls from scenes to the book frame.
 func _pageflip_set_input_enabled(give_control_to_book: bool):
 	set_process_unhandled_input(give_control_to_book)
@@ -1330,6 +1375,7 @@ func _pageflip_set_input_enabled(give_control_to_book: bool):
 			_active_interactive_is_right = not give_control_to_book
 
 
+
 ## Traverses active scenes dynamically mapped in viewports to restore behaviors.
 func _check_scene_activation() -> void:
 	var scene_found = false
@@ -1345,6 +1391,7 @@ func _check_scene_activation() -> void:
 			node.set_process_input(true); node.set_process_unhandled_input(true); scene_found = true
 	if not scene_found: _pageflip_set_input_enabled(true)
 #endregion
+
 
 
 #region Navigation and Animation Block
@@ -1378,6 +1425,7 @@ func next_page():
 	_start_animation(true)
 
 
+
 ## Attempts to transition to the previous page.
 func prev_page():
 	if is_animating or current_spread <= -1: return
@@ -1397,6 +1445,7 @@ func prev_page():
 	_start_animation(false)
 
 
+
 ## Emits events for specific structural transitions.
 func _try_emit_book_signals(_direction: String) -> void:
 	if _direction == "right" and current_spread == -1:
@@ -1407,6 +1456,7 @@ func _try_emit_book_signals(_direction: String) -> void:
 		book_closed.emit()
 	elif _direction == "right" and current_spread == total_spreads - 1:
 		book_closed.emit()
+
 
 
 ## Internal function that handles the actual jump logic using specific spread indices.
@@ -1434,6 +1484,7 @@ func _go_to_page(target_spread_idx: int, total_time: float = 0.5) -> void:
 	_start_animation(forward)
 
 
+
 ## API to jump to a specific page or cover.
 func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE, total_time: float = 0.5) -> void:
 	if is_animating: return
@@ -1457,8 +1508,8 @@ func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE,
 			if target_spread_idx < 0: target_spread_idx = 0
 			if target_spread_idx > total_spreads - 1: target_spread_idx = total_spreads - 1
 	
-	print(total_time)
 	_go_to_page(target_spread_idx, total_time)
+
 
 
 ## start from the current visual state and end at the cover.
@@ -1476,12 +1527,14 @@ func force_close_book(to_front_cover: bool):
 		_start_animation(true)
 
 
+
 ## Toggles rendering bounds manually depending on the flipping status.
 func _set_flying_slots_active(is_active: bool) -> void:
 	var mode = SubViewport.UPDATE_ALWAYS if is_active else SubViewport.UPDATE_DISABLED
 	
 	if _slot_3: _slot_3.render_target_update_mode = mode
 	if _slot_4: _slot_4.render_target_update_mode = mode
+
 
 
 ## Connects variables with the animation timeline elements depending on rigid physics setups.
@@ -1681,10 +1734,16 @@ func _start_animation(forward: bool) -> void:
 	var start_exp = float(_current_expansion_factor)
 	var end_exp = 1.0 if target_is_closed else 0.0
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT).set_parallel(true)
-	var half_duration = motion_duration * 0.5
+	
+	var mid_ratio = 0.5
+	if dynamic_poly and "timing_midpoint_ratio" in dynamic_poly:
+		mid_ratio = dynamic_poly.get("timing_midpoint_ratio")
+		
+	var first_half_duration = motion_duration * mid_ratio
+	var second_half_duration = motion_duration * (1.0 - mid_ratio)
 
 	var overlap_factor = 0.8
-	var delay_time = half_duration * overlap_factor
+	var delay_time = first_half_duration * overlap_factor
 	var entry_duration = motion_duration - delay_time
 
 	if dynamic_poly.material is ShaderMaterial and not is_rigid_motion:
@@ -1693,10 +1752,10 @@ func _start_animation(forward: bool) -> void:
 
 		var shadow_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-		shadow_tween.tween_property(dynamic_poly.material, "shader_parameter/shadow_intensity", 0.65, half_duration)
-		shadow_tween.parallel().tween_property(dynamic_poly.material, "shader_parameter/max_shadow_spread", target_spread, half_duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		shadow_tween.tween_property(dynamic_poly.material, "shader_parameter/shadow_intensity", 0.65, first_half_duration)
+		shadow_tween.parallel().tween_property(dynamic_poly.material, "shader_parameter/max_shadow_spread", target_spread, first_half_duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-		var d = half_duration * 0.8
+		var d = second_half_duration * 0.8
 		shadow_tween.set_ease(Tween.EASE_IN)
 		shadow_tween.tween_property(dynamic_poly.material, "shader_parameter/shadow_intensity", 0.0, d)
 		shadow_tween.parallel().tween_property(dynamic_poly.material, "shader_parameter/max_shadow_spread", 0.0, d).set_trans(Tween.TRANS_SINE)
@@ -1709,7 +1768,7 @@ func _start_animation(forward: bool) -> void:
 		tween.tween_property(self, "_stack_scale_left", 1.0, entry_duration).set_delay(delay_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	elif not start_thin_L and end_thin_L:
 		_stack_scale_left = 1.0
-		tween.tween_property(self, "_stack_scale_left", 0.0, half_duration * 0.8)
+		tween.tween_property(self, "_stack_scale_left", 0.0, first_half_duration * 0.8)
 	elif start_thin_L and end_thin_L:
 		_stack_scale_left = 0.0
 	else:
@@ -1723,7 +1782,7 @@ func _start_animation(forward: bool) -> void:
 		tween.tween_property(self, "_stack_scale_right", 1.0, entry_duration).set_delay(delay_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	elif not start_thin_R and end_thin_R:
 		_stack_scale_right = 1.0
-		tween.tween_property(self, "_stack_scale_right", 0.0, half_duration * 0.8)
+		tween.tween_property(self, "_stack_scale_right", 0.0, first_half_duration * 0.8)
 	elif start_thin_R and end_thin_R:
 		_stack_scale_right = 0.0
 	else:
@@ -1731,7 +1790,8 @@ func _start_animation(forward: bool) -> void:
 
 	if use_tween:
 		var compensation_offset = _get_compensation_offset(target_is_closed, closing_to_back)
-		var screen_center = get_viewport().get_camera_2d().get_screen_center_position()
+		var camera = get_viewport().get_camera_2d()
+		var screen_center = get_viewport().get_camera_2d().get_screen_center_position() if camera else get_viewport().size * 0.5
 		var extra_offset = closed_offset if target_is_closed else open_offset
 		var final_pos = screen_center + compensation_offset - Vector2(target_page_size.x / 2, 0.0) + extra_offset
 		
@@ -1750,7 +1810,11 @@ func _start_animation(forward: bool) -> void:
 			
 		tween.tween_method(
 			func(t: float):
-				var arc = 4.0 * t * (1.0 - t)
+				var arc = 0.0
+				if t < mid_ratio:
+					arc = 1.0 - pow((mid_ratio - t) / mid_ratio, 2.0)
+				else:
+					arc = 1.0 - pow((t - mid_ratio) / (1.0 - mid_ratio), 2.0)
 				
 				var current_pos = start_pos.lerp(final_pos, t)
 				current_pos.y -= flight_lift_height * arc
@@ -1783,11 +1847,13 @@ func _start_animation(forward: bool) -> void:
 		_play_sound(sfx_page_flip)
 
 
+
 ## Marks the landing state explicitly before the actual animation wraps.
 func _on_page_landed_early():
 	_is_page_flying = false
 	_visual_spread_index = float(_pending_target_spread_idx)
 	_update_stack_direct(_current_expansion_factor, _visual_spread_index)
+
 
 
 ## Processes the timeline and visual alignment updates during an active animation.
@@ -1797,9 +1863,11 @@ func _process(_delta):
 		_update_volume_visuals()
 
 
+
 ## Handles midpoint signal.
 func _on_midpoint_signal():
 	pass
+
 
 
 ## Executed naturally when an animation completely terminates.
@@ -1838,7 +1906,8 @@ func _on_animation_finished(_anim_name: String):
 	var is_back_now = (current_spread == total_spreads)
 	
 	var compensation_offset = _get_compensation_offset(is_closed_now, is_back_now)
-	var screen_center = get_viewport().get_camera_2d().get_screen_center_position()
+	var camera = get_viewport().get_camera_2d()
+	var screen_center = get_viewport().get_camera_2d().get_screen_center_position() if camera else get_viewport().size * 0.5
 	var extra_offset = closed_offset if is_closed_now else open_offset
 	visuals_container.global_position = screen_center + compensation_offset - Vector2(target_page_size.x / 2, 0.0) + extra_offset
 	
@@ -1872,12 +1941,14 @@ func _on_animation_finished(_anim_name: String):
 	ended_page_flip_animation.emit()
 
 
+
 ## Carries out the close directives set natively inside inspector variables.
 func _perform_close_action():
 	if close_behavior == CloseBehavior.DESTROY_BOOK: queue_free()
 	elif close_behavior == CloseBehavior.CHANGE_SCENE:
 		if target_scene_on_close != "": get_tree().change_scene_to_file(target_scene_on_close)
 #endregion
+
 
 
 #region Content Rendering Block
@@ -1894,6 +1965,7 @@ func _get_page_index_for_spread(spread_idx: int, is_left: bool) -> int:
 		var content_idx = spread_idx * 2
 		if content_idx >= _runtime_pages.size(): return -102
 		return content_idx
+
 
 
 ## Fills a viewport dynamically rendering content required right in the current spread.
@@ -1927,6 +1999,7 @@ func _update_slot_content(slot: SubViewport, content_index: int, is_left: bool) 
 	else: _setup_texture_in_slot(slot, default_blank, is_left)
 
 
+
 ## Sets textures up inside an isolated slot structure securely.
 func _setup_texture_in_slot(slot: SubViewport, tex: Texture2D, is_left_page: bool):
 	if enable_composite_pages: _add_composite_blank_bg(slot, is_left_page)
@@ -1948,6 +2021,7 @@ func _setup_texture_in_slot(slot: SubViewport, tex: Texture2D, is_left_page: boo
 	slot.add_child(rect)
 
 
+
 ## Instantiates packed scenes inside subviewports.
 func _setup_scene_in_slot(slot: SubViewport, scene_pkg: PackedScene, texture_index: int, is_left_page: bool):
 	if enable_composite_pages: _add_composite_blank_bg(slot, is_left_page)
@@ -1967,6 +2041,7 @@ func _setup_scene_in_slot(slot: SubViewport, scene_pkg: PackedScene, texture_ind
 	instance.set_process_input(false); instance.set_process_unhandled_input(false)
 
 
+
 ## Embeds the configured base empty texture under transparent instances safely.
 func _add_composite_blank_bg(slot: SubViewport, is_left_page: bool):
 	var tex = left_blank_page_texture if is_left_page else right_blank_page_texture
@@ -1981,10 +2056,12 @@ func _add_composite_blank_bg(slot: SubViewport, is_left_page: bool):
 #endregion
 
 
+
 #region Audio Management Block
 ## Generates simple audio emissions when needed.
 func play_sound(stream: AudioStream) -> void:
 	_play_sound(stream)
+
 
 
 ## Internal function to play sound with pitch variance.

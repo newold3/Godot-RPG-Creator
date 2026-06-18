@@ -170,6 +170,65 @@ func _show_equip_menu() -> void:
 	
 	GameManager.set_fx_busy(false)
 	left_buttons_scene.busy = false
+
+
+func _show_library_menu() -> void:
+	party_scene.disabled()
+	main_scene.sub_menu_opened.emit()
+	left_buttons_scene.busy = true
+	
+	GameManager.play_fx("select")
+	GameManager.set_fx_busy(true)
+	
+	var initial_container = main_scene.initial_container
+	var original_position = initial_container.position
+	var t = create_tween()
+	t.set_parallel(true)
+	t.tween_property(initial_container, "modulate:a", 0.3, 0.15)
+	t.tween_property(initial_container, "position:x", initial_container.position.x - initial_container.size.x - main_scene.VIEWPORT_SAFETY_MARGIN, 0.15)
+	
+	#var scene_equip_path = RPGSYSTEM.database.system.game_scenes.get("Scene Equipment", "")
+	#var s = await GameManager.get_scene_from_cache("equipment", scene_equip_path, "", true)
+	var s = preload("uid://dcdwnws1525xh").instantiate()
+	
+	if not s: 
+		GameManager.set_fx_busy(false)
+		return
+		
+	s.z_index = 10
+	s.is_sub_menu = true
+	s.exit_tree_when_end = true
+	var parent = initial_container.get_parent()
+	if s.is_inside_tree():
+		parent.remove_child(s)
+	parent.add_child(s)
+
+	s.visible = true
+	
+	GameManager.set_fx_busy(false)
+	
+	await s.end
+	
+	GameManager.set_fx_busy(true)
+	
+	main_scene.sub_menu_closed.emit()
+	left_buttons_scene.start()
+	initial_container.position.x = -100
+	t = create_tween()
+	t.set_parallel(true)
+	t.tween_property(initial_container, "modulate:a", 1.0, 0.15)
+	t.tween_property(initial_container, "position", original_position, 0.35).set_trans(Tween.TRANS_SINE)
+	await t.finished
+	
+	GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
+	GameManager.force_show_cursor()
+	
+	GameManager.set_fx_busy(false)
+	left_buttons_scene.busy = false
+	
+	left_buttons_scene.enabled()
+	left_buttons_scene.select_button()
+
 #endregion
 
 
@@ -340,7 +399,7 @@ func _on_main_menu_items_clicked(id: int) -> void:
 	left_buttons_scene.disabled()
 	party_scene.set_order_mode(left_buttons_scene.current_button_index == 4)
 	previous_active_item = id as MenuState
-	print(id)
+
 	match left_buttons_scene.current_button_index:
 		0: # Items
 			show_item_menu("items")
@@ -369,10 +428,8 @@ func _on_main_menu_items_clicked(id: int) -> void:
 			print("⚠️ This function is under construction.")
 			button.keep_selected_state = false
 			_select_buttons()
-		10: # Encyclopedia
-			print("⚠️ This function is under construction.")
-			button.keep_selected_state = false
-			_select_buttons()
+		10: # Library
+			_show_library_menu()
 		11: # ???????????
 			print("⚠️ This function is under construction.")
 			button.keep_selected_state = false

@@ -14,6 +14,7 @@ func _ready() -> void:
 	if !cache:
 		cache = {}
 	close_requested.connect(queue_free)
+	reset_size.call_deferred()
 	%CommandType.select(0)
 	%CommandType.item_selected.emit(0)
 	%ChainSize.set_pressed(cache.get("chain_size", true))

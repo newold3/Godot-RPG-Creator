@@ -2,11 +2,11 @@
 extends Control
 class_name CustomDrawButton
 
-signal pressed
+signal pressed()
 signal selected()
 signal toggled(is_pressed: bool)
-signal hover_entered
-signal hover_exited
+signal hover_entered()
+signal hover_exited()
 signal animation_started(animation_type: AnimationType)
 signal animation_finished(animation_type: AnimationType)
 

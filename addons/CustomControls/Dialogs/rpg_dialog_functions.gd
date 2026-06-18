@@ -45,6 +45,7 @@ func _find_game_embbedded_menu() -> PopupMenu:
 	var game_view = root.find_child("*GameView*", true, false)
 	var popups = game_view.find_children("*PopupMenu*", "", true, false)
 	for popup in popups:
+		if popup.get_class() == "PopupMenuItems": continue
 		if popup.get_item_count() == 2:
 			var s = popup.get_signal_connection_list("id_pressed")[0]
 			if str(s.callable) == "GameView::_embed_options_menu_menu_id_pressed":

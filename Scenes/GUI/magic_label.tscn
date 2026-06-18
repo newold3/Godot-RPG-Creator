@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b8w1hsyuscqit"]
+[gd_scene format=3 uid="uid://b8w1hsyuscqit"]
 
 [ext_resource type="PackedScene" uid="uid://8gbgmsgpvibk" path="res://addons/CustomControls/auto_fit_label.tscn" id="1_65qg3"]
 [ext_resource type="Script" uid="uid://tmmvq0rvfpv5" path="res://Scenes/GUI/magic_label.gd" id="1_sr3wc"]
@@ -11,7 +11,7 @@ resource_local_to_scene = true
 shader = ExtResource("2_sr3wc")
 shader_parameter/gradient_texture = ExtResource("2_mgnae")
 shader_parameter/use_text_gradient = true
-shader_parameter/size = Vector2(230, 62)
+shader_parameter/size = Vector2(1, 8)
 shader_parameter/use_pixelate_gradient = true
 shader_parameter/pixel_scale = 3.202000104595
 shader_parameter/brightness = 0.999999977648
@@ -19,7 +19,7 @@ shader_parameter/brightness = 0.999999977648
 [sub_resource type="LabelSettings" id="LabelSettings_apc3p"]
 resource_local_to_scene = true
 font = ExtResource("3_mgnae")
-font_size = 6
+font_size = 7
 outline_size = 4
 outline_color = Color(1, 0.36249995, 0.14999998, 1)
 stacked_outline_count = 4
@@ -31,43 +31,49 @@ stacked_outline_2/size = 6
 stacked_outline_2/color = Color(0.18874526, 0.059626155, 6.016344e-08, 1)
 stacked_outline_3/size = 8
 
-[node name="MagicLabel" type="Control"]
+[node name="MagicLabel" type="Control" unique_id=942110209]
+custom_minimum_size = Vector2(1, 8)
 layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_sr3wc")
+label_text = "Test"
+text_gradient = ExtResource("2_mgnae")
+
+[node name="ButtonName" parent="." unique_id=802487098 instance=ExtResource("1_65qg3")]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_mgnae")
+custom_minimum_size = Vector2(18, 8)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -922.0
-offset_bottom = -578.0
+offset_right = 22.0
+offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_sr3wc")
-label_text = "test"
-text_gradient = ExtResource("2_mgnae")
-
-[node name="ButtonName" parent="." instance=ExtResource("1_65qg3")]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_mgnae")
-layout_mode = 1
-offset_right = 230.0
-offset_bottom = 63.0
-pivot_offset = Vector2(115, 31.5)
+pivot_offset = Vector2(11.5, 7.5)
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_mgnae")
-theme_override_font_sizes/font_size = 6
+theme_override_font_sizes/font_size = 7
+text = "Test"
 min_font_size = 6
 metadata/original_size = Vector2(99, 54)
 
-[node name="Outline" type="Label" parent="ButtonName"]
+[node name="Outline" type="Label" parent="ButtonName" unique_id=1200121263]
 unique_name_in_owner = true
 show_behind_parent = true
 layout_mode = 1
-offset_right = 230.0
-offset_bottom = 63.0
-pivot_offset = Vector2(115, 31)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(11.5, 7.5)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 28
-theme_override_font_sizes/font_size = 6
+theme_override_font_sizes/font_size = 7
+text = "Test"
 label_settings = SubResource("LabelSettings_apc3p")
 horizontal_alignment = 1
 vertical_alignment = 1

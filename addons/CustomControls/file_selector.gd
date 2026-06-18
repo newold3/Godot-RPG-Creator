@@ -83,9 +83,15 @@ func _request_update_preview(_preview: String) -> void:
 				_update_image("", s, s, true)
 		else:
 			if path.get_extension() == "tscn" and FileCache.cache.images.has(path):
-				var s = load(path).instantiate()
-				var img = s.texture
-				s.queue_free()
+				var packed_scene = load(path)
+				var img = null
+				if packed_scene is PackedScene:
+					var state = packed_scene.get_state()
+					if state and state.get_node_count() > 0:
+						for i in range(state.get_node_property_count(0)):
+							if state.get_node_property_name(0, i) == "texture":
+								img = state.get_node_property_value(0, i)
+								break
 				_update_image("", img, img, true)
 			elif path.get_extension() == "tres" and FileCache.cache.images.has(path):
 				var img = load(path)
@@ -248,6 +254,7 @@ func deselect() -> void:
 func disable() -> void:
 	is_enabled = false
 	icon.texture = null
+	cache_image = null
 
 
 func enable() -> void:

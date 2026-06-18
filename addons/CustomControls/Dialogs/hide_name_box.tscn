@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://jfirgouncst0"]
+[gd_scene format=3 uid="uid://jfirgouncst0"]
 
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="1_6psdq"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_btymx"]
@@ -24,15 +24,15 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojf1l"]
-texture = ExtResource("4_pupb4")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kutq7"]
+texture = ExtResource("5_msfo2")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kutq7"]
-texture = ExtResource("5_msfo2")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ojf1l"]
+texture = ExtResource("4_pupb4")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
@@ -45,16 +45,19 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="HideNameBox" type="Window"]
+[node name="HideNameBox" type="Window" unique_id=61007465]
+oversampling_override = 1.0
 title = "Hide Name Box"
+position = Vector2i(0, 36)
 size = Vector2i(448, 137)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_btymx")
 script = ExtResource("1_gyeim")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=777279710]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -62,7 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_02hwu")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1054125600]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -73,54 +76,54 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1333740090]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1576013953]
 layout_mode = 2
 text = "Hide Name Box:"
 
-[node name="Position" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_6psdq")]
+[node name="Position" parent="MarginContainer/VBoxContainer" unique_id=1410583085 instance=ExtResource("1_6psdq")]
 unique_name_in_owner = true
 layout_mode = 2
-item_count = 2
 selected = 0
+item_count = 2
 popup/item_0/text = "Left"
 popup/item_0/id = 0
 popup/item_1/text = "Right"
 popup/item_1/id = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1368126578]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=304710604]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3p2my")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=577473885 instance=ExtResource("2_3p2my")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 theme_override_styles/normal = SubResource("StyleBoxTexture_4pbal")
-theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_kutq7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_6v2cm")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_3p2my")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2104241147 instance=ExtResource("2_3p2my")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 theme_override_styles/normal = SubResource("StyleBoxTexture_4pbal")
-theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_kutq7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ojf1l")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_6v2cm")
 text = "CANCEL"
 

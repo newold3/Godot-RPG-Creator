@@ -267,7 +267,7 @@ func _gui_input(event: InputEvent) -> void:
 			_clamp_rect()
 			queue_redraw()
 		else:
-			mouse_default_cursor_shape = _get_cursor_shape(_get_drag_mode_at_position(event.position))
+			mouse_default_cursor_shape = _get_cursor_shape(event.position)
 
 func _resize_from_corner(delta: Vector2, left: bool, top: bool) -> void:
 	var min_size = 30.0
@@ -446,7 +446,8 @@ func _clamp_rect() -> void:
 	
 	notify_property_list_changed()
 
-func _get_cursor_shape(mode: DragMode) -> Control.CursorShape:
+func _get_cursor_shape(pos: Vector2) -> int:
+	var mode: DragMode = _get_drag_mode_at_position(pos)
 	match mode:
 		DragMode.MOVE: return Control.CURSOR_MOVE
 		DragMode.RESIZE_TL, DragMode.RESIZE_BR: return Control.CURSOR_FDIAGSIZE

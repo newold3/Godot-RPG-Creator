@@ -53,11 +53,12 @@ func _on_visibility_changed() -> void:
 		if ResourceLoader.exists(MainDatabasePanel.BACKUP_PATH):
 			await _restore_database_requested()
 		if not is_inside_tree(): return
-		timer.start()
-		if mode == Window.MODE_MINIMIZED:
-			mode = Window.MODE_WINDOWED
-			grab_focus()
-			move_to_foreground()
+		if is_inside_tree():
+			timer.start()
+			if mode == Window.MODE_MINIMIZED:
+				mode = Window.MODE_WINDOWED
+				grab_focus()
+				move_to_foreground()
 	else:
 		timer.stop()
 		var scene_root = EditorInterface.get_edited_scene_root()
