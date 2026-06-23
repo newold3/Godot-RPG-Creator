@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://xgopjrnx0q38"]
+[gd_scene format=3 uid="uid://xgopjrnx0q38"]
 
 [ext_resource type="Script" uid="uid://cdout5fpuf4n" path="res://addons/CustomControls/StatsEditor.gd" id="1_atl76"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="2_1up57"]
@@ -89,7 +89,7 @@ region = Rect2(96, 192, 24, 24)
 atlas = ExtResource("2_1up57")
 region = Rect2(72, 192, 24, 24)
 
-[node name="StatsEditor" type="Panel"]
+[node name="StatsEditor" type="Panel" unique_id=759413587]
 custom_minimum_size = Vector2(200, 200)
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -98,9 +98,10 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_wr13x")
 script = ExtResource("1_atl76")
 title = "Algo"
-title_text_color = Color(0, 0, 0, 0.0627451)
+title_size = 18
+title_text_color = Color(0, 0, 0, 0.5803922)
 
-[node name="FocusedPanel" type="Panel" parent="."]
+[node name="FocusedPanel" type="Panel" parent="." unique_id=204383979]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -109,7 +110,7 @@ anchor_bottom = 1.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_da7xi")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=882495272]
 clip_children = 2
 layout_mode = 1
 anchors_preset = 15
@@ -119,39 +120,39 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=427239561]
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="StatsEditor" type="Control" parent="MarginContainer/HBoxContainer"]
+[node name="StatsEditor" type="MarginContainer" parent="MarginContainer/HBoxContainer" unique_id=1138022970]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/StatsEditor"]
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/StatsEditor" unique_id=2052470058]
 unique_name_in_owner = true
 visible = false
-layout_mode = 0
-anchor_right = 1.0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 2.0
-offset_bottom = 25.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0, 0, 0, 0.0627451)
-theme_override_font_sizes/font_size = 16
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 0.5803922)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 0.22745098)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 18
 text = "Algo"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=185207709]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 mouse_filter = 2
 alignment = 2
 
-[node name="InvertCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="InvertCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=570638003]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -161,7 +162,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_0bfh0")
 texture_hover = SubResource("AtlasTexture_sx6je")
 
-[node name="UpgradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="UpgradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1666913784]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -171,7 +172,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_lomei")
 texture_hover = SubResource("AtlasTexture_wpjqm")
 
-[node name="DowngradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="DowngradeValues" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1049120914]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -181,7 +182,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_5svsq")
 texture_hover = SubResource("AtlasTexture_siabv")
 
-[node name="UpgradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="UpgradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=357183957]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -191,7 +192,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_wr13x")
 texture_hover = SubResource("AtlasTexture_bll5o")
 
-[node name="DowngradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="DowngradeValuesPercent" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=813738156]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -201,7 +202,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_eminq")
 texture_hover = SubResource("AtlasTexture_8j7lm")
 
-[node name="CopyCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="CopyCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=417517487]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -211,7 +212,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_efnmk")
 texture_hover = SubResource("AtlasTexture_gfs24")
 
-[node name="PasteCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="PasteCurve" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1735102831]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -223,11 +224,11 @@ texture_normal = SubResource("AtlasTexture_jofmc")
 texture_hover = SubResource("AtlasTexture_3kb6i")
 texture_disabled = SubResource("AtlasTexture_lwp2v")
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=654420177]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="Cursor" type="ColorRect" parent="MarginContainer"]
+[node name="Cursor" type="ColorRect" parent="MarginContainer" unique_id=1005656203]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

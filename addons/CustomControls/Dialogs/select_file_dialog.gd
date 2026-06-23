@@ -271,7 +271,7 @@ func _get_files_in_cache(file_id: String) -> PackedStringArray:
 		if !FileCache.cache_setted:
 			%Loading.visible = true
 			FileCache.rescan_files()
-			await FileCache.cache_ready
+			await StaticSignal.wait_for("_cache_ready")
 		if file_id in FileCache.cache:
 			return FileCache.cache[file_id].keys()
 	return []

@@ -19,6 +19,7 @@ var drag_timer: Timer
 var waiting_for_drag: bool = false
 var initial_mouse_position: Vector2
 var busy: bool = false
+var busy2: bool = false
 var _initialization_complete: bool = false
 var _custom_value: float = 0.0
 
@@ -56,6 +57,8 @@ func _ready() -> void:
 	allow_greater = _prev_greater
 	allow_lesser = _prev_lesser
 	old_value = value
+	
+	visibility_changed.connect(_on_visibility_changed, CONNECT_DEFERRED)
 	
 	var lineedit = get_line_edit()
 	lineedit.set_script(load("res://addons/CustomControls/custom_line_edit.gd"))
@@ -267,24 +270,34 @@ func _on_value_changed(new_value: float) -> void:
 
 
 func _on_line_edit_draw() -> void:
+	if busy2: return
+	
+	busy2 = true
+	
 	var lineedit = get_line_edit()
 	
 	if lineedit.has_focus():
 		return
 		
 	var current_text = lineedit.text
-	var clean_text = current_text
+	var clean_text: String
 	
-	if (rounded or abs(step - int(step)) < 0.00001) and current_text.ends_with(".0"):
-		clean_text = current_text.trim_suffix(".0")
+	if rounded or abs(step - int(step)) < 0.00001:
+		clean_text = str(int(current_text))
+	else:
+		clean_text = str(value)
 		
 	for key in value_replace.keys():
 		if str(key) == clean_text or str(key) == current_text:
-			clean_text = prefix + str(value_replace[key]) + suffix
+			clean_text = str(value_replace[key])
 			break
+	
+	clean_text = prefix.strip_edges() + " " + clean_text + " " + suffix.strip_edges()
 			
 	if lineedit.text != clean_text:
 		lineedit.text = clean_text
+	
+	busy2 = false
 
 
 func _apply_custom_text_format() -> void:
@@ -515,3 +528,8 @@ func _draw() -> void:
 		arrow_need_refresh_on_mouse_exit = true
 	else:
 		mouse_default_cursor_shape = Control.CURSOR_IBEAM
+
+
+func _on_visibility_changed() -> void:
+	if visible:
+		_on_line_edit_draw()

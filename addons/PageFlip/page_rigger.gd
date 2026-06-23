@@ -1,10 +1,8 @@
+# page_rigger.gd
+
 @tool
 class_name DynamicPage
 extends Polygon2D
-
-# ==============================================================================
-# ENUMS & CONSTANTS
-# ==============================================================================
 
 ## Defines the material physical properties for the page simulation.
 enum PagePreset {
@@ -27,89 +25,94 @@ enum CurlMode {
 	BOTTOM_CORNER_FIRST
 }
 
+## Skeleton node name.
 const SKELETON_NAME = "AutoSkeleton"
+
+## Shadow node name.
 const SHADOW_NAME = "AutoShadow"
 
-
-# ==============================================================================
-# SIGNALS
-# ==============================================================================
-
+## Emitted when the page needs to change visually.
 signal change_page_requested
+
+## Emitted when the animation sequence ends.
 signal end_animation
 
-
-# ==============================================================================
-# INTERNAL CACHE
-# ==============================================================================
-
+## Internal cache for settings.
 var _custom_cache: Dictionary = {}
-
-
-# ==============================================================================
-# CONFIGURATION
-# ==============================================================================
 
 @export_category("Rig Generator")
 
 ## Horizontal mesh subdivision. Higher values create smoother bends.
 @export_range(1, 20) var subdivision_x: int = 8
+
 ## Vertical mesh subdivision. Higher values allow for better corner curling.
 @export_range(1, 20) var subdivision_y: int = 5
+
 ## Generates the mesh, skeleton, weights and animations.
 @export var rebuild_all: bool = false : set = _on_generate_pressed
-
 
 @export_category("Animation Generator")
 
 @export_group("Quick Presets")
+
 ## Select a material style to auto-configure physics.
 @export var animation_preset: PagePreset = PagePreset.CUSTOM : set = _on_preset_changed
 
-
 @export_group("Manual Configuration")
+
 ## The AnimationPlayer node to store the generated animations.
 @export var anim_player: AnimationPlayer
+
 ## Duration of the page turn animation in seconds.
 @export var anim_duration: float = 0.75
 
-
 @export_subgroup("Paper Physics")
+
 ## Stiffness of the material. 0.5 = Rubber, 5.0 = Wood.
 @export_range(0.5, 5.0, 0.1) var paper_stiffness: float = 2.0
-## Bend angle during the lift phase (Negative = Tip drags down).
+
+## Bend angle during the lift phase.
 @export_range(-180.0, 180.0) var lift_bend: float = -10.0
-## Bend angle during the landing phase (Negative = Tip floats up).
+
+## Bend angle during the landing phase.
 @export_range(-180.0, 180.0) var land_bend: float = -8.0
 
-
 @export_subgroup("Curl Effect")
+
 ## Which part of the page initiates the movement.
 @export var curl_mode: CurlMode = CurlMode.TOP_CORNER_FIRST
-## Time delay for the trailing corner (0.0 = None, 1.0 = High lag).
+
+## Time delay for the trailing corner.
 @export_range(0.0, 1.0, 0.05) var curl_lag: float = 0.8
 
-
 @export_subgroup("Shadow FX")
-## Create a dynamic shadow behind the page (Background Shadow).
+
+## Create a dynamic shadow behind the page.
 @export var enable_shadow: bool = true
+
 ## The gradient texture used for the back shadow.
 @export var shadow_gradient: GradientTexture2D
+
 ## Controls the X scale of the background shadow at the midpoint.
 @export_range(0.0, 1.0) var shadow_mid_scale: float = 0.01
+
 ## Controls the opacity of the background shadow at the midpoint.
 @export_range(0.0, 1.0) var shadow_mid_opacity: float = 0.6
+
 ## Controls the width/spread of the inner fold shadow via the shader.
 @export_range(0.0, 1.0) var face_shadow_spread: float = 0.5
+
 ## Controls the peak opacity intensity of the inner fold shadow via the shader.
 @export_range(0.0, 1.0) var face_shadow_intensity: float = 0.65
 
-
 @export_subgroup("Fine Timing")
-## Normalized time (0.0 - 1.0) for the peak lift position.
+
+## Normalized time for the peak lift position.
 @export_range(0.05, 0.45, 0.01) var timing_peak_lift: float = 0.15
-## Normalized time (0.0 - 1.0) for the landing contact.
+
+## Normalized time for the landing contact.
 @export_range(0.55, 0.95, 0.01) var timing_peak_land: float = 0.85
+
 ## Proportion of the total duration used for the first half of the animation.
 @export_range(0.1, 0.9, 0.01) var timing_midpoint_ratio: float = 0.5
 
@@ -119,6 +122,8 @@ var _custom_cache: Dictionary = {}
 
 
 #region Runtime Initialization
+
+
 ## Initializes the page z-index and caches custom state.
 func _ready():
 	self.z_index = 10
@@ -133,11 +138,13 @@ func rebuild(current_page_size: Vector2 = Vector2.ZERO) -> void:
 	_clean_previous_rig()
 	_create_rig_logic(current_page_size)
 	_generate_animations_logic()
+
+
 #endregion
 
-
-
 #region Preset Logic
+
+
 ## Handles applying different physical presets.
 func _on_preset_changed(val):
 	if animation_preset == PagePreset.CUSTOM:
@@ -148,7 +155,6 @@ func _on_preset_changed(val):
 	if val == PagePreset.CUSTOM:
 		if not _custom_cache.is_empty():
 			_load_state_from_cache()
-			print("[PageRigger] Restored Custom Settings.")
 		notify_property_list_changed()
 		return
 	
@@ -206,7 +212,6 @@ func _on_preset_changed(val):
 	notify_property_list_changed()
 	if anim_player and skeleton != NodePath(""):
 		_generate_animations_logic()
-		print("[PageRigger] Preset Applied: ", PagePreset.keys()[val])
 
 
 
@@ -234,11 +239,13 @@ func _load_state_from_cache():
 	timing_midpoint_ratio = _custom_cache.get("t_mid", 0.5)
 	anim_duration = _custom_cache.get("dur", 1.0)
 	enable_shadow = _custom_cache.get("shadow", true)
+
+
 #endregion
 
-
-
 #region Rigging Logic
+
+
 ## Calculates the bounding rectangle of the polygon.
 func _calculate_polygon_rect() -> Rect2:
 	if polygon.size() == 0:
@@ -263,22 +270,29 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 	
 	var original_size = Vector2(512, 820)
 	var tex_size: Vector2 = Vector2.ZERO
+	
 	if current_page_size != Vector2.ZERO:
 		tex_size = current_page_size
 	elif texture:
 		tex_size = texture.get_size()
+		
 	if tex_size == Vector2.ZERO:
 		tex_size = original_size
-	
+		
 	var step_x = tex_size.x / subdivision_x
 	var step_y = tex_size.y / subdivision_y
 	
 	var applied_shadow_tex: Texture2D = null
+	
 	if not shadow_gradient:
 		shadow_gradient = preload("uid://rm7bporlv3cf")
+		
 	var dup = shadow_gradient.duplicate()
+	
 	if dup is GradientTexture2D:
 		dup.width = int(tex_size.x)
+		dup.height = int(tex_size.y)
+		
 	applied_shadow_tex = dup
 	
 	if enable_shadow:
@@ -292,36 +306,56 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 		else:
 			shadow.color = Color(0, 0, 0, 0.5)
 			
-		var margin = 4.0
-		shadow.polygon = PackedVector2Array([
-			Vector2(margin, margin), Vector2(tex_size.x - margin, margin),
-			Vector2(tex_size.x - margin, tex_size.y - margin), Vector2(margin, tex_size.y - margin)
-		])
-		shadow.uv = shadow.polygon
+		var new_shadow_uvs = PackedVector2Array()
+		
+		for y in range(subdivision_y + 1):
+			for x in range(subdivision_x + 1):
+				new_shadow_uvs.append(Vector2(x * step_x, y * step_y))
+				
+		var new_shadow_polygons = []
+		var rc_shadow = subdivision_x + 1
+		
+		for y in range(subdivision_y):
+			for x in range(subdivision_x):
+				var i = y * rc_shadow + x
+				new_shadow_polygons.append(PackedInt32Array([i, i + 1, i + rc_shadow + 1, i + rc_shadow]))
+				
+		shadow.polygon = new_shadow_uvs
+		shadow.uv = new_shadow_uvs
+		shadow.polygons = new_shadow_polygons
+		
 		add_child(shadow)
+		
 		if Engine.is_editor_hint() and get_tree().edited_scene_root:
 			shadow.owner = get_tree().edited_scene_root
-
+			
 	var new_uvs = PackedVector2Array()
+	
 	for y in range(subdivision_y + 1):
 		for x in range(subdivision_x + 1):
 			new_uvs.append(Vector2(x * step_x, y * step_y))
+			
 	self.uv = new_uvs
 	self.polygon = new_uvs
 	
 	var new_polygons = []
 	var rc = subdivision_x + 1
+	
 	for y in range(subdivision_y):
 		for x in range(subdivision_x):
 			var i = y * rc + x
 			new_polygons.append(PackedInt32Array([i, i + 1, i + rc + 1, i + rc]))
+			
 	self.polygons = new_polygons
 	
 	var sk = Skeleton2D.new()
 	sk.name = SKELETON_NAME
+	
 	add_child(sk)
+	
 	if Engine.is_editor_hint() and get_tree().edited_scene_root:
 		sk.owner = get_tree().edited_scene_root
+		
 	self.skeleton = NodePath(SKELETON_NAME)
 	
 	for y in range(subdivision_y + 1):
@@ -340,15 +374,15 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 				if parent_bone:
 					parent_bone.add_child(b)
 				b.position = Vector2(step_x, 0)
-			
+				
 			if Engine.is_editor_hint() and get_tree().edited_scene_root:
 				b.owner = get_tree().edited_scene_root
-			
+				
 			b.set_rest(b.transform)
 			parent_bone = b
-	
+			
 	_apply_weights_to_polygon(self, sk)
-
+	
 	queue_redraw()
 	notify_property_list_changed()
 
@@ -405,11 +439,13 @@ func _apply_weights_to_polygon(poly: Polygon2D, sk: Skeleton2D):
 
 	for bpath in weights_per_bone:
 		poly.add_bone(bpath, weights_per_bone[bpath])
+
+
 #endregion
 
-
-
 #region Animation Logic
+
+
 ## Sets up the animation libraries and handles sequence creation.
 func _generate_animations_logic():
 	var library: AnimationLibrary
@@ -434,11 +470,14 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 	library.add_animation(anim_name, anim)
 	
 	var sk_node = find_child(SKELETON_NAME, true, false)
+	
 	if not sk_node: return
 	
 	var my_path = anim_player.get_node(anim_player.root_node).get_path_to(self)
 	var path_prefix = str(my_path)
+	
 	if path_prefix == "": path_prefix = "."
+	
 	var visible_col = Color(1, 1, 1, 1)
 	var invisible_col = Color(1, 1, 1, 0)
 	var faded_col = Color(1, 1, 1, shadow_mid_opacity)
@@ -453,11 +492,29 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 	anim.track_insert_key(z_track, t_mid * 0.3, 25)
 	anim.track_insert_key(z_track, t_mid + ((anim_duration - t_mid) * 0.3), 10)
 
+	var inner_shadow_node = get_parent().get_node_or_null("InnerDynamicShadow") if get_parent() else null
+	
+	if inner_shadow_node:
+		var is_path = anim_player.get_node(anim_player.root_node).get_path_to(inner_shadow_node)
+		var is_path_prefix = str(is_path)
+		
+		if is_path_prefix == "": is_path_prefix = "."
+			
+		var is_z_track = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(is_z_track, is_path_prefix + ":z_index")
+		anim.track_set_interpolation_type(is_z_track, Animation.INTERPOLATION_NEAREST)
+		anim.track_insert_key(is_z_track, 0.0, 11)
+		anim.track_insert_key(is_z_track, t_mid * 0.3, 26)
+		anim.track_insert_key(is_z_track, t_mid + ((anim_duration - t_mid) * 0.3), 11)
+
 	var shadow_node = find_child(SHADOW_NAME, true, false)
+	
 	if shadow_node and enable_shadow:
 		var shadow_path = anim_player.get_node(anim_player.root_node).get_path_to(shadow_node)
 		var shadow_path_prefix = str(shadow_path)
+		
 		if shadow_path_prefix == "": shadow_path_prefix = "."
+		
 		var t_scale = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t_scale, shadow_path_prefix + ":scale")
 		anim.track_set_interpolation_type(t_scale, Animation.INTERPOLATION_LINEAR)
@@ -478,23 +535,25 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		anim.track_insert_key(t_scale, t_end_snap, s_end)
 		anim.track_insert_key(t_scale, anim_duration, s_end)
 		anim.track_insert_key(t_mod, anim_duration * 0.9, visible_col)
-		anim.track_insert_key(t_mod, anim_duration, invisible_col)
+		anim.track_insert_key(t_mod, anim_duration, visible_col)
 
-	var t_inner_spread = anim.add_track(Animation.TYPE_VALUE)
-	anim.track_set_path(t_inner_spread, path_prefix + ":material:shader_parameter/max_shadow_spread")
-	anim.track_set_interpolation_type(t_inner_spread, Animation.INTERPOLATION_NEAREST)
-	anim.track_insert_key(t_inner_spread, 0.0, face_shadow_spread)
-	anim.track_insert_key(t_inner_spread, anim_duration, face_shadow_spread)
+	if not is_rigid:
+		var t_inner_spread = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(t_inner_spread, path_prefix + ":material:shader_parameter/max_shadow_spread")
+		anim.track_set_interpolation_type(t_inner_spread, Animation.INTERPOLATION_NEAREST)
+		anim.track_insert_key(t_inner_spread, 0.0, face_shadow_spread)
+		anim.track_insert_key(t_inner_spread, anim_duration, face_shadow_spread)
 
-	var t_inner_intensity = anim.add_track(Animation.TYPE_VALUE)
-	anim.track_set_path(t_inner_intensity, path_prefix + ":material:shader_parameter/shadow_intensity")
-	anim.track_set_interpolation_type(t_inner_intensity, Animation.INTERPOLATION_CUBIC)
-	anim.track_insert_key(t_inner_intensity, 0.0, 0.0)
-	anim.track_insert_key(t_inner_intensity, t_mid, face_shadow_intensity)
-	anim.track_insert_key(t_inner_intensity, anim_duration, 0.0)
+		var t_inner_intensity = anim.add_track(Animation.TYPE_VALUE)
+		anim.track_set_path(t_inner_intensity, path_prefix + ":material:shader_parameter/shadow_intensity")
+		anim.track_set_interpolation_type(t_inner_intensity, Animation.INTERPOLATION_CUBIC)
+		anim.track_insert_key(t_inner_intensity, 0.0, 0.0)
+		anim.track_insert_key(t_inner_intensity, t_mid, face_shadow_intensity)
+		anim.track_insert_key(t_inner_intensity, anim_duration, 0.0)
 
 	for y in range(subdivision_y + 1):
 		var row_factor = 1.0
+		
 		if not is_rigid and curl_mode != CurlMode.STRAIGHT:
 			var y_ratio = float(y) / float(max(1, subdivision_y))
 			if curl_mode == CurlMode.TOP_CORNER_FIRST:
@@ -507,11 +566,13 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		for x in range(subdivision_x + 1):
 			var bone_name = "Bone_%d_%d" % [x, y]
 			var bone = sk_node.find_child(bone_name, true, false)
+			
 			if not bone: continue
 			
 			var t_idx = anim.add_track(Animation.TYPE_VALUE)
 			var path = anim_player.get_node(anim_player.root_node).get_path_to(bone)
 			var bone_path_prefix = str(path)
+			
 			if bone_path_prefix == "": bone_path_prefix = "."
 			anim.track_set_path(t_idx, bone_path_prefix + ":rotation_degrees")
 			anim.track_set_interpolation_type(t_idx, Animation.INTERPOLATION_CUBIC)
@@ -589,11 +650,12 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 	anim.track_set_path(method_track, path_prefix)
 	anim.track_insert_key(method_track, t_mid, {"method": "_trigger_midpoint", "args": []})
 	anim.track_insert_key(method_track, anim_duration, {"method": "_trigger_end", "args": []})
+
 #endregion
 
-
-
 #region Helper Functions
+
+
 ## Triggers the requested change page signal at the animation midpoint.
 func _trigger_midpoint():
 	emit_signal("change_page_requested")
@@ -655,4 +717,6 @@ func _clean_previous_rig():
 	if old_shadow: old_shadow.free()
 	clear_bones()
 	skeleton = NodePath("")
+
+
 #endregion

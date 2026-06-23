@@ -77,13 +77,14 @@ func _on_parent_visibility_changed() -> void:
 		get_parent().queue_free()
 		return
 	if get_parent().visible:
-		var node = Engine.get_main_loop().root.get_node_or_null("RPGSYSTEM")
+		var node = RPGSYSTEM
 		if node:
 			while !node.is_node_ready():
 				await get_tree().process_frame
 			real_data = node.database
 			data = real_data.clone()
-			node.database = data
+			#node.database = data
+			node.active_editor_database = data
 			if current_panel:
 				current_panel.database = data
 				current_panel.set_data(get_current_data(current_tab))
@@ -104,6 +105,9 @@ func _on_parent_visibility_changed() -> void:
 			%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
 		CustomTooltipManager.replace_all_tooltips_with_custom(self)
 	else:
+		var node = RPGSYSTEM
+		if node:
+			node.active_editor_database = null
 		data = null
 		data_saved = false
 		CustomTooltipManager.restore_all_tooltips_for(self)

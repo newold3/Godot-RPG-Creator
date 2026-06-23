@@ -2,48 +2,20 @@
 
 [ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_igh7c"]
 [ext_resource type="PackedScene" uid="uid://ywtrhsddys1n" path="res://Scenes/GUI/SteamPunkTheme/Library/library.tscn" id="2_bqpa8"]
-[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="3_d6mpg"]
-[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_r84xb"]
-
-[sub_resource type="Gradient" id="Gradient_sr3wc"]
-offsets = PackedFloat32Array(0.090277776, 0.33472222, 0.9125, 1)
-colors = PackedColorArray(0.43137255, 0.19607843, 0.1254902, 1, 0.81960785, 0.78039217, 0.7372549, 1, 0.99593276, 0.66906774, 0.61150527, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_00iqk"]
-gradient = SubResource("Gradient_sr3wc")
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2vfru"]
-resource_local_to_scene = true
-shader = ExtResource("3_d6mpg")
-shader_parameter/gradient_texture = SubResource("GradientTexture2D_00iqk")
-shader_parameter/use_text_gradient = true
-shader_parameter/size = Vector2(104, 31)
-shader_parameter/use_pixelate_gradient = true
-shader_parameter/pixel_scale = 3.202000104595
-shader_parameter/brightness = 0.999999977648
-
-[sub_resource type="LabelSettings" id="LabelSettings_truv3"]
-resource_local_to_scene = true
-font = ExtResource("4_r84xb")
-font_size = 26
-outline_size = 4
-outline_color = Color(0.18431373, 0.12156863, 0.09803922, 1)
-stacked_outline_count = 4
-stacked_outline_0/size = 1
-stacked_outline_0/color = Color(0.81960785, 0.78039217, 0.7372549, 1)
-stacked_outline_1/size = 1
-stacked_outline_1/color = Color(0.27058825, 0.25490198, 0.21960784, 1)
-stacked_outline_2/size = 2
-stacked_outline_2/color = Color(0.43137255, 0.19607843, 0.1254902, 1)
-stacked_outline_3/size = 5
-stacked_outline_3/color = Color(0.5882353, 0.4745098, 0.42352942, 1)
+[ext_resource type="Script" uid="uid://cdisc7hy51w4u" path="res://Scenes/GUI/SteamPunkTheme/Library/manager.gd" id="2_r84xb"]
 
 [node name="MainScene" unique_id=1740912168 instance=ExtResource("1_igh7c")]
+mouse_filter = 0
 scene_title = "Library"
 move_in_direction = 3
 move_in_duration = 0.5
+
+[node name="Manager" type="Node" parent="." index="0" unique_id=162685583 node_paths=PackedStringArray("scene_parent", "back_button", "main_scene", "title_scene")]
+script = ExtResource("2_r84xb")
+scene_parent = NodePath("..")
+back_button = NodePath("../SceneMainContainer/BackButton")
+main_scene = NodePath("../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia")
+title_scene = NodePath("../SceneMainContainer/MainContainer/Title/TitleContainer")
 
 [node name="SubViewport" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="0" unique_id=1611430864]
 process_mode = 4
@@ -79,21 +51,10 @@ theme_override_constants/margin_bottom = -23
 [node name="Encyclopedia" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" parent_id_path=PackedInt32Array(2086978186) index="0" unique_id=525754061 instance=ExtResource("2_bqpa8")]
 layout_mode = 2
 
-[node name="ColorRect" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book" parent_id_path=PackedInt32Array(525754061, 1205846570) index="0" unique_id=132924655]
-custom_minimum_size = Vector2(1152, 640)
-offset_right = 1152.0
-offset_bottom = 640.0
-
-[node name="MainBookParticles" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book" parent_id_path=PackedInt32Array(525754061, 1205846570) index="4" unique_id=2061952163]
+[node name="MainBookParticles" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book" parent_id_path=PackedInt32Array(525754061, 1205846570) index="3" unique_id=2061952163]
 z_index = 115
 position = Vector2(622.64, 430.74)
 scale = Vector2(0.5, 0.5)
-
-[node name="ButtonName" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle" parent_id_path=PackedInt32Array(525754061, 2016481678) index="0" unique_id=802487098]
-material = SubResource("ShaderMaterial_2vfru")
-
-[node name="Outline" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle/ButtonName" index="0" unique_id=1200121263]
-label_settings = SubResource("LabelSettings_truv3")
 
 [node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" parent_id_path=PackedInt32Array(973961125) index="0" unique_id=2079863752]
 title = "Library"
@@ -118,8 +79,7 @@ visible = false
 offset_top = -550.0
 offset_bottom = -510.0
 
-[connection signal="pressed" from="SceneMainContainer/BackButton" to="." method="destroy"]
-[connection signal="pressed" from="SceneMainContainer/BackButton" to="." method="emit_signal_end"]
+[connection signal="pressed" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_pressed"]
+[connection signal="selected" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_selected"]
 
 [editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia"]
-[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle"]

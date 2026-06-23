@@ -16,9 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://os7clwyqwlka" path="res://addons/RPGData/Scenes/traits_panel.tscn" id="11_6p2or"]
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="12_cslf3"]
 [ext_resource type="PackedScene" uid="uid://bealtmarqhbfs" path="res://addons/CustomControls/custom_option_button.tscn" id="14_th10d"]
-[ext_resource type="PackedScene" uid="uid://dxcyqc2dscbvw" path="res://addons/CustomControls/custom_simple_column_item_list.tscn" id="15_38olt"]
+[ext_resource type="PackedScene" uid="uid://6e86b4ig4yck" path="res://addons/CustomControls/default_parameters_control.tscn" id="15_hg4eb"]
+[ext_resource type="PackedScene" uid="uid://x5vdagxitlqm" path="res://addons/CustomControls/user_parameters_control.tscn" id="16_th10d"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_th10d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hg4eb"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -30,7 +31,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hg4eb"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iljhf"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -72,7 +73,7 @@ texture = ExtResource("6_38olt")
 texture_margin_left = 18.0
 texture_margin_right = 18.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06st8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dlqfa"]
 resource_local_to_scene = true
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -98,7 +99,7 @@ fill_to = Vector2(0.58547, 0)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cpsvt"]
 texture = SubResource("GradientTexture2D_05vhk")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2jvw7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iudot"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 2
@@ -122,127 +123,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dlqfa"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mw1st"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(168, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l3rv3"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(144, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_685w0"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(168, 168, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_54rij"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(120, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k2bi5"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(96, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_iu7wa"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(72, 192, 24, 24)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_265er"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_38olt"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(168, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_th10d"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(144, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hg4eb"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(168, 168, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_iljhf"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(120, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_05vhk"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(96, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cpsvt"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(72, 192, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dlqfa"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(72, 48, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_iudot"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(96, 48, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dt5ww"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(192, 0, 24, 24)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d4j5c"]
-atlas = ExtResource("12_cslf3")
-region = Rect2(216, 0, 24, 24)
-
-[sub_resource type="Gradient" id="Gradient_th10d"]
-colors = PackedColorArray(0.333333, 0.352941, 0.360784, 1, 0.380392, 0.4, 0.407843, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_hg4eb"]
-gradient = SubResource("Gradient_th10d")
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iljhf"]
-texture = SubResource("GradientTexture2D_hg4eb")
-
-[sub_resource type="Gradient" id="Gradient_05vhk"]
-offsets = PackedFloat32Array(0, 0.369535, 1)
-colors = PackedColorArray(0.0484924, 0.454508, 0.886719, 1, 0.0403748, 0.296637, 0.738281, 1, 0.0518364, 0.4513, 0.876835, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_cpsvt"]
-gradient = SubResource("Gradient_05vhk")
-fill_from = Vector2(0.547009, 1)
-fill_to = Vector2(0.559829, 0)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3dv6u"]
-resource_local_to_scene = true
-texture = SubResource("GradientTexture2D_cpsvt")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iudot"]
-bg_color = Color(0, 0, 0, 1)
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3he3s"]
 atlas = ExtResource("12_cslf3")
@@ -327,9 +207,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/v_separation = -1
-theme_override_styles/panel = SubResource("StyleBoxFlat_th10d")
-theme_override_styles/focus = SubResource("StyleBoxFlat_th10d")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_hg4eb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_hg4eb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hg4eb")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_iljhf")
 theme_override_styles/selected = SubResource("StyleBoxTexture_05vhk")
 theme_override_styles/selected_focus = SubResource("StyleBoxTexture_dt5ww")
 select_mode = 1
@@ -403,10 +283,10 @@ stylebox_tab_selected = SubResource("StyleBoxTexture_th10d")
 custom_minimum_size = Vector2(510, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_06st8")
-style1 = SubResource("StyleBoxFlat_06st8")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dlqfa")
+style1 = SubResource("StyleBoxFlat_dlqfa")
 style2 = SubResource("StyleBoxTexture_cpsvt")
-style3 = SubResource("StyleBoxFlat_2jvw7")
+style3 = SubResource("StyleBoxFlat_iudot")
 
 [node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer" unique_id=1664828226]
 layout_mode = 2
@@ -554,9 +434,19 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Restricts its use to characters whose class matches the specified class (or 0 to allow any class)"
 selected = 0
-item_count = 1
+item_count = 6
 popup/item_0/text = "Any Class"
 popup/item_0/id = 0
+popup/item_1/text = "1: Tank"
+popup/item_1/id = 1
+popup/item_2/text = "2: Mage"
+popup/item_2/id = 2
+popup/item_3/text = "3: Lancer"
+popup/item_3/id = 3
+popup/item_4/text = "4: Archer"
+popup/item_4/id = 4
+popup/item_5/text = "5: Cleric"
+popup/item_5/id = 5
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5/VBoxContainer" unique_id=1515218440]
 layout_mode = 2
@@ -572,9 +462,15 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "Restricts its use to characters whose gender matches the specified gender (or 0 to allow any gender)"
 selected = 0
-item_count = 1
+item_count = 4
 popup/item_0/text = "Any Gender"
 popup/item_0/id = 0
+popup/item_1/text = "1: None"
+popup/item_1/id = 1
+popup/item_2/text = "2: Male"
+popup/item_2/id = 2
+popup/item_3/text = "3: Female"
+popup/item_3/id = 3
 
 [node name="HSeparator2" type="HSeparator" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer5" unique_id=1539090577]
 layout_mode = 2
@@ -800,274 +696,13 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="DefaultParameters" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=1446062680]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_dlqfa")
-
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters" unique_id=476601060]
-layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
-
-[node name="ParameterChanges" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer" unique_id=1769710555]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges" unique_id=1220465172]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer" unique_id=648442357]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Parameters (when weapon is level 1)"
-
-[node name="CopyParameters" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer" unique_id=500049384]
+[node name="DefaultParametersControl" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=1819703756 instance=ExtResource("15_hg4eb")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Copy the list of parameters to the clipboard. This list can be pasted into any weapon/equipment."
-mouse_default_cursor_shape = 2
-texture_normal = SubResource("AtlasTexture_mw1st")
-texture_hover = SubResource("AtlasTexture_l3rv3")
-texture_disabled = SubResource("AtlasTexture_685w0")
 
-[node name="PasteParameters" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer" unique_id=9023810]
+[node name="UserParametersControl" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=1499189729 instance=ExtResource("16_th10d")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Paste a list of previously saved parameters from the clipboard"
-mouse_default_cursor_shape = 2
-disabled = true
-texture_normal = SubResource("AtlasTexture_54rij")
-texture_hover = SubResource("AtlasTexture_k2bi5")
-texture_disabled = SubResource("AtlasTexture_iu7wa")
-
-[node name="HboxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges" unique_id=1584452478]
-layout_mode = 2
-
-[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer" unique_id=1845968035]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5" unique_id=1872055567]
-layout_mode = 2
-text = "Max HP:"
-
-[node name="MaxHPSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5" unique_id=1700187015 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Max HP[/title]
-Determines the value added to \"Max Hp\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer" unique_id=717386687]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer" unique_id=1126434592]
-layout_mode = 2
-text = "Attack:"
-
-[node name="AttackSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer" unique_id=48757709 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Attack[/title]
-Determines the value added to \"Attack\" parameter of an actor when the object is equipped."
-allow_greater = true
-allow_lesser = true
-_custom_value = 0.0
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer" unique_id=1589108503]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer3" unique_id=1543782086]
-layout_mode = 2
-text = "M.Attack:"
-
-[node name="MagicAttackSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer3" unique_id=572085853 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Magical Attack[/title]
-Determines the value added to \"Magical Attack\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer" unique_id=1897816058]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer2" unique_id=552067254]
-layout_mode = 2
-text = "Agility:"
-
-[node name="AgilitySpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer2" unique_id=1821582037 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Agility[/title]
-Determines the value added to \"Agility\" parameter of an actor when the object is equipped."
-allow_greater = true
-allow_lesser = true
-_custom_value = 0.0
-
-[node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges" unique_id=677302920]
-layout_mode = 2
-
-[node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2" unique_id=462947570]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer4" unique_id=943700106]
-layout_mode = 2
-text = "Max MP:"
-
-[node name="MaxMPSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer4" unique_id=1866608692 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Max MP[/title]
-Determines the value added to \"Max MP\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2" unique_id=1347008014]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer3" unique_id=1423042913]
-layout_mode = 2
-text = "Defense:"
-
-[node name="DefenseSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer3" unique_id=121026350 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Defense[/title]
-Determines the value added to \"Defense\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2" unique_id=2003282546]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer5" unique_id=765470969]
-layout_mode = 2
-text = "M.Defense:"
-
-[node name="MagicDefenseSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer5" unique_id=2017615008 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Magical Defense[/title]
-Determines the value added to \"Magical Defense\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2" unique_id=381680304]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer2" unique_id=1446851694]
-layout_mode = 2
-text = "Luck:"
-
-[node name="LuckSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer2" unique_id=813022468 instance=ExtResource("9_nlga7")]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "[title]Luck[/title]
-Determines the value added to \"Luck\" parameter of an actor when the object is equipped."
-allow_greater = true
-_custom_value = 0.0
-
-[node name="UserParameters" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=2070363628]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_265er")
-
-[node name="MarginContainer" type="MarginContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters" unique_id=2127105016]
-layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
-
-[node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer" unique_id=1303965211]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer" unique_id=1494504254]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1136954534]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "User Parameters:"
-
-[node name="CopyUserParameters" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer" unique_id=237529712]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Copy the list of parameters to the clipboard. This list can be pasted into any weapon/equipment."
-mouse_default_cursor_shape = 2
-texture_normal = SubResource("AtlasTexture_38olt")
-texture_hover = SubResource("AtlasTexture_th10d")
-texture_disabled = SubResource("AtlasTexture_hg4eb")
-
-[node name="PasteUserParameters" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1916776236]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Paste a list of previously saved parameters from the clipboard"
-mouse_default_cursor_shape = 2
-disabled = true
-texture_normal = SubResource("AtlasTexture_iljhf")
-texture_hover = SubResource("AtlasTexture_05vhk")
-texture_disabled = SubResource("AtlasTexture_cpsvt")
-
-[node name="ResetUserParameters" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer" unique_id=947922553]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Restores the default values of the user parameters for this equipment."
-mouse_default_cursor_shape = 2
-texture_normal = SubResource("AtlasTexture_dlqfa")
-texture_hover = SubResource("AtlasTexture_iudot")
-
-[node name="UserParameterInfo" type="TextureButton" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2122538416]
-layout_mode = 2
-size_flags_vertical = 4
-tooltip_text = "To create User Parameters, go to the [Types/User Parameters] section of the database.
-
-[Note]: User Parameters do not directly affect the core game systems (such as battles or movement). They are neutral by default and must be manually controlled and given purpose by the designer. This is done by using the integrated commands available in map events or global events.
-
-In other words, User Parameters are a flexible tool: you can define new stats (e.g., Comedy, Reputation, Good Luck) and then decide how they influence the game through conditions, dialogues, or event logic."
-focus_mode = 0
-mouse_default_cursor_shape = 16
-texture_normal = SubResource("AtlasTexture_dt5ww")
-texture_hover = SubResource("AtlasTexture_d4j5c")
-
-[node name="UserParameters" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer" unique_id=876907831 instance=ExtResource("15_38olt")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(778, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-odd_line_color = Color(0.145098, 0.156863, 0.164706, 1)
-event_line_color = Color(0.172549, 0.184314, 0.192157, 1)
-top_bar_style = SubResource("StyleBoxTexture_iljhf")
-columns_text_colors = PackedColorArray(0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_3dv6u")
-panel_style = SubResource("StyleBoxFlat_iudot")
-columns = 2
-names = PackedStringArray("Parameter", "Value")
-sizes = PackedInt32Array(740, 0)
-enable_multiselection = true
-itemlist_tooltip = "[title]User Parameters[/title]
-Base values for each of the user-defined parameters"
 
 [node name="Upgrades" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2" unique_id=2106836265]
 layout_mode = 2
@@ -1340,20 +975,6 @@ wrap_mode = 1
 [connection signal="toggled" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/SetAttackScriptAsDefault" to="." method="_on_set_attack_script_as_default_toggled"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer2/ConfigScript" to="." method="_on_config_script_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/LPCPart/MarginContainer/VBoxContainer/HBoxContainer3/InMapAttackPower" to="." method="_on_in_map_attack_power_value_changed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/CopyParameters" to="." method="_on_copy_parameters_pressed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HBoxContainer/PasteParameters" to="." method="_on_paste_parameters_pressed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer5/MaxHPSpinBox" to="." method="_on_max_hp_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer/AttackSpinBox" to="." method="_on_attack_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer3/MagicAttackSpinBox" to="." method="_on_magic_attack_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer/VBoxContainer2/AgilitySpinBox" to="." method="_on_agility_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer4/MaxMPSpinBox" to="." method="_on_max_mp_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer3/DefenseSpinBox" to="." method="_on_defense_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer5/MagicDefenseSpinBox" to="." method="_on_magic_defense_spin_box_value_changed"]
-[connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/DefaultParameters/MarginContainer/ParameterChanges/HboxContainer2/VBoxContainer2/LuckSpinBox" to="." method="_on_luck_spin_box_value_changed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer/CopyUserParameters" to="." method="_on_copy_user_parameters_pressed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer/PasteUserParameters" to="." method="_on_paste_user_parameters_pressed"]
-[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/HBoxContainer/ResetUserParameters" to="." method="_on_reset_user_parameters_pressed"]
-[connection signal="item_activated" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/UserParameters/MarginContainer/VBoxContainer/UserParameters" to="." method="_on_user_parameters_item_activated"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Upgrades/MarginContainer/ParameterChanges/VBoxContainer5/HBoxContainer/WeaponMaxLevelsSpinBox" to="." method="_on_weapon_max_levels_spin_box_value_changed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Upgrades/MarginContainer/ParameterChanges/VBoxContainer5/HBoxContainer/UpgradeSettingsButton" to="." method="_on_upgrade_settings_button_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Upgrades/MarginContainer/ParameterChanges/VBoxContainer5/HBoxContainer/CopyUpgradeList" to="." method="_on_copy_upgrade_list_pressed"]

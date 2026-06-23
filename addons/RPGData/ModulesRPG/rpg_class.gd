@@ -38,6 +38,9 @@ func get_class():
 ## Parameter curves for the class.
 @export var params: Array[RPGCurveParams] = []
 
+## list of user-defined parameters in [Database/Types/User Parameters]
+@export var user_parameters: PackedFloat32Array = []
+
 ## Weights used when compare equipment
 @export var weights: Dictionary = {}
 
@@ -72,6 +75,12 @@ func clear():
 	tick_interval = 1.0
 	automatic_upgrade = false
 	icon.clear()
+	
+	var database = RPGSYSTEM.database
+	if database:
+		user_parameters.resize(database.types.user_parameters.size())
+		for i in database.types.user_parameters.size():
+			user_parameters[i] = database.types.user_parameters[i].default_value
 
 ## Initializes the class.
 func _init() -> void:

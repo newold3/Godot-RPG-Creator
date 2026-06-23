@@ -58,4 +58,4 @@ func _on_ok_button_pressed() -> void:
 
 func _on_value_spin_box_value_changed(_value: float) -> void:
 	if busy: return
-	_on_ok_button_pressed()
+	#_on_ok_button_pressed()

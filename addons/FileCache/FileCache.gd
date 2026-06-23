@@ -12,10 +12,6 @@ extends EditorPlugin
 ## - Fallback to Regex analysis for scripts using get_class() overrides.
 ## - Zero instantiation of scenes during scanning.
 
-
-## Signal emitted when the file cache is fully loaded and ready for use.
-static var cache_ready: Signal = StaticSignal.make()
-
 ## Path to the cache file where all cached data is stored.
 const CACHE_FILE_PATH = "res://.godot/file_cache.cfg"
 
@@ -103,6 +99,8 @@ func _enter_tree() -> void:
 	cache_thread.start(_thread_process_loop)
 	
 	tree_exiting.connect(_on_tree_exiting)
+	
+	StaticSignal.create_signal("_cache_ready")
 
 
 ## Rebuilds the internal dictionary of known files to optimize future scans.
@@ -264,7 +262,7 @@ func _thread_process_loop() -> void:
 ## Called asynchronously when a batch of files finishes processing in the thread.
 func _on_batch_finished() -> void:
 	save()
-	cache_ready.emit()
+	StaticSignal.emit("_cache_ready")
 
 
 ## Thread-safe method to add a file to a specific cache category.
@@ -831,6 +829,6 @@ func save() -> void:
 	f.store_var(cache_copy)
 	f.close()
 	
-	cache_ready.emit()
+	StaticSignal.emit("_cache_ready")
 	if _show_prints:
 		print("Cache saved!")

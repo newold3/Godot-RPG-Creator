@@ -112,6 +112,7 @@ static func force_close_book(to_front_cover: bool, _book: PageFlip2D = null) -> 
 	if not _book: _book = _current_book
 	if is_instance_valid(_current_book):
 		force_release_control(_current_book)
+		_current_book.book_closed.emit()
 		_current_book.force_close_book(to_front_cover)
 
 
@@ -120,7 +121,7 @@ static func force_close_book(to_front_cover: bool, _book: PageFlip2D = null) -> 
 ## [b]ASYNC:[/b] Must be called with 'await' if animated is true.
 ## [param page_num]: The 1-based page number (1 = first texture in pages_paths).
 ## [param target]: Specifies if the target is a content page or a cover.
-static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE, animated: bool = true, _book: PageFlip2D = null) -> void:
+static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTENT_PAGE, animated: bool = true, _book: PageFlip2D = null, max_animated_turns: int = 5) -> void:
 	var book = _current_book if not _book else _book
 	if not is_instance_valid(book): return
 	
@@ -132,24 +133,22 @@ static func go_to_page(page_num: int = 1, target: JumpTarget = JumpTarget.CONTEN
 		JumpTarget.BACK_COVER:
 			target_spread_idx = book.total_spreads
 		JumpTarget.CONTENT_PAGE:
-			# Calculate spread index: 1-2 -> Spread 0, 3-4 -> Spread 1, etc.
 			var safe_page = max(1, page_num)
 			target_spread_idx = int(safe_page / 2.0)
 			target_spread_idx = clampi(target_spread_idx, 0, book.total_spreads - 1)
 			
-	await go_to_spread(book, target_spread_idx, animated)
+	await go_to_spread(book, target_spread_idx, animated, null, max_animated_turns)
 
 
 ## Navigates to a specific spread index directly.
 ## [b]ASYNC:[/b] Must be called with 'await' if animated is true.
 ## - Animated: Fast-forwards through pages with dynamic speed.
 ## - Instant: Snaps to page and manually triggers the scene activation handshake.
-static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = true, ease_curve: Curve = null) -> void:
+static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = true, ease_curve: Curve = null, max_turns: int = 5) -> void:
 	if not is_instance_valid(book): return
 	
 	if not ease_curve: ease_curve = preload("uid://sc80vo3tu71s")
 	
-	# Clamp target
 	var final_target = clampi(target_spread, -1, book.total_spreads)
 	var diff = final_target - book.current_spread
 
@@ -159,52 +158,69 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 	force_release_control(book)
 	
 	if not animated:
-		# INSTANT TELEPORT
+		var start_spread = book.current_spread
+		if start_spread == -1 or start_spread == book.total_spreads:
+			if final_target != -1 and final_target != book.total_spreads:
+				book.book_opened.emit()
+				
 		book.current_spread = final_target
 		book.call("_update_static_visuals_immediate")
 		book.call("_update_volume_visuals")
-		# Force check for interactive scenes after teleport
 		book.call("_check_scene_activation")
 		
+		if final_target == -1 or final_target == book.total_spreads:
+			if start_spread != -1 and start_spread != book.total_spreads:
+				book.book_closed.emit()
+		
 	else:
-		# ANIMATED FAST-FORWARD
-		if book.is_animating: return # Don't interrupt an existing animation
+		if book.is_animating: return 
 		
 		var original_speed = book.anim_player.speed_scale
 		
-		# --- DYNAMIC SPEED CALCULATION ---
-		var steps = abs(diff)
-		# Base speed: 1.0x -> Max speed: 7.0x
-		var max_speed = 7.0
-		var min_speed = 1.0
-		var dynamic_speed_mod = 0.35
-		var max_cover_speed = 1.8
+		var total_steps = abs(diff)
 		var going_forward = diff > 0
 
-		for i in range(steps):
+		var actual_turns = min(total_steps, max_turns)
+		var start_spread = book.current_spread
+
+		var min_speed = 1.0
+		var max_speed = 4.5 
+
+		for i in range(actual_turns):
 			if not is_instance_valid(book): break
 			
-			if steps <= 1:
-				book.anim_player.speed_scale = min_speed
-			else:
-				var t = float(i+1) / float(steps)
-				t = ease_curve.sample(t)
-				var _current_speed = remap(t, 0.0, 1.0, min_speed, max_speed)
-				book.anim_player.speed_scale = _current_speed
+			var is_first_step = (i == 0)
+			var is_last_step = (i == actual_turns - 1)
 			
-			if going_forward: book.next_page()
-			else: book.prev_page()
+			var t_linear = float(i + 1) / float(actual_turns)
+			var intermediate_target = int(round(lerp(float(start_spread), float(final_target), t_linear)))
 			
-			# Wait for the physical page turn to finish before starting the next one.
+			if is_first_step:
+				if (book.current_spread == -1 and going_forward) or (book.current_spread == book.total_spreads and not going_forward):
+					book.book_opened.emit()
+					
+			if is_last_step:
+				if (intermediate_target == -1 and not going_forward) or (intermediate_target == book.total_spreads and going_forward):
+					book.book_closed.emit()
+			
+			var _current_speed = min_speed
+			if actual_turns > 1:
+				var arc = sin(t_linear * PI)
+				_current_speed = lerp(min_speed, max_speed, arc)
+				
+			book.anim_player.speed_scale = _current_speed
+			
+			book.set("_jump_target_spread", intermediate_target)
+			book.set("_is_jumping", true)
+			book.call("_start_animation", going_forward)
+			
 			if book.is_animating:
 				await book.ended_page_flip_animation
 			else:
 				await book.get_tree().process_frame
 		
-		# RESTORE STATE
 		if is_instance_valid(book):
 			book.anim_player.speed_scale = original_speed
-
 
 # ==============================================================================
 # STATE & INTERACTION HELPERS

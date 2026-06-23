@@ -24,6 +24,10 @@ func set_data(real_data: RPGTypes) -> void:
 				break
 			indexes.append(i)
 			n += 1
+	
+	if data.enemy_rarity_types.size() == 0:
+		data.enemy_rarity_types.append("Common")
+		data.enemy_rarity_color_types.append(Color.WHITE)
 
 	if data.tool_types == null:
 		data.tool_types = []
@@ -35,6 +39,7 @@ func set_data(real_data: RPGTypes) -> void:
 	fill_list(%ArmorList, data.armor_types, 0, 4)
 	fill_list(%ToolList, data.tool_types, 0, "20")
 	fill_list(%ArmorRarityList, data.armor_rarity_types, 0, "4b")
+	fill_list(%EnemyRarityList, data.enemy_rarity_types, 0, "30")
 	fill_list(%ItemList, data.item_types, 0, 5)
 	fill_list(%ItemRarityList, data.item_rarity_types, 0, "5b")
 	fill_list(%EquipmentList, data.equipment_types, 0, 6)
@@ -46,23 +51,6 @@ func set_data(real_data: RPGTypes) -> void:
 		%MainParametersList.set_item_disabled(indexes[n], true)
 		n += 1
 	fill_list(%GenderList, data.gender_types, 0, "50")
-	
-	%ElementList.lock_item(0, true)
-	%SkillList.lock_item(0, true)
-	%WeaponList.lock_item(0, true)
-	%WeaponRarityList.lock_item(0, true)
-	%ArmorList.lock_item(0, true)
-	#%ToolList.lock_item(0, true)
-	%ArmorRarityList.lock_item(0, true)
-	%ItemList.lock_item(0, true)
-	%ItemRarityList.lock_item(0, true)
-	%EquipmentList.lock_item(0, true)
-	
-	for i in data.main_parameters.size():
-		%MainParametersList.lock_item(i, true)
-	
-	for i in 3:
-		%GenderList.lock_item(i, true)
 
 
 func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: Variant) -> void:
@@ -151,6 +139,28 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 			enabled = selected_items[0] > 2
 		%RemoveItem50Button.set_disabled(!enabled)
 		%Name50LineEdit.set_disabled(false)
+	
+	_lock_items()
+
+
+func _lock_items() -> void:
+	%ElementList.lock_item(0, true)
+	%SkillList.lock_item(0, true)
+	%WeaponList.lock_item(0, true)
+	%WeaponRarityList.lock_item(0, true)
+	%ArmorList.lock_item(0, true)
+	#%ToolList.lock_item(0, true)
+	%ArmorRarityList.lock_item(0, true)
+	%EnemyRarityList.lock_item(0, true)
+	%ItemList.lock_item(0, true)
+	%ItemRarityList.lock_item(0, true)
+	%EquipmentList.lock_item(0, true)
+	
+	for i in data.main_parameters.size():
+		%MainParametersList.lock_item(i, true)
+	
+	for i in 3:
+		%GenderList.lock_item(i, true)
 
 
 func _on_element_list_item_selected(index: int) -> void:
@@ -390,6 +400,10 @@ func fix_data() -> void:
 			armor.user_parameters.resize(data.user_parameters.size())
 			for level in armor.upgrades.levels:
 				level.user_parameters.resize(data.user_parameters.size())
+		
+		for enemy in database.enemies:
+			if not enemy: continue
+			enemy.user_parameters.resize(data.user_parameters.size())
 		
 		for costume in database.costumes:
 			if not costume: continue
@@ -872,3 +886,44 @@ func _on_gender_list_item_selected(index: int) -> void:
 
 func _on_gender_list_item_activated(index: int) -> void:
 	%Name50LineEdit.grab_focus()
+
+
+func _on_enemy_rarity_list_item_activated(index: int) -> void:
+	%Name30LineEdit.grab_focus()
+
+
+func _on_enemy_rarity_list_item_selected(index: int) -> void:
+	%Name30LineEdit.text = data.enemy_rarity_types[index]
+	%EnemyRarityColorButton.set_pick_color(data.enemy_rarity_color_types[index])
+	%RemoveItem30Button.set_disabled(index == 0)
+
+
+func _on_name_30_line_edit_text_changed(new_text: String) -> void:
+	var index = %EnemyRarityList.get_selected_items()[0]
+	data.enemy_rarity_types[index] = new_text
+	var id = str(index+1).pad_zeros(str(data.enemy_rarity_types.size()).length())
+	var item_name = id + ": " + new_text
+	%EnemyRarityList.set_item_text(index, item_name)
+
+
+func _on_enemy_rarity_color_button_color_changed(color: Color) -> void:
+	var index = %EnemyRarityList.get_selected_items()[0]
+	data.enemy_rarity_color_types[index] = color
+
+
+func _on_add_item_30_button_pressed() -> void:
+	data.enemy_rarity_types.append("")
+	data.enemy_rarity_color_types.resize(data.enemy_rarity_types.size())
+	fill_list(%EnemyRarityList, data.enemy_rarity_types, data.enemy_rarity_types.size() - 1, "30")
+	%EnemyRarityList.grab_focus()
+	need_fix_data = true
+
+
+func _on_remove_item_30_button_pressed() -> void:
+	var index = %EnemyRarityList.get_selected_items()[0]
+	if index > 0:
+		data.enemy_rarity_types.remove_at(index)
+		data.enemy_rarity_color_types.remove_at(index)
+		index = min(index, data.enemy_rarity_types.size() - 1)
+		fill_list(%EnemyRarityList, data.enemy_rarity_types, index, "30")
+		need_fix_data = true

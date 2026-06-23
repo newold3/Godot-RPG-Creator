@@ -15,10 +15,14 @@ func get_class(): return "RPGEnemy"
 @export var id: int = 0
 @export var name: String = ""
 @export var description: String = ""
+## Rarity type of the enemy.
+@export var rarity_type: int = 0
 @export var icon: RPGIcon = RPGIcon.new()
 @export var battler: String = ""
 @export var enemy_scene: String = ""
 @export var params: PackedInt32Array = [0, 0, 0, 0, 0, 0, 0, 0]
+## list of user-defined parameters in [Database/Types/User Parameters]
+@export var user_parameters: PackedFloat32Array = []
 @export var experience_reward: int = 0
 @export var gold_reward_from: int = 0
 @export var gold_reward_to: int = 0
@@ -36,7 +40,41 @@ func clear() -> void:
 	experience_reward = 0
 	gold_reward_from = 0
 	gold_reward_to = 0
+	rarity_type = 0
 	icon.clear()
+	
+	var database = RPGSYSTEM.database
+	if database:
+		user_parameters.resize(database.types.user_parameters.size())
+		for i in database.types.user_parameters.size():
+			user_parameters[i] = database.types.user_parameters[i].default_value
+
+
+## Gets the parameter value for a specific level.
+## @param parameter String - The parameter to get.
+## @param level int - The level to get the parameter for.
+## @return int - The parameter value.
+func get_parameter(parameter: String) -> int:
+	var param_index: int = -1
+
+	if RPGActor.BaseParamType.keys().has(parameter):
+		param_index = RPGActor.BaseParamType[parameter]
+
+	if param_index == -1:
+		return 0
+
+	var value = params[param_index]
+
+	return value
+
+## Gets the user parameter value for a specific level.
+func get_user_parameter(param_id: int, level_id: int) -> float:
+	var current_value = 0
+	
+	if user_parameters.size() > param_id and param_id >= 0:
+		current_value += user_parameters[param_id]
+	
+	return current_value
 
 
 func clone(value: bool = true) -> RPGEnemy:

@@ -38,6 +38,12 @@ func get_class():
 ## Color types of armor rarity.
 @export var armor_rarity_color_types: PackedColorArray = []
 
+## Rarity types of enemy.
+@export var enemy_rarity_types: PackedStringArray = []
+
+## Color types of enemy rarity.
+@export var enemy_rarity_color_types: PackedColorArray = []
+
 ## Types of items.
 @export var item_types: PackedStringArray = []
 
@@ -116,9 +122,12 @@ func get_item_color(item_type: Variant, rarity_type: int) -> Color:
 		"1", "weapon", "weapons":
 			if weapon_rarity_color_types.size() > rarity_type:
 				color = weapon_rarity_color_types[rarity_type]
-		"2", "armor", "armor":
+		"2", "armor", "armors":
 			if armor_rarity_color_types.size() > rarity_type:
 				color = armor_rarity_color_types[rarity_type]
+		"3", "enemy", "enemies":
+			if enemy_rarity_color_types.size() > rarity_type:
+				color = enemy_rarity_color_types[rarity_type]
 	
 	return color
 

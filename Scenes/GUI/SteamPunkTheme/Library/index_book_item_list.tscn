@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bwq472mbxtx0e"]
+
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="1_bsqqm"]
+[ext_resource type="Script" uid="uid://ogb6a0dxdd1j" path="res://Scenes/GUI/SteamPunkTheme/Library/index_book_item_list.gd" id="2_00hp7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yf5fn"]
+bg_color = Color(0.3699901, 0.6837092, 0.40885377, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jobp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8o377"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[node name="ItemList" type="ItemList" unique_id=980167557]
+size_flags_vertical = 3
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.88235295, 0.7647059, 0.7254902, 1)
+theme_override_colors/font_outline_color = Color(0.67058825, 0.5568628, 0.50980395, 1)
+theme_override_colors/guide_color = Color(0.69803923, 0.69803923, 0.69803923, 0)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("1_bsqqm")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+theme_override_styles/selected = SubResource("StyleBoxFlat_yf5fn")
+theme_override_styles/cursor_unfocused = SubResource("StyleBoxFlat_5jobp")
+theme_override_styles/cursor = SubResource("StyleBoxFlat_8o377")
+item_count = 4
+item_0/text = "- librro 1"
+item_1/text = "- librro 2"
+item_2/text = "- librro 3"
+item_3/text = "- librro 4"
+script = ExtResource("2_00hp7")

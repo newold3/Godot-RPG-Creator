@@ -192,7 +192,10 @@ func initialize() -> void:
 		"armor_rarity_names" = ["Common", "Uncommon", "Rare", "Legendary"],
 		"armor_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")],
 		"item_rarity_names" = ["Common", "Uncommon", "Rare", "Legendary"],
-		"item_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")]
+		"item_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")],
+		"enemy_rarity_names" = ["Common", "Elite", "Boss"],
+		"enemy_rarity_colors" = [Color.WHITE, Color("25aeb9ff"), Color("f10d00ff")]
+		
 	}
 	types.element_types = PackedStringArray(type_data.elements)
 	types.skill_types = PackedStringArray(type_data.skills)
@@ -205,6 +208,8 @@ func initialize() -> void:
 	types.item_types = PackedStringArray(type_data.items)
 	types.item_rarity_types = PackedStringArray(type_data.item_rarity_names)
 	types.item_rarity_color_types = PackedColorArray(type_data.item_rarity_colors)
+	types.enemy_rarity_types = PackedStringArray(type_data.enemy_rarity_names)
+	types.enemy_rarity_color_types = PackedColorArray(type_data.enemy_rarity_colors)
 	types.equipment_types = PackedStringArray(type_data.equipment)
 	types.gender_types = PackedStringArray(["None", "Male", "Female"])
 	# Speakers

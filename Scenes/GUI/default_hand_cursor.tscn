@@ -1,7 +1,18 @@
 [gd_scene format=3 uid="uid://bcnklsvxiex24"]
 
 [ext_resource type="Script" uid="uid://b1vlfkgpe0rcj" path="res://Scenes/GUI/default_hand_cursor.gd" id="1_ohafc"]
+[ext_resource type="Shader" uid="uid://cdk1dtrvlcxkb" path="res://Assets/Shaders/outline.gdshader" id="2_7qjag"]
 [ext_resource type="Texture2D" uid="uid://mnx1410ajprv" path="res://Scenes/GUI/SteamPunkTheme/Assets/hand_cursor.png" id="2_ohafc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l6lfr"]
+shader = ExtResource("2_7qjag")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 2.6930001279175
+shader_parameter/pattern = 0
+shader_parameter/inside = true
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
+shader_parameter/disabled = true
 
 [node name="DefaultHandCursor" type="CanvasLayer" unique_id=475444427]
 layer = 128
@@ -12,6 +23,6 @@ unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 z_index = 4096
 z_as_relative = false
+material = SubResource("ShaderMaterial_l6lfr")
 position = Vector2(-196, -215)
 texture = ExtResource("2_ohafc")
-offset = Vector2(-3.9979148, 0)

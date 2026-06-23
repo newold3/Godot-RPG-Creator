@@ -101,6 +101,12 @@ func clear() -> void:
 	disassemble_cost = 0
 	tick_interval = 1.0
 	icon.clear()
+	
+	var database = RPGSYSTEM.database
+	if database:
+		user_parameters.resize(database.types.user_parameters.size())
+		for i in database.types.user_parameters.size():
+			user_parameters[i] = database.types.user_parameters[i].default_value
 
 
 func get_parameter(parameter: String, level: int) -> int:

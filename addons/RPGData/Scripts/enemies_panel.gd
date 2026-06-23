@@ -11,11 +11,28 @@ extends BasePanelData
 func _ready() -> void:
 	super()
 	default_data_element = RPGEnemy.new()
+	item_created.connect(_on_enemy_created)
+	%UserParametersControl.data = data
+	%UserParametersControl.default_data_element = default_data_element
+	%DefaultParametersControl.set_title(tr("Enemy Params"))
 #endregion
 
 
 
 #region Core Data Loading
+## Initializes user parameters for newly created costumes
+func _on_enemy_created(enemy: RPGEnemy) -> void:
+	enemy.user_parameters.resize(database.types.user_parameters.size())
+	
+	for i in database.types.user_parameters.size():
+		enemy.user_parameters[i] = database.types.user_parameters[i].default_value
+
+
+func set_data(_data: Array) -> void:
+	super(_data)
+	%UserParametersControl.data = data
+
+
 ## Retrieves the currently selected enemy with index safety
 func get_data() -> RPGEnemy:
 	current_selected_index = max(1, min(current_selected_index, data.size() - 1))
@@ -27,9 +44,13 @@ func get_data() -> RPGEnemy:
 func _update_data_fields() -> void:
 	busy = true
 	
+	%UserParametersControl.current_selected_index = current_selected_index
+	
 	if current_selected_index != -1:
 		disable_all(false)
 		var current_data = get_data()
+		
+		fill_rarity_types()
 		
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		%ExperienceSpinBox.value = current_data.experience_reward
@@ -41,21 +62,13 @@ func _update_data_fields() -> void:
 		%NoteTextEdit.text = current_data.notes
 		%DescriptionTextEdit.text = current_data.description
 		
-		%MaxHPSpinBox.value = current_data.params[0]
-		%AttackSpinBox.value = current_data.params[1]
-		%MagicAttackSpinBox.value = current_data.params[2]
-		%AgilitySpinBox.value = current_data.params[3]
-		%MaxMPSpinBox.value = current_data.params[4]
-		%DefenseSpinBox.value = current_data.params[5]
-		%MagicDefenseSpinBox.value = current_data.params[6]
-		%LuckSpinBox.value = current_data.params[7]
+		%DefaultParametersControl.set_data(current_data.params)
+		%UserParametersControl.fill_user_parameters(current_selected_index)
 		
 		var scene_name: String = "Select Enemy Scene"
 		if current_data.enemy_scene.length() > 0:
 			scene_name = current_data.enemy_scene
 		%EnemySceneButton.text = scene_name
-		
-		%PasteParameters.set_disabled(!StaticEditorVars.CLIPBOARD.get("equipment_parameters_list", false))
 		
 		fill_drop_list()
 		fill_action_list()
@@ -69,6 +82,32 @@ func _update_data_fields() -> void:
 	busy = false
 
 
+## Populates the enemy rarity options
+func fill_rarity_types() -> void:
+	if !database: return
+	
+	var node = %WeaponRarityTypeOptions
+	node.clear()
+	
+	if database:
+		for i in database.types.enemy_rarity_types.size():
+			var item = database.types.enemy_rarity_types[i]
+			var color = database.types.enemy_rarity_color_types[i]
+			var icon = Image.create(16, 16, true, Image.FORMAT_RGB8)
+			icon.fill_rect(Rect2i(0, 0, 16, 16), color)
+			var tex = ImageTexture.create_from_image(icon)
+			if item.length() == 0:
+				item = "# %s" % (i+1)
+			node.add_icon_item(tex, item)
+	
+	var current_data = get_data()
+	if database.types.enemy_rarity_types.size() + 1 >= current_data.rarity_type:
+		node.select(current_data.rarity_type)
+	else:
+		node.select(-1)
+		node.text = "⚠ Invalid Data"
+
+
 
 ## Handles visibility changes to refresh traits and sub-lists
 func _on_visibility_changed() -> void:
@@ -80,6 +119,8 @@ func _on_visibility_changed() -> void:
 			fill_battle_actions()
 			fill_drop_list()
 			fill_action_list()
+			fill_rarity_types()
+			%UserParametersControl.fill_user_parameters(current_selected_index)
 		else:
 			%TraitsPanel.clear()
 		busy = false
@@ -853,13 +894,6 @@ func _on_description_text_edit_text_changed() -> void:
 	get_data().description = %DescriptionTextEdit.text
 
 
-
-## Updates specific enemy parameter
-func update_enemy_param(value: float, param_id: int) -> void:
-	get_data().params[param_id] = value
-
-
-
 ## Handles tab visibility switching
 func _on_config_data_tabs_tab_changed(index: int) -> void:
 	var node_path = "%%Tab%s" % (index + 1)
@@ -888,27 +922,5 @@ func _on_battler_picker_paste_requested(icon: String, region: Rect2) -> void:
 #endregion
 
 
-
-#region Global Clipboard
-## Copies base parameters to the local panel clipboard
-func _on_copy_parameters_pressed() -> void:
-	var main_panel = get_tree().get_nodes_in_group("main_database")[0].get_child(0)
-	main_panel.CLIPBOARD.equipment_parameters_list = get_data().params.duplicate()
-	%PasteParameters.set_disabled(false)
-
-
-
-## Pastes base parameters from the local panel clipboard
-func _on_paste_parameters_pressed() -> void:
-	var main_panel = get_tree().get_nodes_in_group("main_database")[0].get_child(0)
-	var params = main_panel.CLIPBOARD.get("equipment_parameters_list", null)
-	if params:
-		%MaxHPSpinBox.value = params[0]
-		%AttackSpinBox.value = params[1]
-		%MagicAttackSpinBox.value = params[2]
-		%AgilitySpinBox.value = params[3]
-		%MaxMPSpinBox.value = params[4]
-		%DefenseSpinBox.value = params[5]
-		%MagicDefenseSpinBox.value = params[6]
-		%LuckSpinBox.value = params[7]
-#endregion
+func _on_weapon_rarity_type_options_item_selected(index: int) -> void:
+	get_data().rarity_type = index

@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://btgo3w2tyvqrj"]
+
+[ext_resource type="Script" uid="uid://chygm72cd2x5" path="res://Scenes/GUI/SteamPunkTheme/Library/library_book_name.gd" id="1_5cbbv"]
+[ext_resource type="Texture2D" uid="uid://cis0a1qgsxoc3" path="res://Scenes/GUI/SteamPunkTheme/Assets/open_scroll.png" id="1_ye820"]
+[ext_resource type="Texture2D" uid="uid://3e8yo2rouxr" path="res://Scenes/GUI/SteamPunkTheme/Assets/open_scroll_outline.png" id="2_5cbbv"]
+[ext_resource type="PackedScene" uid="uid://b8w1hsyuscqit" path="res://Scenes/GUI/magic_label.tscn" id="3_g3733"]
+[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="4_ayosu"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="5_n7lv6"]
+
+[sub_resource type="Gradient" id="Gradient_sr3wc"]
+offsets = PackedFloat32Array(0.090277776, 0.33472222, 0.9125, 1)
+colors = PackedColorArray(0.43137255, 0.19607843, 0.1254902, 1, 0.81960785, 0.78039217, 0.7372549, 1, 0.99593276, 0.66906774, 0.61150527, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_00iqk"]
+gradient = SubResource("Gradient_sr3wc")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g3733"]
+resource_local_to_scene = true
+shader = ExtResource("4_ayosu")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_00iqk")
+shader_parameter/use_text_gradient = true
+shader_parameter/size = Vector2(0, 31)
+shader_parameter/use_pixelate_gradient = true
+shader_parameter/pixel_scale = 3.202000104595
+shader_parameter/brightness = 0.999999977648
+
+[sub_resource type="LabelSettings" id="LabelSettings_ayosu"]
+resource_local_to_scene = true
+font = ExtResource("5_n7lv6")
+font_size = 6
+outline_size = 4
+outline_color = Color(0.18431373, 0.12156863, 0.09803922, 1)
+stacked_outline_count = 4
+stacked_outline_0/size = 1
+stacked_outline_0/color = Color(0.81960785, 0.78039217, 0.7372549, 1)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0.27058825, 0.25490198, 0.21960784, 1)
+stacked_outline_2/size = 2
+stacked_outline_2/color = Color(0.43137255, 0.19607843, 0.1254902, 1)
+stacked_outline_3/size = 5
+stacked_outline_3/color = Color(0.5882353, 0.4745098, 0.42352942, 1)
+
+[node name="libraryBookName" type="MarginContainer" unique_id=480660241]
+modulate = Color(1, 1, 1, 0)
+z_index = 110
+offset_right = 120.0
+offset_bottom = 57.0
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = -3
+theme_override_constants/margin_bottom = -10
+script = ExtResource("1_5cbbv")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=975489274]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+texture = ExtResource("1_ye820")
+patch_margin_left = 41
+patch_margin_top = 16
+patch_margin_right = 47
+patch_margin_bottom = 31
+axis_stretch_horizontal = 1
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1805284138]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+texture = ExtResource("2_5cbbv")
+patch_margin_left = 41
+patch_margin_top = 16
+patch_margin_right = 47
+patch_margin_bottom = 31
+axis_stretch_horizontal = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=364983161]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 55
+theme_override_constants/margin_bottom = 27
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2" unique_id=1428739791]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -10
+theme_override_constants/margin_bottom = 0
+
+[node name="Title" parent="MarginContainer2/MarginContainer" unique_id=942110209 instance=ExtResource("3_g3733")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(-1, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+label_text = ""
+text_gradient = SubResource("GradientTexture2D_00iqk")
+force_text_size = 26
+
+[node name="ButtonName" parent="MarginContainer2/MarginContainer/Title" index="0" unique_id=802487098]
+material = SubResource("ShaderMaterial_g3733")
+custom_minimum_size = Vector2(-1, -1)
+offset_right = 13.0
+offset_bottom = 0.0
+pivot_offset = Vector2(104, 15.5)
+theme_override_font_sizes/font_size = 6
+text = ""
+force_text_size = 26
+
+[node name="Outline" parent="MarginContainer2/MarginContainer/Title/ButtonName" index="0" unique_id=1200121263]
+pivot_offset = Vector2(104, 15.5)
+theme_override_font_sizes/font_size = 6
+text = ""
+label_settings = SubResource("LabelSettings_ayosu")
+
+[editable path="MarginContainer2/MarginContainer/Title"]

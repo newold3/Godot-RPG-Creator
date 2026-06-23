@@ -1031,6 +1031,18 @@ func remove_costume_amount(id: int, amount: int, include_equipment: bool = false
 
 
 #region CursorManager Wrappers
+## Bridges the manual override function to the cursor manager.
+func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> void:
+	if cursor_manager:
+		cursor_manager.set_manual_cursor_override(target_node, global_pos)
+
+
+## Bridges the clear manual override function to the cursor manager.
+func clear_manual_cursor_override(target_node: Control) -> void:
+	if cursor_manager:
+		cursor_manager.clear_manual_cursor_override(target_node)
+
+
 func manage_cursor(node: Variant, offset: Vector2 = Vector2.ZERO) -> void:
 	if cursor_manager: cursor_manager.manage_cursor(node, offset)
 
@@ -1058,6 +1070,14 @@ func get_hand_style() -> MainHandCursor.HandPosition:
 
 func set_focusable_control_threshold(horizontal: int = 30, vertical: int = 30):
 	ControllerManager.set_focusable_control_threshold(horizontal, vertical)
+
+
+func enable_cursor_outline(color: Color) -> void:
+	if cursor_manager: cursor_manager.enable_cursor_outline(color)
+
+
+func disable_cursor_outline() -> void:
+	if cursor_manager: cursor_manager.disable_cursor_outline()
 
 
 func set_cursor_manipulator(manipulator_context: Variant = null, reset_control_threshold: bool = true) -> void:

@@ -4,6 +4,7 @@ extends Control
 var book_is_opened: bool = false
 var current_book: String = ""
 var busy: bool = false
+var _last_tooltip: Control
 
 var books_data = {
 	"encyclopedia":
@@ -43,39 +44,87 @@ var books_data = {
 var current_book_speed_scale: float = 1.0
 var speed_scale_step: float = 40.0
 
+@onready var book_container: Control = %Book
 @onready var animate_book: PageFlip2D = %AnimateBook
-@onready var new_book: Sprite2D = %NewBook
-@onready var last_book: Sprite2D = %LastBook
-@onready var new_book_start_position: Marker2D = %NewBookStartPosition
-@onready var last_book_start_position: Marker2D = %LastBookStartPosition
+@onready var new_book: TextureRect = %NewBook
+@onready var last_book: TextureRect = %LastBook
+@onready var new_book_start_position: Control = %NewBookStartPosition
+@onready var last_book_start_position: Control = %LastBookStartPosition
+
+const LIBRARY_BOOK_NAME = preload("uid://btgo3w2tyvqrj")
+
+
+signal book_selected(id: String)
+signal book_opened()
+signal book_closed()
 
 
 func _ready() -> void:
 	BookAPI.disable_book(animate_book)
 	BookAPI.set_interaction_lock(animate_book, true)
-	#%MainBookCursor.grab_focus()
-	_update_book("encyclopedia")
-
-
-func _input(event: InputEvent) -> void:
-	if busy: return
+	update_book.call_deferred("encyclopedia", true)
 	
-	if book_is_opened:
-		if event.is_action_pressed("ui_right", true):
-			current_book_speed_scale = min(current_book_speed_scale + get_process_delta_time() * speed_scale_step, 3.0)
-			BookAPI.set_book_speed(animate_book, current_book_speed_scale)
-			BookAPI.next_page(animate_book)
-		elif event.is_action_pressed("ui_left", true):
-			if animate_book.current_spread == 0:
-				BookAPI.set_book_speed(animate_book, 1.0)
-				_background_blur(0.0)
-			else:
-				BookAPI.set_book_speed(animate_book, current_book_speed_scale)
-				current_book_speed_scale = min(current_book_speed_scale + get_process_delta_time() * speed_scale_step, 3.0)
-			BookAPI.prev_page(animate_book)
-		else:
-			current_book_speed_scale = 1.0
+	StaticSignal.connect_static_signal("target_item_list_item_hovered_local", _on_custom_target_item_list_item_hovered_local)
+	StaticSignal.connect_static_signal("target_item_list_item_unhovered_local", _on_custom_target_item_list_item_unhovered_local)
 
+
+func get_books() -> Array:
+	return [
+		%EncyclopediaCursor,
+		%BestiaryCursor,
+		%inventoryCursor,
+		%RecipesCursor,
+		%MainBookCursor
+	]
+
+
+func get_selectable_books() -> Array:
+	return [
+		%EncyclopediaCursor,
+		%BestiaryCursor,
+		%inventoryCursor,
+		%RecipesCursor
+	]
+
+
+func get_selected_book() -> Control:
+	var _current_book = get_viewport().gui_get_focus_owner()
+	if _current_book in get_books():
+		return _current_book
+	
+	return null
+
+
+func select(book: Control) -> void:
+	if book in get_books():
+		book.grab_focus()
+
+
+func get_main_book() -> PageFlip2D:
+	return animate_book
+
+
+func turn_page_to(direction: String) -> void:
+	if not book_is_opened: return
+	
+	if ControllerManager.is_direction_just_pressed(direction):
+		current_book_speed_scale = 1.0
+		
+	if direction == "left":
+		if animate_book.current_spread == 0:
+			BookAPI.set_book_speed(animate_book, 1.0)
+			_background_blur(0.0)
+		else:
+			BookAPI.set_book_speed(animate_book, current_book_speed_scale)
+			current_book_speed_scale = min(current_book_speed_scale + get_process_delta_time() * speed_scale_step, 3.0)
+		BookAPI.prev_page(animate_book)
+	elif direction == "right":
+		current_book_speed_scale = min(current_book_speed_scale + get_process_delta_time() * speed_scale_step, 3.0)
+		
+		BookAPI.set_book_speed(animate_book, current_book_speed_scale)
+		BookAPI.next_page(animate_book)
+	else:
+		current_book_speed_scale = 1.0
 
 
 func _on_page_flip_2d_book_opened() -> void:
@@ -83,6 +132,7 @@ func _on_page_flip_2d_book_opened() -> void:
 	%MainBookParticles.speed_scale = 8.0
 	%MainBookParticles.emitting = false
 	%MainBookParticles.z_index = 0
+	book_opened.emit()
 
 
 func _on_page_flip_2d_book_closed() -> void:
@@ -90,24 +140,26 @@ func _on_page_flip_2d_book_closed() -> void:
 	%MainBookParticles.speed_scale = 1.0
 	%MainBookParticles.emitting = true
 	%MainBookParticles.z_index = 115
+	book_closed.emit()
 
 
+func open_book() -> void:
+	book_container.mouse_filter = Control.MOUSE_FILTER_STOP
+	current_book_speed_scale = 1.0
+	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
+	if animate_book.current_spread == -1:
+		BookAPI.next_page()
+	else:
+		BookAPI.go_to_spread(animate_book, 0, true)
+	_background_blur(4.0)
 
-func _on_main_book_cursor_gui_input(event: InputEvent) -> void:
-	if not book_is_opened:
-		if event.is_action_pressed("ui_accept") or event.is_action_pressed("Mouse Left"):
-			current_book_speed_scale = 1.0
-			BookAPI.set_book_speed(animate_book, current_book_speed_scale)
-			if animate_book.current_spread == -1:
-				BookAPI.next_page()
-			else:
-				BookAPI.go_to_spread(animate_book, 0, true)
-			_background_blur(4.0)
-	elif event.is_action_pressed("ui_accept") or event.is_action_pressed("Mouse Left") or event.is_action_pressed("ui_cancel"):
-		current_book_speed_scale = 1.0
-		BookAPI.set_book_speed(animate_book, current_book_speed_scale)
-		BookAPI.go_to_spread(animate_book, -1, true)
-		_background_blur(0.0)
+
+func close_book() -> void:
+	book_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	current_book_speed_scale = 1.0
+	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
+	BookAPI.go_to_spread(animate_book, -1, true)
+	_background_blur(0.0)
 
 
 func _background_blur(blur_strength: float) -> void:
@@ -116,13 +168,26 @@ func _background_blur(blur_strength: float) -> void:
 	t.tween_property(mat, "shader_parameter/blur_strength", blur_strength, 0.4)
 
 
-func _update_book(type: String) -> void:
+func update_book(type: String, _is_initial_update: bool = false) -> bool:
+	if current_book == type: return false
+	
 	busy = true
 	
 	var book = animate_book
 	
+	match type:
+		"bestiary":
+			var pages = RPGSYSTEM.database.enemies.slice(1)
+			var scene_path = "res://Scenes/GUI/SteamPunkTheme/Library/Books/bestiary.tscn"
+			var paths: Array[String] = []
+			paths.resize(pages.size() * 2 + 500)
+			paths.fill(scene_path)
+			book.limit_max_pages = pages.size() * 2  + 1
+			book.set_new_pages(paths)
+		
+	
 	var next_book = load(books_data[type].preview)
-	var old_book = null if current_book.is_empty() else load(books_data[current_book].preview)
+	var old_book = next_book if current_book.is_empty() else load(books_data[current_book].preview)
 	
 	book.spine_texture = load(books_data[type].spine)
 	book.tex_cover_front_out = load(books_data[type].cover)
@@ -132,69 +197,154 @@ func _update_book(type: String) -> void:
 	book.refresh()
 	book.visible = false
 	
+	var new_book_offset = next_book.get_size() * 0.5 if next_book else Vector2.ZERO
 	new_book.texture = next_book
-	new_book.position = new_book_start_position.position
+	new_book.position = new_book_start_position.position - new_book_offset
 	new_book.modulate.a = 0.0
 	
+	var old_book_offset = old_book.get_size() * 0.5 if old_book else Vector2.ZERO
 	last_book.texture = old_book
-	last_book.position = last_book_start_position.position
+	last_book.position = last_book_start_position.position - old_book_offset
 	var mat: ShaderMaterial = last_book.get_material()
 	mat.set_shader_parameter("dissolve_value", 1.0)
 	
 	new_book.visible = true
 	last_book.visible = true
 	
-	%MainBookParticles.speed_scale = 8.0
-	%MainBookParticles.emitting = false
-	
 	var t = create_tween()
 	t.set_parallel(true)
 	t.tween_property(mat, "shader_parameter/dissolve_value", 0.0, 0.5)
 	t.tween_property(new_book, "modulate:a", 1.0, 0.3)
-	t.tween_property(new_book, "position", last_book_start_position.position, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	t.tween_property(new_book, "position", last_book_start_position.position - old_book_offset, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	
 	
 	t.set_parallel(false)
 	
 	t.tween_callback(
 		func():
+			if _is_initial_update: book._initial_config()
 			book.play_sound(book.sfx_book_impact)
 			book.visible = true
 			new_book.visible = false
 			last_book.visible = false
 			busy = false
-			%MainBookParticles.speed_scale = 1.0
-			%MainBookParticles.emitting = true
+			book_selected.emit(type)
 	)
 	
 	current_book = type
 	
-	GameManager.play_se(preload("uid://b6pehk47hflex"))
+	GameManager.play_se(preload("uid://djskkuanh66hp"), -10, randf_range(0.9, 1.1))
+	
+	return true
 
 
 func _on_encyclopedia_cursor_gui_input(event: InputEvent) -> void:
-	if busy: return
+	if busy or book_is_opened: return
 	
 	if event.is_action_pressed("Mouse Left"):
-		_update_book("encyclopedia")
+		update_book("encyclopedia")
 
 
 func _on_bestiary_cursor_gui_input(event: InputEvent) -> void:
-	if busy: return
+	if busy or book_is_opened: return
 	
 	if event.is_action_pressed("Mouse Left"):
-		_update_book("bestiary")
+		update_book("bestiary")
 
 
 func _on_inventory_cursor_gui_input(event: InputEvent) -> void:
-	if busy: return
+	if busy or book_is_opened: return
 	
 	if event.is_action_pressed("Mouse Left"):
-		_update_book("inventory")
+		update_book("inventory")
 
 
 func _on_recipes_cursor_gui_input(event: InputEvent) -> void:
-	if busy: return
+	if busy or book_is_opened: return
 	
 	if event.is_action_pressed("Mouse Left"):
-		_update_book("recipes")
+		update_book("recipes")
+
+
+func _show_tooltip_over_book(_book_id: String) -> void:
+	var node = LIBRARY_BOOK_NAME.instantiate()
+	%Book.add_child(node)
+	node.start(_book_id)
+	_last_tooltip = node
+
+
+func _on_encyclopedia_cursor_focus_entered() -> void:
+	%Book1Cursor.modulate = Color.YELLOW
+	book_selected.emit("encyclopedia")
+	_show_tooltip_over_book("encyclopedia")
+
+
+func _on_bestiary_cursor_focus_entered() -> void:
+	%Book2Cursor.modulate = Color.YELLOW
+	book_selected.emit("bestiary")
+	_show_tooltip_over_book("bestiary")
+
+
+func _on_inventory_cursor_focus_entered() -> void:
+	%Book3Cursor.modulate = Color.YELLOW
+	book_selected.emit("inventory")
+	_show_tooltip_over_book("inventory")
+
+
+func _on_recipes_cursor_focus_entered() -> void:
+	%Book4Cursor.modulate = Color.YELLOW
+	book_selected.emit("recipes")
+	_show_tooltip_over_book("recipes")
+
+
+func _on_encyclopedia_cursor_focus_exited() -> void:
+	%Book1Cursor.modulate = Color.WHITE
+	if _last_tooltip: _last_tooltip.end()
+
+
+func _on_bestiary_cursor_focus_exited() -> void:
+	%Book2Cursor.modulate = Color.WHITE
+	if _last_tooltip: _last_tooltip.end()
+
+
+func _on_inventory_cursor_focus_exited() -> void:
+	%Book3Cursor.modulate = Color.WHITE
+	if _last_tooltip: _last_tooltip.end()
+
+
+func _on_recipes_cursor_focus_exited() -> void:
+	%Book4Cursor.modulate = Color.WHITE
+	if _last_tooltip: _last_tooltip.end()
+
+
+func _on_main_book_cursor_focus_entered() -> void:
+	%MainBookParticles.speed_scale = 1.0
+	%MainBookParticles.emitting = true
+	book_selected.emit("main_book")
+
+
+func _on_main_book_cursor_focus_exited() -> void:
+	%MainBookParticles.speed_scale = 1.2
+	%MainBookParticles.emitting = false
+
+
+#region Cursor Translation Block
+## Translates the local item position to global screen space using the container position.
+func _on_custom_target_item_list_item_hovered_local(local_position: Vector2, target_node: Control) -> void:
+	var is_left_page = false
+	var sv = target_node.get_viewport()
+
+	if sv and sv.name == "Slot1":
+		is_left_page = true
+		
+	var viewport_pos: Vector2 = target_node.global_position + local_position
+	var global_pos: Vector2 = %AnimateBook.viewport_to_global_curved(viewport_pos, is_left_page)
+	var sprite_offset: Vector2 = Vector2(-9.0, 2)
+	
+	GameManager.set_manual_cursor_override(target_node, global_pos + sprite_offset)
+
+
+## Clears the manual cursor override when the item is no longer hovered.
+func _on_custom_target_item_list_item_unhovered_local(target_node: Control) -> void:
+	GameManager.clear_manual_cursor_override(target_node)
+#endregion

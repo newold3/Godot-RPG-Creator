@@ -275,4 +275,20 @@ func set_manipulator(manipulator_context: Variant) -> void:
 func set_confin_area(area: Rect2 = Rect2(), manipulator_context: Variant = null) -> void:
 	if manipulator and str(manipulator_context) != manipulator: return
 	confined_area = area
+
+
+func enable_cursor_outline(color: Color) -> void:
+	var mat = cursor.get_material()
+	if mat and mat is ShaderMaterial:
+		mat.set_shader_parameter("color", color)
+		mat.set_shader_parameter("disabled", false)
+
+
+func disable_cursor_outline() -> void:
+	var mat = cursor.get_material()
+	if mat and mat is ShaderMaterial:
+		mat.set_shader_parameter("color", Color.WHITE)
+		mat.set_shader_parameter("disabled", true)
+
+
 #endregion

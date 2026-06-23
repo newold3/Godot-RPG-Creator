@@ -9,6 +9,14 @@ func _ready() -> void:
 	default_data_element = RPGArmor.new()
 	_fill_usage_restriction()
 	item_created.connect(_on_armor_created)
+	%UserParametersControl.data = data
+	%UserParametersControl.default_data_element = default_data_element
+	%DefaultParametersControl.set_title(tr("Parameters (when armor is level 1)"))
+
+
+func set_data(_data: Array) -> void:
+	super(_data)
+	%UserParametersControl.data = data
 
 
 func _fill_usage_restriction() -> void:
@@ -56,6 +64,8 @@ func get_data() -> RPGArmor:
 func _update_data_fields() -> void:
 	busy = true
 	
+	%UserParametersControl.current_selected_index = current_selected_index
+	
 	if current_selected_index != -1:
 		disable_all(false)
 		fill_armor_types()
@@ -72,14 +82,7 @@ func _update_data_fields() -> void:
 		%PriceSpinBox.value = current_data.price
 		%MaxQuantity.value = current_data.max_quantity
 		
-		%MaxHPSpinBox.value = current_data.params[RPGActor.BaseParamType.HP]
-		%AttackSpinBox.value = current_data.params[RPGActor.BaseParamType.ATK]
-		%MagicAttackSpinBox.value = current_data.params[RPGActor.BaseParamType.MATK]
-		%AgilitySpinBox.value = current_data.params[RPGActor.BaseParamType.AGI]
-		%MaxMPSpinBox.value = current_data.params[RPGActor.BaseParamType.MP]
-		%DefenseSpinBox.value = current_data.params[RPGActor.BaseParamType.DEF]
-		%MagicDefenseSpinBox.value = current_data.params[RPGActor.BaseParamType.MDEF]
-		%LuckSpinBox.value = current_data.params[RPGActor.BaseParamType.LUK]
+		%DefaultParametersControl.set_data(current_data.params)
 		
 		%ArmorMaxLevelsSpinBox.value = current_data.upgrades.max_levels
 		%NoteTextEdit.text = current_data.notes
@@ -92,14 +95,8 @@ func _update_data_fields() -> void:
 			%LPCPartButton.text = tr("Select LPC Equipment")
 			
 		%PasteUpgradeList.set_disabled(!StaticEditorVars.CLIPBOARD.get("upgrade_list", false))
-		%PasteParameters.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_parameters_list", false))
 		%PasteCraft.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_craft", false))
 		%PasteDisassemble.set_disabled(!StaticEditorVars.CLIPBOARD.get("items_disassemble", false))
-		
-		var user_parameter_disabled = (database.types.user_parameters.size() == 0)
-		%UserParameters.set_disabled(user_parameter_disabled)
-		%CopyUserParameters.set_disabled(user_parameter_disabled)
-		%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
 		
 		_fill_equipment_restriction()
 		
@@ -152,12 +149,6 @@ func _on_visibility_changed() -> void:
 			%TraitsPanel.set_data(database, get_data().traits)
 		else:
 			%TraitsPanel.clear()
-			
-		if database:
-			var user_parameter_disabled = database.types.user_parameters.size() == 0
-			%UserParameters.set_disabled(user_parameter_disabled)
-			%CopyUserParameters.set_disabled(user_parameter_disabled)
-			%PasteUserParameters.set_disabled(user_parameter_disabled or !StaticEditorVars.CLIPBOARD.get("items_user_parameters", false))
 			
 		busy = false
 #endregion
@@ -236,27 +227,7 @@ func fill_rarity_types() -> void:
 
 ## Refreshes the user parameters list
 func fill_user_parameters(selected_index: int = 0) -> void:
-	var node = %UserParameters
-	node.clear()
-	
-	if not get_data(): return
-	
-	var user_parameters = get_data().user_parameters
-	var user_parameter_data = database.types.user_parameters
-	
-	if user_parameters.size() != user_parameter_data.size():
-		user_parameters.resize(user_parameter_data.size())
-
-	for i in user_parameter_data.size():
-		var column = []
-		column.append(user_parameter_data[i].name)
-		column.append("%.2f" % user_parameters[i])
-		node.add_column(column)
-	
-	await node.columns_setted
-	
-	if selected_index >= 0 and node.get_item_count() > selected_index:
-		node.select(selected_index)
+	%UserParametersControl.fill_user_parameters(selected_index)
 #endregion
 
 
@@ -280,46 +251,6 @@ func _on_icon_picker_clicked() -> void:
 func update_icon() -> void:
 	var icon = get_data().icon
 	%IconPicker.set_icon(icon.path, icon.region)
-
-
-## Updates base parameter: HP
-func _on_max_hp_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.HP] = value
-
-
-## Updates base parameter: Attack
-func _on_attack_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.ATK] = value
-
-
-## Updates base parameter: Magic Attack
-func _on_magic_attack_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MATK] = value
-
-
-## Updates base parameter: Agility
-func _on_agility_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.AGI] = value
-
-
-## Updates base parameter: MP
-func _on_max_mp_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MP] = value
-
-
-## Updates base parameter: Defense
-func _on_defense_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.DEF] = value
-
-
-## Updates base parameter: Magic Defense
-func _on_magic_defense_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.MDEF] = value
-
-
-## Updates base parameter: Luck
-func _on_luck_spin_box_value_changed(value: float) -> void:
-	get_data().params[RPGActor.BaseParamType.LUK] = value
 
 
 ## Resizes upgrade levels and initializes new ones
@@ -492,28 +423,6 @@ func _on_paste_upgrade_list_pressed() -> void:
 		%ArmorMaxLevelsSpinBox.value = current_data.upgrades.max_levels
 
 
-## Copies base parameters to the clipboard
-func _on_copy_parameters_pressed() -> void:
-	var current_data = get_data()
-	StaticEditorVars.CLIPBOARD.items_parameters_list = current_data.params.duplicate()
-	%PasteParameters.set_disabled(false)
-	RPGEditorToast.show_message("Parameters copied to Clipboard")
-
-
-## Pastes base parameters from the clipboard
-func _on_paste_parameters_pressed() -> void:
-	var params = StaticEditorVars.CLIPBOARD.get("items_parameters_list", null)
-	if params:
-		%MaxHPSpinBox.value = params[0]
-		%AttackSpinBox.value = params[1]
-		%MagicAttackSpinBox.value = params[2]
-		%AgilitySpinBox.value = params[3]
-		%MaxMPSpinBox.value = params[4]
-		%DefenseSpinBox.value = params[5]
-		%MagicDefenseSpinBox.value = params[6]
-		%LuckSpinBox.value = params[7]
-
-
 ## Copies craft materials to the clipboard
 func _on_copy_craft_pressed() -> void:
 	var current_data = get_data()
@@ -564,49 +473,6 @@ func _on_paste_disassemble_pressed() -> void:
 		var current_data = get_data()
 		current_data.disassemble_materials = components
 		current_data.disassemble_cost = items_disassemble.cost
-
-
-## Copies user parameters to the clipboard
-func _on_copy_user_parameters_pressed() -> void:
-	StaticEditorVars.CLIPBOARD.items_user_parameters = get_data().user_parameters.duplicate()
-	%PasteUserParameters.set_disabled(false)
-	RPGEditorToast.show_message("User parameter list copied to Clipboard")
-
-
-## Pastes user parameters from the clipboard
-func _on_paste_user_parameters_pressed() -> void:
-	if "items_user_parameters" in StaticEditorVars.CLIPBOARD:
-		for i in get_data().user_parameters.size():
-			if StaticEditorVars.CLIPBOARD.items_user_parameters.size() > i:
-				get_data().user_parameters[i] = StaticEditorVars.CLIPBOARD.items_user_parameters[i]
-		fill_user_parameters()
-
-
-## Resets user parameters to default values
-func _on_reset_user_parameters_pressed() -> void:
-	for i in database.types.user_parameters.size():
-		if get_data().user_parameters.size() > i:
-			get_data().user_parameters[i] = database.types.user_parameters[i].default_value
-	fill_user_parameters()
-	RPGEditorToast.show_message("User parameter list reset to default values")
-
-
-## Handles custom user parameter editing
-func _on_user_parameters_item_activated(index: int) -> void:
-	if database.types.user_parameters.size() > index and index >= 0:
-		var path = "res://addons/CustomControls/Dialogs/select_number_value_dialog.tscn"
-		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-		var user_param_name = database.types.user_parameters[index].name
-		var user_param_value = get_data().user_parameters[index]
-		
-		dialog.set_min_max_values(0, 0, 0.01)
-		dialog.set_title_and_contents(tr("Set Parameter value"), user_param_name)
-		dialog.set_value(user_param_value)
-		dialog.selected_value.connect(
-			func(value: float):
-				get_data().user_parameters[index] = value
-				fill_user_parameters(index)
-		)
 
 
 ## Handles tab changing logic

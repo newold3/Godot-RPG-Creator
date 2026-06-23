@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://x14pwrwopfa"]
+[gd_scene format=3 uid="uid://x14pwrwopfa"]
 
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="1_2ywxf"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_h5atl"]
@@ -13,18 +13,19 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[node name="SelectNumberValueDialog" type="Window"]
+[node name="SelectNumberValueDialog" type="Window" unique_id=1461834185]
 oversampling_override = 1.0
 title = "Number Input"
 position = Vector2i(0, 36)
 size = Vector2i(380, 137)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_h5atl")
 script = ExtResource("2_xgdya")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1915802408]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ykjfa")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=808758697]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -43,41 +44,42 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2022959850]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1240557555]
 layout_mode = 2
 text = "Number:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=211275388]
 layout_mode = 2
 
-[node name="ValueSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_2ywxf")]
+[node name="ValueSpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2011147830 instance=ExtResource("1_2ywxf")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Number[/title]
 Select the desired value"
 allow_greater = true
+_custom_value = 0.0
 
-[node name="Suffix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Suffix" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=944316652]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=843931594]
 layout_mode = 2
 size_flags_vertical = 10
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=277281086]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_p1iib")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1678123335 instance=ExtResource("2_p1iib")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -86,7 +88,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_p1iib")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2109286423 instance=ExtResource("2_p1iib")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "[title]Cancel[/title]

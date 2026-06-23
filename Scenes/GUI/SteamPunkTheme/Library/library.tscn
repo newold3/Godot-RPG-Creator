@@ -2,10 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://cj20pmdp6fqvr" path="res://InternalTests/newbook/background.png" id="1_86dwm"]
 [ext_resource type="Script" uid="uid://v2iad1mrujv7" path="res://Scenes/GUI/SteamPunkTheme/Library/library.gd" id="1_romwh"]
-[ext_resource type="Script" uid="uid://cdisc7hy51w4u" path="res://Scenes/GUI/SteamPunkTheme/Library/manager.gd" id="2_3f1ax"]
 [ext_resource type="PackedScene" uid="uid://cyv3b5w4xijdj" path="res://InternalTests/newbook/prueba_book.tscn" id="2_wyesn"]
 [ext_resource type="Shader" uid="uid://btiph3cafdne" path="res://Assets/Shaders/simple_gaussian_blur.gdshader" id="3_fs877"]
-[ext_resource type="Shader" uid="uid://bt3ihqobk4fsx" path="res://Assets/Shaders/perspective_corners.gdshader" id="3_romwh"]
 [ext_resource type="Texture2D" uid="uid://dmx2v3ccts2ne" path="res://Assets/Images/Particles/simple_particle1.png" id="3_sdj5r"]
 [ext_resource type="Texture2D" uid="uid://hrhb5wra32fn" path="res://Assets/Images/Particles/soft_square.png" id="4_lequg"]
 [ext_resource type="Texture2D" uid="uid://cght7xhxf2dj7" path="res://InternalTests/newbook/cover_front_recipes.png" id="7_0b51m"]
@@ -15,11 +13,7 @@
 [ext_resource type="Shader" uid="uid://cwtg2i4ptdrn6" path="res://Assets/Shaders/2D_dissolve_with_burn_edge.gdshader" id="12_fs877"]
 [ext_resource type="Texture2D" uid="uid://cnlaxbijqb6n6" path="res://InternalTests/newbook/book_bestiary.png" id="13_fs877"]
 [ext_resource type="Texture2D" uid="uid://bc4ovpq3oemg7" path="res://InternalTests/newbook/book_encyclopedia.png" id="14_fs877"]
-[ext_resource type="Texture2D" uid="uid://cis0a1qgsxoc3" path="res://Scenes/GUI/SteamPunkTheme/Assets/open_scroll.png" id="16_ko3pt"]
-[ext_resource type="PackedScene" uid="uid://b8w1hsyuscqit" path="res://Scenes/GUI/magic_label.tscn" id="17_3crrd"]
-[ext_resource type="Texture2D" uid="uid://3e8yo2rouxr" path="res://Scenes/GUI/SteamPunkTheme/Assets/open_scroll_outline.png" id="17_5j7sc"]
-[ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="18_5j7sc"]
-[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="20_1syk0"]
+[ext_resource type="Texture2D" uid="uid://cuecfk4lw874x" path="res://InternalTests/newbook/book_decorations.png" id="14_j2vpf"]
 
 [sub_resource type="Curve" id="Curve_sdj5r"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.36829835, 0.4227273), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -93,7 +87,7 @@ curve = SubResource("Curve_vy400")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k1tgm"]
 particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
-scale_max = 2.0
+scale_max = 3.0
 scale_curve = SubResource("CurveTexture_5ff6d")
 alpha_curve = SubResource("CurveTexture_0b51m")
 
@@ -133,40 +127,13 @@ shader_parameter/dissolve_value = 0.8390000398525
 shader_parameter/burn_size = 0.15999999642368
 shader_parameter/burn_color = Color(0.2581512, 2.481742e-07, 7.219613e-08, 1)
 
-[sub_resource type="Gradient" id="Gradient_sr3wc"]
-offsets = PackedFloat32Array(0.090277776, 0.33472222, 0.9125, 1)
-colors = PackedColorArray(0.43137255, 0.19607843, 0.1254902, 1, 0.81960785, 0.78039217, 0.7372549, 1, 0.99593276, 0.66906774, 0.61150527, 1, 1, 1, 1, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4v7s"]
+atlas = ExtResource("14_j2vpf")
+region = Rect2(12, 53, 63, 92)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_00iqk"]
-gradient = SubResource("Gradient_sr3wc")
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_t3xrm"]
-resource_local_to_scene = true
-shader = ExtResource("18_5j7sc")
-shader_parameter/gradient_texture = SubResource("GradientTexture2D_00iqk")
-shader_parameter/use_text_gradient = true
-shader_parameter/size = Vector2(104, 31)
-shader_parameter/use_pixelate_gradient = true
-shader_parameter/pixel_scale = 3.202000104595
-shader_parameter/brightness = 0.999999977648
-
-[sub_resource type="LabelSettings" id="LabelSettings_jv4vf"]
-resource_local_to_scene = true
-font = ExtResource("20_1syk0")
-font_size = 26
-outline_size = 4
-outline_color = Color(0.18431373, 0.12156863, 0.09803922, 1)
-stacked_outline_count = 4
-stacked_outline_0/size = 1
-stacked_outline_0/color = Color(0.81960785, 0.78039217, 0.7372549, 1)
-stacked_outline_1/size = 1
-stacked_outline_1/color = Color(0.27058825, 0.25490198, 0.21960784, 1)
-stacked_outline_2/size = 2
-stacked_outline_2/color = Color(0.43137255, 0.19607843, 0.1254902, 1)
-stacked_outline_3/size = 5
-stacked_outline_3/color = Color(0.5882353, 0.4745098, 0.42352942, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f1ax"]
+atlas = ExtResource("14_j2vpf")
+region = Rect2(104, 56, 62, 92)
 
 [node name="Encyclopedia" type="Control" unique_id=525754061]
 layout_mode = 3
@@ -177,10 +144,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_romwh")
-
-[node name="Manager" type="Node" parent="." unique_id=1018313463]
-unique_name_in_owner = true
-script = ExtResource("2_3f1ax")
 
 [node name="Background" type="Control" parent="." unique_id=1070608433]
 layout_mode = 1
@@ -209,6 +172,7 @@ lifetime = 3.5
 preprocess = 1.5
 explosiveness = 0.05
 randomness = 1.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_lequg")
 
 [node name="Smoke1" type="GPUParticles2D" parent="Background/BackgroundParticlesContainer" unique_id=625448902]
@@ -219,6 +183,7 @@ texture = ExtResource("3_sdj5r")
 preprocess = 1.5
 explosiveness = 0.29
 randomness = 0.8
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_5ff6d")
 
 [node name="Smoke3" type="GPUParticles2D" parent="Background/BackgroundParticlesContainer" unique_id=1354997708]
@@ -229,6 +194,7 @@ texture = ExtResource("3_sdj5r")
 preprocess = 1.5
 explosiveness = 0.29
 randomness = 0.8
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_5ff6d")
 
 [node name="CursorContainer" type="Node2D" parent="Background" unique_id=820843634]
@@ -292,40 +258,48 @@ offset_bottom = 523.0
 focus_mode = 1
 mouse_default_cursor_shape = 2
 
-[node name="Cursor1" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1074041743]
+[node name="Book1Cursor" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1074041743]
+unique_name_in_owner = true
 position = Vector2(223, 335)
 amount = 4
 texture = ExtResource("4_lequg")
 speed_scale = 1.11
 explosiveness = 0.2
 randomness = 1.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_k1tgm")
 
-[node name="Cursor2" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=192183328]
+[node name="Book2Cursor" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=192183328]
+unique_name_in_owner = true
 position = Vector2(473, 167)
 amount = 4
 texture = ExtResource("4_lequg")
 speed_scale = 1.11
 explosiveness = 0.2
 randomness = 1.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_k1tgm")
 
-[node name="Cursor3" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1929263145]
+[node name="Book3Cursor" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1929263145]
+unique_name_in_owner = true
 position = Vector2(764, 185)
 amount = 4
 texture = ExtResource("4_lequg")
 speed_scale = 1.11
 explosiveness = 0.2
 randomness = 1.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_k1tgm")
 
-[node name="Cursor4" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1671088120]
+[node name="Book4Cursor" type="GPUParticles2D" parent="Background/CursorContainer" unique_id=1671088120]
+unique_name_in_owner = true
 position = Vector2(447, 344)
 amount = 4
 texture = ExtResource("4_lequg")
 speed_scale = 1.11
 explosiveness = 0.2
 randomness = 1.0
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_k1tgm")
 
 [node name="Polygon2D" type="Polygon2D" parent="Background" unique_id=98303234]
@@ -345,6 +319,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Book" type="Control" parent="." unique_id=1205846570]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -353,23 +328,32 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="NewBookStartPosition" type="Marker2D" parent="Book" unique_id=21921176]
+[node name="NewBookStartPosition" type="Control" parent="Book" unique_id=30717288]
 unique_name_in_owner = true
-position = Vector2(615, 248)
+anchors_preset = 0
+offset_left = 618.0
+offset_top = 247.0
+offset_right = 618.0
+offset_bottom = 247.0
 scale = Vector2(2, 2)
+mouse_filter = 2
 
-[node name="LastBookStartPosition" type="Marker2D" parent="Book" unique_id=759708915]
+[node name="LastBookStartPosition" type="Control" parent="Book" unique_id=398848374]
 unique_name_in_owner = true
-position = Vector2(631, 489.28015)
+anchors_preset = 0
+offset_left = 630.0
+offset_top = 489.28015
+offset_right = 630.0
+offset_bottom = 489.28015
 scale = Vector2(2, 2)
+mouse_filter = 2
 
 [node name="AnimateBook" parent="Book" unique_id=81624837 instance=ExtResource("2_wyesn")]
 unique_name_in_owner = true
 z_index = 110
 texture_filter = 5
-position = Vector2(787, 386)
+position = Vector2(789, 385)
 scale = Vector2(0.5, 0.5)
-perspective_shader = ExtResource("3_romwh")
 closed_top_left = Vector2(80, 0)
 closed_top_right = Vector2(-120, 0)
 open_top_left = Vector2(40, 0)
@@ -377,19 +361,28 @@ open_top_right = Vector2(-40, 0)
 start_page = 0
 limit_max_pages = -1
 cover_anim_speed = 1.0
-spine_color = Color(1, 1, 1, 1)
 spine_texture = ExtResource("3_sdj5r")
+spine_width = 24.0
 flight_lift_height = 400.0
 flight_zoom_factor = 0.5
 closed_scale = Vector2(0.7, 0.2)
 closed_skew = 0.3620000000000001
 closed_offset = Vector2(20, 90)
+closed_back_offset = Vector2(0, 90)
+max_layers = 8
 layer_offset_closed = Vector2(3, 42)
-layer_offset_open = Vector2(4, 4)
+layer_offset_open = Vector2(2, 3)
 volume_color = Color(0.69, 0.64515, 0.5865, 1)
+stripe_darken_ratio = 0.4
+spine_curl_intensity = 25.0
+spine_curl_width = 0.7
+outer_droop_intensity = 19.0
+outer_droop_width = 0.7
+spine_shadow_darkness = 0.719
+inner_page_vertical_offset = -22.0
 cover_protrude_offset = Vector2(2, 3)
-target_page_size = Vector2(543, 635)
-pages_paths = Array[String](["uid://0y6hjltb1p3c", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://0y6hjltb1p3c", "uid://0y6hjltb1p3c", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://d5a3my4t0rsb"])
+inner_page_margin = Vector2(12, 12)
+pages_paths = Array[String](["uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://dmx2v3ccts2ne", "uid://d5a3my4t0rsb"])
 tex_cover_front_out = ExtResource("7_0b51m")
 tex_cover_front_in = ExtResource("8_vy400")
 tex_cover_back_in = ExtResource("8_vy400")
@@ -398,104 +391,82 @@ tex_cover_back_out = ExtResource("9_5ff6d")
 [node name="MainBookParticles" type="GPUParticles2D" parent="Book" unique_id=2061952163]
 unique_name_in_owner = true
 z_index = 110
-position = Vector2(611, 422)
+position = Vector2(611, 467.64)
+emitting = false
 amount = 120
 texture = ExtResource("7_us3hq")
+preprocess = 0.1
 explosiveness = 0.13
 randomness = 0.81
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_nanev")
 
-[node name="NewBook" type="Sprite2D" parent="Book" unique_id=482979268]
+[node name="NewBook" type="TextureRect" parent="Book" unique_id=637102222]
 unique_name_in_owner = true
 visible = false
 z_index = 1000
-position = Vector2(615, 88)
+layout_mode = 0
+offset_left = 615.0
+offset_top = 88.0
+offset_right = 615.0
+offset_bottom = 88.0
+pivot_offset_ratio = Vector2(106, 44)
+mouse_filter = 2
 texture = ExtResource("13_fs877")
 
-[node name="LastBook" type="Sprite2D" parent="Book" unique_id=139564933]
+[node name="LastBook" type="TextureRect" parent="Book" unique_id=1797357050]
 unique_name_in_owner = true
 visible = false
 z_index = 1000
 material = SubResource("ShaderMaterial_f7tl2")
-position = Vector2(615, 476)
+layout_mode = 0
+offset_left = 615.0
+offset_top = 476.0
+offset_right = 615.0
+offset_bottom = 476.0
+pivot_offset_ratio = Vector2(106, 44)
+mouse_filter = 2
 texture = ExtResource("14_fs877")
 
-[node name="MarginContainer" type="MarginContainer" parent="Book" unique_id=1851911564]
-z_index = 110
+[node name="BookExtraControls" type="Control" parent="Book" unique_id=669674112]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+
+[node name="GoToPageLeft" type="TextureRect" parent="Book/BookExtraControls" unique_id=1593598070]
+z_index = 200
 layout_mode = 0
-offset_left = 393.0
-offset_top = 99.0
-offset_right = 561.0
-offset_bottom = 156.0
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = -3
-theme_override_constants/margin_bottom = -10
+offset_left = 20.0
+offset_top = 244.0
+offset_right = 83.0
+offset_bottom = 336.0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+texture = SubResource("AtlasTexture_g4v7s")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Book/MarginContainer" unique_id=2055252201]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-texture = ExtResource("16_ko3pt")
-patch_margin_left = 41
-patch_margin_top = 16
-patch_margin_right = 47
-patch_margin_bottom = 31
-axis_stretch_horizontal = 1
+[node name="GoToPageRight" type="TextureRect" parent="Book/BookExtraControls" unique_id=1860989072]
+z_index = 200
+layout_mode = 0
+offset_left = 1081.0
+offset_top = 244.0
+offset_right = 1144.0
+offset_bottom = 336.0
+mouse_default_cursor_shape = 2
+texture = SubResource("AtlasTexture_3f1ax")
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="Book/MarginContainer" unique_id=1416859431]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-texture = ExtResource("17_5j7sc")
-patch_margin_left = 41
-patch_margin_top = 16
-patch_margin_right = 47
-patch_margin_bottom = 31
-axis_stretch_horizontal = 1
-
-[node name="MarginContainer2" type="MarginContainer" parent="Book/MarginContainer" unique_id=973234540]
-layout_mode = 2
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 55
-theme_override_constants/margin_bottom = 27
-
-[node name="MarginContainer" type="MarginContainer" parent="Book/MarginContainer/MarginContainer2" unique_id=1541352390]
-layout_mode = 2
-theme_override_constants/margin_left = 1
-theme_override_constants/margin_top = -2
-theme_override_constants/margin_right = -10
-theme_override_constants/margin_bottom = 0
-
-[node name="PanelTitle" parent="Book/MarginContainer/MarginContainer2/MarginContainer" unique_id=2016481678 instance=ExtResource("17_3crrd")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(104, 27)
-layout_mode = 2
-size_flags_horizontal = 4
-label_text = "Bestiary"
-text_gradient = SubResource("GradientTexture2D_00iqk")
-force_text_size = 26
-
-[node name="ButtonName" parent="Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle" index="0" unique_id=802487098]
-material = SubResource("ShaderMaterial_t3xrm")
-custom_minimum_size = Vector2(117, 27)
-offset_right = 13.0
-offset_bottom = 0.0
-pivot_offset = Vector2(58.5, 15.5)
-theme_override_font_sizes/font_size = 26
-text = "Bestiary"
-force_text_size = 26
-
-[node name="Outline" parent="Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle/ButtonName" index="0" unique_id=1200121263]
-pivot_offset = Vector2(58.5, 15.5)
-theme_override_font_sizes/font_size = 26
-text = "Bestiary"
-label_settings = SubResource("LabelSettings_jv4vf")
-
+[connection signal="focus_entered" from="Background/CursorContainer/CursorsSelectable/EncyclopediaCursor" to="." method="_on_encyclopedia_cursor_focus_entered"]
+[connection signal="focus_exited" from="Background/CursorContainer/CursorsSelectable/EncyclopediaCursor" to="." method="_on_encyclopedia_cursor_focus_exited"]
 [connection signal="gui_input" from="Background/CursorContainer/CursorsSelectable/EncyclopediaCursor" to="." method="_on_encyclopedia_cursor_gui_input"]
+[connection signal="focus_entered" from="Background/CursorContainer/CursorsSelectable/BestiaryCursor" to="." method="_on_bestiary_cursor_focus_entered"]
+[connection signal="focus_exited" from="Background/CursorContainer/CursorsSelectable/BestiaryCursor" to="." method="_on_bestiary_cursor_focus_exited"]
 [connection signal="gui_input" from="Background/CursorContainer/CursorsSelectable/BestiaryCursor" to="." method="_on_bestiary_cursor_gui_input"]
+[connection signal="focus_entered" from="Background/CursorContainer/CursorsSelectable/inventoryCursor" to="." method="_on_inventory_cursor_focus_entered"]
+[connection signal="focus_exited" from="Background/CursorContainer/CursorsSelectable/inventoryCursor" to="." method="_on_inventory_cursor_focus_exited"]
 [connection signal="gui_input" from="Background/CursorContainer/CursorsSelectable/inventoryCursor" to="." method="_on_inventory_cursor_gui_input"]
+[connection signal="focus_entered" from="Background/CursorContainer/CursorsSelectable/RecipesCursor" to="." method="_on_recipes_cursor_focus_entered"]
+[connection signal="focus_exited" from="Background/CursorContainer/CursorsSelectable/RecipesCursor" to="." method="_on_recipes_cursor_focus_exited"]
 [connection signal="gui_input" from="Background/CursorContainer/CursorsSelectable/RecipesCursor" to="." method="_on_recipes_cursor_gui_input"]
-[connection signal="gui_input" from="Background/CursorContainer/CursorsSelectable/MainBookCursor" to="." method="_on_main_book_cursor_gui_input"]
+[connection signal="focus_entered" from="Background/CursorContainer/CursorsSelectable/MainBookCursor" to="." method="_on_main_book_cursor_focus_entered"]
+[connection signal="focus_exited" from="Background/CursorContainer/CursorsSelectable/MainBookCursor" to="." method="_on_main_book_cursor_focus_exited"]
 [connection signal="book_closed" from="Book/AnimateBook" to="." method="_on_page_flip_2d_book_closed"]
 [connection signal="book_opened" from="Book/AnimateBook" to="." method="_on_page_flip_2d_book_opened"]
-
-[editable path="Book/MarginContainer/MarginContainer2/MarginContainer/PanelTitle"]

@@ -9,7 +9,13 @@ var params_need_resize: float
 func _ready() -> void:
 	super()
 	default_data_element = RPGClass.new()
+	%UserParametersControl.data = data
+	%UserParametersControl.default_data_element = default_data_element
 
+
+func set_data(_data: Array) -> void:
+	super(_data)
+	%UserParametersControl.data = data
 
 
 func get_data() -> RPGClass:
@@ -30,7 +36,11 @@ func _process(delta: float) -> void:
 
 func _update_data_fields() -> void:
 	busy = true
+	
 	await get_tree().process_frame
+	
+	%UserParametersControl.current_selected_index = current_selected_index
+	
 	if current_selected_index != -1:
 		var current_data = get_data()
 		disable_all(false)
@@ -44,6 +54,7 @@ func _update_data_fields() -> void:
 		%IconPicker.set_icon(current_data.icon.path, current_data.icon.region)
 		fill_class_list(current_data.upgrade_to_class)
 		fill_learnable_list()
+		%UserParametersControl.fill_user_parameters(current_selected_index)
 		%PasteParameters.set_disabled(!StaticEditorVars.CLIPBOARD.get("class_parameters", false))
 		fill_weights()
 	else:
@@ -282,6 +293,7 @@ func _on_visibility_changed() -> void:
 			%TraitsPanel.set_data(database, get_data().traits)
 			fill_learnable_list()
 			fill_class_list(get_data().upgrade_to_class)
+			%UserParametersControl.fill_user_parameters(current_selected_index)
 			busy = false
 		else:
 			%TraitsPanel.clear()

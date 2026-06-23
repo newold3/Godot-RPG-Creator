@@ -1,4 +1,5 @@
 @tool
+class_name CustomSimpleItemList
 extends ItemList
 
 ## Color for the odd lines
@@ -38,6 +39,8 @@ extends ItemList
 
 var busy: bool = false
 
+var locked_items: PackedInt32Array = []
+
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
 
 signal delete_pressed(ids: PackedInt32Array)
@@ -57,6 +60,11 @@ func _ready() -> void:
 
 ## Adds or removes the padlock icon to the requested item index
 func lock_item(index: int, value: bool) -> void:
+	if not value and locked_items.has(index):
+		locked_items.erase(index)
+	elif value and not locked_items.has(index):
+		locked_items.append(index)
+		
 	if get_item_count() > index:
 		if value:
 			set_item_icon(index, MINI_PADLOCK)
@@ -204,10 +212,14 @@ func select(idx: int, single: bool = true) -> void:
 
 
 ## Appends an item configuring its default tooltip behavior
-func add_item(text: String, icon: Texture2D = null, selectable: bool = true) -> int:
+func add_item_custom(text: String, icon: Texture2D = null, selectable: bool = true) -> int:
 	if text.is_empty(): text = " "
-	var index = super(text, icon, selectable)
+	var index = add_item(text, icon, selectable)
 	set_item_tooltip_enabled(index, false)
+
+	if index in locked_items:
+		set_item_icon(index, MINI_PADLOCK)
+		
 	return index
 
 

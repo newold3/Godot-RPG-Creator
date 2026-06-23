@@ -3,7 +3,11 @@ extends Node
 
 var map_infos: Node
 var system: System
-var database: RPGDATA
+
+var active_editor_database: RPGDATA
+
+var database: RPGDATA: get = _get_database
+
 var player_animations_data: Dictionary
 var weapon_animations_data: Dictionary
 
@@ -19,6 +23,14 @@ func _ready() -> void:
 	load_variables_and_switches()
 	load_animations()
 	load_map_infos()
+	set_deferred("is_loaded", true)
+
+
+func _get_database() -> RPGDATA:
+	if is_instance_valid(active_editor_database):
+		return active_editor_database
+
+	return database
 
 
 func load_data() -> void:

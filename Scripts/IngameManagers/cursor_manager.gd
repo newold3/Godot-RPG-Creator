@@ -202,3 +202,32 @@ func get_cursor_position() -> Vector2:
 func set_cursor_offset(offset: Vector2, manipulator_context: Variant = null) -> void:
 	if hand_cursor:
 		hand_cursor.set_cursor_offset(offset, manipulator_context)
+
+
+func enable_cursor_outline(color: Color) -> void:
+	if hand_cursor:
+		hand_cursor.enable_cursor_outline(color)
+
+
+func disable_cursor_outline() -> void:
+	if hand_cursor:
+		hand_cursor.disable_cursor_outline()
+
+
+#region Manual Override Block
+## Forces the cursor to a specific global position and targets a node manually.
+func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> void:
+	if hand_cursor:
+		hand_cursor.forced_target = target_node
+		hand_cursor.pause_reposition = true
+		hand_cursor.force_show()
+		hand_cursor.cursor.global_position = global_pos
+
+
+## Clears the manual override if the node matches the forced target.
+func clear_manual_cursor_override(target_node: Control) -> void:
+	if hand_cursor and hand_cursor.forced_target == target_node:
+		hand_cursor.forced_target = null
+		hand_cursor.pause_reposition = false
+		hide_cursor()
+#endregion

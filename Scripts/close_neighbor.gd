@@ -5,6 +5,7 @@ var horizontal_threshold = 30
 var vertical_threshold = 30
 
 
+#region Main Navigation
 ## Main function to get the closest focusable control
 func get_closest_focusable_control(current: Control, direction: String, limit_to_parent: bool = false, extra_focusable_controls: Array = [], allow_h_warp: bool = true, allow_v_warp: bool = true) -> Control:
 	if not current:
@@ -35,8 +36,10 @@ func get_closest_focusable_control(current: Control, direction: String, limit_to
 		return best_control
 	
 	return apply_wraparound_logic(current, focusable_candidates, direction, allow_h_warp, allow_v_warp)
+#endregion
 
 
+#region Directional Search
 ## Search logic that prioritizes same row/column alignment
 func find_closest_in_direction(current: Control, controls: Array, direction: String) -> Control:
 	var current_center = current.get_global_rect().get_center()
@@ -83,6 +86,51 @@ func find_closest_in_direction(current: Control, controls: Array, direction: Str
 	return best
 
 
+## Finds the absolute closest control from a provided list relative to the current control in a specific direction
+func find_closest_control_in_list_by_direction(current: Control, control_list: Array, direction: String) -> Control:
+	if not current or control_list.is_empty():
+		return null
+
+	var current_center = current.get_global_rect().get_center()
+	var best_control = null
+	var min_distance = INF
+
+	for control in control_list:
+		if control == current or not is_instance_valid(control):
+			continue
+
+		var c_center = control.get_global_rect().get_center()
+		var is_valid = false
+
+		match direction:
+			"left":
+				if c_center.x < current_center.x:
+					is_valid = true
+			"right":
+				if c_center.x > current_center.x:
+					is_valid = true
+			"up":
+				if c_center.y < current_center.y:
+					is_valid = true
+			"down":
+				if c_center.y > current_center.y:
+					is_valid = true
+
+		if is_valid:
+			var dist = current_center.distance_squared_to(c_center)
+			if dist < min_distance:
+				min_distance = dist
+				best_control = control
+
+	if not best_control:
+		best_control = apply_wraparound_logic(current, control_list, direction, true, true)
+
+	return best_control
+
+#endregion
+
+
+#region Wraparound Logic
 ## Wraparound logic to jump between rows/columns or loop the menu
 func apply_wraparound_logic(current: Control, controls: Array, direction: String, h_enabled: bool, v_enabled: bool) -> Control:
 	var current_center = current.get_global_rect().get_center()
@@ -94,28 +142,7 @@ func apply_wraparound_logic(current: Control, controls: Array, direction: String
 	return null
 
 
-func get_explicit_neighbor(current: Control, direction: String) -> Control:
-	if not current.has_meta("neighbors"): return null
-	var neighbors = current.get_meta("neighbors")
-	var path = neighbors.get(direction, "")
-	if path == null or str(path).is_empty(): return null
-	return current.get_node_or_null(path) as Control
-
-
-func is_control_focusable(control: Control) -> bool:
-	return is_instance_valid(control) and control.visible and \
-		control.focus_mode != Control.FOCUS_NONE and \
-		(not "disabled" in control or not control.disabled)
-
-
-func get_all_focusable_controls(node: Node) -> Array:
-	var controls = []
-	if node is Control: controls.append(node)
-	for child in node.get_children():
-		controls.append_array(get_all_focusable_controls(child))
-	return controls
-
-
+## Finds the left wraparound target
 func find_wraparound_left(current_center: Vector2, controls: Array) -> Control:
 	var above = controls.filter(func(c): return c.get_global_rect().get_center().y < current_center.y - vertical_threshold)
 	if above.is_empty():
@@ -127,6 +154,7 @@ func find_wraparound_left(current_center: Vector2, controls: Array) -> Control:
 	return find_rightmost_control(row)
 
 
+## Finds the right wraparound target
 func find_wraparound_right(current_center: Vector2, controls: Array) -> Control:
 	var below = controls.filter(func(c): return c.get_global_rect().get_center().y > current_center.y + vertical_threshold)
 	if below.is_empty():
@@ -138,6 +166,7 @@ func find_wraparound_right(current_center: Vector2, controls: Array) -> Control:
 	return find_leftmost_control(row)
 
 
+## Finds the up wraparound target
 func find_wraparound_up(current_center: Vector2, controls: Array) -> Control:
 	var left_side = controls.filter(func(c): return c.get_global_rect().get_center().x < current_center.x - horizontal_threshold)
 	if left_side.is_empty():
@@ -149,6 +178,7 @@ func find_wraparound_up(current_center: Vector2, controls: Array) -> Control:
 	return find_bottommost_control(col)
 
 
+## Finds the down wraparound target
 func find_wraparound_down(current_center: Vector2, controls: Array) -> Control:
 	var right_side = controls.filter(func(c): return c.get_global_rect().get_center().x > current_center.x + horizontal_threshold)
 	if right_side.is_empty():
@@ -158,8 +188,38 @@ func find_wraparound_down(current_center: Vector2, controls: Array) -> Control:
 	for c in right_side: target_x = min(target_x, c.get_global_rect().get_center().x)
 	var col = right_side.filter(func(c): return abs(c.get_global_rect().get_center().x - target_x) <= horizontal_threshold)
 	return find_topmost_control(col)
+#endregion
 
 
+#region Utilities
+## Gets the explicit neighbor assigned in the control meta data
+func get_explicit_neighbor(current: Control, direction: String) -> Control:
+	if not current.has_meta("neighbors"): return null
+	var neighbors = current.get_meta("neighbors")
+	var path = neighbors.get(direction, "")
+	if path == null or str(path).is_empty(): return null
+	return current.get_node_or_null(path) as Control
+
+
+## Checks if a given control is valid and can receive focus
+func is_control_focusable(control: Control) -> bool:
+	return is_instance_valid(control) and control.visible and \
+		control.focus_mode != Control.FOCUS_NONE and \
+		(not "disabled" in control or not control.disabled)
+
+
+## Recursively gets all focusable controls starting from a node
+func get_all_focusable_controls(node: Node) -> Array:
+	var controls = []
+	if node is Control: controls.append(node)
+	for child in node.get_children():
+		controls.append_array(get_all_focusable_controls(child))
+	return controls
+#endregion
+
+
+#region Positional Queries
+## Finds the topmost control from an array of controls
 func find_topmost_control(controls: Array) -> Control:
 	var best = null
 	var min_y = INF
@@ -171,6 +231,7 @@ func find_topmost_control(controls: Array) -> Control:
 	return best
 
 
+## Finds the bottommost control from an array of controls
 func find_bottommost_control(controls: Array) -> Control:
 	var best = null
 	var max_y = -INF
@@ -182,6 +243,7 @@ func find_bottommost_control(controls: Array) -> Control:
 	return best
 
 
+## Finds the leftmost control from an array of controls
 func find_leftmost_control(controls: Array) -> Control:
 	var best = null
 	var min_x = INF
@@ -193,6 +255,7 @@ func find_leftmost_control(controls: Array) -> Control:
 	return best
 
 
+## Finds the rightmost control from an array of controls
 func find_rightmost_control(controls: Array) -> Control:
 	var best = null
 	var max_x = -INF
@@ -204,6 +267,7 @@ func find_rightmost_control(controls: Array) -> Control:
 	return best
 
 
+## Finds the topmost and leftmost control from an array of controls
 func find_topmost_leftmost_control(controls: Array) -> Control:
 	var best = null
 	var min_score = INF
@@ -216,6 +280,7 @@ func find_topmost_leftmost_control(controls: Array) -> Control:
 	return best
 
 
+## Finds the bottommost and rightmost control from an array of controls
 func find_bottommost_rightmost_control(controls: Array) -> Control:
 	var best = null
 	var max_score = -INF
@@ -226,3 +291,4 @@ func find_bottommost_rightmost_control(controls: Array) -> Control:
 			max_score = score
 			best = c
 	return best
+#endregion
