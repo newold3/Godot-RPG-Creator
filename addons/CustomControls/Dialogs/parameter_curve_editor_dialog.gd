@@ -62,6 +62,7 @@ func _on_cancel_button_pressed() -> void:
 
 
 func _on_ok_button_pressed() -> void:
+	propagate_call("apply")
 	for i in data.size():
 		var obj: Dictionary = data[i]
 		for key in obj.keys():

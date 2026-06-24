@@ -58,12 +58,17 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 	if items.size() == 0:
 		if str(button_id) == "6b":
 			%Name6bLineEdit.set_disabled(true)
+			%Name6cLineEdit.set_disabled(true)
 			%ParameterValue.set_disabled(true)
 			%RemoveItem6bButton.set_disabled(true)
 			%Name6bLineEdit.text = ""
+			%Name6cLineEdit.text = ""
 			if %Name6bLineEdit.has_focus(): %Name6bLineEdit.release_focus()
 			if %Name6bLineEdit.has_meta("original_text"):
 				%Name6bLineEdit.remove_meta("original_text")
+			if %Name6cLineEdit.has_focus(): %Name6cLineEdit.release_focus()
+			if %Name6cLineEdit.has_meta("original_text"):
+				%Name6cLineEdit.remove_meta("original_text")
 		elif str(button_id) == "7b":
 			%Name7bLineEdit.set_disabled(true)
 			%RemoveItem7bButton.set_disabled(true)
@@ -112,11 +117,14 @@ func fill_list(itemlist: ItemList, items: Array, item_selected: int, button_id: 
 	if str(button_id) == "6b":
 		var enabled = %UserParametersList.get_selected_items().size() > 0
 		%Name6bLineEdit.set_disabled(!enabled)
+		%Name6cLineEdit.set_disabled(!enabled)
 		%ParameterValue.set_disabled(!enabled)
 		%RemoveItem6bButton.set_disabled(!enabled)
 		if !enabled:
 			%Name6bLineEdit.text = ""
 			if %Name6bLineEdit.has_focus(): %Name6bLineEdit.release_focus()
+			%Name6cLineEdit.text = ""
+			if %Name6bLineEdit.has_focus(): %Name6cLineEdit.release_focus()
 	elif str(button_id) == "7b":
 		var enabled = %UserStatsList.get_selected_items().size() > 0
 		if !enabled:
@@ -523,6 +531,7 @@ func _on_item_rarity_color_button_color_changed(color: Color) -> void:
 
 func _on_add_item_6b_button_pressed() -> void:
 	%Name6bLineEdit.text = ""
+	%Name6cLineEdit.text = ""
 	data.user_parameters.append(RPGUserParameter.new())
 	data.icons.user_parameters_icons.append(RPGIcon.new())
 	fill_list(%UserParametersList, data.user_parameters, data.user_parameters.size() - 1, "6b")
@@ -554,6 +563,17 @@ func _on_name_6b_line_edit_text_changed(new_text: String) -> void:
 	var id = str(index+1).pad_zeros(str(data.user_parameters.size()).length())
 	var item_name = id + ": " + new_text
 	%UserParametersList.set_item_text(index, item_name)
+	
+	var abbr = EnglishWordAbbreviator.abbreviate_english_word(new_text)
+	data.user_parameters[index].abbreviation_name = abbr
+	%Name6cLineEdit.text = abbr
+
+
+func _on_name_6c_line_edit_text_changed(new_text: String) -> void:
+	var index = %UserParametersList.get_selected_items()[0]
+	data.user_parameters[index].abbreviation_name = new_text
+	var id = str(index+1).pad_zeros(str(data.user_parameters.size()).length())
+	var item_name = id + ": " + new_text
 
 
 func _on_parameter_value_value_changed(value: float) -> void:

@@ -37,7 +37,7 @@ func _ready() -> void:
 	#GameManager.force_show_cursor.call_deferred()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _is_index:
 		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
 
@@ -73,7 +73,11 @@ func _build_monster_entry() -> void:
 				%MonsterImage.texture = load(monster.battler)
 			else:
 				%MonsterImage.texture = null
-		%DebugText.text = "Soy el monstruo %s" % monster.name
+		else:
+			%Description.text = monster.description
+			var enemy = GameEnemy.new(monster_id)
+			%Stats.set_enemy.call_deferred(enemy)
+		#%DebugText.text = "Soy el monstruo %s" % monster.name
 	
 	if _is_left:
 		%ContentsLeftContainer.visible = true

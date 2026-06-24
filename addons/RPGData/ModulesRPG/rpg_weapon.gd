@@ -109,21 +109,25 @@ func clear() -> void:
 			user_parameters[i] = database.types.user_parameters[i].default_value
 
 
-func get_parameter(parameter: String, level: int) -> int:
+func get_parameter(parameter: String, level: int) -> float:
+	if parameter.begins_with("USER_PARAMETER_"):
+		var param_id = parameter.replace("USER_PARAMETER_", "").to_int()
+		return get_user_parameter(param_id, level)
+
 	var param_index: int = -1
-	
+
 	if RPGActor.BaseParamType.keys().has(parameter):
 		param_index = RPGActor.BaseParamType[parameter]
-	
+
 	if param_index == -1:
-		return 0
-		
-	var value = params[param_index]
+		return 0.0
+
+	var value = float(params[param_index])
 
 	for i in range(1, level, 1):
 		if upgrades.levels.size() > i:
 			var level_value = upgrades.levels[i].parameters_multiplier[param_index]
-			value += level_value
+			value += float(level_value)
 		else:
 			break
 

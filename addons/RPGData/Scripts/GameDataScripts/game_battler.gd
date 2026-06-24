@@ -594,11 +594,16 @@ func get_parameter(param_id: String) -> float:
 
 	if trait_code > 0:
 		var traits = _get_trait_list()
+		var trait_data_id = _get_param_type_id(search_param)
+		
+		if trait_code == TraitCode.USER_PARAMETER:
+			trait_data_id = search_param.replace("USER_PARAMETER_", "").to_int()
+
 		value = _add_traits_to_value(
 			traits,
 			value,
 			trait_code,
-			_get_param_type_id(search_param),
+			trait_data_id,
 			is_rate
 		)
 
@@ -645,46 +650,38 @@ func get_debuff_rate(param_id: int) -> float:
 
 
 
+func _get_user_parameters_from_data(param_id: int) -> float:
+	var _real_data: Variant
+	if "current_class" in self:
+		_real_data = RPGSYSTEM.get_data("classes", get("current_class"))
+	elif has_method("get_real_enemy"):
+		_real_data = call("get_real_enemy")
+		
+	var _current_user_parameters: PackedFloat32Array
+	
+	if _real_data:
+		_current_user_parameters = _real_data.user_parameters
+		if _current_user_parameters.size() < RPGSYSTEM.database.types.user_parameters.size():
+			var min_index = _current_user_parameters.size()
+			_current_user_parameters.resize(RPGSYSTEM.database.types.user_parameters.size())
+			for i in range(min_index, RPGSYSTEM.database.types.user_parameters.size()):
+				_current_user_parameters[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
+	else:
+		_current_user_parameters.resize(RPGSYSTEM.database.types.user_parameters.size())
+		for i in RPGSYSTEM.database.types.user_parameters.size():
+			_current_user_parameters[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
+	
+	if _current_user_parameters.size() > param_id:
+		return _current_user_parameters[param_id]
+	
+	return 0.0
+	
+	
+
+
 ## Calculates a specific parameter value by combining base stats + gear.
 func get_user_parameter(param_id: int) -> float:
-	var current_value: float = 0
-	
-	if user_params.size() > param_id and param_id >= 0:
-		current_value += user_params[param_id]
-		
-		var real_param_id = "USER_PARAM_" + str(param_id)
-		if params.mods.has(real_param_id):
-			var mod_value = params.mods[real_param_id]
-			current_value += mod_value
-
-		if "current_gear" in self:
-			for gear in get("current_gear"):
-				if not gear:
-					continue
-					
-				var real_data = gear.get_real_data()
-				if real_data and real_data.has_method("get_user_parameter"):
-					var item_level = gear.get("current_level") if "current_level" in gear else 1
-					current_value += real_data.get_user_parameter(param_id, item_level)
-					
-		if "current_set" in self:
-			var c_set = get("current_set")
-			if c_set:
-				var real_data = c_set.get_real_data()
-				if real_data and real_data.has_method("get_user_parameter"):
-					current_value += real_data.get_user_parameter(param_id, 1)
-		
-		var traits = _get_trait_list()
-		var trait_code = TraitCode.USER_PARAMETER
-		current_value = _add_traits_to_value(
-			traits,
-			current_value,
-			trait_code,
-			param_id,
-			false
-		)
-	
-	return current_value
+	return get_parameter("USER_PARAMETER_" + str(param_id))
 
 
 func get_element_attack_rate(element_id: Variant) -> float:
@@ -806,8 +803,12 @@ func _find_real_param(param: String) -> String:
 
 
 func _get_trait_code(param: String) -> int:
-	if param in RPGActor.BaseParamType.keys() or param in RPGActor.ExtraParamType.keys() or param in RPGActor.SpecialParamType.keys() or param.begins_with("USER_PARAMETER_"):
+	if param in RPGActor.BaseParamType.keys() or param in RPGActor.ExtraParamType.keys() or param in RPGActor.SpecialParamType.keys():
 		return TraitCode.PARAM_BASE
+
+	if param.begins_with("USER_PARAMETER_"):
+		return TraitCode.USER_PARAMETER
+
 	return 0
 
 

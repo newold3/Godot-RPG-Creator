@@ -606,6 +606,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=72612839]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="EquipmentTypesContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1" unique_id=903870237]
@@ -1729,7 +1730,6 @@ text_overrun_behavior = 3
 
 [node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=44579119]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9" unique_id=713388940]
@@ -1797,6 +1797,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "[title]User Parameter Name[/title]
 Enter name for this data"
+
+[node name="Label3" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=2135359389]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Abbr."
+
+[node name="Name6cLineEdit" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1416448879 instance=ExtResource("6_xe17m")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "[title]User Parameter Name abbreviation[/title]
+Enter the abbreviated name for this parameter."
 
 [node name="IconPicker8" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=490142646 instance=ExtResource("5_m5jdy")]
 unique_name_in_owner = true
@@ -2195,6 +2208,7 @@ text_overrun_behavior = 3
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_activated"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_selected"]
 [connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name6bLineEdit" to="." method="_on_name_6b_line_edit_text_changed"]
+[connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/Name6cLineEdit" to="." method="_on_name_6c_line_edit_text_changed"]
 [connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_clicked" binds= [8]]
 [connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_paste_requested" binds= [8]]
 [connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/HBoxContainer3/IconPicker8" to="." method="_on_icon_picker_remove_requested" binds= [8]]

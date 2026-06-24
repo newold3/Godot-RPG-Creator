@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://q5dbx83nglee"]
 
+[ext_resource type="Theme" uid="uid://csqg2dj2hi2as" path="res://Scenes/GUI/SteamPunkTheme/Library/Assets/Resources/library_theme.tres" id="1_4yytr"]
 [ext_resource type="Script" uid="uid://q8s1sgk020jd" path="res://Scenes/GUI/SteamPunkTheme/Library/Books/bestiary.gd" id="1_enucb"]
 [ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_dbdt6"]
 [ext_resource type="Texture2D" uid="uid://cuecfk4lw874x" path="res://InternalTests/newbook/book_decorations.png" id="4_dbdt6"]
@@ -7,18 +8,24 @@
 [ext_resource type="Texture2D" uid="uid://b4mcywqk7tb6k" path="res://InternalTests/newbook/background_decoration.png" id="6_eeeeh"]
 [ext_resource type="Shader" uid="uid://65s3byggw7ih" path="res://Assets/Shaders/hand_drawn_pencil_shader.gdshader" id="6_v8kxo"]
 [ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="8_60vtv"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_eeeeh"]
+[ext_resource type="Script" uid="uid://dn21h0h57hy11" path="res://Scenes/GUI/SteamPunkTheme/Library/fit_text.gd" id="8_uft0y"]
+[ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="11_uft0y"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font = ExtResource("3_dbdt6")
 font_size = 48
 font_color = Color(0.6901961, 0.6039216, 0.5686275, 1)
 stacked_outline_count = 3
+stacked_shadow_count = 1
 stacked_outline_0/size = 3
 stacked_outline_0/color = Color(1, 1, 1, 1)
 stacked_outline_1/size = 10
 stacked_outline_1/color = Color(0, 0, 0, 0.78431374)
 stacked_outline_2/size = 12
 stacked_outline_2/color = Color(0.34901962, 0.31764707, 0.28235295, 0.41568628)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/outline_size = 20
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g4v7s"]
 atlas = ExtResource("4_dbdt6")
@@ -43,78 +50,6 @@ stacked_outline_1/size = 10
 stacked_outline_1/color = Color(0, 0, 0, 0.78431374)
 stacked_outline_2/size = 12
 stacked_outline_2/color = Color(0.34901962, 0.31764707, 0.28235295, 0.41568628)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dbdt6"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.8039216, 0.67058825, 0.6156863, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5097367, 0.3758517, 0.32015535, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8kxo"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.7361674, 0.5843892, 0.52161396, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5097367, 0.3758517, 0.32015535, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeeeh"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.8007451, 0.66488266, 0.6093702, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.5097367, 0.3758517, 0.32015535, 1)
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yytr"]
-content_margin_left = 4.0
-content_margin_top = 0.0
-content_margin_right = 4.0
-content_margin_bottom = 0.0
-bg_color = Color(0.41568628, 0.38431373, 0.3529412, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 6
-
-[sub_resource type="Theme" id="Theme_dbdt6"]
-VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dbdt6")
-VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_v8kxo")
-VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_eeeeh")
-VScrollBar/styles/scroll = SubResource("StyleBoxFlat_4yytr")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60vtv"]
 content_margin_left = 4.0
@@ -172,6 +107,62 @@ shader_parameter/shade_levels = 14.000000665
 shader_parameter/noise_scale = 10.0
 shader_parameter/mix_amount = 0.906000043035
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yytr"]
+bg_color = Color(0.7882353, 0.75686276, 0.72156864, 0.07058824)
+border_width_left = 14
+border_width_top = 14
+border_width_right = 14
+border_width_bottom = 14
+border_color = Color(0.23475271, 0.21088693, 0.1869086, 0.1764706)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_eeeeh"]
+font = ExtResource("3_dbdt6")
+font_size = 22
+font_color = Color(0.7973006, 0.7664614, 0.73567, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.5764706)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
+stacked_shadow_0/outline_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frs4q"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.41568628, 0.2784314, 0.105882354, 0.5411765)
+draw_center = false
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5104571, 0.47260273, 0.42714238, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Gradient" id="Gradient_eugdv"]
+offsets = PackedFloat32Array(0, 0.982)
+colors = PackedColorArray(0.30588236, 0.3019608, 0.29803923, 1, 0.043137256, 0.03137255, 0.02745098, 0.41960785)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ngudq"]
+gradient = SubResource("Gradient_eugdv")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5jobp"]
+texture = SubResource("GradientTexture2D_ngudq")
+
 [sub_resource type="LabelSettings" id="LabelSettings_dbdt6"]
 font = ExtResource("3_dbdt6")
 font_size = 20
@@ -188,6 +179,7 @@ stacked_outline_2/color = Color(0.34901962, 0.31764707, 0.28235295, 0.41568628)
 custom_minimum_size = Vector2(576, 640)
 offset_right = 49.0
 offset_bottom = 93.0
+theme = ExtResource("1_4yytr")
 theme_override_constants/margin_left = 43
 theme_override_constants/margin_top = 25
 theme_override_constants/margin_right = 68
@@ -347,7 +339,6 @@ theme_override_constants/margin_bottom = 16
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.61960787)
 layout_mode = 2
-theme = SubResource("Theme_dbdt6")
 theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
 theme_override_constants/v_separation = 10
 theme_override_font_sizes/font_size = 20
@@ -370,7 +361,6 @@ debug_mode = true
 
 [node name="ContentsLeftContainer" type="Control" parent="." unique_id=575856997]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="BackgroundDecoration" type="TextureRect" parent="ContentsLeftContainer" unique_id=1304292586]
@@ -388,17 +378,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 24
 
-[node name="MonsterName" type="Label" parent="ContentsLeftContainer/VBoxContainer" unique_id=320840]
+[node name="MarginContainer" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1582053343]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_constants/margin_left = 41
+theme_override_constants/margin_right = 60
+
+[node name="Control" type="Control" parent="ContentsLeftContainer/VBoxContainer/MarginContainer" unique_id=1265141022]
+layout_mode = 2
+
+[node name="MonsterName" type="Label" parent="ContentsLeftContainer/VBoxContainer/MarginContainer/Control" unique_id=320840]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.3647059)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
 text = "Monster Name"
 label_settings = SubResource("LabelSettings_g4v7s")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+script = ExtResource("8_uft0y")
 
 [node name="MarginContainer2" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1673223178]
 layout_mode = 2
@@ -411,32 +417,57 @@ theme_override_constants/margin_bottom = 19
 unique_name_in_owner = true
 material = SubResource("ShaderMaterial_g4v7s")
 layout_mode = 2
-texture = ExtResource("8_60vtv")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="ContentsRightContainer" type="Control" parent="." unique_id=2038791546]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="ContentsRightContainer" unique_id=326819352]
+[node name="VBoxContainer2" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1843494153]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2" unique_id=326819352]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_vertical = 0
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 41
-theme_override_constants/margin_right = 31
+theme_override_constants/margin_top = 39
+theme_override_constants/margin_right = 42
 theme_override_constants/margin_bottom = 19
 
-[node name="ItemlistContainer" type="NinePatchRect" parent="ContentsRightContainer/MarginContainer2" unique_id=1147017707]
-self_modulate = Color(1, 1, 1, 0.65882355)
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2" unique_id=2130015725]
 layout_mode = 2
+script = ExtResource("8_eeeeh")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Description" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/SmoothScrollContainer" unique_id=2088479567]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yytr")
+label_settings = SubResource("LabelSettings_eeeeh")
+autowrap_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2" unique_id=1026172390]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer" unique_id=687634049]
+layout_mode = 2
+
+[node name="ItemlistContainer" type="NinePatchRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer" unique_id=1147017707]
+self_modulate = Color(1, 1, 1, 0.65882355)
+custom_minimum_size = Vector2(240, 290.01)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource("4_dbdt6")
 region_rect = Rect2(79, 2, 50, 34)
 patch_margin_left = 22
@@ -444,17 +475,71 @@ patch_margin_top = 14
 patch_margin_right = 22
 patch_margin_bottom = 14
 
-[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/MarginContainer2/ItemlistContainer" unique_id=449771690]
+[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer" unique_id=1991330771]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 13
 theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer" unique_id=1176246815]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer" unique_id=536660854]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(7.615, -6.825)
+text = "STATS"
+label_settings = SubResource("LabelSettings_eeeeh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer" unique_id=1922662921]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_right = 9
 theme_override_constants/margin_bottom = 16
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1714024483]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("8_eeeeh")
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="Stats" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer/SmoothScrollContainer" unique_id=1136495652]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("11_uft0y")
+show_comparison = false
+use_abbreviations = true
+outline_sizes = Array[int]([10, 8])
+outline_colors = Array[Color]([Color(0, 0, 0, 0.17254902), Color(0.60897046, 0.5569539, 0.5181383, 1)])
+outline_offsets = Array[Vector2]([Vector2(0, 2), Vector2(0, 0)])
+text_color = Color(0.86363363, 0.8441498, 0.8161468, 1)
+title_color = Color(0.6627451, 0.6117647, 0.5921569, 1)
+custom_font = ExtResource("3_dbdt6")
+font_size = 20
+title_background_style = SubResource("StyleBoxFlat_frs4q")
+stat_separator_style = SubResource("StyleBoxTexture_5jobp")
+metadata/_custom_type_script = "uid://dwdb1gqa4ry3o"
+
+[node name="ItemlistContainer2" type="NinePatchRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer" unique_id=443003093]
+self_modulate = Color(1, 1, 1, 0.65882355)
+custom_minimum_size = Vector2(154.18, 290.01)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("4_dbdt6")
+region_rect = Rect2(79, 2, 50, 34)
+patch_margin_left = 22
+patch_margin_top = 14
+patch_margin_right = 22
+patch_margin_bottom = 14
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1741396775]
 layout_mode = 1

@@ -40,7 +40,7 @@ var is_comparation_enabled: bool = false
 func _init(_id: int = 1) -> void:
 	if GameManager.cancel_actors_initialize:
 		return
-	
+
 	var actor_data: RPGActor = RPGSYSTEM.get_data("actors", _id)
 	
 	if actor_data:
@@ -51,12 +51,10 @@ func _init(_id: int = 1) -> void:
 		current_class = actor_data.class_id
 		current_level = max(1, min(actor_data.initial_level, actor_data.max_level))
 		
-		if user_params.size() != RPGSYSTEM.database.types.user_parameters.size():
-			user_params.resize(RPGSYSTEM.database.types.user_parameters.size())
-		
+		user_params.resize(RPGSYSTEM.database.types.user_parameters.size())
 		for i in RPGSYSTEM.database.types.user_parameters.size():
 			user_params[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
-			
+
 		_change_class(actor_data.class_id, false, true)
 		_init_equipment(actor_data)
 		_validate_equipment()
@@ -103,36 +101,34 @@ func refresh_actor_data() -> void:
 func _get_base_parameter(search_param: String) -> float:
 	var value = super._get_base_parameter(search_param)
 	var class_data = get_real_class()
-	
 	if class_data:
 		if search_param in RPGActor.BaseParamType.keys():
 			var p_id = RPGActor.BaseParamType[search_param]
-			
 			if class_data.params[p_id].data.size() > current_level:
 				value = float(class_data.params[p_id].data[current_level])
-				
-			for gear in current_gear:
-				if gear and gear.id > 0:
-					var real_data = gear.get_real_data() 
-					if real_data and real_data.has_method("get_parameter"):
-						value += real_data.get_parameter(search_param, gear.current_level)
-						
-			if current_set:
-				var real_data = current_set.get_real_data()
-				if real_data and real_data.has_method("get_parameter"):
-					value += real_data.get_parameter(search_param, 1)
-		
 		elif search_param == "LEVEL":
 			value = float(current_level)
-		
 		elif search_param == "EXPERIENCE":
 			value = float(current_experience)
-		
 		elif search_param.begins_with("USER_PARAMETER_"):
 			var u_id = search_param.replace("USER_PARAMETER_", "").to_int()
-			if user_params.size() > u_id and u_id >= 0:
-				value = float(user_params[u_id])
-				
+			var default_val: float = 0.0
+			if RPGSYSTEM.database and RPGSYSTEM.database.types.user_parameters.size() > u_id and u_id >= 0:
+				default_val = float(RPGSYSTEM.database.types.user_parameters[u_id].default_value)
+			if class_data.user_parameters != null and class_data.user_parameters.size() > u_id and u_id >= 0:
+				value = float(class_data.user_parameters[u_id])
+			else:
+				value = default_val
+	if search_param in RPGActor.BaseParamType.keys() or search_param.begins_with("USER_PARAMETER_"):
+		for gear in current_gear:
+			if gear and gear.id > 0:
+				var real_data = gear.get_real_data()
+				if real_data and real_data.has_method("get_parameter"):
+					value += real_data.get_parameter(search_param, gear.current_level)
+		if current_set:
+			var real_data = current_set.get_real_data()
+			if real_data and real_data.has_method("get_parameter"):
+				value += real_data.get_parameter(search_param, 1)
 	return value
 
 

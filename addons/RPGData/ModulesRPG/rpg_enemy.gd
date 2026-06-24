@@ -54,18 +54,21 @@ func clear() -> void:
 ## @param parameter String - The parameter to get.
 ## @param level int - The level to get the parameter for.
 ## @return int - The parameter value.
-func get_parameter(parameter: String) -> int:
+func get_parameter(parameter: String) -> float:
+	if parameter.begins_with("USER_PARAMETER_"):
+		var param_id = parameter.replace("USER_PARAMETER_", "").to_int()
+		return get_user_parameter(param_id, 1)
+
 	var param_index: int = -1
 
 	if RPGActor.BaseParamType.keys().has(parameter):
 		param_index = RPGActor.BaseParamType[parameter]
 
 	if param_index == -1:
-		return 0
+		return 0.0
 
-	var value = params[param_index]
+	return float(params[param_index])
 
-	return value
 
 ## Gets the user parameter value for a specific level.
 func get_user_parameter(param_id: int, level_id: int) -> float:

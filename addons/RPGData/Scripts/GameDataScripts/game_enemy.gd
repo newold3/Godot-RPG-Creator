@@ -9,18 +9,28 @@ extends GameBattler
 
 ## Returns the real RPGEnemy data from the database.
 func get_real_enemy() -> RPGEnemy:
-	if id > 0 and RPGSYSTEM.database.enemies.size() > id:
-		return RPGSYSTEM.database.enemies[id]
-	return null
+	return RPGSYSTEM.get_data("enemies", id)
 
 
-## Initializes the enemy using its ID and loads its base data from the database.
-func initialize(_id: int) -> void:
-	if RPGSYSTEM.database.enemies.size() > _id:
+func _init(_id: int = 1) -> void:
+	if GameManager.cancel_actors_initialize:
+		return
+
+	var enemy_data: RPGEnemy = RPGSYSTEM.get_data("enemies", _id)
+	
+	if enemy_data:
 		id = _id
-		var enemy_data = RPGSYSTEM.database.enemies[_id]
+		initialize()
+
+
+## Initializes the enemy.
+func initialize() -> void:
+	var enemy_data = get_real_enemy()
+	if enemy_data:
 		
-		current_name = enemy_data.name
+		user_params.resize(RPGSYSTEM.database.types.user_parameters.size())
+		for i in RPGSYSTEM.database.types.user_parameters.size():
+			user_params[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
 		
 		trait_list.clear()
 		for tr: RPGTrait in enemy_data.traits:
@@ -28,8 +38,8 @@ func initialize(_id: int) -> void:
 			
 		recover_all()
 		
-		var static_traits = enemy_data.traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
-		for state_trait in static_traits:
+		var state_traits = enemy_data.traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_STATE)
+		for state_trait in state_traits:
 			add_trait_state(state_trait)
 
 
@@ -37,13 +47,20 @@ func initialize(_id: int) -> void:
 func _get_base_parameter(search_param: String) -> float:
 	var value = super._get_base_parameter(search_param)
 	var enemy_data = get_real_enemy()
-	
 	if enemy_data:
 		if search_param in RPGActor.BaseParamType.keys():
 			var p_id = RPGActor.BaseParamType[search_param]
 			if enemy_data.params.size() > p_id:
 				value = float(enemy_data.params[p_id])
-				
+		elif search_param.begins_with("USER_PARAMETER_"):
+			var u_id = search_param.replace("USER_PARAMETER_", "").to_int()
+			var default_val: float = 0.0
+			if RPGSYSTEM.database and RPGSYSTEM.database.types.user_parameters.size() > u_id and u_id >= 0:
+				default_val = float(RPGSYSTEM.database.types.user_parameters[u_id].default_value)
+			if enemy_data.user_parameters != null and enemy_data.user_parameters.size() > u_id and u_id >= 0:
+				value = float(enemy_data.user_parameters[u_id])
+			else:
+				value = default_val
 	return value
 
 
