@@ -34,6 +34,40 @@ func _calculate_raw_curve_offset(px: float, w: float, is_left: bool) -> float:
 	return (curve * book.spine_curl_intensity) + (outer_curve * book.outer_droop_intensity)
 
 
+## Computes the perspective offset for a parent local position (VisualsContainer coordinates).
+func _get_perspective_offset_for_pos(parent_local_pos: Vector2) -> Vector2:
+	var bw = book.target_page_size.x * 2.0
+	var bh = book.target_page_size.y
+	
+	var norm_x = 0.5
+	if bw > 0:
+		norm_x = (parent_local_pos.x + bw * 0.5) / bw
+	var norm_y = 0.5
+	if bh > 0:
+		norm_y = (parent_local_pos.y + bh * 0.5) / bh
+	
+	var factor = book._current_expansion_factor
+	var tl = book.open_top_left.lerp(book.closed_top_left, factor)
+	var tr = book.open_top_right.lerp(book.closed_top_right, factor)
+	var bl = book.open_bottom_left.lerp(book.closed_bottom_left, factor)
+	var br = book.open_bottom_right.lerp(book.closed_bottom_right, factor)
+	
+	var top_offset = tl.lerp(tr, norm_x)
+	var bottom_offset = bl.lerp(br, norm_x)
+	var final_offset = top_offset.lerp(bottom_offset, norm_y)
+	
+	return final_offset
+
+
+## Reverses the perspective bilinear warp using fixed-point iteration.
+func _deform_perspective_pos_back(deformed_parent_pos: Vector2) -> Vector2:
+	var flat_pos = deformed_parent_pos
+	for i in range(4):
+		var offset = _get_perspective_offset_for_pos(flat_pos)
+		flat_pos = deformed_parent_pos - offset
+	return flat_pos
+
+
 ## Reverses the curvature math to convert a viewport position back into global screen space.
 func viewport_to_global_curved(viewport_pos: Vector2, is_left: bool) -> Vector2:
 	var w = book.page_width
@@ -67,7 +101,12 @@ func viewport_to_global_curved(viewport_pos: Vector2, is_left: bool) -> Vector2:
 	local_polygon_pos.x = viewport_pos.x
 	local_polygon_pos.y = viewport_pos.y + total_curve_offset - (book.target_page_size.y / 2.0)
 
-	return polygon.to_global(local_polygon_pos)
+	var global_pos = polygon.to_global(local_polygon_pos)
+	if book.visuals_container is Node2D:
+		var parent_pos = book.visuals_container.to_local(global_pos)
+		var offset = _get_perspective_offset_for_pos(parent_pos)
+		global_pos += offset
+	return global_pos
 #endregion
 
 
@@ -75,7 +114,14 @@ func viewport_to_global_curved(viewport_pos: Vector2, is_left: bool) -> Vector2:
 ## Translates global inputs into localized inputs pushed directly to a specific viewport.
 func _inject_event_to_viewport(viewport: SubViewport, polygon: Polygon2D, event: InputEvent) -> Control.CursorShape:
 	var mouse_pos = book.get_global_mouse_position()
-	var new_mouse_pos = polygon.to_local(mouse_pos)
+	
+	var flat_mouse_pos = mouse_pos
+	if book.visuals_container is Node2D:
+		var parent_pos = book.visuals_container.to_local(mouse_pos)
+		var flat_parent_pos = _deform_perspective_pos_back(parent_pos)
+		flat_mouse_pos = book.visuals_container.to_global(flat_parent_pos)
+		
+	var new_mouse_pos = polygon.to_local(flat_mouse_pos)
 	
 	var is_left = (polygon == book.static_left)
 	var w = book.page_width
@@ -162,12 +208,19 @@ func process_input(event: InputEvent) -> void:
 			book._slot_2.notify_mouse_exited()
 			book._active_viewports_state.erase(book._slot_2)
 			
-		if cursor_l != Control.CURSOR_ARROW:
-			DisplayServer.cursor_set_shape.call_deferred(cursor_l)
-		elif cursor_r != Control.CURSOR_ARROW:
-			DisplayServer.cursor_set_shape.call_deferred(cursor_r)
-		else:
-			DisplayServer.cursor_set_shape.call_deferred(DisplayServer.CURSOR_ARROW)
+		var outside_book = false
+		var hovered = book.get_viewport().gui_get_hovered_control()
+		if hovered and hovered != book:
+			if not book.is_ancestor_of(hovered) and not hovered.is_ancestor_of(book):
+				outside_book = true
+				
+		if not outside_book:
+			if cursor_l != Control.CURSOR_ARROW:
+				DisplayServer.cursor_set_shape.call_deferred(cursor_l)
+			elif cursor_r != Control.CURSOR_ARROW:
+				DisplayServer.cursor_set_shape.call_deferred(cursor_r)
+			else:
+				DisplayServer.cursor_set_shape.call_deferred(DisplayServer.CURSOR_ARROW)
 
 	elif event is InputEventKey:
 		if book._active_interactive_is_left:
@@ -192,7 +245,7 @@ func process_unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_right"):
 		book.next_page()
 		book.get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("ui_left"): 
+	elif event.is_action_pressed("ui_left"):
 		book.prev_page()
 		book.get_viewport().set_input_as_handled()
 

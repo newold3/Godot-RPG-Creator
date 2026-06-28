@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://c24rv5gn6xgdx"]
+[gd_scene format=3 uid="uid://c24rv5gn6xgdx"]
 
 [ext_resource type="Script" uid="uid://2jshx3ui63c4" path="res://addons/CustomControls/Dialogs/custom_edit_texture_region_dialog.gd" id="1_hr5i7"]
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_pk7p4"]
@@ -163,18 +163,18 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[node name="CustomEditTextureRegionDialog" type="Window"]
+[node name="CustomEditTextureRegionDialog" type="Window" unique_id=1779261125]
 oversampling_override = 1.0
 title = "Edit Texture Region"
 position = Vector2i(0, 36)
-size = Vector2i(1400, 680)
+size = Vector2i(1471, 680)
 wrap_controls = true
 exclusive = true
 min_size = Vector2i(1400, 0)
 theme = ExtResource("1_pk7p4")
 script = ExtResource("1_hr5i7")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1350231068]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -182,7 +182,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_f6ugw")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=921963196]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -193,25 +193,26 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1618382411]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=565069322]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1466033971]
 layout_mode = 2
 text = "Adjustment mode"
 
-[node name="AdjustmentMode" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_2upce")]
+[node name="AdjustmentMode" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1269821354 instance=ExtResource("2_2upce")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "[ul] \"SNAP_NONE\": Drawing is completely free without any restrictions.
  \"SNAP_PIXEL\": Snaps the drawing to individual pixels.
  \"SNAP_GRID\": Drawing is constrained to a custom grid.
- \"ROWS & COLUMNS\": Specifies the columns and rows to split the current image[/ul]"
-selected = 2
-item_count = 4
+ \"ROWS & COLUMNS\": Specifies the columns and rows to split the current image
+ \"AUTO CROP\": Snaps to the opaque pixels within the drawn area[/ul]"
+selected = 3
+item_count = 5
 popup/item_0/text = "None"
 popup/item_0/id = 0
 popup/item_1/text = "Pixel Adjustment"
@@ -220,126 +221,122 @@ popup/item_2/text = "Grid Adjustment"
 popup/item_2/id = 2
 popup/item_3/text = "Rows & Columns"
 popup/item_3/id = 3
+popup/item_4/text = "Auto Crop"
+popup/item_4/id = 4
 
-[node name="GridContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="GridContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1497109001]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=668933561]
 layout_mode = 2
 text = "Offset:"
 
-[node name="OffsetX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+[node name="OffsetX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=496885825 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Provides a base offset for the entire grid."
 allow_greater = true
 suffix = " px"
-_custom_value = 0.0
 
-[node name="OffsetY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+[node name="OffsetY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1806713032 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Provides a base offset for the entire grid."
 allow_greater = true
 suffix = " px"
-_custom_value = 0.0
 
-[node name="StepContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer"]
-layout_mode = 2
-text = "Step:"
-
-[node name="StepX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" instance=ExtResource("3_k6wgg")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-tooltip_text = "Determines the size of each cell (the content area)."
-min_value = 1.0
-value = 1.0
-allow_greater = true
-suffix = " px"
-_custom_value = 1.0
-
-[node name="StepY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" instance=ExtResource("3_k6wgg")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-tooltip_text = "Determines the size of each cell (the content area)."
-min_value = 1.0
-value = 1.0
-allow_greater = true
-suffix = " px"
-_custom_value = 1.0
-
-[node name="ColumnAndRowContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+[node name="StepContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1236757830]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" unique_id=811817941]
+layout_mode = 2
+text = "Step:"
+
+[node name="StepX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" unique_id=1640495697 instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Determines the size of each cell (the content area)."
+min_value = 1.0
+value = 70.0
+allow_greater = true
+suffix = " px"
+_custom_value = 70.0
+
+[node name="StepY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" unique_id=2016631905 instance=ExtResource("3_k6wgg")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+tooltip_text = "Determines the size of each cell (the content area)."
+min_value = 1.0
+value = 70.0
+allow_greater = true
+suffix = " px"
+_custom_value = 70.0
+
+[node name="ColumnAndRowContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1719009803]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" unique_id=598479106]
 layout_mode = 2
 text = "Columns:"
 
-[node name="Columns" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" instance=ExtResource("3_k6wgg")]
+[node name="Columns" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" unique_id=607292254 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Specifies the number of columns in the current image."
 min_value = 1.0
-value = 23.0
+value = 3.0
 allow_greater = true
-suffix = " px"
-_custom_value = 23.0
+_custom_value = 3.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" unique_id=1461111576]
 layout_mode = 2
 text = "Rows:"
 
-[node name="Rows" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" instance=ExtResource("3_k6wgg")]
+[node name="Rows" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" unique_id=1874340083 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Specifies the number of rows in the current image."
 min_value = 1.0
-value = 22.0
+value = 1.0
 allow_greater = true
-suffix = " px"
-_custom_value = 22.0
+_custom_value = 1.0
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1391513482]
 layout_mode = 2
 text = "Separation:"
 
-[node name="SeparationX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+[node name="SeparationX" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1740193196 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Specifies the gap between adjacent cells."
 allow_greater = true
 suffix = " px"
-_custom_value = 0.0
 
-[node name="SeparationY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" instance=ExtResource("3_k6wgg")]
+[node name="SeparationY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1968522927 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 tooltip_text = "Specifies the gap between adjacent cells."
 allow_greater = true
 suffix = " px"
-_custom_value = 0.0
 
-[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="Canvas" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1339162661]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Canvas" unique_id=436799584]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -348,7 +345,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.14902, 0.180392, 1)
 
-[node name="EditedTexture" type="Control" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="EditedTexture" type="Control" parent="MarginContainer/VBoxContainer/Canvas" unique_id=883025928]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -357,7 +354,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Grid" type="Control" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="Grid" type="Control" parent="MarginContainer/VBoxContainer/Canvas" unique_id=1579691808]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -367,7 +364,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 
-[node name="Cursor" type="PanelContainer" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="Cursor" type="PanelContainer" parent="MarginContainer/VBoxContainer/Canvas" unique_id=1681858003]
 unique_name_in_owner = true
 visible = false
 layout_mode = 0
@@ -378,7 +375,7 @@ offset_bottom = 247.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_r50fv")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Canvas/Cursor"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Canvas/Cursor" unique_id=1832725953]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = -5
@@ -386,7 +383,7 @@ theme_override_constants/margin_top = -5
 theme_override_constants/margin_right = -5
 theme_override_constants/margin_bottom = -5
 
-[node name="TopLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="TopLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=1248948482]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -394,7 +391,7 @@ mouse_default_cursor_shape = 12
 texture_normal = SubResource("AtlasTexture_3j072")
 texture_hover = SubResource("AtlasTexture_cmp14")
 
-[node name="TopCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="TopCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=1224718866]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -402,7 +399,7 @@ mouse_default_cursor_shape = 14
 texture_normal = SubResource("AtlasTexture_6btrv")
 texture_hover = SubResource("AtlasTexture_5amc8")
 
-[node name="TopRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="TopRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=388089951]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -410,7 +407,7 @@ mouse_default_cursor_shape = 11
 texture_normal = SubResource("AtlasTexture_rxykp")
 texture_hover = SubResource("AtlasTexture_gtc55")
 
-[node name="LeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="LeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=1968969898]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -418,7 +415,7 @@ mouse_default_cursor_shape = 15
 texture_normal = SubResource("AtlasTexture_83mc3")
 texture_hover = SubResource("AtlasTexture_qtc2k")
 
-[node name="RightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="RightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=375408992]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -426,7 +423,7 @@ mouse_default_cursor_shape = 10
 texture_normal = SubResource("AtlasTexture_xooo4")
 texture_hover = SubResource("AtlasTexture_h5mkd")
 
-[node name="BottomLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="BottomLeftCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=1938364114]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -434,7 +431,7 @@ mouse_default_cursor_shape = 11
 texture_normal = SubResource("AtlasTexture_7e0ai")
 texture_hover = SubResource("AtlasTexture_06o6j")
 
-[node name="BottomCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="BottomCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=1257710586]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -442,7 +439,7 @@ mouse_default_cursor_shape = 14
 texture_normal = SubResource("AtlasTexture_olgdh")
 texture_hover = SubResource("AtlasTexture_l8qk1")
 
-[node name="BottomRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer"]
+[node name="BottomRightCursorHandle" type="TextureButton" parent="MarginContainer/VBoxContainer/Canvas/Cursor/MarginContainer" unique_id=269498798]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -450,7 +447,7 @@ mouse_default_cursor_shape = 12
 texture_normal = SubResource("AtlasTexture_b8nuj")
 texture_hover = SubResource("AtlasTexture_5dbmx")
 
-[node name="HScrollBar" type="HScrollBar" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="HScrollBar" type="HScrollBar" parent="MarginContainer/VBoxContainer/Canvas" unique_id=666502566]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 12
@@ -466,7 +463,7 @@ step = 0.01
 page = 0.15
 value = 0.42
 
-[node name="VScrollBar" type="VScrollBar" parent="MarginContainer/VBoxContainer/Canvas"]
+[node name="VScrollBar" type="VScrollBar" parent="MarginContainer/VBoxContainer/Canvas" unique_id=1726368463]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 11
@@ -482,16 +479,16 @@ step = 0.01
 page = 0.25
 value = 0.37
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1923371638]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2046547511]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pk7p4")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1005419687 instance=ExtResource("3_pk7p4")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -504,7 +501,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_d6dbg")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_28663")
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_pk7p4")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=745029365 instance=ExtResource("3_pk7p4")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2

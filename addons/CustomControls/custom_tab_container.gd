@@ -483,7 +483,7 @@ func update_tabs(current_tabs: int = 0, index: int = 0, force_selection: bool = 
 
 
 func create_tabs(_tabs: PackedStringArray) -> void:
-	default_tabs = Array(_tabs)
+	default_tabs = PackedStringArray(_tabs)
 	clear()
 	update_tabs()
 

@@ -14,6 +14,7 @@ var preview: String
 var is_selected: bool = false
 var is_enabled: bool = false
 var is_hidden: bool = false
+var is_requesting_preview: bool = false
 
 var _metadata_loaded: bool = false
 
@@ -67,8 +68,19 @@ func set_path(_path: String, _preview: String = "", _name = "") -> void:
 
 
 func _request_update_preview(_preview: String) -> void:
-	while FileCache.main_scene.preview_counter > FileCache.MAX_SIMULTANEOUS_PREVIEWS:
-		await get_tree().process_frame
+	if is_requesting_preview: return
+	is_requesting_preview = true
+	_wait_for_preview_slot(_preview)
+
+
+func _wait_for_preview_slot(_preview: String) -> void:
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+		
+	if FileCache.main_scene.preview_counter > FileCache.MAX_SIMULTANEOUS_PREVIEWS:
+		get_tree().process_frame.connect(_wait_for_preview_slot.bind(_preview), CONNECT_ONE_SHOT)
+		return
+		
 	FileCache.main_scene.preview_counter += 1
 
 	if _preview and ResourceLoader.exists(_preview):
@@ -81,6 +93,8 @@ func _request_update_preview(_preview: String) -> void:
 			var s = load(preview_path)
 			if s is Texture:
 				_update_image("", s, s, true)
+			else:
+				_update_image("", null, null, true)
 		else:
 			if path.get_extension() == "tscn" and FileCache.cache.images.has(path):
 				var packed_scene = load(path)
@@ -104,18 +118,30 @@ func _request_update_preview(_preview: String) -> void:
 				if FileAccess.file_exists(res.character_preview):
 					var img = load(res.character_preview)
 					_update_image("", img, img, true)
+				else:
+					_update_image("", null, null, true)
 			else:
 				var main_database = get_tree().get_nodes_in_group("main_database")
 				var event_editor = get_tree().get_nodes_in_group("event_editor")
+				var req_success = false
+				
 				if main_database:
 					main_database = main_database[0]
-					main_database.get_child(0).resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+					if main_database.get_child_count() > 0:
+						main_database.get_child(0).resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+						req_success = true
 				elif event_editor:
-						event_editor = event_editor[0]
-						event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+					event_editor = event_editor[0]
+					event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
+					req_success = true
 				elif RPGSYSTEM.editor_interface:
 					var rp = RPGSYSTEM.editor_interface.get_resource_previewer()
 					rp.queue_resource_preview(path, self, "_update_image", true)
+					req_success = true
+					
+				if not req_success:
+					_update_image("", null, null, true)
+
 
 
 func set_directory(_path: String, img: Texture2D) -> void:
@@ -125,6 +151,7 @@ func set_directory(_path: String, img: Texture2D) -> void:
 
 
 func _update_image(_path: String, preview: Texture, thumbnail_preview, using_counter: bool = false) -> void:
+	is_requesting_preview = false
 	if preview is Texture:
 		icon.texture = preview
 		cache_image = preview
@@ -133,7 +160,7 @@ func _update_image(_path: String, preview: Texture, thumbnail_preview, using_cou
 		cache_image = thumbnail_preview
 	
 	if using_counter:
-		FileCache.main_scene.preview_counter -=1
+		FileCache.main_scene.preview_counter -= 1
 
 
 func _on_mouse_entered() -> void:

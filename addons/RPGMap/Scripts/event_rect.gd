@@ -103,3 +103,12 @@ func clone(value: bool = true) -> EventRegion:
 ## Returns a string representation of the event region for debugging.
 func _to_string() -> String:
 	return "<EventRegion %s: %s>" % [id, name]
+
+
+## Returns all tiles within this region
+func get_current_tiles() -> Array[Vector2i]:
+	var tiles: Array[Vector2i] = []
+	for x in range(rect.position.x, rect.position.x + rect.size.x):
+		for y in range(rect.position.y, rect.position.y + rect.size.y):
+			tiles.append(Vector2i(x, y))
+	return tiles

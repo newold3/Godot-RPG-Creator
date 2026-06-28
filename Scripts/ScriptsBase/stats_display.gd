@@ -132,6 +132,8 @@ var standard_abbreviations: Dictionary = {
 }
 
 var _is_syncing: bool = false
+
+var _hide_mode_enabled: bool = false
 #endregion
 
 
@@ -213,6 +215,11 @@ func _on_hover_stat_changed() -> void:
 
 
 #region DataCreation
+## Enable or disable the hide mode (when hide mode is enabled, stats are showns as ???)
+func set_hide_mode(value: bool) -> void:
+	_hide_mode_enabled = value
+
+
 ## Builds the structure and arrays of stats to display.
 func create_stats_data() -> void:
 	stat_key_map.clear()
@@ -269,6 +276,7 @@ func create_stats_data() -> void:
 			"height": 4
 		})
 		
+		@warning_ignore("incompatible_ternary")
 		var icons = RPGSYSTEM.database.types.icons.main_parameters_icons if section_name == "Main Stats" \
 			else RPGSYSTEM.database.types.icons.user_parameters_icons if section_name == "Secondary Stats" \
 			else RPGSYSTEM.database.types.icons.main_parameters_icons if section_name == "Other Stats" \
@@ -578,6 +586,8 @@ func _calculate_stat_width(font: Font, data: Dictionary) -> float:
 		var internal_key = stat_key_map.get(data.name, "")
 		if standard_abbreviations.has(internal_key):
 			display_name = standard_abbreviations[internal_key]
+		else:
+			display_name = EnglishWordAbbreviator.abbreviate_english_word(display_name)
 			
 	if display_name != "":
 		width += font.get_string_size(display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x + spacing
@@ -678,7 +688,6 @@ func _draw_title(font: Font, title_text: String, y_pos: float, height: float) ->
 	draw_custom_string(font, text_pos, title_text, title_font_size, title_color)
 
 
-
 ## Draws a single stat line, processing its value live from cache.
 func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> void:
 	if stat_separator_style:
@@ -699,6 +708,8 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		var internal_key = stat_key_map.get(data.name, "")
 		if standard_abbreviations.has(internal_key):
 			display_name = standard_abbreviations[internal_key]
+		else:
+			display_name = EnglishWordAbbreviator.abbreviate_english_word(display_name)
 			
 	if display_name != "":
 		var text_pos = Vector2(current_x, y_center + font_size * 0.3)
@@ -720,16 +731,22 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 			
 	var suffix = "%" if data.is_percent else ""
 	var current_text = ""
+	var values_width: int
 	
-	if current_value == -1.0 and data.key.begins_with("state_"):
-		current_text = RPGSYSTEM.database.terms.search_message("Equip Stat State Inmune") if RPGSYSTEM.database.terms.has_method("search_message") else "Immune"
-	else:
-		current_text = GameManager.get_number_formatted(current_value, 0, "", suffix) if GameManager else str(current_value) + suffix
+	if not _hide_mode_enabled:
+		if current_value == -1.0 and data.key.begins_with("state_"):
+			current_text = RPGSYSTEM.database.terms.search_message("Equip Stat State Inmune") if RPGSYSTEM.database.terms.has_method("search_message") else "Immune"
+		else:
+			current_text = GameManager.get_number_formatted(current_value, 0, "", suffix) if GameManager else str(current_value) + suffix
+			
+		values_width = font.get_string_size(current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		
-	var values_width = font.get_string_size(current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		if has_comparison and comparison_module and comparison_module.has_method("get_comparison_width") and show_comparison:
+			values_width += comparison_module.get_comparison_width(font, font_size, current_value, new_value, suffix, data.key, show_comparison)
 	
-	if has_comparison and comparison_module and comparison_module.has_method("get_comparison_width") and show_comparison:
-		values_width += comparison_module.get_comparison_width(font, font_size, current_value, new_value, suffix, data.key, show_comparison)
+	else:
+		current_text = "???"
+		values_width = font.get_string_size(current_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		
 	var values_start_x = size.x - margin_right - values_width
 	

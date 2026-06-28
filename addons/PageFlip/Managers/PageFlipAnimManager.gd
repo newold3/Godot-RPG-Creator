@@ -153,11 +153,14 @@ func force_close_book(to_front_cover: bool) -> void:
 #region Animation Logic
 ## Connects variables with the animation timeline elements depending on rigid physics setups.
 func start_animation(forward: bool) -> void:
+	var is_first_step = not book.is_animating
 	book.started_page_flip_animation.emit()
 	book.is_animating = true
 	book.going_forward = forward
 		
 	set_flying_slots_active(true)
+	if book._slot_1: book._slot_1.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if book._slot_2: book._slot_2.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 
 	var is_rigid_motion = false
 	var use_tween = false
@@ -168,14 +171,14 @@ func start_animation(forward: bool) -> void:
 	var target_spread_idx = 0
 
 	if book._is_force_closing:
-		if forward: 
+		if forward:
 			target_spread_idx = book.total_spreads
 			is_rigid_motion = book.covers_are_rigid
 			use_tween = true
 			book.is_book_open = false
 			closing_to_back = true
 			target_is_closed = true
-		else: 
+		else:
 			target_spread_idx = -1
 			is_rigid_motion = book.covers_are_rigid
 			use_tween = true
@@ -236,6 +239,22 @@ func start_animation(forward: bool) -> void:
 
 	book._is_current_anim_rigid = is_rigid_motion
 	book._pending_target_spread_idx = target_spread_idx
+
+	var ultimate_target_spread = target_spread_idx
+	if book._is_force_closing:
+		ultimate_target_spread = book.total_spreads if forward else -1
+	elif book._is_jumping:
+		ultimate_target_spread = book._ultimate_jump_target_spread
+	elif book._auto_turn_target_spread != -999:
+		ultimate_target_spread = book._auto_turn_target_spread
+
+	if is_first_step:
+		var was_closed = (book.current_spread == -1 or book.current_spread == book.total_spreads)
+		var will_be_closed = (ultimate_target_spread == -1 or ultimate_target_spread == book.total_spreads)
+		if was_closed and not will_be_closed:
+			book.emit_start_opening()
+		elif not was_closed and will_be_closed:
+			book.emit_start_closing()
 
 	book._force_hide_vol_left = false
 	book._force_hide_vol_right = false
@@ -745,11 +764,13 @@ func on_animation_finished(_anim_name: String) -> void:
 			
 	if book.current_spread == book.total_spreads:
 		if book.close_condition == book.CloseCondition.CLOSE_FROM_BACK or book.close_condition == book.CloseCondition.ANY_CLOSE:
+			book.ended_page_flip_animation.emit()
 			book.call_deferred("_perform_close_action")
 			return
 			
 	if book.current_spread == -1:
 		if book.close_condition == book.CloseCondition.CLOSE_FROM_FRONT or book.close_condition == book.CloseCondition.ANY_CLOSE:
+			book.ended_page_flip_animation.emit()
 			book.call_deferred("_perform_close_action")
 			return
 			
@@ -812,11 +833,11 @@ func get_compensation_offset(is_closed: bool, is_back: bool) -> Vector2:
 	
 	if is_closed:
 		if is_back:
-			target_local_x = -book.page_width * 0.5
+			target_local_x = - book.page_width * 0.5
 		else:
 			target_local_x = 0.0
 	else:
-		target_local_x = -book.page_width * 0.5
+		target_local_x = - book.page_width * 0.5
 		
 	var target_vec = Vector2(target_local_x, 0)
 	var t_scale = book.closed_scale if is_closed else book.open_scale

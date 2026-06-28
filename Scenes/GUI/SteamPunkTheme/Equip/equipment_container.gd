@@ -64,7 +64,7 @@ func _create_slots() -> void:
 		equip_button_container.add_child(button)
 		
 		var icon: RPGIcon = icons[i]
-		var type_name = equipment[i]
+		var type_name = tr(equipment[i])
 		var tex = null
 		
 		if AssetManager.exists(icon.path):
@@ -77,7 +77,7 @@ func _create_slots() -> void:
 				
 		button.setup_button(
 			tex, Color.GRAY, type_name.capitalize(),
-			null, Color(0.75, 0.75, 0.75, 0.576), RPGSYSTEM.database.terms.search_message("Equip Empty Slot")
+			null, Color(0.75, 0.75, 0.75, 0.576), tr(RPGSYSTEM.database.terms.search_message("Equip Empty Slot"))
 		)
 		
 		if i == 0:
@@ -161,7 +161,7 @@ func _get_item_display_data(gear: Variant, slot_index: int) -> Dictionary:
 	var result = {
 		"tex": null,
 		"item_color": Color.GRAY if not _can_equip_item_in_slot(slot_index) else Color.WHITE,
-		"item_name": RPGSYSTEM.database.terms.search_message("Equip Empty Slot")
+		"item_name": tr(RPGSYSTEM.database.terms.search_message("Equip Empty Slot"))
 	}
 	
 	if not gear:
@@ -185,7 +185,7 @@ func _get_item_display_data(gear: Variant, slot_index: int) -> Dictionary:
 	if item_id <= 0 or not real_item:
 		return result
 	
-	result.item_name = real_item.name
+	result.item_name = tr(real_item.name)
 	
 	if not _can_equip_item_in_slot(slot_index):
 		result.item_color = Color.GRAY

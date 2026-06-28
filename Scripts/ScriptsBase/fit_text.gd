@@ -1,3 +1,4 @@
+@tool
 extends Label
 
 ## Maximum font size allowed for the label.
@@ -7,22 +8,28 @@ extends Label
 @export var min_font_size: int = 1
 
 var _parent: Control
+var _last_text: String = ""
+var _last_parent_size: Vector2 = Vector2.ZERO
 
 
 #region Lifecycle Methods
 ## Initializes the label settings and applies the initial autosize.
 func _ready() -> void:
-	_parent = get_parent()
+	_parent = get_parent() as Control
+	clip_text = true # Prevent the label from expanding its parent container
 	_setup_label_settings()
 	_update_font_size.call_deferred()
 
 
+
 ## Checks for changes in text or parent size every frame to recalculate the font size if needed.
 func _process(_delta: float) -> void:
-	if not _parent or not _parent is Control:
+	if not _parent:
 		return
 		
-	if size.x > _parent.size.x or size.y > _parent.size.y:
+	if text != _last_text or _parent.size != _last_parent_size:
+		_last_text = text
+		_last_parent_size = _parent.size
 		_update_font_size()
 #endregion
 
@@ -34,9 +41,10 @@ func _setup_label_settings() -> void:
 		label_settings = label_settings.duplicate()
 
 
+
 ## Calculates the maximum font size that fits the text inside the parent container bounds.
 func _update_font_size() -> void:
-	if not _parent or not _parent is Control:
+	if not _parent:
 		return
 		
 	var parent_size: Vector2 = _parent.size
@@ -60,8 +68,8 @@ func _update_font_size() -> void:
 	if label_settings:
 		label_settings.font_size = best
 	else:
-		set("theme_override_font_sizes/font_size", best)
+		add_theme_font_size_override("font_size", best)
 	
-	size = parent_size
+	set_deferred("size", parent_size)
 	position = Vector2.ZERO
 #endregion

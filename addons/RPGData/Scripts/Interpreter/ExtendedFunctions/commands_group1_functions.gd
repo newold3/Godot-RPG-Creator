@@ -264,7 +264,7 @@ func _command_0002() -> void:
 		current_message_box.wait_for_user_option_selected_enabled = is_next_command_request_user_action
 		current_message_box.set("has_next_dialog", has_next_dialog)
 		
-		await current_message_box.setup_text(text)
+		await current_message_box.setup_text(tr(text))
 		
 		current_message_box.wait_for_user_option_selected_enabled = is_next_command_request_user_action
 		current_message_box.set("has_next_dialog", has_next_dialog)

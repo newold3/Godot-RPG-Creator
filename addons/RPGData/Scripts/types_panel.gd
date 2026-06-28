@@ -28,10 +28,15 @@ func set_data(real_data: RPGTypes) -> void:
 	if data.enemy_rarity_types.size() == 0:
 		data.enemy_rarity_types.append("Common")
 		data.enemy_rarity_color_types.append(Color.WHITE)
+	
+	if not data.icons.enemy_rarity_icons or data.icons.enemy_rarity_icons.is_empty():
+		for i in data.enemy_rarity_types.size():
+			data.icons.enemy_rarity_icons.append(RPGIcon.new())
 
 	if data.tool_types == null:
 		data.tool_types = []
 		data.icons.tool_icons = []
+	
 	fill_list(%ElementList, data.element_types, 0, 1)
 	fill_list(%SkillList, data.skill_types, 0, 2)
 	fill_list(%WeaponList, data.weapon_types, 0, 3)
@@ -617,6 +622,9 @@ func _on_icon_picker_clicked(id: int) -> void:
 		20:
 			var itemlist_index = %ToolList.get_selected_items()[0]
 			dialog.set_data(data.icons.tool_icons[itemlist_index])
+		100:
+			var itemlist_index = %EnemyRarityList.get_selected_items()[0]
+			dialog.set_data(data.icons.enemy_rarity_icons[itemlist_index])
 	
 	dialog.icon_changed.connect(update_icon.bind(id))
 
@@ -651,6 +659,9 @@ func update_icon(id: int) -> void:
 		20:
 			var itemlist_index = %ToolList.get_selected_items()[0]
 			icon = data.icons.tool_icons[itemlist_index]
+		100:
+			var itemlist_index = %EnemyRarityList.get_selected_items()[0]
+			icon =  data.icons.enemy_rarity_icons[itemlist_index]
 			
 	var node_path = "%%IconPicker%s" % id
 	get_node(node_path).set_icon(icon.path, icon.region)
@@ -685,6 +696,9 @@ func _on_icon_picker_remove_requested(id: int) -> void:
 		20:
 			var itemlist_index = %ToolList.get_selected_items()[0]
 			data.icons.tool_icons[itemlist_index].clear()
+		100:
+			var itemlist_index = %EnemyRarityList.get_selected_items()[0]
+			data.icons.enemy_rarity_icons[itemlist_index].clear()
 	
 	var node_path = "%%IconPicker%s" % id
 	get_node(node_path).set_icon("")
@@ -720,6 +734,9 @@ func _on_icon_paste_requested(icon: String, region: Rect2, index: int) -> void:
 		20:
 			var itemlist_index = %ToolList.get_selected_items()[0]
 			icon_data = data.icons.tool_icons[itemlist_index]
+		100:
+			var itemlist_index = %EnemyRarityList.get_selected_items()[0]
+			icon_data = data.icons.enemy_rarity_icons[itemlist_index]
 	
 	if icon_data:
 		icon_data.path = icon
@@ -916,6 +933,9 @@ func _on_enemy_rarity_list_item_selected(index: int) -> void:
 	%Name30LineEdit.text = data.enemy_rarity_types[index]
 	%EnemyRarityColorButton.set_pick_color(data.enemy_rarity_color_types[index])
 	%RemoveItem30Button.set_disabled(index == 0)
+	var current_icon = data.icons.enemy_rarity_icons[index]
+	%IconPicker100.set_disabled(false)
+	%IconPicker100.set_icon(current_icon.path, current_icon.region)
 
 
 func _on_name_30_line_edit_text_changed(new_text: String) -> void:
@@ -934,6 +954,7 @@ func _on_enemy_rarity_color_button_color_changed(color: Color) -> void:
 func _on_add_item_30_button_pressed() -> void:
 	data.enemy_rarity_types.append("")
 	data.enemy_rarity_color_types.resize(data.enemy_rarity_types.size())
+	data.icons.enemy_rarity_icons.append(RPGIcon.new())
 	fill_list(%EnemyRarityList, data.enemy_rarity_types, data.enemy_rarity_types.size() - 1, "30")
 	%EnemyRarityList.grab_focus()
 	need_fix_data = true

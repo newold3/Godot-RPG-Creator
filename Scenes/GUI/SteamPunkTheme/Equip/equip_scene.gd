@@ -99,9 +99,9 @@ func _setup_initial_selection() -> void:
 func _on_controlled_changed(type: ControllerManager.CONTROLLER_TYPE):
 	var help: String = ""
 	if type == ControllerManager.CONTROLLER_TYPE.Joypad:
-		help = "L1/R1 Change Actor  RS Stats Navigate  D-Pad Select Equipment  A Ok  B Cancel"
+		help = tr("L1/R1 Change Actor  RS Stats Navigate  D-Pad Select Equipment  A Ok  B Cancel")
 	else:
-		help = "Q/E Change Actor  Mouse Stats Navigate  W/A/S/D Select Equipment  Space Ok  Escape Cancel"
+		help = tr("Q/E Change Actor  Mouse Stats Navigate  W/A/S/D Select Equipment  Space Ok  Escape Cancel")
 	%HelpLabel.text = help
 
 

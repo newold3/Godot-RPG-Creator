@@ -249,7 +249,22 @@ func _on_visibility_changed() -> void:
 
 
 func _fix_data() -> void:
-	pass
+	if data:
+		var ids: Array = []
+		var uids: Array = []
+		for i in data.size():
+			if not data[i]: continue
+			if "id" in data[i] and "_uniq_id" in data[i]:
+				print([i, data[i].id, data[i]._uniq_id])
+			if "id" in data[i]:
+				if data[i].id in ids:
+					data[i].id = i
+				ids.append(data[i].id)
+			if "_uniq_id" in data[i]:
+				if data[i]._uniq_id in uids:
+					data[i]._uniq_id = RPGSYSTEM.generate_16_digit_id()
+				uids.append(data[i]._uniq_id)
+			
 
 
 func initialize_data(item) -> void:
@@ -318,10 +333,12 @@ func paste_main_data() -> void:
 				var current_id = data[real_index].id
 				data[real_index] = paste_data[paste_index].clone(true)
 				data[real_index].id = current_id
+				data[real_index]._uniq_id = RPGSYSTEM.generate_16_digit_id()
 			else:
 				break
 			paste_index += 1
 	
+		_fix_data()
 		fill_main_list(current_selected_index)
 		
 		%MainList.deselect_all()

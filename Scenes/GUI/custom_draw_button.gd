@@ -137,6 +137,8 @@ var animation_tween: Tween
 var shake_tween: Tween
 var busy: bool = false
 var _is_pressing_anim_active: bool = false
+var _last_focus_mode: Control.FocusMode
+var _last_mouse_shape: CursorShape
 
 
 #region Setup & Initialization
@@ -627,6 +629,17 @@ func is_pressed() -> bool: return is_pressed_toggle
 ## Sets the disabled state.
 func set_disabled(value: bool):
 	is_disabled = value
+	if value:
+		if not _last_focus_mode: _last_focus_mode = focus_mode
+		if not _last_mouse_shape: _last_mouse_shape = mouse_default_cursor_shape
+		focus_mode = Control.FOCUS_NONE
+		mouse_default_cursor_shape = Control.CURSOR_ARROW
+	else:
+		if _last_focus_mode: focus_mode = _last_focus_mode
+		if _last_mouse_shape: mouse_default_cursor_shape = _last_mouse_shape
+		_last_focus_mode = Control.FOCUS_NONE
+		_last_mouse_shape = Control.CURSOR_ARROW
+		
 	queue_redraw()
 
 #endregion

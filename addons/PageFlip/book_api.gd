@@ -195,13 +195,7 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 			var t_linear = float(i + 1) / float(actual_turns)
 			var intermediate_target = int(round(lerp(float(start_spread), float(final_target), t_linear)))
 			
-			if is_first_step:
-				if (book.current_spread == -1 and going_forward) or (book.current_spread == book.total_spreads and not going_forward):
-					book.book_opened.emit()
-					
-			if is_last_step:
-				if (intermediate_target == -1 and not going_forward) or (intermediate_target == book.total_spreads and going_forward):
-					book.book_closed.emit()
+
 			
 			var _current_speed = min_speed
 			if actual_turns > 1:
@@ -211,6 +205,7 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 			book.anim_player.speed_scale = _current_speed
 			
 			book.set("_jump_target_spread", intermediate_target)
+			book.set("_ultimate_jump_target_spread", final_target)
 			book.set("_is_jumping", true)
 			book.call("_start_animation", going_forward)
 			
@@ -231,6 +226,28 @@ static func is_busy(book_instance: PageFlip2D = null) -> bool:
 	var book = book_instance if book_instance else _current_book
 	if not is_instance_valid(book): return false
 	return book.is_animating
+
+
+## Returns true if the given node/scene is currently instanced and visible within the book.
+## Returns true if the given node/scene is currently instanced and visible in one of the static pages of the book.
+static func is_scene_shown(node: Node, book_instance: PageFlip2D = null) -> bool:
+	if not is_instance_valid(node):
+		return false
+	var book = book_instance if book_instance else _current_book
+	if not is_instance_valid(book):
+		return false
+	
+	var slots = []
+	if is_instance_valid(book._slot_1): slots.append(book._slot_1)
+	if is_instance_valid(book._slot_2): slots.append(book._slot_2)
+	
+	var current = node
+	while current:
+		if current in slots:
+			return true
+		current = current.get_parent()
+	return false
+
 
 
 ## Locates the PageFlip2D controller ancestor from any node inside an interactive page.
@@ -255,6 +272,45 @@ static func set_interaction_lock(book: PageFlip2D, locked: bool) -> void:
 static func force_release_control(book: PageFlip2D) -> void:
 	if not is_instance_valid(book): return
 	book.call("_pageflip_set_input_enabled", true)
+
+
+## Returns the current spread index being shown.
+## Returns -999 if the book instance is invalid.
+static func get_current_spread(book: PageFlip2D = null) -> int:
+	if not book: book = _current_book
+	if is_instance_valid(book):
+		return book.current_spread
+	return -999
+
+
+## Returns the 1-based page number of the left page currently shown.
+## Returns -999 if no page is shown on the left (e.g. book is closed or invalid).
+## Returns negative values for covers:
+## -101: Front Cover Interior
+## -103: Back Cover Exterior
+static func get_left_page_number(book: PageFlip2D = null) -> int:
+	if not book: book = _current_book
+	if is_instance_valid(book) and book.anim_manager:
+		var idx = book.anim_manager.get_page_index_for_spread(book.current_spread, true)
+		if idx >= 0:
+			return idx + 1
+		return idx
+	return -999
+
+
+## Returns the 1-based page number of the right page currently shown.
+## Returns -999 if no page is shown on the right (e.g. book is closed or invalid).
+## Returns negative values for covers:
+## -100: Front Cover Exterior
+## -102: Back Cover Interior
+static func get_right_page_number(book: PageFlip2D = null) -> int:
+	if not book: book = _current_book
+	if is_instance_valid(book) and book.anim_manager:
+		var idx = book.anim_manager.get_page_index_for_spread(book.current_spread, false)
+		if idx >= 0:
+			return idx + 1
+		return idx
+	return -999
 
 
 # ==============================================================================

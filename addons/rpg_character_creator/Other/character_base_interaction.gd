@@ -27,9 +27,7 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 
 	var map = GameManager.current_map
 	var events = map.get_in_game_events_in(tile)
-
 	for ev in events:
-		print(ev)
 		if ev is LPCEvent or ev is EmptyLPCEvent or ev is GenericLPCEvent or ev.get_class() == "RPGExtractionScene" or ev is RPGVehicle or ev.has_method("interact"):
 			current_entity._auto_target_event = ev
 			break
@@ -39,6 +37,19 @@ func _set_target_destination(tile: Vector2i, is_new_click: bool = true) -> void:
 		
 		if vehicle:
 			current_entity._auto_target_event = vehicle
+
+	if not current_entity._auto_target_event and map.has_method("get_event_regions_in"):
+		var regions = map.get_event_regions_in(tile)
+		regions.reverse()
+		for region: EventRegion in regions:
+			if not region.can_entry and region.trigger_mode == EventRegion.TriggerMode.PRESS_BUTTON:
+				current_entity._auto_target_event = region
+				break
+
+	if not current_entity._auto_target_event and map.has_method("get_extraction_event_in"):
+		var extraction_event = map.get_extraction_event_in(tile)
+		if extraction_event:
+			current_entity._auto_target_event = extraction_event
 
 	if not current_entity._auto_target_event and is_instance_valid(current_entity.interactive_event) and current_entity.interactive_event.has_method("interact"):
 		if map.local_to_map(current_entity.interactive_event.global_position) == tile:
@@ -88,7 +99,7 @@ func _process_auto_movement() -> void:
 				target_tiles = [current_entity._auto_target_event.get_current_tile()]
 			else:
 				var map = GameManager.current_map
-				if map:
+				if map and "global_position" in current_entity._auto_target_event:
 					target_tiles = [map.local_to_map(current_entity._auto_target_event.global_position)]
 				else:
 					target_tiles = [current_entity._auto_target_tile]
@@ -116,6 +127,30 @@ func _process_auto_movement() -> void:
 	var next_step = current_entity._get_next_move_toward_target(current_entity._auto_target_tile, Vector2.ZERO)
 	
 	if next_step != Vector2i.ZERO:
+		if abs(next_step.x) == 1 and abs(next_step.y) == 1 and current_entity._auto_target_event and is_instance_valid(current_entity._auto_target_event):
+			var map = GameManager.current_map
+			var tg_tiles = []
+			if current_entity._auto_target_event.has_method("get_current_tiles"):
+				tg_tiles = current_entity._auto_target_event.call("get_current_tiles")
+			elif current_entity._auto_target_event.has_method("get_current_tile"):
+				tg_tiles = [current_entity._auto_target_event.get_current_tile()]
+			else:
+				if map and "global_position" in current_entity._auto_target_event: tg_tiles = [map.local_to_map(current_entity._auto_target_event.global_position)]
+				else: tg_tiles = [current_entity._auto_target_tile]
+			
+			for t in tg_tiles:
+				if current_tile + next_step == t:
+					if map:
+						var dir_x = current_entity.DIRECTIONS.LEFT if next_step.x < 0 else current_entity.DIRECTIONS.RIGHT
+						var dir_y = current_entity.DIRECTIONS.UP if next_step.y < 0 else current_entity.DIRECTIONS.DOWN
+						if map.is_passable(current_tile + Vector2i(next_step.x, 0), dir_x, current_entity):
+							next_step = Vector2i(next_step.x, 0)
+						elif map.is_passable(current_tile + Vector2i(0, next_step.y), dir_y, current_entity):
+							next_step = Vector2i(0, next_step.y)
+						else:
+							next_step = Vector2i.ZERO
+					break
+					
 		current_entity.movement_vector = next_step
 		if not current_entity.character_options.fixed_direction:
 			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
@@ -176,6 +211,14 @@ func _interact_with_click_target() -> void:
 		elif node.get_class() == "RPGExtractionScene":
 			if not node.extraction_data.is_depleted():
 				GameManager.manage_extraction_scene(node)
+		elif node is RPGExtractionItem:
+			var scene = node.scene
+			if scene and not scene.extraction_data.is_depleted():
+				GameManager.manage_extraction_scene(scene)
+		elif node is EventRegion:
+			if node.trigger_mode == EventRegion.TriggerMode.PRESS_BUTTON:
+				current_entity._reset(true)
+				GameManager.start_event_region(node, current_entity, 0)
 		elif node.has_method("interact"):
 			current_entity._reset(true)
 			current_entity.is_moving = false
@@ -533,14 +576,20 @@ func _check_contact_after_move() -> void:
 
 
 ## Evaluates solidity and block capability of external entities
-func _is_solid(entity: Node) -> bool:
-	if entity.is_in_group("player") or entity is RPGVehicle:
-		if entity.has_method("is_passable"):
-			return not entity.is_passable()
+func _is_solid(entity: Variant) -> bool:
+	if entity is EventRegion:
+		return not entity.can_entry
+	if entity is RPGExtractionItem:
 		return true
-	
-	if "character_options" in entity and entity.character_options:
-		return not entity.character_options.passable
+		
+	if entity is Node:
+		if entity.is_in_group("player") or entity is RPGVehicle:
+			if entity.has_method("is_passable"):
+				return not entity.is_passable()
+			return true
+		
+		if "character_options" in entity and entity.character_options:
+			return not entity.character_options.passable
 		
 	return false
 

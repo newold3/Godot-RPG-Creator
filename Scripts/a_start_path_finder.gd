@@ -149,6 +149,10 @@ func _is_target_in_solid_region(target_tile: Vector2i) -> bool:
 		for shape in _map.ingame_event_regions:
 			if is_instance_valid(shape) and not shape.disabled and shape.has_meta("type") and shape.get_meta("type") == "collision_region":
 				var region_data = shape.get_meta("region_data")
+				
+				if region_data and region_data is EventRegion and region_data.trigger_mode != EventRegion.TriggerMode.NONE:
+					continue
+					
 				var rect = region_data.rect
 				
 				if target_tile.x >= int(rect.position.x) and target_tile.x < int(rect.position.x + rect.size.x) and target_tile.y >= int(rect.position.y) and target_tile.y < int(rect.position.y + rect.size.y):

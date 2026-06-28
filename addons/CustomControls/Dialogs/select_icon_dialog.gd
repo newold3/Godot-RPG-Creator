@@ -48,20 +48,22 @@ func _on_cancel_button_pressed() -> void:
 func _on_icon_picker_clicked() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-
+	
 	await get_tree().process_frame
 	
 	dialog.destroy_on_hide = true
 	dialog.target_callable = update_icon
+
 	dialog.set_dialog_mode(0)
 	if data:
 		dialog.set_file_selected(data.path)
-	
+
 	if extra_files.is_empty():
 		dialog.fill_files("images")
 	else:
 		var files = extra_files + ["images"]
 		dialog.fill_mix_files(files)
+
 
 
 func update_icon(path: String) -> void:

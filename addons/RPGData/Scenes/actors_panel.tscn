@@ -401,7 +401,6 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Initial Level[/title]
 Is the level of the actor at the start of game."
-_custom_value = 0.0
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=265401823]
 layout_mode = 2
@@ -417,7 +416,6 @@ layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Max Level[/title]
 Is the maximum level an actor can be. An actor will never level up beyond its [Max Level]."
-_custom_value = 0.0
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=478920705]
 layout_mode = 2
@@ -437,7 +435,6 @@ tooltip_text = "If the actor has hp or mp regeneration traits and you are out of
 page = 0.01
 allow_greater = true
 suffix = " second/s"
-_custom_value = 0.0
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer2" unique_id=1187889968]
 layout_mode = 2
@@ -532,7 +529,6 @@ layout_mode = 2
 tooltip_text = "If you use poses for the character that include a weapon, the head may appear lower than the top edge in order to keep the full character visible. This offset can be useful and will be used by some menus to position the image."
 allow_greater = true
 allow_lesser = true
-_custom_value = 0.0
 
 [node name="ImagesScenes" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Scenes/MarginContainer/VBoxContainer" unique_id=2024387473]
 layout_mode = 2
@@ -616,6 +612,7 @@ size_flags_vertical = 3
 
 [node name="EquipmentList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Equipment/MarginContainer/InitialEquipment/ScrollContainer" unique_id=434127461 instance=ExtResource("6_um0l1")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(804, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -702,7 +699,7 @@ size_flags_vertical = 3
 
 [node name="BattleActionList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Battle/MarginContainer/BattleActions/ScrollContainer" unique_id=884341660 instance=ExtResource("6_um0l1")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 69)
+custom_minimum_size = Vector2(482, 69)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

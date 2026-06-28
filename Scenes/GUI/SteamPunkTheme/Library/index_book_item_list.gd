@@ -30,6 +30,7 @@ extends ItemList
 @export var debug_mode: bool = false
 
 var _item_data: Array[Dictionary] = []
+var disabled: bool = true
 
 #region Signals Block
 var _hover_signal_name: String
@@ -52,10 +53,11 @@ func _ready() -> void:
 	_hover_signal_name = "%s_%s" % [list_id, hover_signal_name]
 	_unhover_signal_name = "%s_%s" % [list_id, unhover_signal_name]
 	
+	get_v_scroll_bar().mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	get_h_scroll_bar().mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
 	StaticSignal.create_signal(_hover_signal_name)
 	StaticSignal.create_signal(_unhover_signal_name)
-	
-	grab_focus.call_deferred()
 
 
 ## Fills the list with 50 dummy items for testing purposes.
@@ -69,6 +71,10 @@ func _fill_debug_data() -> void:
 		})
 
 	populate_custom_items(debug_list)
+
+
+func add_items(items: Array[Dictionary]) -> void:
+	populate_custom_items(items)
 
 
 ## Extracts pre-existing items defined in the editor into the custom dictionary format.
@@ -120,12 +126,88 @@ func _gui_input(event: InputEvent) -> void:
 			StaticSignal.emit(_hover_signal_name, [local_pos, self])
 		else:
 			StaticSignal.emit(_unhover_signal_name, [self])
+		
+		accept_event()
+	elif event.is_action("ui_up") or event.is_action("ui_down") or event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept"):
+		accept_event()
+	elif ControllerManager.is_any_direction_pressed() or ControllerManager.is_confirm_just_pressed():
+		accept_event()
 
 
-## Cleans up forced cursor targeting when the mouse exits the control entirely.
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
+	var is_shown = is_visible_in_tree() and BookAPI.is_scene_shown(self) and not BookAPI.is_busy()
+	if is_shown:
+		if not has_focus():
+			grab_focus()
+			
+		var selected = get_selected_items()
+		if selected.is_empty() and item_count > 0:
+			select(0)
+			queue_redraw()
+			selected = [0]
+		if not selected.is_empty():
+			var sel_idx = selected[0]
+			var rect: Rect2 = get_item_rect(sel_idx)
+			var local_pos: Vector2 = rect.position + Vector2(0, rect.size.y * 0.5)
+			
+			if get_v_scroll_bar() and get_v_scroll_bar().visible:
+				local_pos.y -= get_v_scroll_bar().value
+			
+			StaticSignal.emit(_hover_signal_name, [local_pos, self])
+		
+			var direction = ControllerManager.get_pressed_direction()
+			var cols = max(1, max_columns)
+		
+			if direction == "left":
+				sel_idx -= 1
+				if sel_idx < 0:
+					sel_idx = item_count - 1
+				select(sel_idx)
+				ensure_current_is_visible()
+				queue_redraw()
+				
+			elif direction == "right":
+				sel_idx += 1
+				if sel_idx >= item_count:
+					sel_idx = 0
+				select(sel_idx)
+				ensure_current_is_visible()
+				queue_redraw()
+				
+			elif direction == "up":
+				sel_idx -= cols
+				if sel_idx < 0:
+					sel_idx = item_count - 1
+				select(sel_idx)
+				ensure_current_is_visible()
+				queue_redraw()
+				
+			elif direction == "down":
+				sel_idx += cols
+				if sel_idx >= item_count:
+					sel_idx = 0
+				select(sel_idx)
+				ensure_current_is_visible()
+				queue_redraw()
+				
+			elif ControllerManager.is_confirm_just_pressed():
+				item_activated.emit(sel_idx)
+
+		
+	else:
+		StaticSignal.emit(_unhover_signal_name, [self])
+
+
+## Cleans up forced cursor targeting when the mouse exits the control entirely or visibility changes.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_MOUSE_EXIT:
 		StaticSignal.emit(_unhover_signal_name, [self])
+	elif what == NOTIFICATION_VISIBILITY_CHANGED:
+		if not is_visible_in_tree():
+			StaticSignal.emit(_unhover_signal_name, [self])
 
 
 #region Data Management Block
@@ -175,6 +257,16 @@ func _draw() -> void:
 			rect2.position.y += 10
 			background_style.draw(get_canvas_item(), rect2)
 
+		if is_selected(i):
+			var selected_style = null
+			if has_focus() and has_theme_stylebox("selected_focus"):
+				selected_style = get_theme_stylebox("selected_focus")
+			elif has_theme_stylebox("selected"):
+				selected_style = get_theme_stylebox("selected")
+			
+			if selected_style:
+				selected_style.draw(get_canvas_item(), rect)
+
 		var current_x = rect.position.x + custom_left_margin
 		var text_y = rect.position.y + (rect.size.y - font_h) / 2.0 + list_font.get_ascent(list_font_size)
 
@@ -184,6 +276,14 @@ func _draw() -> void:
 			draw_texture(icon, Vector2(current_x, icon_y))
 			current_x += icon.get_width() + 4.0
 
+		var target_x_start = rect.position.x + rect.size.x - custom_right_margin
+		var has_target = data.has("target_page")
+		var t_text = ""
+		if has_target:
+			t_text = str(data["target_page"])
+			var t_width = list_font.get_string_size(t_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+			target_x_start -= t_width
+
 		var name_width = 0.0
 		
 		if data.has("name"):
@@ -191,21 +291,30 @@ func _draw() -> void:
 			var pos = Vector2(current_x, text_y)
 			var current_size = total_outline_size
 
+			# Calculate maximum name width ensuring 2 spaces separation
+			var min_separation = list_font.get_string_size("  ", HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+			var max_name_width = maxf(0.0, (target_x_start - current_x) - min_separation)
+			var name_to_draw = n_text
+			
+			var full_name_width = list_font.get_string_size(n_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+			if full_name_width > max_name_width:
+				var elided = n_text
+				while elided.length() > 0 and list_font.get_string_size(elided + "...", HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x > max_name_width:
+					elided = elided.substr(0, elided.length() - 1)
+				name_to_draw = elided + "..."
+				name_width = list_font.get_string_size(name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+			else:
+				name_width = full_name_width
+
 			for j in range(outline_stack.size()):
 				if current_size > 0:
 					var out_color = outline_color_stack[j] if j < outline_color_stack.size() else (outline_color_stack[-1] if outline_color_stack.size() > 0 else Color.BLACK)
-					list_font.draw_string_outline(get_canvas_item(), pos, n_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
+					list_font.draw_string_outline(get_canvas_item(), pos, name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
 				current_size -= outline_stack[j]
 
-			list_font.draw_string(get_canvas_item(), pos, n_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, font_color)
-			name_width = list_font.get_string_size(n_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+			list_font.draw_string(get_canvas_item(), pos, name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, font_color)
 
-		var target_x_start = rect.position.x + rect.size.x - custom_right_margin
-
-		if data.has("target_page"):
-			var t_text = str(data["target_page"])
-			var t_width = list_font.get_string_size(t_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
-			target_x_start -= t_width
+		if has_target:
 			var target_pos = Vector2(target_x_start, text_y)
 			var current_size = total_outline_size
 

@@ -180,6 +180,19 @@ func initialize() -> void:
 	common_events.append(null)
 	common_events.append(RPGCommonEvent.new())
 	# Types
+	_fill_types()
+	# Speakers
+	speakers.clear()
+	speakers.append(null)
+	# Quests
+	quests.clear()
+	quests.append(null)
+	quests.append(RPGQuest.new())
+
+
+## Fills the types with default values.
+func _fill_types():
+	types = RPGTypes.new()
 	var type_data = {
 		"elements" = ["Physical", "Fire", "Ice", "Thunder", "Water", "Earth", "Wind", "Light", "Darkness"],
 		"skills" = ["Magic", "Special"],
@@ -195,62 +208,83 @@ func initialize() -> void:
 		"item_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")],
 		"enemy_rarity_names" = ["Common", "Elite", "Boss"],
 		"enemy_rarity_colors" = [Color.WHITE, Color("25aeb9ff"), Color("f10d00ff")]
-		
 	}
 	types.element_types = PackedStringArray(type_data.elements)
+	types.icons.element_icons = []
+	for i in type_data.elements.size():
+		types.icons.element_icons.append(RPGIcon.new())
+		
 	types.skill_types = PackedStringArray(type_data.skills)
+	types.icons.skill_icons = []
+	for i in type_data.skill_types.size():
+		types.icons.skill_icons.append(RPGIcon.new())
+	
 	types.weapon_types = PackedStringArray(type_data.weapons)
 	types.weapon_rarity_types = PackedStringArray(type_data.weapon_rarity_names)
 	types.weapon_rarity_color_types = PackedColorArray(type_data.weapon_rarity_colors)
+	types.icons.weapon_icons = []
+	for i in type_data.weapon_types.size():
+		types.icons.weapon_icons.append(RPGIcon.new())
+	
 	types.armor_types = PackedStringArray(type_data.armors)
 	types.armor_rarity_types = PackedStringArray(type_data.armor_rarity_names)
 	types.armor_rarity_color_types = PackedColorArray(type_data.armor_rarity_colors)
+	types.icons.armor_icons = []
+	for i in type_data.armor_types.size():
+		types.icons.armor_icons.append(RPGIcon.new())
+	
 	types.item_types = PackedStringArray(type_data.items)
 	types.item_rarity_types = PackedStringArray(type_data.item_rarity_names)
 	types.item_rarity_color_types = PackedColorArray(type_data.item_rarity_colors)
+	types.icons.item_icons = []
+	for i in type_data.item_types.size():
+		types.icons.item_icons.append(RPGIcon.new())
+	
+	types.equipment_types = PackedStringArray(type_data.equipment)
+	types.icons.equipment_icons = []
+	for i in type_data.equipment.size():
+		types.icons.equipment_icons.append(RPGIcon.new())
+	
+	types.gender_types = PackedStringArray(["None", "Male", "Female"])
+	
 	types.enemy_rarity_types = PackedStringArray(type_data.enemy_rarity_names)
 	types.enemy_rarity_color_types = PackedColorArray(type_data.enemy_rarity_colors)
-	types.equipment_types = PackedStringArray(type_data.equipment)
-	types.gender_types = PackedStringArray(["None", "Male", "Female"])
-	# Speakers
-	speakers.clear()
-	speakers.append(null)
-	# Quests
-	quests.clear()
-	quests.append(null)
-	quests.append(RPGQuest.new())
+	types.icons.enemy_rarity_icons = []
+	for i in types.gender_types.size():
+		types.icons.enemy_rarity_icons.append(RPGIcon.new())
+	
+	_fill_main_parameter_list()
 
 
-## Fills the types with default values.
-func fill_types():
-	types = RPGTypes.new()
-	var type_data = {
-		"elements" = ["Physical", "Fire", "Ice", "Thunder", "Water", "Earth", "Wind", "Light", "Darkness"],
-		"skills" = ["Magic", "Special"],
-		"weapons" = ["Dagger", "Sword", "Flail", "Axe", "Whip", "Staff", "Bow", "Crossbow", "Gun", "Claw", "Globe", "Spear"],
-		"armors" = ["General", "Magic Armor", "Light Armor", "Heavy Armor", "Small Shield", "Large Shield"],
-		"items" = ["Potions", "Scrolls", "Herbs and Medicinal Plants", "Food Rations", "Elixirs", "Ointments and Salves", "Magical Reagents", "Bandages and Medical Supplies", "Poisons", "Buffing Items", "Traps and Explosives", "Survival Kits", "Crafting Materials", "Enchanting Components", "Augmenting Crystals"],
-		"equipment" = ["Weapon", "Shield", "Head", "Body", "Accesory"],
-		"weapon_rarity_names" = ["Common", "Uncommon", "Rare", "Legendary"],
-		"weapon_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")],
-		"armor_rarity_names" = ["Common", "Uncommon", "Rare", "Legendary"],
-		"armor_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")],
-		"item_rarity_names" = ["Common", "Uncommon", "Rare", "Legendary"],
-		"item_rarity_colors" = [Color.WHITE, Color("#32CD32"), Color("#4169E1"), Color("#FFD700")]
-	}
-	types.element_types = PackedStringArray(type_data.elements)
-	types.skill_types = PackedStringArray(type_data.skills)
-	types.weapon_types = PackedStringArray(type_data.weapons)
-	types.weapon_rarity_types = PackedStringArray(type_data.weapon_rarity_names)
-	types.weapon_rarity_color_types = PackedColorArray(type_data.weapon_rarity_colors)
-	types.armor_types = PackedStringArray(type_data.armors)
-	types.armor_rarity_types = PackedStringArray(type_data.armor_rarity_names)
-	types.armor_rarity_color_types = PackedColorArray(type_data.armor_rarity_colors)
-	types.item_types = PackedStringArray(type_data.items)
-	types.item_rarity_types = PackedStringArray(type_data.item_rarity_names)
-	types.item_rarity_color_types = PackedColorArray(type_data.item_rarity_colors)
-	types.equipment_types = PackedStringArray(type_data.equipment)
-	types.gender_types = PackedStringArray(["None", "Male", "Female"])
+func _fill_main_parameter_list() -> void:
+	var items = RPGActor.get_parameter_list(false)
+	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters")]
+	var header_index = 0
+	var new_items: PackedStringArray = []
+	var indexes = []
+	
+	for i in items.size():
+		var item = items[i]
+		if not item.is_empty():
+			new_items.append(item)
+		else:
+			if header_index > headers.size():
+				break
+			var header = headers[header_index] if headers.size() > header_index else ""
+			new_items.append(header)
+			indexes.append(i)
+			header_index += 1
+	
+	types.main_parameters.clear()
+	types.icons.main_parameters_icons = []
+	for i in new_items.size():
+		if not i in indexes:
+			types.icons.main_parameters_icons.append(RPGIcon.new())
+		else:
+			types.icons.main_parameters_icons.append(null)
+		var item = new_items[i]
+		types.main_parameters.append(item)
+
 
 ## Clones the RPG data.
 ## @param value bool - Whether to perform a deep clone.

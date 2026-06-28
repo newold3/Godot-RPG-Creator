@@ -21,22 +21,19 @@ zoom_out_enabled = false
 fade_out_enabled = false
 ready_to_process_delay = 0.18
 
-[node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
+[node name="Background" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="1" unique_id=814727480]
 texture = SubResource("ViewportTexture_pcybh")
 metadata/_edit_lock_ = true
 
-[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" index="2"]
+[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="2" unique_id=823818857]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" index="3"]
+[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="3" unique_id=433102845]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="MainContainer" parent="SceneMainContainer" index="1"]
-mouse_filter = 2
-
-[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" index="0"]
+[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" parent_id_path=PackedInt32Array(109990462) index="0" unique_id=2086978186]
 vertical_scroll_mode = 0
 
 [node name="EquipScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" unique_id=664947676 instance=ExtResource("3_fr7ih")]
@@ -62,8 +59,8 @@ theme_override_fonts/font = ExtResource("4_pcybh")
 theme_override_constants/margin_bottom = -42
 
 [node name="MenuItems" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu" parent_id_path=PackedInt32Array(664947676, 1878586789) index="0" unique_id=889513046]
-clip_contents = true
 custom_minimum_size = Vector2(416, 400)
+clip_contents = true
 offset_bottom = 400.0
 
 [node name="TopContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems" index="2" unique_id=647517514]
@@ -74,17 +71,14 @@ theme_override_constants/margin_right = 62
 theme_override_constants/margin_left = 18
 theme_override_constants/margin_right = 53
 
-[node name="TopFrame" parent="SceneMainContainer/MainContainer" index="1"]
+[node name="TopFrame" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="1" unique_id=637314501]
 z_index = 20
 
-[node name="Title" parent="SceneMainContainer/MainContainer" index="2"]
+[node name="Title" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="2" unique_id=973961125]
 z_index = 100
 
-[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0" unique_id=2079863752]
 title = "Equipment"
-
-[node name="ToolTipLayers" parent="SceneMainContainer" index="4"]
-mouse_filter = 2
 
 [connection signal="animation_in_finished" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="_setup_initial_selection"]
 [connection signal="starting_end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="end"]

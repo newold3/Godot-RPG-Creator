@@ -79,35 +79,7 @@ func get_class():
 
 
 func _init() -> void:
-	var items = RPGActor.get_parameter_list(false)
-	var headers = [tr("Base Parameters"), tr("Extra Parameters"), tr("Special Parameters")]
-	var header_index = 0
-	var new_items: PackedStringArray = []
-	var indexes = []
-	
-	for i in items.size():
-		var item = items[i]
-		if not item.is_empty():
-			new_items.append(item)
-		else:
-			if header_index > headers.size():
-				break
-			var header = headers[header_index] if headers.size() > header_index else ""
-			new_items.append(header)
-			indexes.append(i)
-			header_index += 1
-	
-	main_parameters.clear()
-	icons.main_parameters_icons.clear()
-	for i in new_items.size():
-		if not i in indexes:
-			icons.main_parameters_icons.append(RPGIcon.new())
-		else:
-			icons.main_parameters_icons.append(null)
-		var item = new_items[i]
-		main_parameters.append(item)
-	
-	gender_types.append_array(["None", "Male", "Female"])
+	pass
 
 
 func get_item_color(item_type: Variant, rarity_type: int) -> Color:

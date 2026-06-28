@@ -225,9 +225,10 @@ func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> vo
 
 
 ## Clears the manual override if the node matches the forced target.
-func clear_manual_cursor_override(target_node: Control) -> void:
-	if hand_cursor and hand_cursor.forced_target == target_node:
-		hand_cursor.forced_target = null
-		hand_cursor.pause_reposition = false
-		hide_cursor()
+func clear_manual_cursor_override(target_node: Control = null) -> void:
+	if hand_cursor:
+		if target_node == null or hand_cursor.forced_target == target_node:
+			hand_cursor.forced_target = null
+			hand_cursor.pause_reposition = false
+			hide_cursor()
 #endregion

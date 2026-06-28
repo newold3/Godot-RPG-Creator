@@ -61,7 +61,7 @@ enum JumpTarget {
 @export_category("Newold Config")
 ## Apply the custom configuration defined by Newold (Size, Physics, Layers).
 ## Clicking this will overwrite current physics and sizing settings with a beauty starting preset.
-@export var apply_newold_preset: bool = false : set = _apply_newold_config
+@export var apply_newold_preset: bool = false: set = _apply_newold_config
 
 ## Button to preview the book visually inside the editor.
 @export_tool_button("Preview in editor") var preview_in_editor = _on_preview_in_editor_pressed
@@ -106,7 +106,7 @@ enum JumpTarget {
 
 @export_category("Book Logic & Closing")
 ## Determines the initial state of the book (closed or open at specific page).
-@export var start_option: StartOption = StartOption.CLOSED_FROM_FRONT : set = _set_start_option
+@export var start_option: StartOption = StartOption.CLOSED_FROM_FRONT: set = _set_start_option
 ## The page number to open at startup.
 ## If any of the pages that remain open are interactive scenes,
 ## the script will automatically transfer control to them.[br][br]
@@ -116,7 +116,7 @@ enum JumpTarget {
 ## Determines when the book should perform the close action (e.g., destroy or change scene).
 @export var close_condition: CloseCondition = CloseCondition.NEVER
 ## Determines what happens when the book closes (Destroy or Change Scene).
-@export var close_behavior: CloseBehavior = CloseBehavior.DESTROY_BOOK : set = _set_close_behavior
+@export var close_behavior: CloseBehavior = CloseBehavior.DESTROY_BOOK: set = _set_close_behavior
 ## The file path to the scene to load if 'Change Scene' is selected as behavior.
 @export_file("*.tscn") var target_scene_on_close: String
 ## If true, pages with transparency will be composited over the 'Blank Page' texture/color.
@@ -140,11 +140,11 @@ enum JumpTarget {
 ## Texture used when a right page path is invalid, empty, or for the background of composite pages.
 @export var right_blank_page_texture: Texture2D
 ## Color tint for the central spine of the book.
-@export var spine_color: Color = Color(1, 1, 1) : set = _set_spine_color
+@export var spine_color: Color = Color(1, 1, 1): set = _set_spine_color
 ## Texture for the central spine of the book.
-@export var spine_texture: Texture2D : set = _set_spine_texture
+@export var spine_texture: Texture2D: set = _set_spine_texture
 ## Width of the central spine in pixels.
-@export var spine_width: float = 40.0 : set = _set_spine_value
+@export var spine_width: float = 40.0: set = _set_spine_value
 ## Determines if the front and back covers behave as rigid bodies (hard cover) or flexible (soft cover).
 @export var covers_are_rigid: bool = true
 
@@ -201,17 +201,17 @@ enum JumpTarget {
 
 @export_group("Paper Curvature")
 ## How many pixels the paper curves inwards at the spine to simulate binding tension.
-@export var spine_curl_intensity: float = 12.0 : set = _set_curl_intensity
+@export var spine_curl_intensity: float = 12.0: set = _set_curl_intensity
 ## How far the curve extends from the spine (0.0 to 1.0).
-@export var spine_curl_width: float = 0.25 : set = _set_curl_width
+@export var spine_curl_width: float = 0.25: set = _set_curl_width
 ## How many pixels the paper drops at the outer edge due to gravity.
-@export var outer_droop_intensity: float = 10.0 : set = _set_outer_droop_intensity
+@export var outer_droop_intensity: float = 10.0: set = _set_outer_droop_intensity
 ## How far the droop curve extends from the outer edge inwards (0.0 to 1.0).
-@export var outer_droop_width: float = 0.3 : set = _set_outer_droop_width
+@export var outer_droop_width: float = 0.3: set = _set_outer_droop_width
 ## How dark the inner spine curve shadow is (0.0 = no shadow, 1.0 = pitch black).
-@export_range(0.0, 1.0) var spine_shadow_darkness: float = 0.4 : set = _set_spine_shadow_val
+@export_range(0.0, 1.0) var spine_shadow_darkness: float = 0.4: set = _set_spine_shadow_val
 ## Vertical offset applied to inner pages to simulate stack depth.
-@export var inner_page_vertical_offset: float = 0.0 : set = _set_inner_vertical_offset
+@export var inner_page_vertical_offset: float = 0.0: set = _set_inner_vertical_offset
 
 @export_group("Protruding Cover")
 ## Custom offset to make the hardcover protrude beyond the pages.
@@ -243,7 +243,7 @@ enum JumpTarget {
 ## Margin to simulate a protruding hardcover by rendering the inner cover behind internal pages.
 @export var inner_page_margin: Vector2 = Vector2.ZERO
 ## Button to apply size changes in the editor.
-@export var apply_size_change: bool = false : set = _on_apply_size_pressed
+@export var apply_size_change: bool = false: set = _on_apply_size_pressed
 
 @export_category("Content Source")
 ## List of paths to textures (*.png, *.jpg) or PackedScenes (*.tscn) for pages.
@@ -296,12 +296,15 @@ var _is_force_closing: bool = false
 var _is_current_anim_rigid: bool = false
 
 var _is_jumping: bool = false
-var _jump_target_spread: int = 0
+var _jump_target_spread: int = -1
+var _ultimate_jump_target_spread: int = -999
 var _auto_turn_target_spread: int = -999
 
 var _active_viewports_state: Dictionary = {}
 
 var _dynamic_auto_speed: float = 1.0
+var _pending_opened_signal: bool = false
+var _pending_closed_signal: bool = false
 
 var volume_spine: Polygon2D
 
@@ -322,10 +325,32 @@ var _dyn_colors_curved: PackedColorArray = []
 
 var _fake_volume_layer0: Node2D
 
+## Emitted at the start of any page transition animation.
 signal started_page_flip_animation()
+
+## Emitted at the end of a page transition or jump animation.
 signal ended_page_flip_animation()
+
+## [DEPRECATED] Use start_opening instead. Redundantly emitted at the start of opening.
+@warning_ignore("unused_signal")
 signal book_opened()
+
+## [DEPRECATED] Use start_closing instead. Redundantly emitted at the start of closing.
+@warning_ignore("unused_signal")
 signal book_closed()
+
+## Emitted when the book transitions from closed to open (at the start of the animation).
+signal start_opening()
+
+## Emitted when the book finishes its opening animation and is fully exposed.
+signal opened()
+
+## Emitted when the book transitions from open to closed (at the start of the animation).
+signal start_closing()
+
+## Emitted when the book finishes its closing animation and rests on its cover.
+signal closed()
+## Emitted when the book transfers input control to an interactive page or node.
 signal transferred_controls(controls_owner: Node)
 
 
@@ -663,6 +688,7 @@ func _ready():
 	if not Engine.is_editor_hint():
 		book_opened.connect(_on_book_opened)
 		book_closed.connect(_on_book_closed)
+		ended_page_flip_animation.connect(_on_ended_page_flip_animation)
 
 	if Engine.is_editor_hint():
 		if dynamic_poly: dynamic_poly.rebuild(target_page_size)
@@ -725,12 +751,59 @@ func _on_book_opened() -> void:
 	if _fake_volume_layer0:
 		var t = create_tween()
 		t.tween_property(_fake_volume_layer0, "modulate:a", 0.0, 0.3)
+	
+	if not _pending_opened_signal:
+		_pending_opened_signal = true
+		start_opening.emit()
+		_check_instant_open.call_deferred()
 
 
 func _on_book_closed() -> void:
 	if _fake_volume_layer0:
 		var t = create_tween()
 		t.tween_property(_fake_volume_layer0, "modulate:a", 1.0, 0.3)
+	
+	if not _pending_closed_signal:
+		_pending_closed_signal = true
+		start_closing.emit()
+		_check_instant_close.call_deferred()
+
+
+func emit_start_opening() -> void:
+	if not _pending_opened_signal:
+		_pending_opened_signal = true
+		book_opened.emit()
+		start_opening.emit()
+		_check_instant_open.call_deferred()
+
+
+func emit_start_closing() -> void:
+	if not _pending_closed_signal:
+		_pending_closed_signal = true
+		book_closed.emit()
+		start_closing.emit()
+		_check_instant_close.call_deferred()
+
+
+func _check_instant_open() -> void:
+	if _pending_opened_signal and not is_animating:
+		_pending_opened_signal = false
+		opened.emit()
+
+
+func _check_instant_close() -> void:
+	if _pending_closed_signal and not is_animating:
+		_pending_closed_signal = false
+		closed.emit()
+
+
+func _on_ended_page_flip_animation() -> void:
+	if _pending_opened_signal:
+		_pending_opened_signal = false
+		opened.emit()
+	if _pending_closed_signal:
+		_pending_closed_signal = false
+		closed.emit()
 
 
 func _force_initial_transform():
@@ -744,6 +817,7 @@ func _force_initial_transform():
 
 func set_new_pages(pages: Array[String]) -> void:
 	pages_paths = pages
+	current_spread = -1
 	if content_manager:
 		content_manager.prepare_book_content()
 	_initial_config()
@@ -793,7 +867,7 @@ func _snap_book_to_exact_state() -> void:
 		anim_manager.animate_container_transform(is_closed_now, is_back_now, 0.0)
 	
 	_current_expansion_factor = 1.0 if is_closed_now else 0.0
-	_visual_spread_index = float(total_spreads) if is_back_now else ( -1.0 if is_closed_now else float(current_spread) )
+	_visual_spread_index = float(total_spreads) if is_back_now else (-1.0 if is_closed_now else float(current_spread))
 	_stack_scale_left = 0.0 if current_spread <= 0 else 1.0
 	_stack_scale_right = 0.0 if current_spread >= total_spreads - 1 else 1.0
 	
@@ -803,6 +877,7 @@ func _snap_book_to_exact_state() -> void:
 	if volume_manager:
 		volume_manager.update_stack_direct(_current_expansion_factor, _visual_spread_index)
 		volume_manager.update_volume_visuals()
+	update_slot_render_modes()
 #endregion
 
 
@@ -1007,7 +1082,16 @@ func _pageflip_set_input_enabled(give_control_to_book: bool):
 			_active_interactive_is_right = not give_control_to_book
 
 
+func update_slot_render_modes() -> void:
+	var is_closed_now = (current_spread == -1 or current_spread == total_spreads)
+	if _slot_1:
+		_slot_1.render_target_update_mode = SubViewport.UPDATE_ONCE if is_closed_now else SubViewport.UPDATE_ALWAYS
+	if _slot_2:
+		_slot_2.render_target_update_mode = SubViewport.UPDATE_ONCE if is_closed_now else SubViewport.UPDATE_ALWAYS
+
+
 func _check_scene_activation() -> void:
+	update_slot_render_modes()
 	var scene_found = false
 	var transferred_scene = null
 	if _slot_1.get_child_count() > 0:
@@ -1104,6 +1188,11 @@ func _on_animation_finished(anim_name: String):
 
 
 func _perform_close_action():
+	var was_open = (current_spread != -1 and current_spread != total_spreads)
+	if was_open:
+		emit_start_closing()
+		_pending_closed_signal = false
+		closed.emit()
 	if close_behavior == CloseBehavior.DESTROY_BOOK: queue_free()
 	elif close_behavior == CloseBehavior.CHANGE_SCENE:
 		if target_scene_on_close != "": get_tree().change_scene_to_file(target_scene_on_close)

@@ -122,6 +122,24 @@ func setup_texture_in_slot(slot: SubViewport, tex: Texture2D, is_left_page: bool
 	slot.add_child(rect)
 
 
+## Busca una clave en la caché que pertenezca a la misma escena pero no esté activa en pantalla.
+func _find_inactive_scene_of_type(scene_path: String) -> String:
+	var active_keys = []
+	for slot in [book._slot_1, book._slot_2, book._slot_3, book._slot_4]:
+		if slot and slot.get_child_count() > 0:
+			var node = slot.get_child(-1)
+			if node.has_meta("cache_key"):
+				active_keys.append(node.get_meta("cache_key"))
+				
+	var prefix = scene_path + "#"
+	for key in _scene_cache.keys():
+		if key.begins_with(prefix) and not key in active_keys:
+			if is_instance_valid(_scene_cache[key]):
+				return key
+				
+	return ""
+
+
 ## Instantiates packed scenes inside subviewports.
 func setup_scene_in_slot(slot: SubViewport, scene_pkg: PackedScene, texture_index: int, is_left_page: bool, is_cover: bool) -> void:
 	var has_margin = (not is_cover and book.inner_page_margin != Vector2.ZERO)
@@ -135,17 +153,43 @@ func setup_scene_in_slot(slot: SubViewport, scene_pkg: PackedScene, texture_inde
 	var instance
 	
 	if not cache_key in _scene_cache:
-		instance = scene_pkg.instantiate()
-		instance.set_meta("_pageflip_node", book)
-		instance.set_meta("page_index", texture_index)
-		instance.set_meta("is_left", is_left_page)
-		instance.set_meta("cache_key", cache_key)
+		var recycled_key = _find_inactive_scene_of_type(scene_pkg.get_path())
+		var can_recycle = false
 		
-		if instance.has_signal("manage_pageflip"):
-			instance.connect("manage_pageflip", book._pageflip_set_input_enabled)
+		if recycled_key != "":
+			var temp_instance = _scene_cache[recycled_key]
+			if is_instance_valid(temp_instance) and temp_instance.has_method("update_page"):
+				can_recycle = true
+				
+		if can_recycle:
+			var recycled_key_str: String = recycled_key
+			instance = _scene_cache[recycled_key_str]
+			_scene_cache.erase(recycled_key_str)
 			
-		slot.add_child(instance)
-		_scene_cache[cache_key] = instance
+			instance.set_meta("page_index", texture_index)
+			instance.set_meta("is_left", is_left_page)
+			instance.set_meta("cache_key", cache_key)
+			
+			_scene_cache[cache_key] = instance
+			
+			if instance.is_inside_tree():
+				instance.reparent(slot)
+			else:
+				slot.add_child(instance)
+				
+			instance.update_page(texture_index)
+		else:
+			instance = scene_pkg.instantiate()
+			instance.set_meta("_pageflip_node", book)
+			instance.set_meta("page_index", texture_index)
+			instance.set_meta("is_left", is_left_page)
+			instance.set_meta("cache_key", cache_key)
+			
+			if instance.has_signal("manage_pageflip"):
+				instance.connect("manage_pageflip", book._pageflip_set_input_enabled)
+				
+			slot.add_child(instance)
+			_scene_cache[cache_key] = instance
 	else:
 		instance = _scene_cache[cache_key]
 		_scene_cache.erase(cache_key)

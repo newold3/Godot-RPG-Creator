@@ -15,6 +15,7 @@ func get_class(): return "RPGEnemy"
 @export var id: int = 0
 @export var name: String = ""
 @export var description: String = ""
+@export var unknown_description: String = ""
 ## Rarity type of the enemy.
 @export var rarity_type: int = 0
 @export var icon: RPGIcon = RPGIcon.new()
@@ -95,3 +96,66 @@ func clone(value: bool = true) -> RPGEnemy:
 	new_enemy.icon = icon.clone(value)
 	
 	return new_enemy
+
+
+## Returns a formatted list of reward items for this enemy.
+## Each item in the list is a dictionary with the following structure:
+## {
+##     "item_type": int,      # 0 = items, 1 = weapons, 2 = armors, 3 = costumes
+##     "item_id": int,        # Item ID / UID
+##     "name": String,        # Item name
+##     "icon": Texture2D,     # Icon texture (or null)
+##     "min_quantity": int,   # Minimum quantity
+##     "max_quantity": int,   # Maximum quantity
+##     "min_level": int,      # Minimum level
+##     "max_level": int,      # Maximum level
+##     "percent": float       # Drop chance percentage
+## }
+func get_rewards() -> Array[Dictionary]:
+	var formatted_list: Array[Dictionary] = []
+	
+	for drop: RPGItemDrop in drop_items:
+		if not drop or not drop.item:
+			continue
+			
+		var item_comp: RPGComponent = drop.item
+		var item_type: int = item_comp.data_id
+		var item_id: int = item_comp.item_id
+		
+		var db_key := ""
+		match item_type:
+			0: db_key = "items"
+			1: db_key = "weapons"
+			2: db_key = "armors"
+			3: db_key = "costumes"
+			
+		var name_str := ""
+		var icon_tex: Texture2D = null
+		
+		var resolved_id := item_id
+		if db_key != "":
+			if resolved_id > 0 and resolved_id < 1000000 and is_instance_valid(RPGSYSTEM):
+				resolved_id = RPGSYSTEM.id_to_uid(db_key, resolved_id)
+				
+			var res_data = RPGSYSTEM.get_data(db_key, resolved_id) if is_instance_valid(RPGSYSTEM) else null
+			if res_data:
+				name_str = res_data.name
+				if res_data.icon:
+					icon_tex = res_data.icon.get_texture()
+					
+		var min_q = min(drop.quantity, drop.quantity2)
+		var max_q = max(drop.quantity, drop.quantity2)
+		
+		formatted_list.append({
+			"item_type": item_type,
+			"item_id": item_id,
+			"name": name_str,
+			"icon": icon_tex,
+			"min_quantity": min_q,
+			"max_quantity": max_q,
+			"percent": drop.percent,
+			"min_level": drop.min_level,
+			"max_level": drop.max_level,
+		})
+		
+	return formatted_list

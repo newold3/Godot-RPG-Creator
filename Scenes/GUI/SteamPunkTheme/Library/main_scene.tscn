@@ -79,6 +79,7 @@ visible = false
 offset_top = -550.0
 offset_bottom = -510.0
 
+[connection signal="button_pressed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia" to="Manager" method="_on_encyclopedia_button_pressed"]
 [connection signal="pressed" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_pressed"]
 [connection signal="selected" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_selected"]
 

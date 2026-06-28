@@ -7,10 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://bwq472mbxtx0e" path="res://Scenes/GUI/SteamPunkTheme/Library/index_book_item_list.tscn" id="6_dbdt6"]
 [ext_resource type="Texture2D" uid="uid://b4mcywqk7tb6k" path="res://InternalTests/newbook/background_decoration.png" id="6_eeeeh"]
 [ext_resource type="Shader" uid="uid://65s3byggw7ih" path="res://Assets/Shaders/hand_drawn_pencil_shader.gdshader" id="6_v8kxo"]
-[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="8_60vtv"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_eeeeh"]
-[ext_resource type="Script" uid="uid://dn21h0h57hy11" path="res://Scenes/GUI/SteamPunkTheme/Library/fit_text.gd" id="8_uft0y"]
+[ext_resource type="Script" uid="uid://dn21h0h57hy11" path="res://Scripts/ScriptsBase/fit_text.gd" id="8_uft0y"]
+[ext_resource type="Texture2D" uid="uid://xmhc1tc7x0ax" path="res://InternalTests/newbook/murdered_stamp.png" id="10_crgqe"]
+[ext_resource type="Texture2D" uid="uid://b3ve0731a0g4f" path="res://InternalTests/newbook/stamp_decoration.png" id="10_frs4q"]
 [ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="11_uft0y"]
+[ext_resource type="Texture2D" uid="uid://cvgk1r5rrufqg" path="res://InternalTests/newbook/stamp_decoration2.png" id="12_5jobp"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="15_8o377"]
+[ext_resource type="Script" uid="uid://kliapv6uf68l" path="res://Scenes/GUI/SteamPunkTheme/Library/drop_canvas.gd" id="16_a815w"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font = ExtResource("3_dbdt6")
@@ -51,12 +55,14 @@ stacked_outline_1/color = Color(0, 0, 0, 0.78431374)
 stacked_outline_2/size = 12
 stacked_outline_2/color = Color(0.34901962, 0.31764707, 0.28235295, 0.41568628)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uft0y"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_60vtv"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.4)
+bg_color = Color(1, 0, 1, 0.4)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -68,7 +74,7 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.4)
+bg_color = Color(1, 1, 0, 0.4)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -80,7 +86,7 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(1, 1, 1, 0.4)
+bg_color = Color(0, 1, 1, 0.4)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -99,7 +105,23 @@ fill_to = Vector2(0.48293516, 0.39419794)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eeeeh"]
 texture = SubResource("GradientTexture2D_4yytr")
 
+[sub_resource type="LabelSettings" id="LabelSettings_a815w"]
+font = ExtResource("3_dbdt6")
+font_size = 49
+font_color = Color(0.6901961, 0.6039216, 0.5686275, 1)
+stacked_outline_count = 3
+stacked_shadow_count = 1
+stacked_outline_0/size = 3
+stacked_outline_0/color = Color(1, 1, 1, 1)
+stacked_outline_1/size = 10
+stacked_outline_1/color = Color(0, 0, 0, 0.78431374)
+stacked_outline_2/size = 12
+stacked_outline_2/color = Color(0.34901962, 0.31764707, 0.28235295, 0.41568628)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/outline_size = 20
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g4v7s"]
+resource_local_to_scene = true
 shader = ExtResource("6_v8kxo")
 shader_parameter/pencil_color = Color(0, 0, 0, 1)
 shader_parameter/pencil_strength = 0.658000031255
@@ -107,23 +129,48 @@ shader_parameter/shade_levels = 14.000000665
 shader_parameter/noise_scale = 10.0
 shader_parameter/mix_amount = 0.906000043035
 
+[sub_resource type="LabelSettings" id="LabelSettings_tl2gb"]
+font = ExtResource("3_dbdt6")
+font_size = 48
+font_color = Color(0.90770173, 0.8921861, 0.878666, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.5764706)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
+stacked_shadow_0/outline_size = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_knuxp"]
+font = ExtResource("3_dbdt6")
+font_size = 48
+font_color = Color(0.7414308, 0.7141686, 0.6777022, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.5764706)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
+stacked_shadow_0/outline_size = 6
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yytr"]
-bg_color = Color(0.7882353, 0.75686276, 0.72156864, 0.07058824)
-border_width_left = 14
-border_width_top = 14
-border_width_right = 14
-border_width_bottom = 14
-border_color = Color(0.23475271, 0.21088693, 0.1869086, 0.1764706)
+bg_color = Color(0.7882353, 0.75686276, 0.72156864, 0.011764706)
+border_width_left = 3
+border_width_right = 3
+border_width_bottom = 16
+border_color = Color(0.29167295, 0.18810609, 0.13565347, 0.1764706)
 border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_eeeeh"]
 font = ExtResource("3_dbdt6")
-font_size = 22
-font_color = Color(0.7973006, 0.7664614, 0.73567, 1)
+font_size = 25
+font_color = Color(0.90770173, 0.8921861, 0.878666, 1)
 stacked_outline_count = 2
 stacked_shadow_count = 1
 stacked_outline_0/size = 2
@@ -141,15 +188,10 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.41568628, 0.2784314, 0.105882354, 0.5411765)
 draw_center = false
-border_width_left = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_bottom = 6
 border_color = Color(0.5104571, 0.47260273, 0.42714238, 1)
 border_blend = true
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_bottom_left = 20
 
 [sub_resource type="Gradient" id="Gradient_eugdv"]
 offsets = PackedFloat32Array(0, 0.982)
@@ -162,6 +204,56 @@ fill_to = Vector2(0.5, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5jobp"]
 texture = SubResource("GradientTexture2D_ngudq")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a815w"]
+atlas = ExtResource("15_8o377")
+region = Rect2(1042, 299, 33, 49)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8o377"]
+font = ExtResource("3_dbdt6")
+font_size = 20
+font_color = Color(0.7642618, 0.6914083, 0.6586772, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.11372549)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.15294118)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.38039216)
+stacked_shadow_0/outline_size = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_id0sk"]
+font = ExtResource("3_dbdt6")
+font_size = 20
+font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.5764706)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
+stacked_shadow_0/outline_size = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_t3v26"]
+font = ExtResource("3_dbdt6")
+font_size = 20
+font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
+stacked_outline_count = 2
+stacked_shadow_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0.12941177, 0.11372549, 0.101960786, 0.5764706)
+stacked_outline_1/size = 1
+stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
+stacked_shadow_0/offset = Vector2(1, 2.125)
+stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
+stacked_shadow_0/outline_size = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tl2gb"]
+atlas = ExtResource("4_dbdt6")
+region = Rect2(66, 27, 9, 4)
 
 [sub_resource type="LabelSettings" id="LabelSettings_dbdt6"]
 font = ExtResource("3_dbdt6")
@@ -342,25 +434,26 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
 theme_override_constants/v_separation = 10
 theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uft0y")
 theme_override_styles/hovered = SubResource("StyleBoxFlat_60vtv")
 theme_override_styles/hovered_selected = SubResource("StyleBoxFlat_uft0y")
 theme_override_styles/hovered_selected_focus = SubResource("StyleBoxFlat_crgqe")
 theme_override_styles/selected = SubResource("StyleBoxTexture_eeeeh")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_eeeeh")
 item_count = 3
 max_columns = 2
 fixed_column_width = 180
 fixed_icon_size = Vector2i(26, 26)
-item_0/text = "UNO 1"
-item_1/text = "DOS o tres o incluso mas "
-item_1/icon = ExtResource("8_60vtv")
-item_2/text = "TRES"
+item_0/text = " "
+item_1/text = " "
+item_2/text = " "
 list_id = "target_item_list"
 outline_stack = PackedInt32Array(12, 10, 3)
 outline_color_stack = PackedColorArray(0.34901962, 0.31764707, 0.28235295, 0.41568628, 0, 0, 0, 0.78431374, 1, 1, 1, 1)
-debug_mode = true
 
 [node name="ContentsLeftContainer" type="Control" parent="." unique_id=575856997]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="BackgroundDecoration" type="TextureRect" parent="ContentsLeftContainer" unique_id=1304292586]
@@ -381,6 +474,7 @@ grow_vertical = 2
 theme_override_constants/separation = 24
 
 [node name="MarginContainer" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1582053343]
+z_index = 10
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_constants/margin_left = 41
@@ -400,16 +494,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
 text = "Monster Name"
-label_settings = SubResource("LabelSettings_g4v7s")
+label_settings = SubResource("LabelSettings_a815w")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 script = ExtResource("8_uft0y")
 
 [node name="MarginContainer2" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1673223178]
+z_index = 5
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 42
 theme_override_constants/margin_right = 31
 theme_override_constants/margin_bottom = 19
 
@@ -420,8 +516,126 @@ layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
+[node name="MurderedContainer" type="Control" parent="ContentsLeftContainer" unique_id=1606020023]
+unique_name_in_owner = true
+z_index = 10
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="StampDecoration" type="TextureRect" parent="ContentsLeftContainer/MurderedContainer" unique_id=477565586]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 266.0
+offset_top = 520.99994
+offset_right = 425.88843
+offset_bottom = 565.99994
+rotation = -0.27302113
+mouse_filter = 2
+texture = ExtResource("10_frs4q")
+expand_mode = 1
+
+[node name="Murdereredicon" type="TextureRect" parent="ContentsLeftContainer/MurderedContainer" unique_id=551028273]
+modulate = Color(1, 1, 1, 0.76862746)
+layout_mode = 0
+offset_left = 207.0
+offset_top = 441.0
+offset_right = 667.0
+offset_bottom = 614.0
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("10_crgqe")
+
+[node name="Control" type="Control" parent="ContentsLeftContainer/MurderedContainer" unique_id=1213531326]
+anchors_preset = 0
+offset_left = 263.0
+offset_top = 516.0
+offset_right = 426.0
+offset_bottom = 564.0
+rotation = -0.23038346
+
+[node name="MurderedKills" type="Label" parent="ContentsLeftContainer/MurderedContainer/Control" unique_id=2072992403]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_tl2gb")
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("8_uft0y")
+
+[node name="MonsterTypeContainer" type="Control" parent="ContentsLeftContainer" unique_id=120768458]
+unique_name_in_owner = true
+anchors_preset = 0
+
+[node name="StampDecoration" type="TextureRect" parent="ContentsLeftContainer/MonsterTypeContainer" unique_id=1160176797]
+layout_mode = 0
+offset_top = 127.0
+offset_right = 433.7979
+offset_bottom = 255.0
+rotation = -0.22596258
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("10_frs4q")
+expand_mode = 1
+
+[node name="StampDecoration2" type="TextureRect" parent="ContentsLeftContainer/MonsterTypeContainer" unique_id=700021169]
+modulate = Color(1, 1, 1, 0.38431373)
+layout_mode = 0
+offset_left = 20.035
+offset_top = 115.84
+offset_right = 453.83292
+offset_bottom = 243.83994
+rotation = -0.051568866
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("12_5jobp")
+expand_mode = 1
+
+[node name="IconType" type="TextureRect" parent="ContentsLeftContainer/MonsterTypeContainer" unique_id=611578456]
+unique_name_in_owner = true
+z_index = 2
+material = SubResource("ShaderMaterial_g4v7s")
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 0
+offset_left = -4.0
+offset_top = 66.0
+offset_right = 76.0
+offset_bottom = 146.00006
+rotation = -0.20943952
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TypeContainer" type="Control" parent="ContentsLeftContainer/MonsterTypeContainer" unique_id=959212830]
+z_index = 10
+layout_mode = 1
+anchors_preset = 0
+offset_left = 20.00003
+offset_top = 120.00006
+offset_right = 270.00003
+offset_bottom = 168.00006
+rotation = -0.2268928
+
+[node name="MosterType" type="Label" parent="ContentsLeftContainer/MonsterTypeContainer/TypeContainer" unique_id=361473664]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Common"
+label_settings = SubResource("LabelSettings_knuxp")
+vertical_alignment = 1
+script = ExtResource("8_uft0y")
+min_font_size = 16
+
 [node name="ContentsRightContainer" type="Control" parent="." unique_id=2038791546]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1843494153]
@@ -441,32 +655,44 @@ theme_override_constants/margin_top = 39
 theme_override_constants/margin_right = 42
 theme_override_constants/margin_bottom = 19
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2" unique_id=2130015725]
+[node name="Panel" type="PanelContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2" unique_id=1129643174]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4yytr")
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel" unique_id=649308382]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer" unique_id=2130015725]
 layout_mode = 2
 script = ExtResource("8_eeeeh")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="Description" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/SmoothScrollContainer" unique_id=2088479567]
+[node name="Description" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer/SmoothScrollContainer" unique_id=2088479567]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_4yytr")
 label_settings = SubResource("LabelSettings_eeeeh")
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2" unique_id=1026172390]
 layout_mode = 2
-theme_override_constants/margin_left = 22
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_right = 23
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer" unique_id=687634049]
 layout_mode = 2
 
 [node name="ItemlistContainer" type="NinePatchRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer" unique_id=1147017707]
 self_modulate = Color(1, 1, 1, 0.65882355)
-custom_minimum_size = Vector2(240, 290.01)
+custom_minimum_size = Vector2(200, 290.01)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 0
 texture = ExtResource("4_dbdt6")
 region_rect = Rect2(79, 2, 50, 34)
@@ -488,25 +714,20 @@ theme_override_constants/margin_top = 8
 [node name="VBoxContainer" type="VBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer" unique_id=1176246815]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer" unique_id=536660854]
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(7.615, -6.825)
-text = "STATS"
-label_settings = SubResource("LabelSettings_eeeeh")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer" unique_id=1922662921]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_right = 9
+theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 16
 
 [node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1714024483]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 script = ExtResource("8_eeeeh")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(6, 239.32)
+custom_vscroll_offset = Vector2(199.205, 25.125)
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
 [node name="Stats" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer/SmoothScrollContainer" unique_id=1136495652]
@@ -519,11 +740,11 @@ show_comparison = false
 use_abbreviations = true
 outline_sizes = Array[int]([10, 8])
 outline_colors = Array[Color]([Color(0, 0, 0, 0.17254902), Color(0.60897046, 0.5569539, 0.5181383, 1)])
-outline_offsets = Array[Vector2]([Vector2(0, 2), Vector2(0, 0)])
+outline_offsets = Array[Vector2i]([Vector2i(0, 2), Vector2i(0, 0)])
 text_color = Color(0.86363363, 0.8441498, 0.8161468, 1)
-title_color = Color(0.6627451, 0.6117647, 0.5921569, 1)
+title_color = Color(0.8359288, 0.7160822, 0.6672539, 1)
 custom_font = ExtResource("3_dbdt6")
-font_size = 20
+font_size = 18
 title_background_style = SubResource("StyleBoxFlat_frs4q")
 stat_separator_style = SubResource("StyleBoxTexture_5jobp")
 metadata/_custom_type_script = "uid://dwdb1gqa4ry3o"
@@ -532,7 +753,7 @@ metadata/_custom_type_script = "uid://dwdb1gqa4ry3o"
 self_modulate = Color(1, 1, 1, 0.65882355)
 custom_minimum_size = Vector2(154.18, 290.01)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 0
 texture = ExtResource("4_dbdt6")
 region_rect = Rect2(79, 2, 50, 34)
@@ -540,6 +761,182 @@ patch_margin_left = 22
 patch_margin_top = 14
 patch_margin_right = 22
 patch_margin_bottom = 14
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2" unique_id=676396887]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 9
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer" unique_id=767686771]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1550541737]
+layout_mode = 2
+
+[node name="ExperienceIcon" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=215602199]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_a815w")
+expand_mode = 1
+
+[node name="ExperienceTitle" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=777894185]
+layout_mode = 2
+text = "Experience"
+label_settings = SubResource("LabelSettings_8o377")
+vertical_alignment = 1
+
+[node name="Control2" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=725908856]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExperienceValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control2" unique_id=1931990598]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+label_settings = SubResource("LabelSettings_id0sk")
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("8_uft0y")
+
+[node name="Control3" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=300922755]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GoldIcon" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control3" unique_id=484705326]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldTitle" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control3" unique_id=1129940848]
+layout_mode = 2
+text = "Gold"
+label_settings = SubResource("LabelSettings_8o377")
+vertical_alignment = 1
+
+[node name="HBoxContainer3" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=810105276]
+layout_mode = 2
+
+[node name="GoldValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=401187749]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+label_settings = SubResource("LabelSettings_t3v26")
+horizontal_alignment = 2
+vertical_alignment = 1
+script = ExtResource("8_uft0y")
+
+[node name="Control" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1480090497]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
+[node name="Separator" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1999397784]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="DecorationLeft" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Separator" unique_id=1726077305]
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 7)
+texture = SubResource("AtlasTexture_g4v7s")
+
+[node name="DecorationCenter" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Separator" unique_id=1669511331]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 7)
+texture = SubResource("AtlasTexture_tl2gb")
+
+[node name="DropsTitle" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Separator" unique_id=1830041874]
+layout_mode = 2
+text = "Drops"
+label_settings = SubResource("LabelSettings_8o377")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecorationCenter2" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Separator" unique_id=316308293]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 7)
+texture = SubResource("AtlasTexture_tl2gb")
+
+[node name="DecorationRight" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Separator" unique_id=1211179014]
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 7)
+texture = SubResource("AtlasTexture_eeeeh")
+
+[node name="Control4" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=97723392]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
+[node name="DropContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1628853329]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+script = ExtResource("8_eeeeh")
+use_custom_vertical_scroll = true
+custom_vscroll_size = Vector2(6, 113.945)
+custom_vscroll_offset = Vector2(192.45, -114.87)
+metadata/_custom_type_script = "uid://cs6g8remlafby"
+
+[node name="DropCanvas" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/DropContainer" unique_id=1425584103]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("16_a815w")
+font = ExtResource("3_dbdt6")
+font_size = 20
+outline_sizes = Array[int]([10, 8])
+outline_colors = Array[Color]([Color(0, 0, 0, 0.17254902), Color(0.60897046, 0.5569539, 0.5181383, 1)])
+outline_offsets = Array[Vector2]([Vector2(0, 2), Vector2(0, 0)])
+icon_size = Vector2(22, 22)
+vertical_separator = 8
+separator_style = SubResource("StyleBoxTexture_5jobp")
+percent_mode = 2
+
+[node name="EmptyDrop" type="TextureRect" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/DropContainer/DropCanvas" unique_id=1287373471]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.5
+offset_top = -2.0
+offset_right = 4.5
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.58, 1)
+pivot_offset = Vector2(4, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -14.45)
+texture = SubResource("AtlasTexture_tl2gb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1741396775]
 layout_mode = 1
@@ -550,15 +947,6 @@ offset_top = 216.0
 offset_right = -7.3099976
 offset_bottom = 261.0
 grow_horizontal = 2
-
-[node name="DebugText" type="Label" parent="ContentsRightContainer/VBoxContainer" unique_id=1786579936]
-unique_name_in_owner = true
-visible = false
-z_index = 10
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1457141433]
 layout_mode = 2

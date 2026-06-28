@@ -105,6 +105,9 @@ func recover_all() -> void:
 			return t != null and t.is_permanent()
 	)
 	
+	if is_dead():
+		params.hp = 0
+	
 	parameter_changed.emit()
 	emit_changed()
 
@@ -168,6 +171,17 @@ func is_inmune_to_state(state: RPGState) -> bool:
 	return not is_inmune.is_empty()
 
 
+func has_state(state_id: int) -> bool:
+	for state in current_states:
+		if state and state.id == state_id:
+			return true
+	return false
+
+
+func is_dead() -> bool:
+	return has_state(1)
+
+
 
 ## Attempts to apply a state to the battler considering resistance and base chance.
 func apply_state_effect(state_id: int, base_chance: float) -> bool:
@@ -187,6 +201,10 @@ func apply_state_effect(state_id: int, base_chance: float) -> bool:
 
 ## Attempts to remove a state from the battler based on a probability chance.
 func remove_state_effect(state_id: int, base_chance: float) -> bool:
+	var has_removable_state = current_states.any(func(s): return s != null and s.id == state_id and not s.is_permanent())
+	if not has_removable_state:
+		return false
+
 	if randf() < (base_chance / 100.0):
 		execute_state_removal(state_id)
 		return true
@@ -197,7 +215,7 @@ func remove_state_effect(state_id: int, base_chance: float) -> bool:
 
 ## Forcefully applies the removal logic of a state, decrementing stacks or removing it.
 func execute_state_removal(state_id: int) -> void:
-	var states_to_remove = current_states.filter(func(s): return s.id == state_id)
+	var states_to_remove = current_states.filter(func(s): return s != null and s.id == state_id and not s.is_permanent())
 	
 	for s in states_to_remove:
 		var real_state = s.get_real_state()
@@ -211,13 +229,15 @@ func execute_state_removal(state_id: int) -> void:
 
 
 
+
 ## Adds a full [GameState] instance to the battler. Returns true if applied, false if blocked.
 func add_state(state: RPGState, is_permanent: bool = false, usage_count: bool = false) -> bool:
-	if not is_permanent and is_inmune_to_state(state):
+	if is_inmune_to_state(state):
 		return false
 
 	if not is_permanent and get_state_rate(state.id) <= 0.0:
 		return false
+
 
 	var enable_ticks = state.traits.filter(
 		func(t: RPGTrait):
@@ -286,6 +306,9 @@ func add_state(state: RPGState, is_permanent: bool = false, usage_count: bool = 
 		game_state.state_ended.connect(_remove_state)
 		game_state.state_tick.connect(_on_state_tick)
 
+	if state.id == 1:
+		params.hp = 0
+
 	parameter_changed.emit()
 	emit_changed()
 
@@ -343,6 +366,8 @@ func _remove_permanent_state_usage(state_id: int) -> void:
 func _remove_state(state: GameState) -> void:
 	if state in current_states:
 		current_states.erase(state)
+		if state.id == 1 and params.hp <= 0:
+			params.hp = 1
 		parameter_changed.emit()
 		emit_changed()
 
@@ -499,6 +524,10 @@ func apply_damage(raw_amount: float, damage_type: int, element_id: int) -> void:
 	match damage_type:
 		1, 3, 5:
 			params.hp = clamp(params.hp + final_amount, 0, max_hp)
+			if params.hp == 0:
+				var dead_state = RPGSYSTEM.get_data("states", 1)
+				if dead_state:
+					add_state(dead_state)
 		2, 4, 6:
 			params.mp = clamp(params.mp + final_amount, 0, max_mp)
 
@@ -571,7 +600,16 @@ func get_current_parameter(param_id: String) -> float:
 func set_current_parameter(param_id: String, value: float) -> void:
 	var search_param = param_id.strip_edges().to_upper()
 	match search_param:
-		"HP": params.hp = clamp(value, 0, get_parameter("HP"))
+		"HP":
+			if is_dead():
+				params.hp = 0
+			else:
+				var clamped_val = clamp(value, 0, get_parameter("HP"))
+				params.hp = clamped_val
+				if clamped_val == 0:
+					var dead_state = RPGSYSTEM.get_data("states", 1)
+					if dead_state:
+						add_state(dead_state)
 		"MP": params.mp = clamp(value, 0, get_parameter("MP"))
 		"TP":
 			if "tp" in params:

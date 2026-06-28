@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Godot RPG Creator"
 config/version="0.9"
-run/main_scene="res://Scenes/StartScene/start_scene.tscn"
+run/main_scene="uid://bayf56d5s3sbk"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="uid://bm0yrsmhngopc"
@@ -71,7 +71,7 @@ movie_writer/movie_file="C:/Users/nopap/Desktop/Pelis/preview.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/0ZipAssetLoader/plugin.cfg", "res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/BitmapFontCreator/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGCreatorCore/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/RPGMapGenerator/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/TilesetAddon/plugin.cfg", "res://addons/TilesetConversor/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/fxcanvas/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/0ZipAssetLoader/plugin.cfg", "res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/BitmapFontCreator/plugin.cfg", "res://addons/CreateTranslationFiles/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGCreatorCore/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/RPGMapGenerator/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/TilesetAddon/plugin.cfg", "res://addons/TilesetConversor/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/fxcanvas/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
 
 [file_customization]
 
@@ -324,9 +324,8 @@ EraseKey={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://translations/translations.po")
+locale/translations=PackedStringArray("res://translations/database.po", "res://translations/database.es.po", "res://translations/scripts.es.po", "res://translations/events.po", "res://translations/scripts.po", "res://translations/events.es.po")
 locale/translations_pot_files=PackedStringArray("res://addons/RPGData/Scenes/weapons_panel.tscn", "res://addons/RPGData/ModulesRPG/rpg_data.gd", "res://addons/RPGData/Scenes/actors_panel.tscn", "res://addons/RPGData/Scenes/animations_panel.tscn", "res://addons/RPGData/Scenes/armors_panel.tscn", "res://addons/RPGData/Scenes/classes_panel.tscn", "res://addons/RPGData/Scenes/common_events_panel.tscn", "res://addons/RPGData/Scenes/database_button.tscn", "res://addons/RPGData/Scenes/database_dialog.tscn", "res://addons/RPGData/Scenes/effects_panel.tscn", "res://addons/RPGData/Scenes/enemies_panel.tscn", "res://addons/RPGData/Scenes/items_panel.tscn", "res://addons/RPGData/Scenes/main_database.tscn", "res://addons/RPGData/Scenes/panel_title.tscn", "res://addons/RPGData/Scenes/skills_panel.tscn", "res://addons/RPGData/Scenes/states_panel.tscn", "res://addons/RPGData/Scenes/system_panel.tscn", "res://addons/RPGData/Scenes/traits_panel.tscn", "res://addons/RPGData/Scenes/troops_panel.tscn", "res://addons/RPGData/Scenes/types_panel.tscn")
-locale/fallback="es"
 
 [layer_names]
 
@@ -347,6 +346,10 @@ locale/fallback="es"
 2d_physics/layer_7="InteractionArea"
 2d_physics/layer_15="InteractiveBag"
 2d_physics/layer_16="Projectil"
+
+[locale]
+
+translations=PackedStringArray("res://translations/database.po", "res://translations/events.po", "res://translations/scripts.po", "res://translations/database.es.po", "res://translations/events.es.po", "res://translations/scripts.es.po")
 
 [rendering]
 

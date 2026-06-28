@@ -61,6 +61,7 @@ func _update_data_fields() -> void:
 		%TraitsPanel.set_data(database, current_data.traits)
 		%NoteTextEdit.text = current_data.notes
 		%DescriptionTextEdit.text = current_data.description
+		%UnknownDescriptionTextEdit.text = current_data.unknown_description
 		
 		%DefaultParametersControl.set_data(current_data.params)
 		%UserParametersControl.fill_user_parameters(current_selected_index)
@@ -924,3 +925,7 @@ func _on_battler_picker_paste_requested(icon: String, region: Rect2) -> void:
 
 func _on_weapon_rarity_type_options_item_selected(index: int) -> void:
 	get_data().rarity_type = index
+
+
+func _on_unknown_description_text_edit_text_changed() -> void:
+	get_data().unknown_description = %UnknownDescriptionTextEdit.text

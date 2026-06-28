@@ -273,7 +273,7 @@ func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index
 			show_quantity = has_quantity
 	
 	# Build name text (with level if applicable)
-	var display_name = name_text
+	var display_name = tr(name_text)
 	if level_in_name:
 		var level_abbr = RPGSYSTEM.database.terms.search_message("Level (abbr)")
 		display_name += " (" + level_abbr + " " + str(level) + ")"
@@ -354,6 +354,7 @@ func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index
 	
 	# Draw right-justified text - vertically centered
 	if right_text != "":
+		right_text = tr(right_text)
 		var right_text_draw_pos = right_text_pos - Vector2(0, current_font.get_height(current_font_size) * 0.5)
 		var right_color = color_level if show_level and not level_in_name else color_quantity
 		draw_string(current_font, right_text_draw_pos, right_text, HORIZONTAL_ALIGNMENT_LEFT, -1, current_font_size, right_color)

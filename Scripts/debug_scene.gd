@@ -93,7 +93,7 @@ func _ready() -> void:
 
 
 func _refresh_item_list() -> void:
-	if current_tab == "Item":
+	if is_enabled and current_tab == "Item":
 		_load_data(true, current_tab)
 		
 
@@ -405,7 +405,7 @@ func fill_data(tab: String, data: Variant, real_data: Variant, selected_id: int,
 		for i in range(1, data.size()):
 			var data_name: String = real_data.get_item_name(i)
 			if !data_name:
-				data_name = "%s ID %s" % [tab, i]
+				data_name = "%s ID %s" % [tr(tab), i]
 				
 			if search_filter != "" and not data_name.to_lower().contains(search_filter) and str(i) != search_filter:
 				continue
@@ -442,7 +442,7 @@ func fill_data(tab: String, data: Variant, real_data: Variant, selected_id: int,
 			if db_item == null:
 				continue
 				
-			var data_name: String = db_item.name
+			var data_name: String = tr(db_item.name)
 			if search_filter != "" and not data_name.to_lower().contains(search_filter) and str(i) != search_filter:
 				continue
 				
@@ -870,3 +870,8 @@ func _on_set_all_values_button_4_pressed() -> void:
 
 func _on_set_all_values_button_5_pressed() -> void:
 	_on_set_all_values_value_changed(50)
+
+
+func _fill_debug_stats() -> void:
+	RPGSYSTEM.debug_fill_stats_randomly()
+	GameManager.toast_message("random stats filled!")

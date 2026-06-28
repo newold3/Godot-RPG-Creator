@@ -222,16 +222,21 @@ func is_mouse_over_visible_control() -> bool:
 func _on_line_edit_focus_entered() -> void:
 	if dragging or !is_editable() or disabled: return
 	
-	for i in 2:
-		if is_inside_tree():
-			await get_tree().process_frame
-		else:
-			return
+	_focus_entered_wait(2)
 
+
+func _focus_entered_wait(frames: int) -> void:
+	if not is_instance_valid(self) or not is_inside_tree(): return
+	if frames > 0:
+		get_tree().process_frame.connect(_focus_entered_wait.bind(frames - 1), CONNECT_ONE_SHOT)
+		return
+		
 	var line_edit = get_line_edit()
-	line_edit.caret_column = line_edit.text.length()
-	line_edit.call_deferred("select_all")
-	_current_spinbox_focused = line_edit
+	if is_instance_valid(line_edit):
+		line_edit.caret_column = line_edit.text.length()
+		line_edit.call_deferred("select_all")
+		_current_spinbox_focused = line_edit
+
 
 
 ## Triggered when the line edit loses focus
@@ -335,17 +340,22 @@ func _on_text_changed(text: String) -> void:
 			
 	for key in value_replace.keys():
 		if str(key) == text:
-			for i in 3:
-				if is_inside_tree():
-					await get_tree().process_frame
-				else:
-					return
-					
-			if is_instance_valid(self) and is_inside_tree():
-				line_edit.text = prefix + str(value_replace[key]) + suffix
+			_replace_text_wait(3, key)
 			break
 			
 	busy = false
+
+
+func _replace_text_wait(frames: int, key: Variant) -> void:
+	if not is_instance_valid(self) or not is_inside_tree(): return
+	if frames > 0:
+		get_tree().process_frame.connect(_replace_text_wait.bind(frames - 1, key), CONNECT_ONE_SHOT)
+		return
+		
+	var current_line_edit = get_line_edit()
+	if is_instance_valid(current_line_edit):
+		current_line_edit.text = prefix + str(value_replace[key]) + suffix
+
 
 
 ## Checks recursively if any parent of the node is invisible
@@ -489,13 +499,25 @@ func _check_for_start_dragging(_warp_position: Vector2) -> void:
 func gain_focus(repeats: int = 3) -> void:
 	if dragging or !is_editable() or disabled: return
 	
-	await get_tree().process_frame
+	if repeats > 0:
+		if is_inside_tree():
+			get_tree().process_frame.connect(_gain_focus_step.bind(repeats), CONNECT_ONE_SHOT)
+	else:
+		_gain_focus_step(0)
+
+
+func _gain_focus_step(repeats: int) -> void:
+	if not is_instance_valid(self) or not is_inside_tree():
+		return
+		
 	var lineedit: LineEdit = get_line_edit()
-	lineedit.grab_focus()
-	lineedit.call_deferred("select_all")
+	if is_instance_valid(lineedit):
+		lineedit.grab_focus()
+		lineedit.call_deferred("select_all")
 	
 	if repeats > 0:
 		gain_focus(repeats - 1)
+
 
 
 ## Draws custom visuals like hover arrows on the spinbox

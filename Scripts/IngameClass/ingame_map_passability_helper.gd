@@ -283,6 +283,9 @@ func is_tile_passable_from_direction(tile_position: Vector2i, player_direction: 
 	if map.has_any_region_passable_in(tile_position):
 		return true
 		
+	if map.has_any_region_impassable_in(tile_position):
+		return false
+		
 	if invert:
 		if _direction_passability_inverted_cache.has(tile_position):
 			if _direction_passability_inverted_cache[tile_position].has(player_direction):

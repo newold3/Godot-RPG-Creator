@@ -109,7 +109,7 @@ var movement_history: Array[Dictionary] = []
 var _last_recorded_pos: Vector2 = Vector2.ZERO
 var _last_recorded_scale: Vector2 = Vector2.ONE
 var _auto_target_tile: Vector2i = Vector2i(-1, -1)
-var _auto_target_event: Node = null
+var _auto_target_event: Variant = null
 var _click_indicator_cooldown: float = 0.0
 var _last_auto_path_tile: Vector2i = Vector2i(-1, -1)
 var _auto_path_stuck_frames: int = 0
@@ -228,26 +228,26 @@ func _physics_process(delta: float):
 	if _click_indicator_cooldown > 0.0:
 		_click_indicator_cooldown -= delta
 		
-	if ControllerManager.is_action_just_released("Mouse Left"):
+	if Input.is_action_just_released("Mouse Left"):
 		_click_indicator_cooldown = 0.0
 		
 	if not Engine.is_editor_hint() and is_in_group("player"):
-		if ControllerManager.is_action_just_pressed("Button L2"):
+		if Input.is_action_just_pressed("Button L2"):
 			if not carried_event and not is_lifting:
 				if GameManager.current_player: GameManager.current_player.busy2 = true
 				await GameManager.shift_up_follower()
 				if GameManager.current_player: GameManager.current_player.busy2 = false
-		elif ControllerManager.is_action_just_pressed("Button R2"):
+		elif Input.is_action_just_pressed("Button R2"):
 			if not carried_event and not is_lifting:
 				if GameManager.current_player: GameManager.current_player.busy2 = true
 				await GameManager.shift_down_follower()
 				if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif GameManager.current_map and ControllerManager.is_action_pressed("Mouse Left"):
 			if not GameInterpreter.is_busy() and not GameManager.busy and not busy2:
-				var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
+				var is_new_click = Input.is_action_just_pressed("Mouse Left")
 				var mouse_pos = GameManager.current_map.get_local_mouse_position()
 				var tile: Vector2i = GameManager.current_map.local_to_map(mouse_pos)
-				if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
+				if is_new_click or (_auto_target_event == null and tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
 					_set_target_destination(tile, is_new_click)
 					
 	activated_this_frame = false

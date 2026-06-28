@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_4wq3s"]
 [ext_resource type="PackedScene" uid="uid://bj48rsidmna6s" path="res://addons/CustomControls/custom_spin_box.tscn" id="5_ck51g"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_xw43c"]
+[ext_resource type="Script" uid="uid://dn21h0h57hy11" path="res://Scripts/ScriptsBase/fit_text.gd" id="9_xw43c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb2j1"]
 bg_color = Color(0.168627, 0.0588235, 0, 1)
@@ -95,7 +96,7 @@ gradient = SubResource("Gradient_3ve6v")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ck51g"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xw43c"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_ygvtv")
 
@@ -151,7 +152,7 @@ atlas = ExtResource("5_4wq3s")
 region = Rect2(24, 48, 24, 24)
 
 [node name="DebugScene" type="CanvasLayer" unique_id=599120607]
-layer = 127
+layer = 126
 script = ExtResource("1_81ui7")
 window_focused_style = SubResource("StyleBoxFlat_mb2j1")
 window_unfocused_style = SubResource("StyleBoxFlat_desc1")
@@ -307,13 +308,25 @@ layout_mode = 2
 focus_mode = 1
 allow_greater = true
 select_all_on_focus = true
-_custom_value = 0.0
 
 [node name="GoldLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=297815324]
 unique_name_in_owner = true
 layout_mode = 2
 text = "G"
 label_settings = SubResource("LabelSettings_8xmjx")
+
+[node name="HSeparator2" type="VSeparator" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=339771957]
+layout_mode = 2
+
+[node name="FillDebugStats" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("3_cp7oy")]
+modulate = Color(0.820313, 0.608375, 0.493469, 1)
+layout_mode = 2
+size_flags_vertical = 10
+focus_mode = 1
+theme_override_colors/font_color = Color(66.478, 89.772, 28.409, 1)
+theme_override_colors/font_pressed_color = Color(23.295, 22.159, 24.432, 1)
+theme_override_colors/font_hover_color = Color(25, 25, 25, 1)
+text = "Fill Debug Stats"
 
 [node name="DataList" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer" unique_id=1250084832 instance=ExtResource("4_r6wuy")]
 unique_name_in_owner = true
@@ -326,7 +339,7 @@ odd_line_color = Color(0.4375, 0.336182, 0.295654, 1)
 event_line_color = Color(0.371094, 0.282473, 0.24498, 1)
 top_bar_style = SubResource("StyleBoxTexture_rf2xa")
 columns_text_colors = PackedColorArray(1, 1, 1, 1, 0.72549, 0.992157, 0.772549, 1)
-cursor_style = SubResource("StyleBoxTexture_ck51g")
+cursor_style = SubResource("StyleBoxTexture_xw43c")
 panel_style = SubResource("StyleBoxFlat_cgt5q")
 columns = 2
 names = PackedStringArray("ID", "Current Value")
@@ -351,7 +364,7 @@ max_value = 9999.0
 value = 100.0
 _custom_value = 100.0
 
-[node name="SetAllValuesButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=225668214 instance=ExtResource("3_cp7oy")]
+[node name="SetAllValuesButton" parent="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra" unique_id=2089435166 instance=ExtResource("3_cp7oy")]
 modulate = Color(0.820313, 0.608375, 0.493469, 1)
 layout_mode = 2
 size_flags_vertical = 10
@@ -471,7 +484,7 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ry66v")
 texture_hover = SubResource("AtlasTexture_qibq2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer" unique_id=2126440105]
+[node name="HBoxContainer" type="MarginContainer" parent="MainContainer" unique_id=578870435]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -480,17 +493,37 @@ anchor_bottom = 1.0
 offset_top = -33.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 0
 
-[node name="BottomLabelInfo" type="Label" parent="MainContainer/HBoxContainer" unique_id=1374952351]
+[node name="Control" type="Control" parent="MainContainer/HBoxContainer" unique_id=607482889]
+layout_mode = 2
+
+[node name="BottomLabelInfo" type="Label" parent="MainContainer/HBoxContainer/Control" unique_id=1374952351]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 33)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 23
 text = "Use 🢀 Left or 🢂 Right To change the value. Or double click to enter value manually."
 horizontal_alignment = 1
+script = ExtResource("9_xw43c")
+max_font_size = 23
 
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer/GoldNumber" to="." method="_on_gold_number_value_changed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/HBoxContainer/FillDebugStats" to="." method="_fill_debug_stats"]
 [connection signal="item_activated" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_activated"]
 [connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/DataList" to="." method="_on_data_list_item_selected"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/MarginContainer/BackgroundDecoration/MarginContainer/VBoxContainer/ValuesExtra/SetAllValuesButton" to="." method="_on_set_all_values_button_pressed"]

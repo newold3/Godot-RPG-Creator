@@ -465,7 +465,7 @@ func _process(delta: float) -> void:
 		var is_new_click = ControllerManager.is_action_just_pressed("Mouse Left")
 		var mouse_pos = current_map.get_local_mouse_position()
 		var tile: Vector2i = current_map.local_to_map(mouse_pos)
-		if is_new_click or (tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
+		if is_new_click or (_auto_target_event == null and tile != _auto_target_tile and _click_indicator_cooldown <= 0.0):
 			_set_target_destination(tile, is_new_click)
 	if _auto_target_tile != Vector2i(-1, -1) and not is_moving and not busy:
 		_process_auto_movement()

@@ -126,6 +126,7 @@ var last_action_registered: RegisterKey = null # Last action registered
 var close_neighbor_script
 var current_controller: CONTROLLER_TYPE
 var controller_info: Dictionary = {}
+var _atlas_textures_cache: Dictionary = {}
 var is_caps_lock_on: bool = false :
 	set(value):
 		is_caps_lock_on = value
@@ -138,6 +139,11 @@ var is_typing_mode: bool = false
 
 # Cache system for frame-consistent results
 var cache = {}
+
+var released_keys = {}
+var released_mouse_buttons = {}
+var released_joy_buttons = {}
+var released_stick_directions = {}
 
 ## Input configuration for special actions
 const CONFIRM_INPUTS = {
@@ -294,6 +300,10 @@ func clear() -> void:
 	key_states.mouse_buttons.clear() # Mouse buttons
 	key_states.joy_buttons.clear() # Joystick/gamepad buttons
 	action_states.clear()
+	released_keys.clear()
+	released_mouse_buttons.clear()
+	released_joy_buttons.clear()
+	released_stick_directions.clear()
 	joy_axis_values[JOY_AXIS_LEFT_X] = 0.0 # Left stick horizontal
 	joy_axis_values[JOY_AXIS_LEFT_Y] = 0.0 # Left stick vertical
 	joy_axis_values[JOY_AXIS_RIGHT_X] = 0.0 # Right stick horizontal
@@ -387,10 +397,16 @@ func _input(event: InputEvent) -> void:
 		controller_info.clear()
 		_change_current_controller(CONTROLLER_TYPE.Keyboard)
 		_handle_key_event(key_states.keys, event.keycode, event.is_pressed(), "keys")
+		
+		if not event.pressed and not event.is_echo():
+			released_keys[event.keycode] = Engine.get_process_frames()
 
 	elif event is InputEventMouseButton:
 		_change_current_controller(CONTROLLER_TYPE.Mouse)
 		_handle_key_event(key_states.mouse_buttons, event.button_index, event.is_pressed(), "mouse_buttons")
+		
+		if not event.pressed:
+			released_mouse_buttons[event.button_index] = Engine.get_process_frames()
 
 	elif event is InputEventMouseMotion:
 		_change_current_controller(CONTROLLER_TYPE.Mouse)
@@ -401,6 +417,9 @@ func _input(event: InputEvent) -> void:
 		controller_info.name = Input.get_joy_name(device_id)
 		_change_current_controller(CONTROLLER_TYPE.Joypad)
 		_handle_key_event(key_states.joy_buttons, event.button_index, event.is_pressed(), "joy_buttons")
+		
+		if not event.pressed:
+			released_joy_buttons[event.button_index] = Engine.get_process_frames()
 
 	elif event is InputEventJoypadMotion:
 		_change_current_controller(CONTROLLER_TYPE.Joypad)
@@ -567,7 +586,10 @@ func _process_stick_direction(stick_type: String) -> void:
 	
 	# Update the stick direction handler
 	if direction != stick_handler.direction:
+		var old_direction = stick_handler.direction
 		stick_handler.set_direction(direction)
+		if old_direction != "":
+			released_stick_directions[stick_type + "_" + old_direction] = Engine.get_process_frames()
 
 
 ## Get the raw analog value of a joystick axis (returns value between -1.0 and 1.0)
@@ -1678,6 +1700,22 @@ func get_any_key_just_pressed(consume: bool = true) -> String:
 		
 	return final_result
 
+func is_any_direction_pressed() -> bool:
+	if key_states.keys.has(KEY_LEFT) or key_states.keys.has(KEY_RIGHT) or key_states.keys.has(KEY_UP) or key_states.keys.has(KEY_DOWN):
+		return true
+		
+	if not is_typing_mode:
+		if key_states.keys.has(KEY_A) or key_states.keys.has(KEY_D) or key_states.keys.has(KEY_W) or key_states.keys.has(KEY_S):
+			return true
+			
+	if key_states.joy_buttons.has(JOY_BUTTON_DPAD_LEFT) or key_states.joy_buttons.has(JOY_BUTTON_DPAD_RIGHT) or key_states.joy_buttons.has(JOY_BUTTON_DPAD_UP) or key_states.joy_buttons.has(JOY_BUTTON_DPAD_DOWN):
+		return true
+		
+	if stick_left_direction and stick_left_direction.direction != "":
+		return true
+		
+	return false
+
 
 func is_direction_just_pressed(direction: String) -> bool:
 	match direction:
@@ -1733,6 +1771,63 @@ func is_direction_just_pressed(direction: String) -> bool:
 			if stick_left_direction.direction == "down" and stick_left_direction.is_just_pressed():
 				return true
 				
+	return false
+
+
+func is_key_just_released(keycode: int) -> bool:
+	var current_frame = Engine.get_process_frames()
+	return released_keys.get(keycode, -1) == current_frame
+
+
+func is_joy_button_just_released(keycode: int) -> bool:
+	var current_frame = Engine.get_process_frames()
+	return released_joy_buttons.get(keycode, -1) == current_frame
+
+
+func is_stick_direction_just_released(stick_type: String, direction: String) -> bool:
+	var current_frame = Engine.get_process_frames()
+	var key = stick_type + "_" + direction
+	return released_stick_directions.get(key, -1) == current_frame
+
+
+func is_direction_just_released(direction: String) -> bool:
+	match direction:
+		"left":
+			if is_key_just_released(KEY_LEFT):
+				return true
+			if not is_typing_mode and is_key_just_released(KEY_A):
+				return true
+			if is_joy_button_just_released(JOY_BUTTON_DPAD_LEFT):
+				return true
+			if is_stick_direction_just_released("left", "left"):
+				return true
+		"right":
+			if is_key_just_released(KEY_RIGHT):
+				return true
+			if not is_typing_mode and is_key_just_released(KEY_D):
+				return true
+			if is_joy_button_just_released(JOY_BUTTON_DPAD_RIGHT):
+				return true
+			if is_stick_direction_just_released("left", "right"):
+				return true
+		"up":
+			if is_key_just_released(KEY_UP):
+				return true
+			if not is_typing_mode and is_key_just_released(KEY_W):
+				return true
+			if is_joy_button_just_released(JOY_BUTTON_DPAD_UP):
+				return true
+			if is_stick_direction_just_released("left", "up"):
+				return true
+		"down":
+			if is_key_just_released(KEY_DOWN):
+				return true
+			if not is_typing_mode and is_key_just_released(KEY_S):
+				return true
+			if is_joy_button_just_released(JOY_BUTTON_DPAD_DOWN):
+				return true
+			if is_stick_direction_just_released("left", "down"):
+				return true
 	return false
 
 #endregion
@@ -1889,6 +1984,146 @@ func remove_erase_letter() -> void:
 	# Check gamepad confirm buttons
 	for button in ERASE_LETTER_INPUTS.joy:
 		key_states.joy_buttons.erase(button)
+
+
+## Helper to extract button slice as an RPGIcon from controller layout spritesheet
+func _get_controller_icon(layout_file: String, index: int) -> RPGIcon:
+	var path = "res://Assets/Images/ControllerIcons/" + layout_file
+	var cache_key = path + "_" + str(index)
+	if _atlas_textures_cache.has(cache_key):
+		return _atlas_textures_cache[cache_key]
+	
+	var tex = load(path)
+	if not tex:
+		var empty_icon = RPGIcon.new()
+		_atlas_textures_cache[cache_key] = empty_icon
+		return empty_icon
+		
+	var frame_width = tex.get_width() / 19.0
+	var frame_height = tex.get_height()
+	var region = Rect2(index * frame_width, 0, frame_width, frame_height)
+	var icon = RPGIcon.new(path, region)
+	_atlas_textures_cache[cache_key] = icon
+	return icon
+
+
+## Returns a dictionary mapping controls to their text representation and RPGIcon based on the current controller style
+func get_current_controller_mapping() -> Dictionary:
+	var mapping = {}
+	
+	if current_controller == CONTROLLER_TYPE.Joypad:
+		# Determine joypad style based on controller name
+		var joy_name = controller_info.get("name", "").to_lower()
+		var is_playstation = "playstation" in joy_name or "ps4" in joy_name or "ps5" in joy_name or "dualshock" in joy_name or "dualsense" in joy_name or "sony" in joy_name
+		var is_nintendo = "nintendo" in joy_name or "switch" in joy_name or "joy-con" in joy_name or "joycon" in joy_name
+		
+		var layout_file = "xbox_layout.png"
+		if is_playstation:
+			layout_file = "playstation_layout.png"
+		elif is_nintendo:
+			layout_file = "nintendo_layout.png"
+			
+		# Mappings according to the 19 columns:
+		# 0: equis, 1: circulo, 2: cuadrado, 3: triangulo, 4: l1, 5: r1, 6: l2, 7: r2,
+		# 8: cruceta, 9: cruceta left, 10: cruceta up, 11: cruceta right, 12: cruceta down,
+		# 13: select, 14: start, 15: left stick, 16: r stick, 17: l3, 18: r3
+		
+		if is_playstation:
+			mapping = {
+				"a": { "text": "✕", "icon": _get_controller_icon(layout_file, 0) },
+				"b": { "text": "◯", "icon": _get_controller_icon(layout_file, 1) },
+				"x": { "text": "⬜", "icon": _get_controller_icon(layout_file, 2) },
+				"y": { "text": "△", "icon": _get_controller_icon(layout_file, 3) },
+				"l1": { "text": "L1", "icon": _get_controller_icon(layout_file, 4) },
+				"r1": { "text": "R1", "icon": _get_controller_icon(layout_file, 5) },
+				"l2": { "text": "L2", "icon": _get_controller_icon(layout_file, 6) },
+				"r2": { "text": "R2", "icon": _get_controller_icon(layout_file, 7) },
+				"dpad": { "text": "Cruceta", "icon": _get_controller_icon(layout_file, 8) },
+				"dpad_left": { "text": "⬅️", "icon": _get_controller_icon(layout_file, 9) },
+				"dpad_up": { "text": "⬆️", "icon": _get_controller_icon(layout_file, 10) },
+				"dpad_right": { "text": "➡️", "icon": _get_controller_icon(layout_file, 11) },
+				"dpad_down": { "text": "⬇️", "icon": _get_controller_icon(layout_file, 12) },
+				"select": { "text": "Share", "icon": _get_controller_icon(layout_file, 13) },
+				"start": { "text": "Options", "icon": _get_controller_icon(layout_file, 14) },
+				"sticks": { "text": "L3/R3", "icon": _get_controller_icon(layout_file, 15) },
+				"left_stick": { "text": "Stick Izq", "icon": _get_controller_icon(layout_file, 15) },
+				"right_stick": { "text": "Stick Der", "icon": _get_controller_icon(layout_file, 16) },
+				"l3": { "text": "L3", "icon": _get_controller_icon(layout_file, 17) },
+				"r3": { "text": "R3", "icon": _get_controller_icon(layout_file, 18) }
+			}
+		elif is_nintendo:
+			mapping = {
+				"a": { "text": "A", "icon": _get_controller_icon(layout_file, 1) }, # Nintendo: A is East
+				"b": { "text": "B", "icon": _get_controller_icon(layout_file, 0) }, # Nintendo: B is South
+				"x": { "text": "X", "icon": _get_controller_icon(layout_file, 3) }, # Nintendo: X is North
+				"y": { "text": "Y", "icon": _get_controller_icon(layout_file, 2) }, # Nintendo: Y is West
+				"l1": { "text": "L", "icon": _get_controller_icon(layout_file, 4) },
+				"r1": { "text": "R", "icon": _get_controller_icon(layout_file, 5) },
+				"l2": { "text": "ZL", "icon": _get_controller_icon(layout_file, 6) },
+				"r2": { "text": "ZR", "icon": _get_controller_icon(layout_file, 7) },
+				"dpad": { "text": "Cruceta", "icon": _get_controller_icon(layout_file, 8) },
+				"dpad_left": { "text": "⬅️", "icon": _get_controller_icon(layout_file, 9) },
+				"dpad_up": { "text": "⬆️", "icon": _get_controller_icon(layout_file, 10) },
+				"dpad_right": { "text": "➡️", "icon": _get_controller_icon(layout_file, 11) },
+				"dpad_down": { "text": "⬇️", "icon": _get_controller_icon(layout_file, 12) },
+				"select": { "text": "-", "icon": _get_controller_icon(layout_file, 13) },
+				"start": { "text": "+", "icon": _get_controller_icon(layout_file, 14) },
+				"sticks": { "text": "Sticks", "icon": _get_controller_icon(layout_file, 15) },
+				"left_stick": { "text": "Stick Izq", "icon": _get_controller_icon(layout_file, 15) },
+				"right_stick": { "text": "Stick Der", "icon": _get_controller_icon(layout_file, 16) },
+				"l3": { "text": "L3", "icon": _get_controller_icon(layout_file, 17) },
+				"r3": { "text": "R3", "icon": _get_controller_icon(layout_file, 18) }
+			}
+		else:
+			# Xbox / Generic Gamepad
+			mapping = {
+				"a": { "text": "A", "icon": _get_controller_icon(layout_file, 0) }, # Xbox: A is South
+				"b": { "text": "B", "icon": _get_controller_icon(layout_file, 1) }, # Xbox: B is East
+				"x": { "text": "X", "icon": _get_controller_icon(layout_file, 2) }, # Xbox: X is West
+				"y": { "text": "Y", "icon": _get_controller_icon(layout_file, 3) }, # Xbox: Y is North
+				"l1": { "text": "LB", "icon": _get_controller_icon(layout_file, 4) },
+				"r1": { "text": "RB", "icon": _get_controller_icon(layout_file, 5) },
+				"l2": { "text": "LT", "icon": _get_controller_icon(layout_file, 6) },
+				"r2": { "text": "RT", "icon": _get_controller_icon(layout_file, 7) },
+				"dpad": { "text": "Cruceta", "icon": _get_controller_icon(layout_file, 8) },
+				"dpad_left": { "text": "⬅️", "icon": _get_controller_icon(layout_file, 9) },
+				"dpad_up": { "text": "⬆️", "icon": _get_controller_icon(layout_file, 10) },
+				"dpad_right": { "text": "➡️", "icon": _get_controller_icon(layout_file, 11) },
+				"dpad_down": { "text": "⬇️", "icon": _get_controller_icon(layout_file, 12) },
+				"select": { "text": "View", "icon": _get_controller_icon(layout_file, 13) },
+				"start": { "text": "Menu", "icon": _get_controller_icon(layout_file, 14) },
+				"sticks": { "text": "LS/RS", "icon": _get_controller_icon(layout_file, 15) },
+				"left_stick": { "text": "Stick Izq", "icon": _get_controller_icon(layout_file, 15) },
+				"right_stick": { "text": "Stick Der", "icon": _get_controller_icon(layout_file, 16) },
+				"l3": { "text": "L3", "icon": _get_controller_icon(layout_file, 17) },
+				"r3": { "text": "R3", "icon": _get_controller_icon(layout_file, 18) }
+			}
+	else:
+		# Keyboard / Mouse default mapping
+		mapping = {
+			"a": { "text": "▰", "icon": RPGIcon.new() },
+			"b": { "text": "Esc", "icon": RPGIcon.new() },
+			"x": { "text": "C", "icon": RPGIcon.new() },
+			"y": { "text": "V", "icon": RPGIcon.new() },
+			"l1": { "text": "Q", "icon": RPGIcon.new() },
+			"r1": { "text": "E", "icon": RPGIcon.new() },
+			"l2": { "text": "Shift", "icon": RPGIcon.new() },
+			"r2": { "text": "Ctrl", "icon": RPGIcon.new() },
+			"dpad": { "text": "Arrows", "icon": RPGIcon.new() },
+			"dpad_left": { "text": "A", "icon": RPGIcon.new() },
+			"dpad_up": { "text": "W", "icon": RPGIcon.new() },
+			"dpad_right": { "text": "D", "icon": RPGIcon.new() },
+			"dpad_down": { "text": "S", "icon": RPGIcon.new() },
+			"select": { "text": "▰", "icon": RPGIcon.new() },
+			"start": { "text": "Esc", "icon": RPGIcon.new() },
+			"sticks": { "text": "WASD", "icon": RPGIcon.new() },
+			"left_stick": { "text": "WASD", "icon": RPGIcon.new() },
+			"right_stick": { "text": "Mouse", "icon": RPGIcon.new() },
+			"l3": { "text": "L3", "icon": RPGIcon.new() },
+			"r3": { "text": "R3", "icon": RPGIcon.new() }
+		}
+		
+	return mapping
 
 
 ## Get the current process frame ID

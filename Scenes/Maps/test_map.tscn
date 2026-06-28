@@ -90,10 +90,10 @@ rect = Rect2i(17, 3, 4, 3)
 script = ExtResource("19_mppu7")
 id = 2
 color = Color(0.9111963, 0.62528324, 0.4004519, 0.4)
-rect = Rect2i(22, 4, 6, 5)
+rect = Rect2i(22, 6, 6, 2)
 damage_frequency = 0.15000000000000002
 entry_common_event = 1
-trigger_mode = 2
+trigger_mode = 1
 can_entry = false
 triggers = PackedInt32Array(-1)
 
@@ -121,6 +121,7 @@ custom_data_layer_0/type = 24
 
 [node name="TestMap" type="Node2D" unique_id=264368788]
 y_sort_enabled = true
+position = Vector2(-1, 0)
 script = ExtResource("1_didij")
 grid_gradient = ExtResource("2_kukki")
 enable_minimap = true
@@ -130,8 +131,8 @@ extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_m0d5v"
 regions = Array[ExtResource("19_bvf2a")]([SubResource("Resource_upqxx")])
 event_regions = Array[ExtResource("19_mppu7")]([SubResource("Resource_i3lja"), SubResource("Resource_3o0ny"), SubResource("Resource_o0x6m")])
 internal_id = 2651459344452080
-current_edit_button_pressed = 0
-_last_edit_button_pressed = 0
+current_edit_button_pressed = 3
+_last_edit_button_pressed = 3
 
 [node name="GroundBase" type="TileMapLayer" parent="." unique_id=1610878107]
 unique_name_in_owner = true

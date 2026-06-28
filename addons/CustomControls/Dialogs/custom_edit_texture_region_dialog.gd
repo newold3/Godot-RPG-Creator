@@ -1,9 +1,10 @@
 @tool
 extends Window
 
-enum SnapMode {SNAP_NONE, SNAP_PIXEL, SNAP_GRID, SNAP_COLUMNS_AND_ROWS}
+enum SnapMode {SNAP_NONE, SNAP_PIXEL, SNAP_GRID, SNAP_COLUMNS_AND_ROWS, SNAP_AUTO_CROP}
 
 const HANDLES = preload("res://addons/CustomControls/Images/handles.png")
+
 var handle_rects = {
 	"top_left": Rect2i(0, 0, 20, 20),
 	"top": Rect2i(20, 0, 20, 20),
@@ -23,7 +24,6 @@ var drawing_rect: bool = false
 var mouse_start: Vector2 = Vector2.ZERO
 var draw_rect_start: Vector2 = Vector2.ZERO
 var busy: bool = false
-
 var snap_mode: int = SnapMode.SNAP_NONE
 var draw_zoom: float = 1.0
 var snap_offset: Vector2i = Vector2i.ZERO
@@ -46,7 +46,7 @@ var resize_start_br_cell: Vector2i = Vector2i.ZERO
 var moving_rect: bool = false
 var rect_start_pos: Vector2
 var mouse_start_pos: Vector2
-
+var auto_crop_rects: Array[Rect2] = []
 
 @onready var texture_preview: Control = %EditedTexture
 @onready var grid: Control = %Grid
@@ -57,6 +57,9 @@ signal updated()
 signal region_changed(region: Rect2)
 
 
+#region Lifecycle Methods
+
+## Initializes the dialog and connects signals.
 func _ready():
 	close_requested.connect(queue_free)
 	
@@ -65,32 +68,24 @@ func _ready():
 	vscroll.value_changed.connect(_scroll_changed)
 	texture_preview.draw.connect(_on_texture_preview_draw)
 	grid.draw.connect(_on_grid_draw)
+	texture_preview.resized.connect(update_cursor)
 	updated.connect(
 		func():
+			update_cursor()
 			texture_preview.queue_redraw()
 			grid.queue_redraw()
 	)
 	set_default_values()
 
 
-func _save_config() -> void:
-	FileCache.options.region_dialog_options = {
-		"snap_mode": snap_mode,
-		"draw_zoom": draw_zoom,
-		"snap_offset": snap_offset,
-		"snap_separation": snap_separation,
-		"snap_step": snap_step,
-		"column_and_rows": column_and_rows,
-	}
-
-
+## Sets default values for the region editor based on the FileCache.
 func set_default_values() -> void:
 	var options = FileCache.options.get("region_dialog_options", {})
 	snap_mode = options.get("snap_mode", SnapMode.SNAP_GRID)
 	draw_zoom = options.get("draw_zoom", 1.0)
 	snap_offset = options.get("snap_offset", Vector2i.ZERO)
 	snap_separation = options.get("snap_separation", Vector2i.ZERO)
-	snap_step = options.get("snap_separation", Vector2i(32, 32))
+	snap_step = options.get("snap_step", Vector2i(32, 32))
 	column_and_rows = options.get("column_and_rows", Vector2i.ONE)
 	
 	if not FileCache.options.has("region_dialog_options"):
@@ -124,6 +119,25 @@ func set_default_values() -> void:
 
 	%AdjustmentMode.item_selected.emit.call_deferred(current_mode_index)
 
+
+## Saves the current configuration to FileCache before closing.
+func _save_config() -> void:
+	FileCache.options.region_dialog_options = {
+		"snap_mode": snap_mode,
+		"draw_zoom": draw_zoom,
+		"snap_offset": snap_offset,
+		"snap_separation": snap_separation,
+		"snap_step": snap_step,
+		"column_and_rows": column_and_rows,
+	}
+
+
+#endregion
+
+
+#region Public API
+
+## Configures the editor with the given object and region.
 func edit(object: Object, region: Rect2):
 	edited_object = object
 	if region.has_area():
@@ -144,11 +158,15 @@ func edit(object: Object, region: Rect2):
 				
 				# Update internal variables directly to ensure synchronization
 				column_and_rows = Vector2i(int_columns, int_rows)
-				snap_step = Vector2i(rect.size)
+				snap_step = Vector2i(max(1, int(rect.size.x)), max(1, int(rect.size.y)))
 				snap_offset = Vector2i.ZERO
 				snap_separation = Vector2i.ZERO
 				
-				# Update UI components
+				FileCache.options.region_dialog_options.column_and_rows = column_and_rows
+				FileCache.options.region_dialog_options.snap_step = snap_step
+				FileCache.options.region_dialog_options.snap_offset = snap_offset
+				FileCache.options.region_dialog_options.snap_separation = snap_separation
+				
 				%OffsetX.set_deferred("value", 0)
 				%OffsetY.set_deferred("value", 0)
 				%StepX.set_deferred("value", rect.size.x)
@@ -156,11 +174,8 @@ func edit(object: Object, region: Rect2):
 				%Columns.set_deferred("value", int_columns)
 				%Rows.set_deferred("value", int_rows)
 				
-				#%AdjustmentMode.select(3) # SnapMode.SNAP_COLUMNS_AND_ROWS
-				# Force the mode update logic
 				_on_adjustment_mode_item_selected(3)
 			else:
-				#%AdjustmentMode.select(1) # SnapMode.SNAP_PIXEL
 				_on_adjustment_mode_item_selected(1)
 
 			if rect:
@@ -168,16 +183,21 @@ func edit(object: Object, region: Rect2):
 				region_center.x = snappedi(region_center.x, snap_step.x)
 				region_center.y = snappedi(region_center.y, snap_step.y)
 				draw_ofs = region_center - texture_size / 2
-				await get_tree().process_frame
-				force_change_draw_offset(Vector2.ZERO)
-		
+				
+				if is_instance_valid(self):
+					call_deferred("force_change_draw_offset", Vector2.ZERO)
 		else:
-			#%AdjustmentMode.select(1) # SnapMode.SNAP_PIXEL
 			_on_adjustment_mode_item_selected(1)
 		
 	updated.emit()
 
 
+#endregion
+
+
+#region Rendering Methods
+
+## Draws the grid lines based on the snap settings.
 func _on_grid_draw() -> void:
 	var grid_size = grid.size
 	var line_color = Color(1, 1, 1, 0.08)
@@ -191,20 +211,15 @@ func _on_grid_draw() -> void:
 	var preview_size = texture_preview.size
 
 	if (snap_mode == SnapMode.SNAP_GRID or snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS) and draw_zoom > 0.35:
-		# Effective size of each cell (content + separation)
 		var cell_total = Vector2(snap_step.x + snap_separation.x, snap_step.y + snap_separation.y)
 		var cell_total_draw = cell_total * draw_zoom
 		
-		# Optimization: Don't draw if cells are too small
 		if cell_total_draw.x < 2.0 and cell_total_draw.y < 2.0:
 			return
 		
-		# Start position centering the texture
 		var start_position = (preview_size - draw_size) / 2 - draw_ofs * draw_zoom + snap_offset * draw_zoom
-		
 		var lines = PackedVector2Array()
 		
-		# Draw vertical lines (columns)
 		if cell_total_draw.x >= 2.0:
 			var cells_right = int(ceil((grid_size.x - start_position.x) / cell_total_draw.x)) + 1
 			var cells_left = int(ceil(start_position.x / cell_total_draw.x)) + 1
@@ -218,7 +233,6 @@ func _on_grid_draw() -> void:
 					lines.append(Vector2(x, 0))
 					lines.append(Vector2(x, grid_size.y))
 		
-		# Draw horizontal lines (rows)
 		if cell_total_draw.y >= 2.0:
 			var cells_down = int(ceil((grid_size.y - start_position.y) / cell_total_draw.y)) + 1
 			var cells_up = int(ceil(start_position.y / cell_total_draw.y)) + 1
@@ -236,6 +250,7 @@ func _on_grid_draw() -> void:
 			grid.draw_multiline(lines, line_color, 1.0)
 
 
+## Draws the texture preview and auto crop rects if applicable.
 func _on_texture_preview_draw():
 	var texture = _get_texture()
 	if not texture:
@@ -244,30 +259,55 @@ func _on_texture_preview_draw():
 	var preview_size = texture_preview.size
 	var tex_size = texture.get_size()
 	var draw_size = tex_size * draw_zoom
-	
 	var offset = (preview_size - draw_size) / 2 - draw_ofs * draw_zoom
-	
 	var texture_rect = Rect2(offset, draw_size)
-	texture_preview.draw_texture_rect(texture, texture_rect, false)
 	
+	texture_preview.draw_texture_rect(texture, texture_rect, false)
 	texture_preview.draw_rect(Rect2(offset, draw_size), Color(1, 1, 1, 0.4), false)
 	
-	if rect:
-		%Cursor.visible = true
-		%Cursor.position = offset + rect.position * draw_zoom
-		%Cursor.size = rect.size * draw_zoom
-	else:
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		for r in auto_crop_rects:
+			var scaled_rect = Rect2(offset + r.position * draw_zoom, r.size * draw_zoom)
+			var color = Color(0.1, 0.8, 0.1, 0.6) if r == rect else Color(1.0, 0.9, 0.1, 0.3)
+			texture_preview.draw_rect(scaled_rect, color, false, 1.5)
+
+
+## Updates the cursor size and visibility based on the current selection.
+func update_cursor() -> void:
+	if not is_instance_valid(self) or not is_node_ready():
+		return
+	var texture = _get_texture()
+	if not texture or not rect:
 		%Cursor.visible = false
+		return
+	
+	var preview_size = texture_preview.size
+	var tex_size = texture.get_size()
+	var draw_size = tex_size * draw_zoom
+	var offset = (preview_size - draw_size) / 2 - draw_ofs * draw_zoom
+	
+	%Cursor.visible = true
+	%Cursor.position = offset + rect.position * draw_zoom
+	%Cursor.size = rect.size * draw_zoom
+	
+	var is_auto_crop = (snap_mode == SnapMode.SNAP_AUTO_CROP)
+	
+	for child in %Cursor.get_children():
+		if child is Control:
+			child.visible = not is_auto_crop
+			
+	var shape = Control.CURSOR_ARROW if is_auto_crop else Control.CURSOR_CROSS
+	texture_preview.mouse_default_cursor_shape = shape
+	grid.mouse_default_cursor_shape = shape
+	%Cursor.mouse_default_cursor_shape = shape
 
 
-func _get_texture() -> Texture:
-	if edited_object is AtlasTexture:
-		return edited_object.atlas
-	if edited_object is Texture:
-		return edited_object
-	return null
+#endregion
 
 
+#region Interaction Handling
+
+## Main input handler for the grid area.
 func _on_grid_gui_input(event: InputEvent):
 	if event is InputEventMouseButton:
 		if event.is_pressed():
@@ -281,7 +321,6 @@ func _on_grid_gui_input(event: InputEvent):
 				var previous_zoom = draw_zoom
 				var texture = _get_texture()
 				var tex_size = texture.get_size()
-				
 				var mouse_pos = texture_preview.get_local_mouse_position()
 				
 				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
@@ -291,7 +330,15 @@ func _on_grid_gui_input(event: InputEvent):
 				elif event.button_index == MOUSE_BUTTON_MIDDLE:
 					moving = true
 				elif event.button_index == MOUSE_BUTTON_LEFT:
-					_start_drag(mouse_pos)
+					if snap_mode == SnapMode.SNAP_AUTO_CROP:
+						var tex_pos = _screen_to_texture(mouse_pos)
+						for r in auto_crop_rects:
+							if r.has_point(tex_pos):
+								rect = r
+								updated.emit()
+								break
+					else:
+						_start_drag(mouse_pos)
 				
 				if previous_zoom != draw_zoom:
 					var preview_size = texture_preview.size
@@ -301,7 +348,6 @@ func _on_grid_gui_input(event: InputEvent):
 					var new_draw_ofs = world_pos - (mouse_pos - center_new) / draw_zoom
 					var offset_delta = draw_ofs - new_draw_ofs
 					force_change_draw_offset(offset_delta)
-					
 					updated.emit()
 		
 		elif not event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -334,6 +380,52 @@ func _on_grid_gui_input(event: InputEvent):
 		_update_drag(event.position)
 
 
+## Input handler for the drag handles of the selection cursor.
+func _on_cursor_handle_gui_input(event: InputEvent, button_id: String) -> void:
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		return
+		
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.is_pressed():
+			resizing_rect = true
+			current_resize = button_id
+			resize_rect_start = rect
+
+			if snap_mode == SnapMode.SNAP_GRID or snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS:
+				resize_start_tl_cell = _pos_to_cell(resize_rect_start.position)
+				resize_start_br_cell = _pos_to_cell(resize_rect_start.position + resize_rect_start.size)
+		else:
+			resizing_rect = false
+
+	elif event is InputEventMouseMotion and resizing_rect:
+		_update_rect_size(texture_preview.get_local_mouse_position())
+	
+	else:
+		_on_grid_gui_input(event)
+
+
+## Handles scrollbars value changes to pan the view.
+func _scroll_changed(value: float):
+	if busy: return
+	
+	var texture = _get_texture()
+	if texture:
+		var tex_size = texture.get_size()
+		var preview_size = texture_preview.size
+
+		var minx = -((preview_size.x / 2) + tex_size.x * draw_zoom) / draw_zoom
+		var maxx = -minx
+		var miny = -((preview_size.y / 2) + tex_size.y * draw_zoom) / draw_zoom
+		var maxy = -miny
+		var real_x = remap(hscroll.value, hscroll.min_value, hscroll.max_value - hscroll.page, minx, maxx)
+		var real_y = remap(vscroll.value, vscroll.min_value, vscroll.max_value - vscroll.page, miny, maxy)
+		
+		draw_ofs.x = real_x
+		draw_ofs.y = real_y
+		updated.emit()
+
+
+## Offsets the drawing view by a delta amount.
 func force_change_draw_offset(off: Vector2) -> void:
 	draw_ofs -= off
 	
@@ -370,6 +462,7 @@ func force_change_draw_offset(off: Vector2) -> void:
 	updated.emit()
 
 
+## Start a selection rectangle drag operation.
 func _start_drag(screen_position: Vector2):
 	var texture = _get_texture()
 	if not texture:
@@ -381,6 +474,7 @@ func _start_drag(screen_position: Vector2):
 	drawing_rect = true
 
 
+## Updates the drawn rectangle coordinates based on mouse position.
 func _update_drag(screen_position: Vector2):
 	if not drawing_rect:
 		return
@@ -407,14 +501,18 @@ func _update_drag(screen_position: Vector2):
 			
 		SnapMode.SNAP_GRID, SnapMode.SNAP_COLUMNS_AND_ROWS:
 			var cell_total = snap_step + snap_separation
+			var cell_total_f = Vector2(
+				float(cell_total.x) if cell_total.x > 0 else 1.0,
+				float(cell_total.y) if cell_total.y > 0 else 1.0
+			)
 			
 			var cell_index_start = Vector2i(
-				floor((draw_rect_start.x - snap_offset.x) / cell_total.x),
-				floor((draw_rect_start.y - snap_offset.y) / cell_total.y)
+				floor((draw_rect_start.x - snap_offset.x) / cell_total_f.x),
+				floor((draw_rect_start.y - snap_offset.y) / cell_total_f.y)
 			)
 			var cell_index_current = Vector2i(
-				floor((current_pos.x - snap_offset.x) / cell_total.x),
-				floor((current_pos.y - snap_offset.y) / cell_total.y)
+				floor((current_pos.x - snap_offset.x) / cell_total_f.x),
+				floor((current_pos.y - snap_offset.y) / cell_total_f.y)
 			)
 			
 			var cell_start = snap_offset + Vector2i(cell_index_start) * cell_total
@@ -434,239 +532,13 @@ func _update_drag(screen_position: Vector2):
 	updated.emit()
 
 
+## Ends a selection rectangle drag operation.
 func _end_drag():
 	drawing_rect = false
 	updated.emit()
 
 
-func _scroll_changed(value: float):
-	if busy: return
-	
-	var texture = _get_texture()
-	if texture:
-		var tex_size = texture.get_size()
-		var preview_size = texture_preview.size
-
-		var minx = -((preview_size.x / 2) + tex_size.x * draw_zoom) / draw_zoom
-		var maxx = -minx
-		var miny = -((preview_size.y / 2) + tex_size.y * draw_zoom) / draw_zoom
-		var maxy = -miny
-		var real_x = remap(hscroll.value, hscroll.min_value, hscroll.max_value - hscroll.page, minx, maxx)
-		var real_y = remap(vscroll.value, vscroll.min_value, vscroll.max_value - vscroll.page, miny, maxy)
-		
-		draw_ofs.x = real_x
-		draw_ofs.y = real_y
-		updated.emit()
-
-
-func _on_adjustment_mode_item_selected(index: int) -> void:
-	if snap_mode == SnapMode.SNAP_GRID:
-		backup_snap_options.snap_step = snap_step
-		backup_snap_options.snap_offset = snap_offset
-		backup_snap_options.snap_separation = snap_separation
-
-	snap_mode = SnapMode[SnapMode.keys()[index]]
-	
-	FileCache.options.region_dialog_options.snap_mode = snap_mode
-	var bak_step = FileCache.options.region_dialog_options.snap_step
-	var bak_offset = FileCache.options.region_dialog_options.snap_offset
-	var bak_separation = FileCache.options.region_dialog_options.snap_separation
-	%Columns.suffix = " px"
-	%Rows.suffix = " px"
-	
-	match snap_mode:
-		SnapMode.SNAP_NONE, SnapMode.SNAP_PIXEL:
-			%GridContainer.visible = false
-			%StepX.value = 1
-			%StepY.value = 1
-			%OffsetX.value = 0
-			%OffsetY.value = 0
-			%SeparationX.value = 0
-			%SeparationY.value = 0
-			
-		SnapMode.SNAP_GRID:
-			%GridContainer.visible = true
-			%StepContainer.visible = true
-			%ColumnAndRowContainer.visible = false
-			%StepX.value = FileCache.options.region_dialog_options.snap_step.x
-			%StepY.value = FileCache.options.region_dialog_options.snap_step.y
-			%OffsetX.value = snap_offset.x
-			%OffsetY.value = snap_offset.y
-			%SeparationX.value = FileCache.options.region_dialog_options.snap_separation.x
-			%SeparationY.value = FileCache.options.region_dialog_options.snap_separation.y
-			
-			%StepX.apply()
-			%StepY.apply()
-			
-		SnapMode.SNAP_COLUMNS_AND_ROWS:
-			%GridContainer.visible = true
-			%StepContainer.visible = false
-			%ColumnAndRowContainer.visible = true
-			%Columns.suffix = ""
-			%Rows.suffix = ""
-			%Columns.value = FileCache.options.region_dialog_options.column_and_rows.x
-			%Rows.value = FileCache.options.region_dialog_options.column_and_rows.y
-			%OffsetX.value = snap_offset.x
-			%OffsetY.value = snap_offset.y
-			%SeparationX.value = 0
-			%SeparationY.value = 0
-	
-			%Columns.apply()
-			%Rows.apply()
-			
-			# Ensure internal data is updated with the new columns/rows
-			_recalculate_step_from_grid()
-	
-	grid.queue_redraw()
-	
-	# Only restore backup values if we are NOT in Col/Rows mode to avoid overwriting calculation
-	if snap_mode != SnapMode.SNAP_COLUMNS_AND_ROWS:
-		FileCache.options.region_dialog_options.snap_step = bak_step
-		FileCache.options.region_dialog_options.snap_offset = bak_offset
-		FileCache.options.region_dialog_options.snap_separation = bak_separation
-
-	size.x = 0
-	updated.emit()
-
-
-func _recalculate_step_from_grid() -> void:
-	# Updates snap_step based on current column_and_rows and texture size
-	var texture = _get_texture()
-	if not texture or column_and_rows.x == 0 or column_and_rows.y == 0:
-		return
-		
-	snap_step.x = texture.get_width() / column_and_rows.x
-	snap_step.y = texture.get_height() / column_and_rows.y
-	FileCache.options.region_dialog_options.snap_step = snap_step
-
-
-func _on_offset_x_value_changed(value: float) -> void:
-	snap_offset.x = value
-	FileCache.options.region_dialog_options.snap_offset.x = snap_offset.x
-	updated.emit()
-
-
-func _on_offset_y_value_changed(value: float) -> void:
-	snap_offset.y = value
-	FileCache.options.region_dialog_options.snap_offset.y = snap_offset.y
-	updated.emit()
-
-
-func _adjust_columns_and_rows() -> void:
-	var texture = _get_texture()
-	if not texture:
-		return
-		
-	var width = texture.get_width()
-	var height = texture.get_height()
-	
-	var columns = int((width + snap_separation.x) / (snap_step.x + snap_separation.x + 0.00000000000000001))
-	var rows = int((height + snap_separation.y) / (snap_step.y + snap_separation.y + 0.00000000000000001))
-	
-	column_and_rows = Vector2i(columns, rows)
-	FileCache.options.region_dialog_options.column_and_rows = column_and_rows
-
-
-func _on_step_x_value_changed(value: float) -> void:
-	snap_step.x = value
-	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
-	_adjust_columns_and_rows()
-	updated.emit()
-
-
-func _on_step_y_value_changed(value: float) -> void:
-	snap_step.y = value
-	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
-	_adjust_columns_and_rows()
-	updated.emit()
-
-
-func _on_separation_x_value_changed(value: float) -> void:
-	snap_separation.x = value
-	FileCache.options.region_dialog_options.snap_separation.x = snap_separation.x
-	updated.emit()
-
-
-func _on_separation_y_value_changed(value: float) -> void:
-	snap_separation.y = value
-	FileCache.options.region_dialog_options.snap_separation.y = snap_separation.y
-	updated.emit()
-
-
-func _adjust_snap() -> void:
-	var texture = _get_texture()
-	if not texture:
-		return
-		
-	var width = texture.get_width()
-	var height = texture.get_height()
-	
-	var snap_x = width / column_and_rows.x
-	var snap_y = height / column_and_rows.y
-	
-	snap_separation = Vector2i(snap_x, snap_y)
-	FileCache.options.region_dialog_options.snap_separation = snap_separation
-
-
-func _on_columns_value_changed(value: float) -> void:
-	column_and_rows.x = value
-	FileCache.options.region_dialog_options.column_and_rows.x = column_and_rows.x
-	
-	var texture = _get_texture()
-	if not texture:
-		return
-	
-	snap_step.x = texture.get_width() / value
-	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
-	
-	updated.emit()
-
-
-func _on_rows_value_changed(value: float) -> void:
-	column_and_rows.y = value
-	FileCache.options.region_dialog_options.column_and_rows.y = column_and_rows.y
-	
-	var texture = _get_texture()
-	if not texture:
-		return
-	
-	snap_step.y = texture.get_height() / value
-	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
-	
-	updated.emit()
-
-
-func _on_ok_button_pressed() -> void:
-	_save_config()
-	region_changed.emit(rect)
-	queue_free()
-
-
-func _on_cancel_button_pressed() -> void:
-	_save_config()
-	queue_free()
-
-
-func _on_cursor_handle_gui_input(event: InputEvent, button_id: String) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.is_pressed():
-			resizing_rect = true
-			current_resize = button_id
-			resize_rect_start = rect
-
-			if snap_mode == SnapMode.SNAP_GRID or snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS:
-				resize_start_tl_cell = _pos_to_cell(resize_rect_start.position)
-				resize_start_br_cell = _pos_to_cell(resize_rect_start.position + resize_rect_start.size)
-		else:
-			resizing_rect = false
-
-	elif event is InputEventMouseMotion and resizing_rect:
-		_update_rect_size(texture_preview.get_local_mouse_position())
-	
-	else:
-		_on_grid_gui_input(event)
-
-
+## Resizes the current region rect from handle input.
 func _update_rect_size(screen_position: Vector2) -> void:
 	if not resizing_rect:
 		return
@@ -761,6 +633,310 @@ func _update_rect_size(screen_position: Vector2) -> void:
 	texture_preview.queue_redraw()
 
 
+func _on_ok_button_pressed() -> void:
+	_save_config()
+	region_changed.emit(rect)
+	queue_free()
+
+
+func _on_cancel_button_pressed() -> void:
+	_save_config()
+	queue_free()
+
+
+#endregion
+
+
+#region Auto Crop System
+
+## Recalculates transparent sections generating isolated bounding boxes for direct selection.
+func _calculate_auto_crop_rects() -> void:
+	auto_crop_rects.clear()
+	var tex = _get_texture()
+	if not tex: return
+	var img = tex.get_image()
+	if not img: return
+
+	var bitmap = BitMap.new()
+	bitmap.create_from_image_alpha(img)
+	
+	var rect_full = Rect2(0, 0, img.get_width(), img.get_height())
+	var polygons = bitmap.opaque_to_polygons(rect_full, 0.1)
+	
+	for poly in polygons:
+		if poly.size() == 0: continue
+		
+		var min_x = poly[0].x
+		var min_y = poly[0].y
+		var max_x = poly[0].x
+		var max_y = poly[0].y
+		
+		for pt in poly:
+			if pt.x < min_x: min_x = pt.x
+			if pt.x > max_x: max_x = pt.x
+			if pt.y < min_y: min_y = pt.y
+			if pt.y > max_y: max_y = pt.y
+			
+		var r = Rect2(min_x, min_y, max_x - min_x, max_y - min_y)
+		if r.has_area():
+			var is_duplicate = false
+			for existing in auto_crop_rects:
+				if existing.encloses(r):
+					is_duplicate = true
+					break
+			if not is_duplicate:
+				auto_crop_rects.append(r)
+
+
+## Expands over connected opaque pixels retrieving its bounding area coordinates.
+func _flood_fill_rect(img: Image, visited: PackedByteArray, start_x: int, start_y: int, width: int, height: int) -> Rect2:
+	var min_x = start_x
+	var min_y = start_y
+	var max_x = start_x
+	var max_y = start_y
+
+	var stack_x = PackedInt32Array([start_x])
+	var stack_y = PackedInt32Array([start_y])
+	visited[start_y * width + start_x] = 1
+
+	while stack_x.size() > 0:
+		var cx = stack_x[stack_x.size() - 1]
+		var cy = stack_y[stack_y.size() - 1]
+		stack_x.remove_at(stack_x.size() - 1)
+		stack_y.remove_at(stack_y.size() - 1)
+
+		if cx < min_x: min_x = cx
+		if cx > max_x: max_x = cx
+		if cy < min_y: min_y = cy
+		if cy > max_y: max_y = cy
+
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				if dx == 0 and dy == 0: 
+					continue
+				
+				var nx = cx + dx
+				var ny = cy + dy
+				
+				if nx >= 0 and nx < width and ny >= 0 and ny < height:
+					var n_idx = ny * width + nx
+					if visited[n_idx] == 0:
+						visited[n_idx] = 1
+						if img.get_pixel(nx, ny).a > 0.0:
+							stack_x.append(nx)
+							stack_y.append(ny)
+
+	return Rect2(min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+
+
+#endregion
+
+
+#region Utilities & Data Transformation
+
+## Triggered when the combo box changes modifying the internal adjustment tool state.
+func _on_adjustment_mode_item_selected(index: int) -> void:
+	if snap_mode == SnapMode.SNAP_GRID:
+		backup_snap_options.snap_step = snap_step
+		backup_snap_options.snap_offset = snap_offset
+		backup_snap_options.snap_separation = snap_separation
+
+	snap_mode = SnapMode[SnapMode.keys()[index]]
+	
+	FileCache.options.region_dialog_options.snap_mode = snap_mode
+	var bak_step = FileCache.options.region_dialog_options.snap_step
+	var bak_offset = FileCache.options.region_dialog_options.snap_offset
+	var bak_separation = FileCache.options.region_dialog_options.snap_separation
+	%Columns.suffix = " px"
+	%Rows.suffix = " px"
+	
+	match snap_mode:
+		SnapMode.SNAP_NONE, SnapMode.SNAP_PIXEL, SnapMode.SNAP_AUTO_CROP:
+			%GridContainer.visible = false
+			%StepX.set_value_no_signal(1)
+			%StepY.set_value_no_signal(1)
+			%OffsetX.set_value_no_signal(0)
+			%OffsetY.set_value_no_signal(0)
+			%SeparationX.set_value_no_signal(0)
+			%SeparationY.set_value_no_signal(0)
+			
+		SnapMode.SNAP_GRID:
+			%GridContainer.visible = true
+			%StepContainer.visible = true
+			%ColumnAndRowContainer.visible = false
+			%StepX.value = FileCache.options.region_dialog_options.snap_step.x
+			%StepY.value = FileCache.options.region_dialog_options.snap_step.y
+			%OffsetX.value = snap_offset.x
+			%OffsetY.value = snap_offset.y
+			%SeparationX.value = FileCache.options.region_dialog_options.snap_separation.x
+			%SeparationY.value = FileCache.options.region_dialog_options.snap_separation.y
+			
+			%StepX.apply()
+			%StepY.apply()
+			
+		SnapMode.SNAP_COLUMNS_AND_ROWS:
+			%GridContainer.visible = true
+			%StepContainer.visible = false
+			%ColumnAndRowContainer.visible = true
+			%Columns.suffix = ""
+			%Rows.suffix = ""
+			
+			var c = FileCache.options.region_dialog_options.column_and_rows.x
+			var r = FileCache.options.region_dialog_options.column_and_rows.y
+			if c <= 0: c = 1
+			if r <= 0: r = 1
+			
+			%Columns.set_value_no_signal(c)
+			%Rows.set_value_no_signal(r)
+			%OffsetX.set_value_no_signal(snap_offset.x)
+			%OffsetY.set_value_no_signal(snap_offset.y)
+			%SeparationX.set_value_no_signal(0)
+			%SeparationY.set_value_no_signal(0)
+	
+			%Columns.apply()
+			%Rows.apply()
+			
+			_recalculate_step_from_grid()
+	
+	grid.queue_redraw()
+	
+	if snap_mode != SnapMode.SNAP_COLUMNS_AND_ROWS:
+		FileCache.options.region_dialog_options.snap_step = bak_step
+		FileCache.options.region_dialog_options.snap_offset = bak_offset
+		FileCache.options.region_dialog_options.snap_separation = bak_separation
+
+	size.x = 0
+	
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		_calculate_auto_crop_rects()
+		texture_preview.queue_redraw()
+		
+	updated.emit()
+
+
+## Updates snap_step based on current column_and_rows and texture size.
+func _recalculate_step_from_grid() -> void:
+	var texture = _get_texture()
+	if not texture or column_and_rows.x == 0 or column_and_rows.y == 0:
+		return
+		
+	snap_step.x = max(1, int(texture.get_width() / column_and_rows.x))
+	snap_step.y = max(1, int(texture.get_height() / column_and_rows.y))
+	FileCache.options.region_dialog_options.snap_step = snap_step
+
+
+func _on_offset_x_value_changed(value: float) -> void:
+	snap_offset.x = value
+	FileCache.options.region_dialog_options.snap_offset.x = snap_offset.x
+	updated.emit()
+
+
+func _on_offset_y_value_changed(value: float) -> void:
+	snap_offset.y = value
+	FileCache.options.region_dialog_options.snap_offset.y = snap_offset.y
+	updated.emit()
+
+
+## Transforms internal column variables fitting the current division ratios.
+func _adjust_columns_and_rows() -> void:
+	var texture = _get_texture()
+	if not texture:
+		return
+		
+	var width = texture.get_width()
+	var height = texture.get_height()
+	
+	var columns = int((width + snap_separation.x) / (snap_step.x + snap_separation.x + 0.00000000000000001))
+	var rows = int((height + snap_separation.y) / (snap_step.y + snap_separation.y + 0.00000000000000001))
+	
+	column_and_rows = Vector2i(columns, rows)
+	FileCache.options.region_dialog_options.column_and_rows = column_and_rows
+
+
+func _on_step_x_value_changed(value: float) -> void:
+	snap_step.x = value
+	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
+	_adjust_columns_and_rows()
+	updated.emit()
+
+
+func _on_step_y_value_changed(value: float) -> void:
+	snap_step.y = value
+	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
+	_adjust_columns_and_rows()
+	updated.emit()
+
+
+func _on_separation_x_value_changed(value: float) -> void:
+	snap_separation.x = value
+	FileCache.options.region_dialog_options.snap_separation.x = snap_separation.x
+	updated.emit()
+
+
+func _on_separation_y_value_changed(value: float) -> void:
+	snap_separation.y = value
+	FileCache.options.region_dialog_options.snap_separation.y = snap_separation.y
+	updated.emit()
+
+
+## Refreshes the separation attributes synchronizing the configuration state.
+func _adjust_snap() -> void:
+	var texture = _get_texture()
+	if not texture:
+		return
+		
+	var width = texture.get_width()
+	var height = texture.get_height()
+	
+	var snap_x = width / column_and_rows.x
+	var snap_y = height / column_and_rows.y
+	
+	snap_separation = Vector2i(snap_x, snap_y)
+	FileCache.options.region_dialog_options.snap_separation = snap_separation
+
+
+func _on_columns_value_changed(value: float) -> void:
+	if value <= 0:
+		value = 1
+	column_and_rows.x = value
+	FileCache.options.region_dialog_options.column_and_rows.x = column_and_rows.x
+	
+	var texture = _get_texture()
+	if not texture:
+		return
+	
+	snap_step.x = max(1, int(texture.get_width() / value))
+	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
+	
+	updated.emit()
+
+
+func _on_rows_value_changed(value: float) -> void:
+	if value <= 0:
+		value = 1
+	column_and_rows.y = value
+	FileCache.options.region_dialog_options.column_and_rows.y = column_and_rows.y
+	
+	var texture = _get_texture()
+	if not texture:
+		return
+	
+	snap_step.y = max(1, int(texture.get_height() / value))
+	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
+	
+	updated.emit()
+
+
+## Retrieves the reference texture mapped towards the edition display.
+func _get_texture() -> Texture:
+	if edited_object is AtlasTexture:
+		return edited_object.atlas
+	if edited_object is Texture:
+		return edited_object
+	return null
+
+
+## Computes mouse location coordinates translating towards internal view structures.
 func _screen_to_texture(screen_pos: Vector2) -> Vector2:
 	var texture = _get_texture()
 	if not texture:
@@ -771,9 +947,15 @@ func _screen_to_texture(screen_pos: Vector2) -> Vector2:
 	return (screen_pos - offset) / draw_zoom
 
 
+## Converts positional maps fitting them exactly inside local matrix boundaries.
 func _pos_to_cell(tex_pos: Vector2) -> Vector2i:
 	var cell_total_x = float(snap_step.x + snap_separation.x)
 	var cell_total_y = float(snap_step.y + snap_separation.y)
+
+	if cell_total_x <= 0.0:
+		cell_total_x = 1.0
+	if cell_total_y <= 0.0:
+		cell_total_y = 1.0
 
 	var EPS = 1e-6
 	var cx = int(floor((tex_pos.x - snap_offset.x + EPS) / cell_total_x))
@@ -787,3 +969,6 @@ func _pos_to_cell(tex_pos: Vector2) -> Vector2i:
 		cy = clamp(cy, 0, max_cy)
 
 	return Vector2i(cx, cy)
+
+
+#endregion

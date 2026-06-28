@@ -16,7 +16,7 @@ gradient = SubResource("Gradient_sr3wc")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g3733"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5cbbv"]
 resource_local_to_scene = true
 shader = ExtResource("4_ayosu")
 shader_parameter/gradient_texture = SubResource("GradientTexture2D_00iqk")
@@ -26,7 +26,7 @@ shader_parameter/use_pixelate_gradient = true
 shader_parameter/pixel_scale = 3.202000104595
 shader_parameter/brightness = 0.999999977648
 
-[sub_resource type="LabelSettings" id="LabelSettings_ayosu"]
+[sub_resource type="LabelSettings" id="LabelSettings_g3733"]
 resource_local_to_scene = true
 font = ExtResource("5_n7lv6")
 font_size = 6
@@ -44,7 +44,7 @@ stacked_outline_3/color = Color(0.5882353, 0.4745098, 0.42352942, 1)
 
 [node name="libraryBookName" type="MarginContainer" unique_id=480660241]
 modulate = Color(1, 1, 1, 0)
-z_index = 110
+z_index = 90
 offset_right = 120.0
 offset_bottom = 57.0
 mouse_filter = 2
@@ -100,7 +100,7 @@ text_gradient = SubResource("GradientTexture2D_00iqk")
 force_text_size = 26
 
 [node name="ButtonName" parent="MarginContainer2/MarginContainer/Title" index="0" unique_id=802487098]
-material = SubResource("ShaderMaterial_g3733")
+material = SubResource("ShaderMaterial_5cbbv")
 custom_minimum_size = Vector2(-1, -1)
 offset_right = 13.0
 offset_bottom = 0.0
@@ -113,6 +113,6 @@ force_text_size = 26
 pivot_offset = Vector2(104, 15.5)
 theme_override_font_sizes/font_size = 6
 text = ""
-label_settings = SubResource("LabelSettings_ayosu")
+label_settings = SubResource("LabelSettings_g3733")
 
 [editable path="MarginContainer2/MarginContainer/Title"]

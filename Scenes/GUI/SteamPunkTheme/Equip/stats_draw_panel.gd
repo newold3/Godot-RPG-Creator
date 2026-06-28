@@ -423,7 +423,7 @@ func _on_stats_draw() -> void:
 				current_y += data.height
 			
 			"title":
-				_draw_title(font, data.text, current_y, data.height)
+				_draw_title(font, tr(data.text), current_y, data.height)
 				current_y += data.height
 			
 			"stat":
@@ -459,10 +459,11 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float) -> vo
 		current_x += icon_size.x + spacing
 		
 	if data.name != "":
+		var real_name = tr(data.name)
 		var text_pos = Vector2(current_x, y_center + font_size * 0.3)
-		draw_string_outline(font, text_pos, data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
-		draw_string(font, text_pos, data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
-		var text_width = font.get_string_size(data.name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		draw_string_outline(font, text_pos, real_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, outline_size, outline_color)
+		draw_string(font, text_pos, real_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, text_color)
+		var text_width = font.get_string_size(real_name, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 		current_x += text_width + spacing
 		
 	var current_value = 0.0

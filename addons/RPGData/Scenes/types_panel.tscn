@@ -606,7 +606,6 @@ theme_override_constants/margin_bottom = 6
 
 [node name="Tab1" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=72612839]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="EquipmentTypesContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab1" unique_id=903870237]
@@ -1707,6 +1706,16 @@ tooltip_text = "[title]Rarity Color[/title]
 The text of the selected data will be drawn in the color specified here."
 mouse_default_cursor_shape = 2
 
+[node name="IconPicker100" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=41622832 instance=ExtResource("5_m5jdy")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 6
+tooltip_text = "[title]Icon[/title]
+Image used in some menus to display this type
+
+Mouse wheel click to erase the current image."
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer" unique_id=2038914483]
 layout_mode = 2
 
@@ -1730,6 +1739,7 @@ text_overrun_behavior = 3
 
 [node name="Tab9" type="VBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer" unique_id=44579119]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="UserParameterContainer" type="PanelContainer" parent="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9" unique_id=713388940]
@@ -2203,6 +2213,9 @@ text_overrun_behavior = 3
 [connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/EnemyRarityList" to="." method="_on_enemy_rarity_list_item_selected"]
 [connection signal="text_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/Name30LineEdit" to="." method="_on_name_30_line_edit_text_changed"]
 [connection signal="color_changed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/EnemyRarityColorButton" to="." method="_on_enemy_rarity_color_button_color_changed"]
+[connection signal="clicked" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker100" to="." method="_on_icon_picker_clicked" binds= [100]]
+[connection signal="paste_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker100" to="." method="_on_icon_paste_requested" binds= [100]]
+[connection signal="remove_requested" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer2/IconPicker100" to="." method="_on_icon_picker_remove_requested" binds= [100]]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/AddItem30Button" to="." method="_on_add_item_30_button_pressed"]
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab8/EnemyRariryContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveItem30Button" to="." method="_on_remove_item_30_button_pressed"]
 [connection signal="item_activated" from="MainColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/Tab9/UserParameterContainer/MarginContainer/VBoxContainer/UserParametersList" to="." method="_on_user_parameters_list_item_activated"]

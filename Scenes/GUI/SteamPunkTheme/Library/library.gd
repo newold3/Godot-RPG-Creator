@@ -1,11 +1,6 @@
 extends Control
 
 
-var book_is_opened: bool = false
-var current_book: String = ""
-var busy: bool = false
-var _last_tooltip: Control
-
 var books_data = {
 	"encyclopedia":
 	{
@@ -41,8 +36,14 @@ var books_data = {
 	}
 }
 
+var book_is_opened: bool = false
+var current_book: String = ""
+var current_cursor_book: String = ""
+var busy: bool = false
+var _last_tooltip: Control
 var current_book_speed_scale: float = 1.0
 var speed_scale_step: float = 40.0
+
 
 @onready var book_container: Control = %Book
 @onready var animate_book: PageFlip2D = %AnimateBook
@@ -57,6 +58,7 @@ const LIBRARY_BOOK_NAME = preload("uid://btgo3w2tyvqrj")
 signal book_selected(id: String)
 signal book_opened()
 signal book_closed()
+signal button_pressed(button_id: int) # 0 = prev, 1 = next, 2 = back
 
 
 func _ready() -> void:
@@ -66,6 +68,27 @@ func _ready() -> void:
 	
 	StaticSignal.connect_static_signal("target_item_list_item_hovered_local", _on_custom_target_item_list_item_hovered_local)
 	StaticSignal.connect_static_signal("target_item_list_item_unhovered_local", _on_custom_target_item_list_item_unhovered_local)
+	
+	ControllerManager.controller_changed.connect(_on_controller_changed.unbind(1))
+	
+	var external_color = DayNightManager.get_ambient_color()
+	var day_phase = DayNightManager.get_day_phase()
+	if day_phase == "dusk":
+		external_color = external_color.darkened(0.4)
+	elif day_phase == "night":
+		external_color = external_color.darkened(0.7)
+	else:
+		external_color = external_color.lightened(0.2)
+		 
+	%ExternalLight.color = external_color.darkened(0.15)
+
+
+func _on_controller_changed() -> void:
+	var layout: Dictionary = ControllerManager.get_current_controller_mapping()
+	
+	%ButtonL1.texture = layout.l1.icon.get_texture()
+	%ButtonR1.texture = layout.r1.icon.get_texture()
+	%ButtonCircle.texture = layout.b.icon.get_texture()
 
 
 func get_books() -> Array:
@@ -88,15 +111,23 @@ func get_selectable_books() -> Array:
 
 
 func get_selected_book() -> Control:
-	var _current_book = get_viewport().gui_get_focus_owner()
-	if _current_book in get_books():
-		return _current_book
+	var _books = {
+		"encyclopedia": %EncyclopediaCursor,
+		"bestiary": %BestiaryCursor,
+		"inventory": %inventoryCursor,
+		"recipes": %RecipesCursor,
+		"main_book": %MainBookCursor
+		
+	}
+	var _current_book = _books.get(current_book, null)
 	
-	return null
+	return _current_book
 
 
 func select(book: Control) -> void:
 	if book in get_books():
+		if book.has_focus():
+			return
 		book.grab_focus()
 
 
@@ -107,7 +138,7 @@ func get_main_book() -> PageFlip2D:
 func turn_page_to(direction: String) -> void:
 	if not book_is_opened: return
 	
-	if ControllerManager.is_direction_just_pressed(direction):
+	if ControllerManager.is_direction_just_pressed(direction) or ControllerManager.is_direction_just_released(direction):
 		current_book_speed_scale = 1.0
 		
 	if direction == "left":
@@ -127,48 +158,70 @@ func turn_page_to(direction: String) -> void:
 		current_book_speed_scale = 1.0
 
 
+## Called when the book has fully opened.
 func _on_page_flip_2d_book_opened() -> void:
 	book_is_opened = true
+	busy = false
+	
 	%MainBookParticles.speed_scale = 8.0
 	%MainBookParticles.emitting = false
 	%MainBookParticles.z_index = 0
 	book_opened.emit()
 
 
+## Called when the book has fully closed.
 func _on_page_flip_2d_book_closed() -> void:
 	book_is_opened = false
+	busy = false
+	book_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	%MainBookParticles.speed_scale = 1.0
 	%MainBookParticles.emitting = true
 	%MainBookParticles.z_index = 115
 	book_closed.emit()
+	
+	_disable_extra_controls()
 
 
 func open_book() -> void:
+	if busy or book_is_opened:
+		return
+		
+	busy = true
 	book_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	current_book_speed_scale = 1.0
 	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
+	
 	if animate_book.current_spread == -1:
 		BookAPI.next_page()
 	else:
 		BookAPI.go_to_spread(animate_book, 0, true)
+		
 	_background_blur(4.0)
+	_enable_extra_controls()
 
 
 func close_book() -> void:
+	if busy or not book_is_opened:
+		return
+		
+	busy = true
 	book_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	current_book_speed_scale = 1.0
 	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
 	BookAPI.go_to_spread(animate_book, -1, true)
+	
 	_background_blur(0.0)
+	_disable_extra_controls()
 
 
 func _background_blur(blur_strength: float) -> void:
-	var mat: ShaderMaterial = %BackgroundBlur.get_material()
+	var mat = %BackgroundBlur.get_material()
 	var t = create_tween()
 	t.tween_property(mat, "shader_parameter/blur_strength", blur_strength, 0.4)
 
 
-func update_book(type: String, _is_initial_update: bool = false) -> bool:
+func update_book(type: String, _is_initial_update: bool = false, open_immediately: bool = false) -> bool:
 	if current_book == type: return false
 	
 	busy = true
@@ -180,9 +233,9 @@ func update_book(type: String, _is_initial_update: bool = false) -> bool:
 			var pages = RPGSYSTEM.database.enemies.slice(1)
 			var scene_path = "res://Scenes/GUI/SteamPunkTheme/Library/Books/bestiary.tscn"
 			var paths: Array[String] = []
-			paths.resize(pages.size() * 2 + 500)
+			paths.resize(pages.size() * 2 + 3)
 			paths.fill(scene_path)
-			book.limit_max_pages = pages.size() * 2  + 1
+			book.limit_max_pages = pages.size() * 2 + 1
 			book.set_new_pages(paths)
 		
 	
@@ -229,6 +282,8 @@ func update_book(type: String, _is_initial_update: bool = false) -> bool:
 			last_book.visible = false
 			busy = false
 			book_selected.emit(type)
+			if open_immediately:
+				open_book()
 	)
 	
 	current_book = type
@@ -348,3 +403,59 @@ func _on_custom_target_item_list_item_hovered_local(local_position: Vector2, tar
 func _on_custom_target_item_list_item_unhovered_local(target_node: Control) -> void:
 	GameManager.clear_manual_cursor_override(target_node)
 #endregion
+
+
+func _on_animate_book_ended_page_flip_animation() -> void:
+	if not book_is_opened:
+		GameManager.clear_manual_cursor_override()
+		select(get_selected_book())
+		GameManager.force_show_cursor()
+		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
+	#else:
+		#_enable_extra_controls()
+		#%BookExtraControls.visible = true
+
+
+func _on_animate_book_started_page_flip_animation() -> void:
+	GameManager.clear_manual_cursor_override()
+	GameManager.force_hide_cursor()
+
+
+func _enable_extra_controls() -> void:
+	%GoToPageLeft.set_disabled(true)
+	%GoToPageRight.set_disabled(true)
+	%Back.set_disabled(true)
+	
+	%BookExtraControls.modulate.a = 0.0
+	%BookExtraControls.visible = true
+	
+	var t = create_tween()
+	t.tween_property(%BookExtraControls, "modulate:a", 1.0, 0.5)
+	t.tween_callback(
+		func():
+			%GoToPageLeft.set_disabled(false)
+			%GoToPageRight.set_disabled(false)
+			%Back.set_disabled(false)
+	)
+
+
+func _disable_extra_controls() -> void:
+	%GoToPageLeft.set_disabled(true)
+	%GoToPageRight.set_disabled(true)
+	%Back.set_disabled(true)
+	
+	var t = create_tween()
+	t.tween_property(%BookExtraControls, "modulate:a", 0.0, 0.5)
+	t.tween_callback(%BookExtraControls.set_visible.bind(false))
+
+
+func _on_go_to_page_left_pressed() -> void:
+	button_pressed.emit(0)
+
+
+func _on_go_to_page_right_pressed() -> void:
+	button_pressed.emit(1)
+
+
+func _on_back_pressed() -> void:
+	button_pressed.emit(2)

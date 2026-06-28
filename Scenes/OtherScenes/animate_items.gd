@@ -66,12 +66,24 @@ func add_items(new_items: Array, custom_pos: int = -1, custom_behavior: int = -1
 	if new_items.is_empty():
 		return
 	
+	spawn_timer = 0.0 # Reset spawn_timer to wait full spawn_delay before inspecting the queue
+	
 	for item in new_items:
-		pending_queue.append({
-			"data": item,
-			"pos": custom_pos,
-			"beh": custom_behavior
-		})
+		var merged = false
+		if not pending_queue.is_empty():
+			var last_pending = pending_queue[pending_queue.size() - 1]
+			if last_pending.pos == custom_pos and last_pending.beh == custom_behavior:
+				var lp_data = last_pending.data
+				if lp_data.get("item_name") == item.get("item_name") and lp_data.get("prefix") == item.get("prefix"):
+					lp_data["quantity"] = lp_data.get("quantity", 1) + item.get("quantity", 1)
+					merged = true
+		
+		if not merged:
+			pending_queue.append({
+				"data": item.duplicate(),
+				"pos": custom_pos,
+				"beh": custom_behavior
+			})
 
 
 ## Adds a single item to the pending queue with optional custom position and behavior
@@ -128,14 +140,31 @@ func try_spawn_next_item():
 	var pos_type = next_pending.pos if next_pending.pos != -1 else spawn_position
 	var beh_type = next_pending.beh if next_pending.beh != -1 else spawn_behavior
 	
-	var item_size = calculate_item_size(item_data)
-	
-	if can_fit_item(item_size, item_data, pos_type):
-		pending_queue.remove_at(0)
-		create_item(item_data, item_size, pos_type, beh_type)
-		spawn_timer = 0.0
-	else:
-		spawn_timer = 0.0
+	var merged_active = false
+	if not items.is_empty():
+		var last_active = items[0] if beh_type == SpawnBehavior.PUSH_EXISTING else items[items.size() - 1]
+		if last_active and last_active.spawn_position == pos_type and last_active.state != State.EXITING:
+			var la_data = last_active.data
+			if la_data.get("item_name") == item_data.get("item_name") and la_data.get("prefix") == item_data.get("prefix"):
+				la_data["quantity"] = la_data.get("quantity", 1) + item_data.get("quantity", 1)
+				last_active.lifetime_timer = 0.0
+				last_active.timer = 0.0
+				last_active.state = State.STABLE
+				last_active.size = calculate_item_size(la_data)
+				recalculate_targets()
+				pending_queue.remove_at(0)
+				spawn_timer = 0.0
+				merged_active = true
+
+	if not merged_active:
+		var item_size = calculate_item_size(item_data)
+		
+		if can_fit_item(item_size, item_data, pos_type):
+			pending_queue.remove_at(0)
+			create_item(item_data, item_size, pos_type, beh_type)
+			spawn_timer = 0.0
+		else:
+			spawn_timer = 0.0
 
 
 ## Updates the state of all active items and removes finished ones

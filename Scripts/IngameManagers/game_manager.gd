@@ -1038,7 +1038,7 @@ func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> vo
 
 
 ## Bridges the clear manual override function to the cursor manager.
-func clear_manual_cursor_override(target_node: Control) -> void:
+func clear_manual_cursor_override(target_node: Control = null) -> void:
 	if cursor_manager:
 		cursor_manager.clear_manual_cursor_override(target_node)
 

@@ -4,11 +4,9 @@ class_name PageFlipSetupManager extends RefCounted
 var book: Node2D
 
 
-
 ## Initializes the setup manager.
 func _init(book_node: Node2D) -> void:
 	book = book_node
-
 
 
 #region Node Construction

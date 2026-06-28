@@ -64,7 +64,10 @@ var _custom_cache: Dictionary = {}
 @export var anim_player: AnimationPlayer
 
 ## Duration of the page turn animation in seconds.
-@export var anim_duration: float = 0.75
+@export var anim_turn_duration: float = 0.75
+
+## Duration of the open and close animations in seconds.
+@export var anim_open_close_duration: float = 1.0
 
 @export_subgroup("Paper Physics")
 
@@ -161,53 +164,54 @@ func _on_preset_changed(val):
 	curl_mode = CurlMode.BOTTOM_CORNER_FIRST
 	curl_lag = 0.3
 	enable_shadow = true
-	anim_duration = 0.75
+	anim_turn_duration = 0.75
+	anim_open_close_duration = 0.75
 	
 	match val:
 		PagePreset.DEFAULT:
 			paper_stiffness = 2.0; lift_bend = -15.0; land_bend = 5.0
 			curl_mode = CurlMode.TOP_CORNER_FIRST; curl_lag = 0.5
-			anim_duration = 0.75; timing_peak_lift = 0.15; timing_peak_land = 0.85
+			anim_turn_duration = 0.75; anim_open_close_duration = 0.75; timing_peak_lift = 0.15; timing_peak_land = 0.85
 			
 		PagePreset.STANDARD_PAPER:
 			paper_stiffness = 2.5; lift_bend = -12.0; land_bend = 3.0
 			curl_mode = CurlMode.TOP_CORNER_FIRST; curl_lag = 0.4
-			anim_duration = 0.65; timing_peak_lift = 0.12; timing_peak_land = 0.88
+			anim_turn_duration = 0.65; anim_open_close_duration = 0.65; timing_peak_lift = 0.12; timing_peak_land = 0.88
 			
 		PagePreset.HEAVY_GRIMOIRE:
 			paper_stiffness = 4.0; lift_bend = -3.0; land_bend = 1.0
 			curl_mode = CurlMode.STRAIGHT; curl_lag = 0.1
-			anim_duration = 1.1; timing_peak_lift = 0.25; timing_peak_land = 0.75
+			anim_turn_duration = 1.1; anim_open_close_duration = 1.1; timing_peak_lift = 0.25; timing_peak_land = 0.75
 			
 		PagePreset.LIGHT_MAGAZINE:
 			paper_stiffness = 0.8; lift_bend = -16.0; land_bend = 0.0
 			curl_mode = CurlMode.BOTTOM_CORNER_FIRST; curl_lag = 0.6
-			anim_duration = 0.8; timing_peak_lift = 0.10; timing_peak_land = 0.92
+			anim_turn_duration = 0.8; anim_open_close_duration = 0.8; timing_peak_lift = 0.10; timing_peak_land = 0.92
 			
 		PagePreset.OLD_SCROLL:
 			paper_stiffness = 1.8; lift_bend = -20.0; land_bend = 8.0
 			curl_mode = CurlMode.TOP_CORNER_FIRST; curl_lag = 0.9
-			anim_duration = 0.9; timing_peak_lift = 0.18; timing_peak_land = 0.82
+			anim_turn_duration = 0.9; anim_open_close_duration = 0.9; timing_peak_lift = 0.18; timing_peak_land = 0.82
 			
 		PagePreset.RIGID_BOARD:
 			paper_stiffness = 5.0; lift_bend = 0.0; land_bend = 0.0
 			curl_mode = CurlMode.STRAIGHT; curl_lag = 0.0
-			anim_duration = 0.8; timing_peak_lift = 0.2; timing_peak_land = 0.8
+			anim_turn_duration = 0.8; anim_open_close_duration = 0.8; timing_peak_lift = 0.2; timing_peak_land = 0.8
 			
 		PagePreset.WET_CLOTH:
 			paper_stiffness = 0.3; lift_bend = -28.0; land_bend = -0.0
 			curl_mode = CurlMode.BOTTOM_CORNER_FIRST; curl_lag = 0.6
-			anim_duration = 1.3; timing_peak_lift = 0.2; timing_peak_land = 0.95
+			anim_turn_duration = 1.3; anim_open_close_duration = 1.3; timing_peak_lift = 0.2; timing_peak_land = 0.95
 			
 		PagePreset.PLASTIC_SHEET:
 			paper_stiffness = 3.5; lift_bend = -12.0; land_bend = 12.0
 			curl_mode = CurlMode.TOP_CORNER_FIRST; curl_lag = 0.2
-			anim_duration = 0.5; timing_peak_lift = 0.08; timing_peak_land = 0.92
+			anim_turn_duration = 0.5; anim_open_close_duration = 0.5; timing_peak_lift = 0.08; timing_peak_land = 0.92
 			
 		PagePreset.METAL_PLATE:
 			paper_stiffness = 5.0; lift_bend = 0.0; land_bend = 0.0
 			curl_mode = CurlMode.STRAIGHT; curl_lag = 0.0
-			anim_duration = 1.4; timing_peak_lift = 0.15; timing_peak_land = 0.98
+			anim_turn_duration = 1.4; anim_open_close_duration = 1.4; timing_peak_lift = 0.15; timing_peak_land = 0.98
 	
 	notify_property_list_changed()
 	if anim_player and skeleton != NodePath(""):
@@ -222,7 +226,7 @@ func _save_state_to_cache():
 		"curl_m": curl_mode, "curl_l": curl_lag,
 		"t_lift": timing_peak_lift, "t_land": timing_peak_land,
 		"t_mid": timing_midpoint_ratio,
-		"dur": anim_duration, "shadow": enable_shadow
+		"dur_turn": anim_turn_duration, "dur_open": anim_open_close_duration, "shadow": enable_shadow
 	}
 
 
@@ -237,7 +241,8 @@ func _load_state_from_cache():
 	timing_peak_lift = _custom_cache.get("t_lift", 0.15)
 	timing_peak_land = _custom_cache.get("t_land", 0.85)
 	timing_midpoint_ratio = _custom_cache.get("t_mid", 0.5)
-	anim_duration = _custom_cache.get("dur", 1.0)
+	anim_turn_duration = _custom_cache.get("dur_turn", 1.0)
+	anim_open_close_duration = _custom_cache.get("dur_open", 1.0)
 	enable_shadow = _custom_cache.get("shadow", true)
 
 
@@ -452,18 +457,18 @@ func _generate_animations_logic():
 	if anim_player.has_animation_library(""): library = anim_player.get_animation_library("")
 	else: library = AnimationLibrary.new(); anim_player.add_animation_library("", library)
 	
-	_create_single_anim(library, "turn_flexible_page", false, false)
-	_create_single_anim(library, "turn_rigid_page", true, false)
-	_create_single_anim(library, "turn_flexible_page_mirror", false, true)
-	_create_single_anim(library, "turn_rigid_page_mirror", true, true)
+	_create_single_anim(library, "turn_flexible_page", false, false, anim_turn_duration)
+	_create_single_anim(library, "turn_rigid_page", true, false, anim_open_close_duration)
+	_create_single_anim(library, "turn_flexible_page_mirror", false, true, anim_turn_duration)
+	_create_single_anim(library, "turn_rigid_page_mirror", true, true, anim_open_close_duration)
 	notify_property_list_changed()
 
 
 
 ## Creates a single track animation and adds it to the player.
-func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid: bool, is_mirror: bool):
+func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid: bool, is_mirror: bool, duration: float):
 	var anim = Animation.new()
-	anim.length = anim_duration
+	anim.length = duration
 	anim.step = 0.01
 	
 	if library.has_animation(anim_name): library.remove_animation(anim_name)
@@ -477,20 +482,19 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 	var path_prefix = str(my_path)
 	
 	if path_prefix == "": path_prefix = "."
-	
 	var visible_col = Color(1, 1, 1, 1)
 	var invisible_col = Color(1, 1, 1, 0)
 	var faded_col = Color(1, 1, 1, shadow_mid_opacity)
 	
-	var t_mid = anim_duration * timing_midpoint_ratio
-	var t_end_snap = anim_duration * 0.95
+	var t_mid = duration * timing_midpoint_ratio
+	var t_end_snap = duration * 0.95
 	
 	var z_track = anim.add_track(Animation.TYPE_VALUE)
 	anim.track_set_path(z_track, path_prefix + ":z_index")
 	anim.track_set_interpolation_type(z_track, Animation.INTERPOLATION_NEAREST)
 	anim.track_insert_key(z_track, 0.0, 10)
 	anim.track_insert_key(z_track, t_mid * 0.3, 25)
-	anim.track_insert_key(z_track, t_mid + ((anim_duration - t_mid) * 0.3), 10)
+	anim.track_insert_key(z_track, t_mid + ((duration - t_mid) * 0.3), 10)
 
 	var inner_shadow_node = get_parent().get_node_or_null("InnerDynamicShadow") if get_parent() else null
 	
@@ -499,13 +503,12 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		var is_path_prefix = str(is_path)
 		
 		if is_path_prefix == "": is_path_prefix = "."
-			
 		var is_z_track = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(is_z_track, is_path_prefix + ":z_index")
 		anim.track_set_interpolation_type(is_z_track, Animation.INTERPOLATION_NEAREST)
 		anim.track_insert_key(is_z_track, 0.0, 11)
 		anim.track_insert_key(is_z_track, t_mid * 0.3, 26)
-		anim.track_insert_key(is_z_track, t_mid + ((anim_duration - t_mid) * 0.3), 11)
+		anim.track_insert_key(is_z_track, t_mid + ((duration - t_mid) * 0.3), 11)
 
 	var shadow_node = find_child(SHADOW_NAME, true, false)
 	
@@ -514,7 +517,6 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		var shadow_path_prefix = str(shadow_path)
 		
 		if shadow_path_prefix == "": shadow_path_prefix = "."
-		
 		var t_scale = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t_scale, shadow_path_prefix + ":scale")
 		anim.track_set_interpolation_type(t_scale, Animation.INTERPOLATION_LINEAR)
@@ -533,23 +535,23 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		anim.track_insert_key(t_mod, t_mid, faded_col)
 		
 		anim.track_insert_key(t_scale, t_end_snap, s_end)
-		anim.track_insert_key(t_scale, anim_duration, s_end)
-		anim.track_insert_key(t_mod, anim_duration * 0.9, visible_col)
-		anim.track_insert_key(t_mod, anim_duration, visible_col)
+		anim.track_insert_key(t_scale, duration, s_end)
+		anim.track_insert_key(t_mod, duration * 0.9, visible_col)
+		anim.track_insert_key(t_mod, duration, visible_col)
 
 	if not is_rigid:
 		var t_inner_spread = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t_inner_spread, path_prefix + ":material:shader_parameter/max_shadow_spread")
 		anim.track_set_interpolation_type(t_inner_spread, Animation.INTERPOLATION_NEAREST)
 		anim.track_insert_key(t_inner_spread, 0.0, face_shadow_spread)
-		anim.track_insert_key(t_inner_spread, anim_duration, face_shadow_spread)
+		anim.track_insert_key(t_inner_spread, duration, face_shadow_spread)
 
 		var t_inner_intensity = anim.add_track(Animation.TYPE_VALUE)
 		anim.track_set_path(t_inner_intensity, path_prefix + ":material:shader_parameter/shadow_intensity")
 		anim.track_set_interpolation_type(t_inner_intensity, Animation.INTERPOLATION_CUBIC)
 		anim.track_insert_key(t_inner_intensity, 0.0, 0.0)
 		anim.track_insert_key(t_inner_intensity, t_mid, face_shadow_intensity)
-		anim.track_insert_key(t_inner_intensity, anim_duration, 0.0)
+		anim.track_insert_key(t_inner_intensity, duration, 0.0)
 
 	for y in range(subdivision_y + 1):
 		var row_factor = 1.0
@@ -561,7 +563,7 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 			elif curl_mode == CurlMode.BOTTOM_CORNER_FIRST:
 				row_factor = lerp(1.0 - curl_lag, 1.0, y_ratio)
 		
-		var time_offset = (1.0 - row_factor) * (anim_duration * 0.1)
+		var time_offset = (1.0 - row_factor) * (duration * 0.1)
 		
 		for x in range(subdivision_x + 1):
 			var bone_name = "Bone_%d_%d" % [x, y]
@@ -586,17 +588,17 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 					anim.track_insert_key(t_idx, 0.0, s)
 					anim.track_insert_key(t_idx, 0.01, s)
 					anim.track_insert_key(t_idx, t_mid, deg_mid)
-					anim.track_insert_key(t_idx, anim_duration - 0.01, e)
-					anim.track_insert_key(t_idx, anim_duration, e)
+					anim.track_insert_key(t_idx, duration - 0.01, e)
+					anim.track_insert_key(t_idx, duration, e)
 				else:
 					anim.track_insert_key(t_idx, 0.0, 0.0)
-					anim.track_insert_key(t_idx, anim_duration, 0.0)
+					anim.track_insert_key(t_idx, duration, 0.0)
 			else:
 				var x_ratio = float(x) / float(subdivision_x)
 				var influence = pow(x_ratio, paper_stiffness)
-				var t_lift = clamp((anim_duration * timing_peak_lift) + time_offset, 0.0, t_mid - 0.05)
+				var t_lift = clamp((duration * timing_peak_lift) + time_offset, 0.0, t_mid - 0.05)
 				var t_mid_bone = t_mid
-				var t_land = clamp((anim_duration * timing_peak_land) - time_offset, t_mid + 0.05, anim_duration)
+				var t_land = clamp((duration * timing_peak_land) - time_offset, t_mid + 0.05, duration)
 				
 				if x == 0:
 					var s = deg_flat_left if is_mirror else deg_flat_right
@@ -612,12 +614,12 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 					anim.track_insert_key(t_idx, t_mid_bone, deg_mid)
 					anim.track_insert_key(t_idx, t_land, slt)
 					
-					var t_settle = lerp(t_land, anim_duration, 0.7)
+					var t_settle = lerp(t_land, duration, 0.7)
 					var s_settle = lerp(slt, e, 0.85)
 					anim.track_insert_key(t_idx, t_settle, s_settle)
 					
-					anim.track_insert_key(t_idx, anim_duration - 0.01, e)
-					anim.track_insert_key(t_idx, anim_duration, e)
+					anim.track_insert_key(t_idx, duration - 0.01, e)
+					anim.track_insert_key(t_idx, duration, e)
 				else:
 					var bm = -1.0 if is_mirror else 1.0
 					
@@ -628,11 +630,11 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 					var val_land = land_bend * row_factor * bm * influence
 					anim.track_insert_key(t_idx, t_land, val_land)
 					
-					var t_settle = lerp(t_land, anim_duration, 0.75)
+					var t_settle = lerp(t_land, duration, 0.75)
 					anim.track_insert_key(t_idx, t_settle, val_land * 0.15)
 					
-					anim.track_insert_key(t_idx, anim_duration - 0.01, 0.0)
-					anim.track_insert_key(t_idx, anim_duration, 0.0)
+					anim.track_insert_key(t_idx, duration - 0.01, 0.0)
+					anim.track_insert_key(t_idx, duration, 0.0)
 
 	if not is_rigid:
 		var t_main_scale = anim.add_track(Animation.TYPE_VALUE)
@@ -642,14 +644,14 @@ func _create_single_anim(library: AnimationLibrary, anim_name: String, is_rigid:
 		
 		anim.track_insert_key(t_main_scale, 0.0, Vector2(1, 1))
 		anim.track_insert_key(t_main_scale, t_mid, Vector2(1, 1))
-		anim.track_insert_key(t_main_scale, t_mid + ((anim_duration - t_mid) * 0.2), Vector2(squash_x, 1))
-		anim.track_insert_key(t_main_scale, anim_duration * 0.85, Vector2(1, 1))
-		anim.track_insert_key(t_main_scale, anim_duration, Vector2(1, 1))
+		anim.track_insert_key(t_main_scale, t_mid + ((duration - t_mid) * 0.2), Vector2(squash_x, 1))
+		anim.track_insert_key(t_main_scale, duration * 0.85, Vector2(1, 1))
+		anim.track_insert_key(t_main_scale, duration, Vector2(1, 1))
 
 	var method_track = anim.add_track(Animation.TYPE_METHOD)
 	anim.track_set_path(method_track, path_prefix)
 	anim.track_insert_key(method_track, t_mid, {"method": "_trigger_midpoint", "args": []})
-	anim.track_insert_key(method_track, anim_duration, {"method": "_trigger_end", "args": []})
+	anim.track_insert_key(method_track, duration, {"method": "_trigger_end", "args": []})
 
 #endregion
 

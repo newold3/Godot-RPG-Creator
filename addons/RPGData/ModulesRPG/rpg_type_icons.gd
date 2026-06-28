@@ -38,6 +38,9 @@ func get_class():
 ## Icons for skill types.
 @export var main_parameters_icons: Array[RPGIcon] = []
 
+## Icons for enemy rarities.
+@export var enemy_rarity_icons: Array[RPGIcon] = []
+
 
 ## Clones the RPG type icons.
 ## @param value bool - Whether to perform a deep clone.
@@ -62,5 +65,7 @@ func clone(value: bool = true) -> RPGTypeIcons:
 		new_type_icons.user_parameters_icons[i] = new_type_icons.user_parameters_icons[i].clone(value)
 	for i in new_type_icons.main_parameters_icons.size():
 		new_type_icons.main_parameters_icons[i] = new_type_icons.main_parameters_icons[i].clone(value)
+	for i in new_type_icons.enemy_rarity_icons.size():
+		new_type_icons.enemy_rarity_icons[i] = new_type_icons.enemy_rarity_icons[i].clone(value)
 
 	return new_type_icons
