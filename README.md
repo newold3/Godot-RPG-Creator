@@ -125,16 +125,17 @@ A huge thank you to the current patrons who support the development of Godot RPG
 ### 👏 Suporter
 * **none**
 
+---
 
-## ❤️ Latest Suporter
+## 💙 Latest Suporter
 
 Thanks to these patrons who have supported the project!
 
-* **Jana** (Former **Insider** for **6** months — thanks for your support!)
-* **Brian** (Former **Suporter** for **5** months. thanks for support!)
+* **Jana** (Former **Insider** for **6** months. Thanks for your support!)
+* **Brian** (Former **Supporter** for **5** months. Thanks for support!)
 
 
-Latest Suporter
+---
 
 Do you want to support the project and appear here? [Become a Patron](https://www.patreon.com/newold13/)
 
