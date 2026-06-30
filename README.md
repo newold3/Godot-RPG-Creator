@@ -111,35 +111,25 @@ Open an **[Issue]** with the `enhancement` or `suggestion` label. I am open to d
 
 ## ❤️ Supporters
 
-A huge thank you to the current patrons who support the development of Godot RPG Creator. Your contribution helps keep this project free and open source!
+A huge thank you to everyone who supports the development of Godot RPG Creator! Since I am developing this entire project solo, your contributions are vital to keeping this tool free and open source for everyone.
 
-### 👑 VIP Contributor
-* **none**
+[Become a Patron](https://www.patreon.com/newold13/)
+[☕ ko-fi](https://ko-fi.com/newold3)
 
-### 💎 Insider
-* **none**
+### 👑 VIP & Insider Contributors
+* Be the first to claim these top tiers and get your name/logo featured here!
 
-### 🛠️ Dev Support
-* **none**
-
-### 👏 Suporter
-* **none**
+### 🛠️ Dev Support & Supporters
+* Spots available! Join the campaign to help me dedicate more hours to programming and new features.
 
 ---
 
-## 💙 Latest Supporters
+## 💙 Hall of Fame & Past Supporters
 
-Thanks to these patrons who have supported the project!
+A massive thanks to those who have supported the project along the way!
 
 * **Jana** (Former **Insider** for **6** months. Thanks for your support!)
 * **Brian** (Former **Supporter** for **5** months. Thanks for support!)
-
-
----
-
-Do you want to support the project and appear here? [Become a Patron](https://www.patreon.com/newold13/)
-
-Or, if you prefer, you can buy me a coffe on [☕ ko-fi](https://ko-fi.com/newold3)
 
 ---
 
