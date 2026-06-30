@@ -113,8 +113,27 @@ Open an **[Issue]** with the `enhancement` or `suggestion` label. I am open to d
 
 A huge thank you to the patrons who support the development of Godot RPG Creator. Your contribution helps keep this project free and open source!
 
+### 👑 VIP Contributor
+* **none**
+
 ### 💎 Insider
-* **Jana**
+* **none**
+
+### 🛠️ Dev Support
+* **none**
+
+### 👏 Suporter
+* **none**
+
+
+## ❤️ Latest Suporter
+
+Thanks to these supporters who have supported the project!
+* **Jana** (Insider 6 months, thanks for support!)
+* **Brian** (Suporter 5 months. thanks for support!)
+
+
+Latest Suporter
 
 Do you want to support the project and appear here? [Become a Patron](https://www.patreon.com/newold13/)
 
