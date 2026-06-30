@@ -127,7 +127,7 @@ A huge thank you to the current patrons who support the development of Godot RPG
 
 ---
 
-## 💙 Latest Suporter
+## 💙 Latest Supporters
 
 Thanks to these patrons who have supported the project!
 
