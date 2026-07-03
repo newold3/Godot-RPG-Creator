@@ -218,10 +218,40 @@ func disable_cursor_outline() -> void:
 ## Forces the cursor to a specific global position and targets a node manually.
 func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> void:
 	if hand_cursor:
+		var node_changed = (hand_cursor.forced_target != target_node)
 		hand_cursor.forced_target = target_node
 		hand_cursor.pause_reposition = true
 		hand_cursor.force_show()
-		hand_cursor.cursor.global_position = global_pos
+		
+		if node_changed or hand_cursor.cursor.global_position.distance_to(global_pos) > 1.0:
+			var target_rotation: float = 0.0
+			var target_scale: Vector2 = Vector2(1, 1)
+			
+			match hand_cursor.current_hand_position:
+				hand_cursor.HandPosition.LEFT:
+					target_rotation = 0.0
+					target_scale = Vector2(1, 1)
+				hand_cursor.HandPosition.RIGHT:
+					target_rotation = deg_to_rad(180)
+					target_scale = Vector2(1, -1)
+				hand_cursor.HandPosition.UP:
+					target_rotation = deg_to_rad(90)
+					target_scale = Vector2(1, -1)
+				hand_cursor.HandPosition.DOWN:
+					target_rotation = deg_to_rad(90)
+					target_scale = Vector2(-1, 1)
+					
+			var tween_id = "manual_cursor_tween"
+			if hand_cursor.has_meta(tween_id):
+				var old_tween = hand_cursor.get_meta(tween_id)
+				if old_tween and old_tween.is_valid():
+					old_tween.kill()
+					
+			var t = hand_cursor.create_tween().set_parallel(true).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+			t.tween_property(hand_cursor.cursor, "global_position", global_pos, 0.25)
+			t.tween_property(hand_cursor.cursor, "rotation", target_rotation, 0.25)
+			t.tween_property(hand_cursor.cursor, "scale", target_scale, 0.25)
+			hand_cursor.set_meta(tween_id, t)
 
 
 ## Clears the manual override if the node matches the forced target.

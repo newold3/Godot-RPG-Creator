@@ -211,8 +211,8 @@ func apply_new_size() -> void:
 			var py_r = py + (curve_r * book.spine_curl_intensity) + (outer_curve_r * book.outer_droop_intensity)
 			curved_r.append(Vector2(px, py_r))
 			
-			var shadow_r = 1.0 - (curve_r * book.spine_shadow_darkness)
-			colors_r.append(Color(shadow_r, shadow_r, shadow_r, 1.0))
+			var shadow_r = 1.0
+			colors_r.append(Color(1.0, 1.0, 1.0, 1.0))
 			
 			var curve_l = 0.0
 			var outer_curve_l = 0.0
@@ -230,8 +230,8 @@ func apply_new_size() -> void:
 			var py_l = py + (curve_l * book.spine_curl_intensity) + (outer_curve_l * book.outer_droop_intensity)
 			curved_l.append(Vector2(px, py_l))
 			
-			var shadow_l = 1.0 - (curve_l * book.spine_shadow_darkness)
-			colors_l.append(Color(shadow_l, shadow_l, shadow_l, 1.0))
+			var shadow_l = 1.0
+			colors_l.append(Color(1.0, 1.0, 1.0, 1.0))
 			
 	for y in range(sub_y):
 		for x in range(sub_x):
@@ -680,21 +680,17 @@ func update_static_visuals_immediate() -> void:
 
 	var sh_left = book.visuals_container.get_node_or_null("InnerShadowLeft") if book.visuals_container else null
 	if sh_left: 
-		var show_sh_l = valid_l and not l_is_cover
+		var show_sh_l = false
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(sh_left, show_sh_l)
-		sh_left.modulate.a = 1.0 if show_sh_l else 0.0
-		if show_sh_l and blended.has("poly_l") and blended.poly_l.size() > 0:
-			sh_left.polygon = blended.poly_l
+		sh_left.modulate.a = 0.0
 		
 	var sh_right = book.visuals_container.get_node_or_null("InnerShadowRight") if book.visuals_container else null
 	if sh_right: 
-		var show_sh_r = valid_r and not r_is_cover
+		var show_sh_r = false
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(sh_right, show_sh_r)
-		sh_right.modulate.a = 1.0 if show_sh_r else 0.0
-		if show_sh_r and blended.has("poly_r") and blended.poly_r.size() > 0:
-			sh_right.polygon = blended.poly_r
+		sh_right.modulate.a = 0.0
 #endregion
 
 
@@ -824,7 +820,14 @@ func process_animation_update(_delta: float) -> void:
 					
 				mid_ratio = clampf(mid_ratio, 0.01, 0.99)
 				
-				var end_ratio = mid_ratio + ((1.0 - mid_ratio) * 0.8)
+				# Calculate target_fade_t (when the page is fully landed and should match static page shading)
+				var fade_target_t = 0.8
+				if book.anim_player.speed_scale > 0:
+					var motion_duration = book.anim_player.current_animation_length / book.anim_player.speed_scale
+					var t_overlap = book.landing_overlap / motion_duration
+					fade_target_t = clampf(1.0 - t_overlap, 0.6, 0.9)
+					
+				var end_ratio = fade_target_t
 				
 				if t < mid_ratio:
 					var n = t / mid_ratio
@@ -842,12 +845,12 @@ func process_animation_update(_delta: float) -> void:
 					shadow_fade_factor = 1.0
 				elif t < mid_ratio:
 					var n = (t - half_first_part) / (mid_ratio - half_first_part)
-					shadow_fade_factor = lerp(1.0, 0.15, n)
+					shadow_fade_factor = lerp(1.0, 0.0, n)
 				elif t < half_second_part:
-					shadow_fade_factor = 0.15
+					shadow_fade_factor = 0.0
 				else:
-					var n = (t - half_second_part) / (1.0 - half_second_part)
-					shadow_fade_factor = lerp(0.15, 1.0, n)
+					var n = (t - half_second_part) / (fade_target_t - half_second_part)
+					shadow_fade_factor = lerp(0.0, 1.0, clampf(n, 0.0, 1.0))
 					
 			for i in range(pts.size()):
 				var pt = pts[i]
@@ -870,12 +873,20 @@ func process_animation_update(_delta: float) -> void:
 				pts[i] = Vector2(pt.x, pt.y + (total_curve * cos_factor))
 				shadow_pts[i] = Vector2(pt.x, pt.y + total_curve)
 				
-				var raw_shadow = clampf(curve * book.spine_shadow_darkness, 0.0, 1.0) * shadow_fade_factor
-				var base_color_val = clampf(1.0 - raw_shadow, 0.0, 1.0)
-				var lit_base_val = lerp(base_color_val, 1.0, light_factor * 0.1)
+				var raw_shadow = 0.0
+				var lit_base_val = 1.0
 				
 				colors.append(Color(lit_base_val, lit_base_val, lit_base_val, 1.0))
 				dyn_shadow_colors.append(Color(0.0, 0.0, 0.0, raw_shadow))
+				
+			# Update viewport-based shadow overlay modulation
+			var sh3 = get_spine_shadow_overlay(book._slot_3)
+			if sh3:
+				sh3.modulate.a = shadow_fade_factor
+				
+			var sh4 = get_spine_shadow_overlay(book._slot_4)
+			if sh4:
+				sh4.modulate.a = shadow_fade_factor
 				
 			book.dynamic_poly.position.y = -book.target_page_size.y / 2.0 + current_offset_y
 			book.dynamic_poly.polygons = []
@@ -900,6 +911,12 @@ func process_animation_update(_delta: float) -> void:
 				dyn_sh.position = book.dynamic_poly.position
 				dyn_sh.scale = book.dynamic_poly.scale
 				dyn_sh.visible = book.dynamic_poly.visible
+
+
+func get_spine_shadow_overlay(slot: SubViewport) -> TextureRect:
+	if not slot:
+		return null
+	return slot.get_node_or_null("_SpineShadowOverlay") as TextureRect
 
 
 #endregion

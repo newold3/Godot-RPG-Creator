@@ -966,6 +966,11 @@ func is_action_held(action: String) -> bool:
 	return result
 
 
+func is_mouse_over_focusable_control() -> bool:
+	var control = get_viewport().gui_get_hovered_control()
+	return control != null and control.focus_mode > 0
+
+
 # Check if a mouse button is pressed with repeat handling
 ## Checks if a mouse button is pressed.
 func is_mouse_button_pressed(keycode: int) -> bool:
@@ -1343,7 +1348,7 @@ func get_any_key_pressed() -> String:
 #region Just Pressed
 
 ## Checks if any input from a map or action array was just pressed.
-func is_custom_inputs_just_pressed(input_map: Dictionary = {}, actions: Array[String] = [], consume: bool = true, exclude_keys: PackedInt32Array = []) -> bool:
+func is_custom_inputs_just_pressed(input_map: Dictionary = {}, actions: Array[String] = [], consume: bool = false, exclude_keys: PackedInt32Array = []) -> bool:
 	var cache_key = "custom_just_pressed_" + str(input_map) + "_" + str(actions) + "_" + str(exclude_keys)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1353,33 +1358,42 @@ func is_custom_inputs_just_pressed(input_map: Dictionary = {}, actions: Array[St
 		
 	var result = false
 	
-	if input_map.has("keys"):
-		for key_code in input_map["keys"]:
-			if key_code in exclude_keys: continue
-			if is_key_just_pressed(key_code, consume):
-				result = true
-				break
-				
-	if not result and input_map.has("mouse"):
-		for button in input_map["mouse"]:
-			if button in exclude_keys: continue
-			if is_mouse_button_just_pressed(button, consume):
-				result = true
-				break
-				
-	if not result and input_map.has("joy"):
-		for button in input_map["joy"]:
-			if button in exclude_keys: continue
-			if is_joy_button_just_pressed(button, consume):
-				result = true
-				break
-				
-	if not result and not actions.is_empty():
+	# 1. Native action check first
+	if not actions.is_empty():
 		for action in actions:
-			if is_action_just_pressed(action, consume):
+			if Input.is_action_just_pressed(action):
 				result = true
 				break
 				
+	# 2. Fallback check
+	if not result:
+		if input_map.has("keys"):
+			for key_code in input_map["keys"]:
+				if key_code in exclude_keys: continue
+				if is_key_just_pressed(key_code, consume):
+					result = true
+					break
+					
+		if not result and input_map.has("mouse"):
+			for button in input_map["mouse"]:
+				if button in exclude_keys: continue
+				if is_mouse_button_just_pressed(button, consume):
+					result = true
+					break
+					
+		if not result and input_map.has("joy"):
+			for button in input_map["joy"]:
+				if button in exclude_keys: continue
+				if is_joy_button_just_pressed(button, consume):
+					result = true
+					break
+					
+		if not result and not actions.is_empty():
+			for action in actions:
+				if is_action_just_pressed(action, consume):
+					result = true
+					break
+					
 	cache[cache_key] = result
 	if consume and result:
 		cache[cache_key] = false
@@ -1388,7 +1402,7 @@ func is_custom_inputs_just_pressed(input_map: Dictionary = {}, actions: Array[St
 
 
 ## Checks if any key, mouse button, or joypad button was just pressed.
-func is_any_just_pressed(consume: bool = true) -> bool:
+func is_any_just_pressed(consume: bool = false) -> bool:
 	var cache_key = "any_just_pressed"
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1423,7 +1437,7 @@ func is_any_just_pressed(consume: bool = true) -> bool:
 
 
 ## Generic function to check if ANY key/button was just pressed (no echo)
-func is_key_just_pressed(keycode: int, consume: bool = true) -> bool:
+func is_key_just_pressed(keycode: int, consume: bool = false) -> bool:
 	var cache_key = "key_just_" + str(keycode)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1447,7 +1461,7 @@ func is_key_just_pressed(keycode: int, consume: bool = true) -> bool:
 
 
 ## Generic function to check if the the specified mouse button was just pressed (no echo)
-func is_mouse_button_just_pressed(keycode: int, consume: bool = true) -> bool:
+func is_mouse_button_just_pressed(keycode: int, consume: bool = false) -> bool:
 	var cache_key = "mouse_just_" + str(keycode)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1471,7 +1485,7 @@ func is_mouse_button_just_pressed(keycode: int, consume: bool = true) -> bool:
 
 
 ## Generic function to check if ANY joy button was just pressed (no echo)
-func is_joy_button_just_pressed(keycode: int, consume: bool = true) -> bool:
+func is_joy_button_just_pressed(keycode: int, consume: bool = false) -> bool:
 	var cache_key = "joy_just_" + str(keycode)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1494,8 +1508,7 @@ func is_joy_button_just_pressed(keycode: int, consume: bool = true) -> bool:
 	return result
 
 
-## Generic function to check if action was just pressed (no echo)
-func is_action_just_pressed(action: String, consume: bool = true) -> bool:
+func is_action_just_pressed(action: String, consume: bool = false) -> bool:
 	var cache_key = "action_just_" + action
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1506,7 +1519,15 @@ func is_action_just_pressed(action: String, consume: bool = true) -> bool:
 	var current_frame = Engine.get_process_frames()
 	var result = false
 	
-	if Input.is_action_pressed(action):
+	if Input.is_action_just_pressed(action):
+		if not action_states.has(action):
+			_register_action(action)
+		action_states[action].refresh()
+		if consume:
+			get_viewport().set_input_as_handled()
+		result = true
+	
+	if not result and Input.is_action_pressed(action):
 		if not action_states.has(action):
 			_register_action(action)
 			if not Input.is_action_just_pressed(action):
@@ -1526,7 +1547,7 @@ func is_action_just_pressed(action: String, consume: bool = true) -> bool:
 
 
 ## Checks if action was just released.
-func is_action_just_released(action: String, consume: bool = true) -> bool:
+func is_action_just_released(action: String, consume: bool = false) -> bool:
 	var cache_key = "action_just_released_" + action
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1544,7 +1565,7 @@ func is_action_just_released(action: String, consume: bool = true) -> bool:
 
 
 ## Check if a confirm action was JUST pressed (no echo, only initial press)
-func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32Array = [], mouse_left_require_focusable: bool = true, consume: bool = true, exclude_keys: PackedInt32Array = []) -> bool:
+func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32Array = [], mouse_left_require_focusable: bool = true, consume: bool = false, exclude_keys: PackedInt32Array = []) -> bool:
 	var cache_key = "confirm_just_" + str(ignore_mouse_left) + "_" + str(extra_keys) + "_" + str(exclude_keys)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1558,36 +1579,45 @@ func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: Packed
 	
 	var result = false
 	
-	for key_code in CONFIRM_INPUTS.keys:
-		if key_code in exclude_keys: continue
-		if is_key_just_pressed(key_code, consume):
+	# 1. Native check first
+	if Input.is_action_just_pressed("ui_accept"):
+		result = true
+	elif not ignore_mouse_left and Input.is_action_just_pressed("Mouse Left"):
+		if not mouse_left_require_focusable or GameManager.is_mouse_over_current_control_focused() or is_mouse_over_focusable_control():
 			result = true
-			break
 	
+	# 2. Fallback logic
 	if not result:
-		for button in CONFIRM_INPUTS.mouse:
-			if button in exclude_keys: continue
-			if button == MOUSE_BUTTON_LEFT and ignore_mouse_left:
-				continue
-			if is_mouse_button_just_pressed(button, consume):
-				if mouse_left_require_focusable and not GameManager.is_mouse_over_current_control_focused():
+		for key_code in CONFIRM_INPUTS.keys:
+			if key_code in exclude_keys: continue
+			if is_key_just_pressed(key_code, consume):
+				result = true
+				break
+		
+		if not result:
+			for button in CONFIRM_INPUTS.mouse:
+				if button in exclude_keys: continue
+				if button == MOUSE_BUTTON_LEFT and ignore_mouse_left:
+					continue
+				if is_mouse_button_just_pressed(button, consume):
+					if mouse_left_require_focusable and not GameManager.is_mouse_over_current_control_focused() and not is_mouse_over_focusable_control():
+						break
+					result = true
 					break
-				result = true
-				break
-	
-	if not result:
-		for button in CONFIRM_INPUTS.joy:
-			if button in exclude_keys: continue
-			if is_joy_button_just_pressed(button, consume):
-				result = true
-				break
-	
-	if not result and not extra_keys.is_empty():
-		for key in extra_keys:
-			if key in exclude_keys: continue
-			if is_key_just_pressed(key, consume):
-				result = true
-				break
+		
+		if not result:
+			for button in CONFIRM_INPUTS.joy:
+				if button in exclude_keys: continue
+				if is_joy_button_just_pressed(button, consume):
+					result = true
+					break
+		
+		if not result and not extra_keys.is_empty():
+			for key in extra_keys:
+				if key in exclude_keys: continue
+				if is_key_just_pressed(key, consume):
+					result = true
+					break
 	
 	if result:
 		get_viewport().set_input_as_handled()
@@ -1600,7 +1630,7 @@ func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: Packed
 
 
 ## Check if a cancel action was JUST pressed (no echo)
-func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = true, exclude_keys: PackedInt32Array = []) -> bool:
+func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = false, exclude_keys: PackedInt32Array = []) -> bool:
 	var cache_key = "cancel_just_" + str(extra_keys) + "_" + str(exclude_keys)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1610,32 +1640,38 @@ func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = t
 	
 	var result = false
 	
-	for key_code in CANCEL_INPUTS.keys:
-		if key_code in exclude_keys: continue
-		if is_key_just_pressed(key_code, consume):
-			result = true
-			break
+	# 1. Native check first
+	if Input.is_action_just_pressed("ui_cancel") or Input.is_action_just_pressed("Mouse Right"):
+		result = true
 	
+	# 2. Fallback logic
 	if not result:
-		for button in CANCEL_INPUTS.mouse:
-			if button in exclude_keys: continue
-			if is_mouse_button_just_pressed(button, consume):
+		for key_code in CANCEL_INPUTS.keys:
+			if key_code in exclude_keys: continue
+			if is_key_just_pressed(key_code, consume):
 				result = true
 				break
-	
-	if not result:
-		for button in CANCEL_INPUTS.joy:
-			if button in exclude_keys: continue
-			if is_joy_button_just_pressed(button, consume):
-				result = true
-				break
-	
-	if not result and not extra_keys.is_empty():
-		for key in extra_keys:
-			if key in exclude_keys: continue
-			if is_key_just_pressed(key, consume):
-				result = true
-				break
+		
+		if not result:
+			for button in CANCEL_INPUTS.mouse:
+				if button in exclude_keys: continue
+				if is_mouse_button_just_pressed(button, consume):
+					result = true
+					break
+		
+		if not result:
+			for button in CANCEL_INPUTS.joy:
+				if button in exclude_keys: continue
+				if is_joy_button_just_pressed(button, consume):
+					result = true
+					break
+		
+		if not result and not extra_keys.is_empty():
+			for key in extra_keys:
+				if key in exclude_keys: continue
+				if is_key_just_pressed(key, consume):
+					result = true
+					break
 	
 	if result:
 		get_viewport().set_input_as_handled()
@@ -1648,7 +1684,7 @@ func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = t
 
 
 ## Check if either Enter or Numpad Enter was JUST pressed (no echo)
-func is_enter_just_pressed(consume: bool = true) -> bool:
+func is_enter_just_pressed(consume: bool = false) -> bool:
 	var cache_key = "enter_just"
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
@@ -1658,11 +1694,17 @@ func is_enter_just_pressed(consume: bool = true) -> bool:
 	
 	var result = false
 	
-	if is_key_just_pressed(KEY_ENTER, consume):
+	# 1. Native check first (Enter is mapped to ui_accept)
+	if Input.is_action_just_pressed("ui_accept"):
 		result = true
-			
-	if not result and is_key_just_pressed(KEY_KP_ENTER, consume):
-		result = true
+		
+	# 2. Fallback logic
+	if not result:
+		if is_key_just_pressed(KEY_ENTER, consume):
+			result = true
+				
+		if not result and is_key_just_pressed(KEY_KP_ENTER, consume):
+			result = true
 	
 	if result:
 		get_viewport().set_input_as_handled()
@@ -1718,6 +1760,10 @@ func is_any_direction_pressed() -> bool:
 
 
 func is_direction_just_pressed(direction: String) -> bool:
+	var action_name = "ui_" + direction
+	if Input.is_action_just_pressed(action_name):
+		return true
+		
 	match direction:
 		"left":
 			if key_states.keys.has(KEY_LEFT) and key_states.keys[KEY_LEFT].is_just_pressed():
@@ -1791,6 +1837,10 @@ func is_stick_direction_just_released(stick_type: String, direction: String) -> 
 
 
 func is_direction_just_released(direction: String) -> bool:
+	var action_name = "ui_" + direction
+	if Input.is_action_just_released(action_name):
+		return true
+		
 	match direction:
 		"left":
 			if is_key_just_released(KEY_LEFT):

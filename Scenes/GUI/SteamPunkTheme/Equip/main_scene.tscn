@@ -4,9 +4,15 @@
 [ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_yhcol"]
 [ext_resource type="PackedScene" uid="uid://3p2o203smp6v" path="res://Scenes/GUI/SteamPunkTheme/Equip/equip_scene.tscn" id="3_fr7ih"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_pcybh"]
+[ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="5_1q44n"]
+[ext_resource type="Script" uid="uid://lf5jsy1h3ico" path="res://Scripts/ScriptsBase/stats_comparison.gd" id="6_7sd7a"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pcybh"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_qrwsq"]
 viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
+
+[sub_resource type="Resource" id="Resource_l6lfr"]
+script = ExtResource("6_7sd7a")
+metadata/_custom_type_script = "uid://lf5jsy1h3ico"
 
 [node name="MainEquipScene" unique_id=1019145880 instance=ExtResource("1_3fq4p")]
 theme = ExtResource("2_yhcol")
@@ -22,7 +28,7 @@ fade_out_enabled = false
 ready_to_process_delay = 0.18
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="1" unique_id=814727480]
-texture = SubResource("ViewportTexture_pcybh")
+texture = SubResource("ViewportTexture_qrwsq")
 metadata/_edit_lock_ = true
 
 [node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="2" unique_id=823818857]
@@ -57,6 +63,19 @@ theme_override_fonts/font = ExtResource("4_pcybh")
 
 [node name="Stats" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer" parent_id_path=PackedInt32Array(664947676, 1634081193) index="0" unique_id=619794000]
 theme_override_constants/margin_bottom = -42
+
+[node name="StatsContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" parent_id_path=PackedInt32Array(664947676, 125808626, 835639728) index="0" unique_id=1948749115]
+script = ExtResource("5_1q44n")
+comparison_module = SubResource("Resource_l6lfr")
+show_comparison = true
+use_abbreviations = false
+outline_sizes = Array[int]([2])
+outline_colors = Array[Color]([Color(0, 0, 0, 1)])
+outline_offsets = Array[Vector2i]([Vector2i(0, 0)])
+text_color = Color(1, 1, 1, 1)
+item_separator = 10
+title_separator = 6
+title_separator_style = null
 
 [node name="MenuItems" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu" parent_id_path=PackedInt32Array(664947676, 1878586789) index="0" unique_id=889513046]
 custom_minimum_size = Vector2(416, 400)

@@ -407,14 +407,14 @@ func debug_fill_stats_randomly() -> void:
 		for enemy in database.enemies:
 			if enemy and enemy.id > 0:
 				var uid = enemy._uniq_id
-				if uid > 0 and randf() > 0.3:
+				if uid > 0 and randf() > 0.1:
 					stats.enemy_kills[uid] = randi_range(1, 99)
 					
 		# Random skills used
 		for skill in database.skills:
 			if skill and skill.id > 0:
 				var uid = skill._uniq_id
-				if uid > 0 and randf() > 0.4:
+				if uid > 0 and randf() > 0.1:
 					stats.skills[uid] = randi_range(1, 150)
 					
 		# Random items found/sold/purchased

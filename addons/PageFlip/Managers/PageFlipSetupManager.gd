@@ -78,8 +78,8 @@ func build_visual_nodes() -> void:
 
 ## Constructs all the shadow overlays and depth effect nodes automatically.
 func build_shadow_nodes() -> void:
-	var names = ["CoverStackShadowLeft", "CoverStackShadowRight", "StackDropShadowLeft", "StackDropShadowRight", "InnerShadowLeft", "InnerShadowRight", "InnerDynamicShadow"]
-	var z_indices = [-1, -1, -3, -3, 1, 1, 11]
+	var names = ["CoverStackShadowLeft", "CoverStackShadowRight", "StackDropShadowLeft", "StackDropShadowRight"]
+	var z_indices = [-1, -1, -3, -3]
 	
 	for i in range(names.size()):
 		var n = names[i]

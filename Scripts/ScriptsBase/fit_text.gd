@@ -7,6 +7,9 @@ extends Label
 ## Minimum font size allowed for the label.
 @export var min_font_size: int = 1
 
+## If true, scales the node to fit the parent when the minimum font size still exceeds bounds.
+@export var allow_scaling: bool = false
+
 var _parent: Control
 var _last_text: String = ""
 var _last_parent_size: Vector2 = Vector2.ZERO
@@ -16,10 +19,8 @@ var _last_parent_size: Vector2 = Vector2.ZERO
 ## Initializes the label settings and applies the initial autosize.
 func _ready() -> void:
 	_parent = get_parent() as Control
-	clip_text = true # Prevent the label from expanding its parent container
 	_setup_label_settings()
 	_update_font_size.call_deferred()
-
 
 
 ## Checks for changes in text or parent size every frame to recalculate the font size if needed.
@@ -41,13 +42,13 @@ func _setup_label_settings() -> void:
 		label_settings = label_settings.duplicate()
 
 
-
 ## Calculates the maximum font size that fits the text inside the parent container bounds.
 func _update_font_size() -> void:
 	if not _parent:
 		return
 		
 	var parent_size: Vector2 = _parent.size
+	
 	if parent_size.x <= 0 or parent_size.y <= 0 or text.is_empty():
 		return
 		
@@ -56,9 +57,12 @@ func _update_font_size() -> void:
 	var high: int = max_font_size
 	var best: int = low
 	
+	var current_text = tr(text)
+	
 	while low <= high:
 		var mid: int = int((low + high) / 2.0)
-		var text_size: Vector2 = current_font.get_string_size(text, horizontal_alignment, -1, mid)
+		var text_size: Vector2 = current_font.get_multiline_string_size(current_text, horizontal_alignment, parent_size.x, mid)
+		
 		if text_size.x <= parent_size.x and text_size.y <= parent_size.y:
 			best = mid
 			low = mid + 1
@@ -69,7 +73,22 @@ func _update_font_size() -> void:
 		label_settings.font_size = best
 	else:
 		add_theme_font_size_override("font_size", best)
+		
+	scale = Vector2.ONE
 	
+	if allow_scaling:
+		var final_text_size: Vector2 = current_font.get_multiline_string_size(current_text, horizontal_alignment, parent_size.x, best)
+		var scale_x: float = 1.0
+		var scale_y: float = 1.0
+		
+		if final_text_size.x > parent_size.x:
+			scale_x = parent_size.x / final_text_size.x
+			
+		if final_text_size.y > parent_size.y:
+			scale_y = parent_size.y / final_text_size.y
+			
+		scale = Vector2(scale_x, scale_y)
+		
 	set_deferred("size", parent_size)
 	position = Vector2.ZERO
 #endregion

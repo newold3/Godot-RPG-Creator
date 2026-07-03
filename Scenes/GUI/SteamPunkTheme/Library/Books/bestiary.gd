@@ -21,7 +21,6 @@ func _ready() -> void:
 	_book = BookAPI.find_book_controller(self)
 	_page_idx = get_meta("page_index", -1)
 	
-	GameManager.force_hide_cursor()
 	set_process(false)
 	
 	if _book:
@@ -32,11 +31,49 @@ func _ready() -> void:
 					%ItemList.grab_focus.call_deferred()
 		)
 	
+	%DescriptionContainer.get_v_scroll_bar().focus_mode = Control.FOCUS_CLICK
+	%StatsContainer.get_v_scroll_bar().focus_mode = Control.FOCUS_CLICK
+	%DropContainer.get_v_scroll_bar().focus_mode = Control.FOCUS_CLICK
+	%DescriptionContainer.get_v_scroll_bar().step = %DescriptionContainer.wheel_scroll_speed
+	%StatsContainer.get_v_scroll_bar().step = %StatsContainer.wheel_scroll_speed
+	%DropContainer.get_v_scroll_bar().step = %DropContainer.wheel_scroll_speed
+	%DescriptionContainer.get_v_scroll_bar().focus_entered.connect(_config_hand_in_description)
+	%StatsContainer.get_v_scroll_bar().focus_entered.connect(_config_hand_in_stats)
+	%DropContainer.get_v_scroll_bar().focus_entered.connect(_config_hand_in_drops)
+	
 	update_page(_page_idx)
 
 
+func _config_hand_in_description() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, manipulator)
+	GameManager.set_cursor_offset(Vector2(-2, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _config_hand_in_stats() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, manipulator)
+	GameManager.set_cursor_offset(Vector2(-2, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _config_hand_in_drops() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, manipulator)
+	GameManager.set_cursor_offset(Vector2(-2, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _on_item_list_focus_entered() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, manipulator)
+	GameManager.set_cursor_offset(Vector2(0, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
 func update_page(page_index: int) -> void:
-	GameManager.force_hide_cursor()
+	# GameManager.force_hide_cursor()
 	set_process(false)
 	
 	_page_idx = page_index
@@ -50,6 +87,19 @@ func update_page(page_index: int) -> void:
 		_build_index.call_deferred()
 	else:
 		_build_monster_entry.call_deferred()
+
+
+func _get_focusable_controls() -> Array[Control]:
+	var controls: Array[Control] = []
+	
+	if _is_index:
+		controls.append(%ItemList)
+	elif not _is_left:
+		controls.append(%DescriptionContainer.get_v_scroll_bar())
+		controls.append(%StatsContainer.get_v_scroll_bar())
+		controls.append(%DropContainer.get_v_scroll_bar())
+	
+	return controls
 
 
 func _process(_delta: float) -> void:

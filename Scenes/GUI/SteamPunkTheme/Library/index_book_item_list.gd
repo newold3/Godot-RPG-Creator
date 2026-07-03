@@ -128,7 +128,7 @@ func _gui_input(event: InputEvent) -> void:
 			StaticSignal.emit(_unhover_signal_name, [self])
 		
 		accept_event()
-	elif event.is_action("ui_up") or event.is_action("ui_down") or event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept"):
+	elif event.is_action("ui_up") or event.is_action("ui_down") or event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept") or event.is_action("ui_select"):
 		accept_event()
 	elif ControllerManager.is_any_direction_pressed() or ControllerManager.is_confirm_just_pressed():
 		accept_event()

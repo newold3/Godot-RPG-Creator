@@ -83,6 +83,9 @@ func update_slot_content(slot: SubViewport, content_index: int, is_left: bool) -
 	else:
 		setup_texture_in_slot(slot, default_blank, is_left, is_cover)
 		
+	if not is_cover:
+		add_spine_shadow_overlay(slot, is_left)
+		
 	prune_scene_cache.call_deferred()
 
 
@@ -273,3 +276,44 @@ func prune_scene_cache() -> void:
 			
 		_scene_cache.erase(key_to_kill)
 #endregion
+
+
+func add_spine_shadow_overlay(slot: SubViewport, is_left: bool) -> void:
+	var shadow = TextureRect.new()
+	shadow.name = "_SpineShadowOverlay"
+	shadow.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	
+	# Align shadow size and position exactly to inner page margin to prevent bleeding
+	var has_margin = (book.inner_page_margin != Vector2.ZERO)
+	if has_margin:
+		shadow.size.y = slot.size.y - (book.inner_page_margin.y * 2.0)
+		shadow.size.x = slot.size.x - book.inner_page_margin.x
+		shadow.position.y = book.inner_page_margin.y
+		shadow.position.x = book.inner_page_margin.x if is_left else 0.0
+	else:
+		shadow.size = slot.size
+		shadow.position = Vector2.ZERO
+		
+	shadow.z_index = 99
+	shadow.z_as_relative = false
+	shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var grad = Gradient.new()
+	grad.offsets = [0.0, 1.0]
+	grad.colors = [Color(0, 0, 0, book.spine_shadow_darkness), Color(0, 0, 0, 0)]
+	
+	var tex = GradientTexture2D.new()
+	tex.gradient = grad
+	
+	if is_left:
+		# Left page: spine is on the right, so shadow starts at x = 1.0 and fades leftward
+		tex.fill_from = Vector2(1.0, 0.5)
+		tex.fill_to = Vector2(1.0 - book.spine_curl_width, 0.5)
+	else:
+		# Right page: spine is on the left, so shadow starts at x = 0.0 and fades rightward
+		tex.fill_from = Vector2(0.0, 0.5)
+		tex.fill_to = Vector2(book.spine_curl_width, 0.5)
+		
+	shadow.texture = tex
+	slot.add_child(shadow)
+	slot.move_child(shadow, 0)

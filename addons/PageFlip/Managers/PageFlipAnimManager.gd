@@ -489,7 +489,7 @@ func start_animation(forward: bool) -> void:
 
 	book.call_deferred("_set_page_visible", book.dynamic_poly, true)
 	if json_sh_node_hack:
-		book.call_deferred("_set_page_visible", json_sh_node_hack, true)
+		book.call_deferred("_set_page_visible", json_sh_node_hack, false)
 	book.dynamic_poly.z_index = 10
 	
 	if book.get("volume_manager"):
@@ -551,7 +551,7 @@ func start_animation(forward: bool) -> void:
 
 	var l_nodes_logic = [
 		{"name": "CoverStackShadowLeft", "start": 1.0 if is_open_start else 0.0, "target": 1.0 if is_open_target else 0.0},
-		{"name": "InnerShadowLeft", "start": 1.0 if (start_idx_l != -999 and not start_l_is_cover) else 0.0, "target": 1.0 if (target_idx_l != -999 and not target_l_is_cover) else 0.0}
+		{"name": "InnerShadowLeft", "start": 0.0, "target": 0.0}
 	]
 
 	for data in l_nodes_logic:
@@ -563,7 +563,7 @@ func start_animation(forward: bool) -> void:
 
 	var r_nodes_logic = [
 		{"name": "CoverStackShadowRight", "start": 1.0 if is_open_start else 0.0, "target": 1.0 if is_open_target else 0.0},
-		{"name": "InnerShadowRight", "start": 1.0 if (start_idx_r != -999 and not start_r_is_cover) else 0.0, "target": 1.0 if (target_idx_r != -999 and not target_r_is_cover) else 0.0}
+		{"name": "InnerShadowRight", "start": 0.0, "target": 0.0}
 	]
 
 	for data in r_nodes_logic:

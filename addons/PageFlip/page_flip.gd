@@ -585,9 +585,8 @@ func __init():
 	var expected_visual_nodes: Array[String] = [
 		"CoverPageLeft", "CoverPageRight", "CoverStackShadowLeft",
 		"CoverStackShadowRight", "StackDropShadowLeft", "StackDropShadowRight",
-		"InnerShadowLeft", "InnerShadowRight", "StaticPageLeft",
-		"StaticPageRight", "DropShadowPoly", "DynamicFlipPoly",
-		"RuntimeSpine", "VolumeStackPages", "InnerDynamicShadow"
+		"StaticPageLeft", "StaticPageRight", "DropShadowPoly", "DynamicFlipPoly",
+		"RuntimeSpine", "VolumeStackPages"
 	]
 	_remove_unexpected_children(visual_cont, expected_visual_nodes)
 
@@ -618,11 +617,6 @@ func __init():
 	var st_sh_r = __ensure_node("StackDropShadowRight", Polygon2D, visual_cont)
 	st_sh_r.z_index = 1
 
-	var sh_left = __ensure_node("InnerShadowLeft", Polygon2D, visual_cont)
-	sh_left.z_index = 3
-	var sh_right = __ensure_node("InnerShadowRight", Polygon2D, visual_cont)
-	sh_right.z_index = 3
-	
 	var s_left = __ensure_node("StaticPageLeft", Polygon2D, visual_cont)
 	s_left.z_index = 2
 	var s_right = __ensure_node("StaticPageRight", Polygon2D, visual_cont)
@@ -638,8 +632,7 @@ func __init():
 	if d_poly.get_script() == null:
 		d_poly.set_script(load("res://addons/PageFlip/page_rigger.gd"))
 
-	var dyn_sh = __ensure_node("InnerDynamicShadow", Polygon2D, visual_cont)
-	dyn_sh.z_index = 11
+	# InnerDynamicShadow is obsolete and cleaned up by _remove_unexpected_children
 
 	var anim = __ensure_node("AnimationPlayer", AnimationPlayer, self)
 	__ensure_node("Camera2D", Camera2D, self)

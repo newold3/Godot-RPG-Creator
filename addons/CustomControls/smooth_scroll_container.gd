@@ -583,6 +583,8 @@ func bring_target_into_view(target: Control, instant: bool = true, instant_smoot
 func _on_focus_changed(control: Control) -> void:
 	if not control or not is_instance_valid(control) or busy:
 		return
+	if control == get_v_scroll_bar() or control == get_h_scroll_bar():
+		return
 	if not _is_descendant_of_container(control):
 		return
 	if single_target_focus and is_instance_valid(single_target_focus):

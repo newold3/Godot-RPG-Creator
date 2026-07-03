@@ -12,10 +12,19 @@ var book_opened: bool = false
 var _last_manipulator: Variant
 var _current_book: String = ""
 var busy: bool = false
+var _current_active_control: Control
+
+@onready var go_to_page_left: TextureButton = $"../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/BookExtraControls/GoToPageLeft"
+@onready var go_to_page_right: TextureButton = $"../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/BookExtraControls/GoToPageRight"
+@onready var back: TextureButton = $"../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia/Book/BookExtraControls/Back"
+
 
 
 func _ready() -> void:
 	_last_manipulator = GameManager.get_cursor_manipulator()
+	
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.hide_hand_when_mouse_over_focused = false
 	
 	BookAPI.disable_book(BookAPI.get_current_book())
 	
@@ -44,12 +53,24 @@ func _ready() -> void:
 		
 		GameManager.force_show_cursor()
 		
+		go_to_page_left.focus_entered.connect(_select_external_control.bind(go_to_page_left), CONNECT_DEFERRED)
+		go_to_page_right.focus_entered.connect(_select_external_control.bind(go_to_page_right), CONNECT_DEFERRED)
+		back.focus_entered.connect(_select_external_control.bind(back), CONNECT_DEFERRED)
+		
 		started = true
+
+
+func _select_external_control(control: Control) -> void:
+	GameManager.clear_manual_cursor_override()
+	_current_active_control = control
 
 
 func _on_book_opened() -> void:
 	book_opened = true
 	if back_button: back_button.set_disabled(true)
+	GameManager.enable_cursor_outline(Color("cbc1b692"))
+	GameManager.set_cursor_manipulator(manipulator)
+	GameManager.force_show_cursor()
 
 
 func _on_book_closed() -> void:
@@ -106,6 +127,7 @@ func _process(_delta: float) -> void:
 					if back_button:
 						back_button.set_disabled(true)
 						
+					GameManager.force_hide_cursor()
 					main_scene.open_book()
 				else:
 					GameManager.set_cursor_manipulator(GameManager.MANIPULATOR_MODES.NONE)
@@ -133,16 +155,183 @@ func _process(_delta: float) -> void:
 	
 	elif main_scene:
 		if book_opened:
-			if ControllerManager.is_cancel_just_pressed():
-				main_scene.close_book()
-		#var direction = ControllerManager.get_pressed_direction()
+			_process_open_book_navigation()
+
+
+func _process_open_book_navigation() -> void:
+	if Input.is_physical_key_pressed(KEY_ESCAPE) or Input.is_key_pressed(KEY_ESCAPE):
+		main_scene.close_book()
+		return
+	elif ControllerManager.is_cancel_just_pressed():
+		if BookAPI.get_current_spread() > 0:
+			BookAPI.go_to_spread(BookAPI.get_current_book(), 0)
+		else:
+			main_scene.close_book()
+		return
+	
+	var external_controls: Array[Control] = [
+		go_to_page_left, go_to_page_right, back
+	]
+	var left_controls: Array[Control] = BookAPI.get_focusable_controls(null, true)
+	var right_controls: Array[Control] = BookAPI.get_focusable_controls(null, false)
+
+	for c in left_controls + right_controls + external_controls:
+		if c.has_focus():
+			_current_active_control = c
+			break
+	
+	if not _current_active_control:
+		external_controls[0].grab_focus()
+		_current_active_control = external_controls[0]
+		return
+	
+	var direction = ControllerManager.get_pressed_direction()
+	
+	if direction:
+		if _current_active_control in external_controls:
+			if direction == "left":
+				if _current_active_control == go_to_page_left:
+					go_to_page_right.grab_focus()
+					GameManager.play_fx("cursor")
+				elif right_controls.size() > 0:
+					right_controls[-1].grab_focus()
+					_update_internal_cursor_position(right_controls[-1])
+					GameManager.play_fx("cursor")
+				elif left_controls.size() > 0:
+					left_controls[-1].grab_focus()
+					_update_internal_cursor_position(left_controls[-1])
+					GameManager.play_fx("cursor")
+			elif direction == "right":
+				if _current_active_control == go_to_page_left:
+					if left_controls.size() > 0:
+						left_controls[0].grab_focus()
+						_update_internal_cursor_position(left_controls[0])
+						GameManager.play_fx("cursor")
+					elif right_controls.size() > 0:
+						right_controls[0].grab_focus()
+						_update_internal_cursor_position(right_controls[0])
+						GameManager.play_fx("cursor")
+				else:
+					go_to_page_left.grab_focus()
+					GameManager.play_fx("cursor")
+			elif _current_active_control == back:
+				go_to_page_right.grab_focus()
+				GameManager.play_fx("cursor")
+			else:
+				back.grab_focus()
+				GameManager.play_fx("cursor")
+		else:
+			if _current_active_control is ItemList:
+				GameManager.play_fx("cursor")
+			elif _current_active_control is VScrollBar and direction in ["up", "down"] and _current_active_control.max_value != 0.0 and _current_active_control.max_value > _current_active_control.page:
+				pass
+			elif _current_active_control is HScrollBar and direction in ["right", "left"] and _current_active_control.max_value != 0.0 and _current_active_control.max_value > _current_active_control.page:
+				pass
+			else:
+				var c = _find_next_control(_current_active_control, left_controls + right_controls, direction)
+				if c:
+					c.grab_focus()
+					_update_internal_cursor_position(c)
+					GameManager.play_fx("cursor")
+				else:
+					if direction == "left":
+						go_to_page_left.grab_focus()
+						GameManager.play_fx("cursor")
+					elif direction == "right":
+						go_to_page_right.grab_focus()
+						GameManager.play_fx("cursor")
+					else:
+						back.grab_focus()
+						GameManager.play_fx("cursor")
+	#GameManager.set_manual_cursor_override(current_active_control, current_active_control.global_position)
+			
+	#if not current_active_control and not valid_controls.is_empty():
+		#var internal_controls = valid_controls.filter(func(c): return _is_internal_control(c))
+		#if not internal_controls.is_empty():
+			#current_active_control = internal_controls[0]
+		#else:
+			#if back in valid_controls:
+				#current_active_control = back
+			#else:
+				#current_active_control = valid_controls[0]
 		#
-		#if direction == "left":
-			#main_scene.turn_page_to("left")
-		#elif direction == "right":
-			#main_scene.turn_page_to("right")
-		#elif ControllerManager.is_cancel_just_pressed():
-			#main_scene.close_book()
+		#if is_instance_valid(current_active_control):
+			#if _is_internal_control(current_active_control):
+				#get_viewport().gui_release_focus()
+			#current_active_control.grab_focus()
+	#
+	#var direction = ControllerManager.get_pressed_direction()
+	#var should_navigate = true
+	#if current_active_control:
+		#if current_active_control is ItemList:
+			#should_navigate = false
+		#elif current_active_control is ScrollContainer or current_active_control is VBoxContainer:
+			#if direction == "up" or direction == "down":
+				#should_navigate = false
+		#elif current_active_control is HBoxContainer:
+			#if direction == "left" or direction == "right":
+				#should_navigate = false
+		#elif current_active_control is ScrollBar:
+			#if direction == "up" or direction == "down":
+				#var scrollbar = current_active_control as ScrollBar
+				#if direction == "up" and scrollbar.value > scrollbar.min_value:
+					#should_navigate = false
+					#scrollbar.value = clamp(scrollbar.value - scrollbar.step, scrollbar.min_value, scrollbar.max_value - scrollbar.page)
+				#elif direction == "down" and scrollbar.value < scrollbar.max_value - scrollbar.page:
+					#should_navigate = false
+					#scrollbar.value = clamp(scrollbar.value + scrollbar.step, scrollbar.min_value, scrollbar.max_value - scrollbar.page)
+			#
+	#if direction != "" and should_navigate and current_active_control:
+		#var next_control: Control = null
+		#var internal_controls = valid_controls.filter(func(c): return _is_internal_control(c))
+		#var external_controls = valid_controls.filter(func(c): return not _is_internal_control(c))
+		#
+		#if _is_internal_control(current_active_control):
+			#if direction == "left" or direction == "right":
+				#var idx = internal_controls.find(current_active_control)
+				#if direction == "left":
+					#if idx - 1 >= 0:
+						#next_control = internal_controls[idx - 1]
+					#else:
+						#next_control = _find_next_control(current_active_control, external_controls, direction)
+				#elif direction == "right":
+					#if idx + 1 < internal_controls.size():
+						#next_control = internal_controls[idx + 1]
+					#else:
+						#next_control = _find_next_control(current_active_control, external_controls, direction)
+			#elif direction == "up" or direction == "down":
+				#next_control = _find_next_control(current_active_control, internal_controls, direction)
+				#if not next_control:
+					#next_control = _find_next_control(current_active_control, external_controls, direction)
+		#else:
+			#next_control = _find_next_control(current_active_control, valid_controls, direction)
+			#if next_control and _is_internal_control(next_control) and not internal_controls.is_empty():
+				#if current_active_control == go_to_page_left:
+					#next_control = internal_controls[0]
+				#elif current_active_control == go_to_page_right or current_active_control == back:
+					#next_control = internal_controls[-1]
+					#
+		#if next_control and next_control != current_active_control:
+			#GameManager.play_fx("cursor")
+			#if _is_internal_control(current_active_control) and not _is_internal_control(next_control):
+				#GameManager.clear_manual_cursor_override()
+			#if _is_internal_control(next_control):
+				#get_viewport().gui_release_focus()
+			#next_control.grab_focus()
+			#current_active_control = next_control
+			#
+	#if current_active_control:
+		#if _is_internal_control(current_active_control):
+			#if not current_active_control is ItemList:
+				#_update_internal_cursor_position(current_active_control)
+		#else:
+			#GameManager.clear_manual_cursor_override()
+			
+	#if ControllerManager.is_confirm_just_pressed() and current_active_control:
+		#if _is_internal_control(current_active_control):
+			#if current_active_control is BaseButton:
+				#current_active_control.pressed.emit()
+				#GameManager.play_fx("ok")
 
 
 func _config_hand_in_selectable_books() -> void:
@@ -180,6 +369,9 @@ func _on_back_button_pressed() -> void:
 	
 	await get_tree().create_timer(0.2).timeout
 	
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.hide_hand_when_mouse_over_focused = true
+	
 	if scene_parent:
 		scene_parent.destroy()
 		scene_parent.emit_signal_end()
@@ -196,10 +388,124 @@ func _on_encyclopedia_button_pressed(button_id: int) -> void:
 	if main_scene:
 		if button_id == 0:
 			main_scene.turn_page_to("left")
+			go_to_page_left.grab_focus()
 		elif button_id == 1:
 			main_scene.turn_page_to("right")
+			go_to_page_right.grab_focus()
 		else:
 			if BookAPI.get_current_spread() == 0:
 				main_scene.close_book()
 			else:
 				BookAPI.go_to_spread(BookAPI.get_current_book(), 0)
+
+
+func _is_internal_control(control: Control) -> bool:
+	return control in [go_to_page_left, go_to_page_right, back]
+
+
+func _get_control_screen_center(control: Control) -> Vector2:
+	if not is_instance_valid(control):
+		return Vector2.ZERO
+	
+	if _is_internal_control(control):
+		var book = BookAPI.get_current_book()
+		var sv = control.get_viewport()
+		var is_left = (sv == book._slot_1)
+		var viewport_center = control.global_position + control.size * 0.5
+		return book.viewport_to_global_curved(viewport_center, is_left)
+	else:
+		return control.get_global_rect().get_center()
+
+
+func _update_internal_cursor_position(control: Control) -> void:
+	if not is_instance_valid(control):
+		return
+		
+	var book = BookAPI.get_current_book()
+	if not book:
+		return
+		
+	var sv = control.get_viewport()
+	var is_left = (sv == book._slot_1)
+	
+	if control is ItemList:
+		return
+		
+	var cursor_manager = GameManager.cursor_manager
+	if not cursor_manager or not cursor_manager.hand_cursor:
+		return
+		
+	var hand_cursor = cursor_manager.hand_cursor
+	
+	var local_offset = Vector2.ZERO
+	var screen_offset = Vector2.ZERO
+	
+	var w = 0.0
+	var h = 0.0
+	if is_instance_valid(hand_cursor.cursor) and hand_cursor.cursor.get_texture():
+		w = hand_cursor.cursor.get_texture().get_width() * 0.5
+		h = hand_cursor.cursor.get_texture().get_height() * 0.5
+		
+	match hand_cursor.current_hand_position:
+		hand_cursor.HandPosition.LEFT:
+			local_offset = Vector2(0, control.size.y * 0.5)
+			screen_offset = Vector2(-w, 0)
+		hand_cursor.HandPosition.RIGHT:
+			local_offset = Vector2(control.size.x, control.size.y * 0.5)
+			screen_offset = Vector2(w, 0)
+		hand_cursor.HandPosition.UP:
+			local_offset = Vector2(control.size.x * 0.5, 0)
+			screen_offset = Vector2(0, -h)
+		hand_cursor.HandPosition.DOWN:
+			local_offset = Vector2(control.size.x * 0.5, control.size.y)
+			screen_offset = Vector2(0, h)
+			
+	var viewport_pos = control.global_position + local_offset
+	var global_pos = book.viewport_to_global_curved(viewport_pos, is_left)
+	var final_pos = global_pos + screen_offset + hand_cursor.hand_offset
+	
+	GameManager.set_manual_cursor_override(control, final_pos)
+
+
+func _find_next_control(current: Control, controls: Array, direction: String) -> Control:
+	var book = BookAPI.get_current_book()
+	if not book or not current or controls.is_empty():
+		return null
+		
+	var current_center = _get_control_screen_center(current)
+	var best_control: Control = null
+	var min_distance = INF
+	
+	for control in controls:
+		if control == current or not is_instance_valid(control):
+			continue
+		var c_center = _get_control_screen_center(control)
+		var is_valid = false
+		
+		match direction:
+			"left":
+				if c_center.x < current_center.x - 2.0:
+					is_valid = true
+			"right":
+				if c_center.x > current_center.x + 2.0:
+					is_valid = true
+			"up":
+				if c_center.y < current_center.y - 2.0:
+					is_valid = true
+			"down":
+				if c_center.y > current_center.y + 2.0:
+					is_valid = true
+					
+		if is_valid:
+			var diff = c_center - current_center
+			var dist: float
+			if direction == "left" or direction == "right":
+				dist = abs(diff.x) + abs(diff.y) * 2.0
+			else:
+				dist = abs(diff.y) + abs(diff.x) * 2.0
+				
+			if dist < min_distance:
+				min_distance = dist
+				best_control = control
+				
+	return best_control

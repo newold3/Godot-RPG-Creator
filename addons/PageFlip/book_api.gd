@@ -173,7 +173,7 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 				book.book_closed.emit()
 		
 	else:
-		if book.is_animating: return 
+		if book.is_animating: return
 		
 		var original_speed = book.anim_player.speed_scale
 		
@@ -184,7 +184,7 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 		var start_spread = book.current_spread
 
 		var min_speed = 1.0
-		var max_speed = 4.5 
+		var max_speed = 4.5
 
 		for i in range(actual_turns):
 			if not is_instance_valid(book): break
@@ -196,7 +196,6 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 			var intermediate_target = int(round(lerp(float(start_spread), float(final_target), t_linear)))
 			
 
-			
 			var _current_speed = min_speed
 			if actual_turns > 1:
 				var arc = sin(t_linear * PI)
@@ -247,7 +246,6 @@ static func is_scene_shown(node: Node, book_instance: PageFlip2D = null) -> bool
 			return true
 		current = current.get_parent()
 	return false
-
 
 
 ## Locates the PageFlip2D controller ancestor from any node inside an interactive page.
@@ -311,6 +309,22 @@ static func get_right_page_number(book: PageFlip2D = null) -> int:
 			return idx + 1
 		return idx
 	return -999
+
+
+static func get_focusable_controls(book: PageFlip2D = null, is_left_page: bool = false) -> Array[Control]:
+	if not book: book = _current_book
+	
+	var controls: Array[Control] = []
+	if not is_instance_valid(book):
+		return controls
+	
+	var slot = book._slot_1 if is_left_page else book._slot_2
+	if is_instance_valid(slot) and slot.get_child_count() > 0:
+		var node = slot.get_child(-1)
+		if is_instance_valid(node) and node.has_method("_get_focusable_controls"):
+			controls.append_array(node._get_focusable_controls())
+
+	return controls
 
 
 # ==============================================================================

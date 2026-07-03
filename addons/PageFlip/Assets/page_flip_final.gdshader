@@ -76,19 +76,5 @@ void fragment() {
 		if (debug_mode) base_color = vec4(1.0, 0.0, 0.0, 0.5);
 	}
 
-	float current_spread = max_shadow_spread * (shadow_intensity + 0.001);
-
-	float sample_x = UV.x / current_spread;
-
-	float shadow_alpha = texture(spine_shadow_gradient, vec2(sample_x, 0.0)).a;
-
-	if (sample_x > 1.0) {
-		shadow_alpha = 0.0;
-	}
-
-	shadow_alpha *= shadow_intensity;
-
-	vec3 final_rgb = mix(base_color.rgb, vec3(0.0, 0.0, 0.0), shadow_alpha);
-
-	COLOR = vec4(final_rgb, base_color.a);
+	COLOR = base_color;
 }

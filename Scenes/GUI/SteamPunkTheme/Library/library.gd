@@ -43,6 +43,7 @@ var busy: bool = false
 var _last_tooltip: Control
 var current_book_speed_scale: float = 1.0
 var speed_scale_step: float = 40.0
+var default_pages_paths: Array[String] = []
 
 
 @onready var book_container: Control = %Book
@@ -62,6 +63,7 @@ signal button_pressed(button_id: int) # 0 = prev, 1 = next, 2 = back
 
 
 func _ready() -> void:
+	default_pages_paths = animate_book.pages_paths.duplicate()
 	BookAPI.disable_book(animate_book)
 	BookAPI.set_interaction_lock(animate_book, true)
 	update_book.call_deferred("encyclopedia", true)
@@ -135,11 +137,23 @@ func get_main_book() -> PageFlip2D:
 	return animate_book
 
 
-func turn_page_to(direction: String) -> void:
+func _process(delta: float) -> void:
 	if not book_is_opened: return
 	
-	if ControllerManager.is_direction_just_pressed(direction) or ControllerManager.is_direction_just_released(direction):
+	if ControllerManager.is_direction_just_pressed("left") or ControllerManager.is_direction_just_released("right") or ControllerManager.is_confirm_just_pressed(false, [], false):
 		current_book_speed_scale = 1.0
+		
+	var max_spread = animate_book.total_spreads - 1
+	if animate_book.limit_max_pages > 0:
+		max_spread = (animate_book.limit_max_pages - 1) / 2
+		
+	var is_at_last = (animate_book.current_spread >= max_spread)
+	if %GoToPageRight.disabled != is_at_last:
+		%GoToPageRight.disabled = is_at_last
+
+
+func turn_page_to(direction: String) -> void:
+	if not book_is_opened: return
 		
 	if direction == "left":
 		if animate_book.current_spread == 0:
@@ -237,6 +251,9 @@ func update_book(type: String, _is_initial_update: bool = false, open_immediatel
 			paths.fill(scene_path)
 			book.limit_max_pages = pages.size() * 2 + 1
 			book.set_new_pages(paths)
+		_:
+			book.limit_max_pages = -1
+			book.set_new_pages(default_pages_paths)
 		
 	
 	var next_book = load(books_data[type].preview)
@@ -401,6 +418,7 @@ func _on_custom_target_item_list_item_hovered_local(local_position: Vector2, tar
 
 ## Clears the manual cursor override when the item is no longer hovered.
 func _on_custom_target_item_list_item_unhovered_local(target_node: Control) -> void:
+	if BookAPI.is_busy(): return
 	GameManager.clear_manual_cursor_override(target_node)
 #endregion
 
@@ -411,14 +429,23 @@ func _on_animate_book_ended_page_flip_animation() -> void:
 		select(get_selected_book())
 		GameManager.force_show_cursor()
 		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
-	#else:
-		#_enable_extra_controls()
-		#%BookExtraControls.visible = true
+	else:
+		GameManager.force_show_cursor()
+		var focused = get_viewport().gui_get_focus_owner()
+		if focused == %GoToPageLeft:
+			_on_go_to_page_left_focus_entered()
+		elif focused == %GoToPageRight:
+			_on_go_to_page_right_focus_entered()
+		elif focused == %Back:
+			_on_back_focus_entered()
 
 
 func _on_animate_book_started_page_flip_animation() -> void:
-	GameManager.clear_manual_cursor_override()
-	GameManager.force_hide_cursor()
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.forced_target = null
+		GameManager.cursor_manager.hand_cursor.pause_reposition = false
+	if not book_is_opened:
+		GameManager.force_hide_cursor()
 
 
 func _enable_extra_controls() -> void:
@@ -459,3 +486,24 @@ func _on_go_to_page_right_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	button_pressed.emit(2)
+
+
+func _on_go_to_page_left_focus_entered() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.RIGHT, manipulator)
+	GameManager.set_cursor_offset(Vector2(0, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _on_go_to_page_right_focus_entered() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, manipulator)
+	GameManager.set_cursor_offset(Vector2(0, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _on_back_focus_entered() -> void:
+	var manipulator = GameManager.get_cursor_manipulator()
+	GameManager.set_hand_position(MainHandCursor.HandPosition.UP, manipulator)
+	GameManager.set_cursor_offset(Vector2(0, 0), manipulator)
+	GameManager.force_show_cursor()

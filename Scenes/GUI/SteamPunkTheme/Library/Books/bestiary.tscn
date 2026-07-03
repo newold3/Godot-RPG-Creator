@@ -167,6 +167,8 @@ border_blend = true
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8o377"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_eeeeh"]
 font = ExtResource("3_dbdt6")
 font_size = 25
@@ -180,18 +182,6 @@ stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
 stacked_shadow_0/offset = Vector2(1, 2.125)
 stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
 stacked_shadow_0/outline_size = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frs4q"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.41568628, 0.2784314, 0.105882354, 0.5411765)
-draw_center = false
-border_width_bottom = 6
-border_color = Color(0.5104571, 0.47260273, 0.42714238, 1)
-border_blend = true
-corner_radius_bottom_left = 20
 
 [sub_resource type="Gradient" id="Gradient_eugdv"]
 offsets = PackedFloat32Array(0, 0.982)
@@ -225,7 +215,7 @@ stacked_shadow_0/outline_size = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_id0sk"]
 font = ExtResource("3_dbdt6")
-font_size = 20
+font_size = 2
 font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
 stacked_outline_count = 2
 stacked_shadow_count = 1
@@ -239,7 +229,7 @@ stacked_shadow_0/outline_size = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_t3v26"]
 font = ExtResource("3_dbdt6")
-font_size = 20
+font_size = 2
 font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
 stacked_outline_count = 2
 stacked_shadow_count = 1
@@ -482,14 +472,21 @@ theme_override_constants/margin_right = 60
 
 [node name="Control" type="Control" parent="ContentsLeftContainer/VBoxContainer/MarginContainer" unique_id=1265141022]
 layout_mode = 2
+offset_transform_enabled = true
 
 [node name="MonsterName" type="Label" parent="ContentsLeftContainer/VBoxContainer/MarginContainer/Control" unique_id=320840]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.3647059)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = -25.0
+offset_right = 182.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
@@ -499,6 +496,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 script = ExtResource("8_uft0y")
+allow_scaling = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1673223178]
 z_index = 5
@@ -565,6 +563,7 @@ text = "0"
 label_settings = SubResource("LabelSettings_tl2gb")
 horizontal_alignment = 2
 vertical_alignment = 1
+clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="MonsterTypeContainer" type="Control" parent="ContentsLeftContainer" unique_id=120768458]
@@ -630,12 +629,12 @@ grow_vertical = 2
 text = "Common"
 label_settings = SubResource("LabelSettings_knuxp")
 vertical_alignment = 1
+clip_text = true
 script = ExtResource("8_uft0y")
 min_font_size = 16
 
 [node name="ContentsRightContainer" type="Control" parent="." unique_id=2038791546]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1843494153]
@@ -665,16 +664,18 @@ theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 6
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer" unique_id=2130015725]
+[node name="DescriptionContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer" unique_id=2130015725]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("8_eeeeh")
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="Description" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer/SmoothScrollContainer" unique_id=2088479567]
+[node name="Description" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel/MarginContainer/DescriptionContainer" unique_id=2088479567]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8o377")
 label_settings = SubResource("LabelSettings_eeeeh")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -720,7 +721,8 @@ size_flags_vertical = 3
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 16
 
-[node name="SmoothScrollContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1714024483]
+[node name="StatsContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1714024483]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -730,14 +732,13 @@ custom_vscroll_size = Vector2(6, 239.32)
 custom_vscroll_offset = Vector2(199.205, 25.125)
 metadata/_custom_type_script = "uid://cs6g8remlafby"
 
-[node name="Stats" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer/SmoothScrollContainer" unique_id=1136495652]
+[node name="Stats" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer/MarginContainer/VBoxContainer/MarginContainer/StatsContainer" unique_id=1136495652]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("11_uft0y")
 show_comparison = false
-use_abbreviations = true
 outline_sizes = Array[int]([10, 8])
 outline_colors = Array[Color]([Color(0, 0, 0, 0.17254902), Color(0.60897046, 0.5569539, 0.5181383, 1)])
 outline_offsets = Array[Vector2i]([Vector2i(0, 2), Vector2i(0, 0)])
@@ -745,7 +746,6 @@ text_color = Color(0.86363363, 0.8441498, 0.8161468, 1)
 title_color = Color(0.8359288, 0.7160822, 0.6672539, 1)
 custom_font = ExtResource("3_dbdt6")
 font_size = 18
-title_background_style = SubResource("StyleBoxFlat_frs4q")
 stat_separator_style = SubResource("StyleBoxTexture_5jobp")
 metadata/_custom_type_script = "uid://dwdb1gqa4ry3o"
 
@@ -807,6 +807,7 @@ text = "0"
 label_settings = SubResource("LabelSettings_id0sk")
 horizontal_alignment = 2
 vertical_alignment = 1
+clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="Control3" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=300922755]
@@ -838,6 +839,7 @@ text = "0"
 label_settings = SubResource("LabelSettings_t3v26")
 horizontal_alignment = 2
 vertical_alignment = 1
+clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="Control" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1480090497]
@@ -890,6 +892,7 @@ custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 
 [node name="DropContainer" type="ScrollContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1628853329]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
@@ -981,3 +984,5 @@ size_flags_vertical = 4
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 7)
 texture = SubResource("AtlasTexture_eeeeh")
+
+[connection signal="focus_entered" from="IndexContainer/VBoxContainer/MarginContainer2/ItemlistContainer/MarginContainer/ItemList" to="." method="_on_item_list_focus_entered"]
