@@ -62,6 +62,14 @@ func get_class():
 ## Time between each tick (only used if ticks are enabled).
 @export var tick_interval: float = 1.0
 
+
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 ## Clears all the properties of the class.
 func clear():
 	for v in ["name", "icon", "description", "notes"]:

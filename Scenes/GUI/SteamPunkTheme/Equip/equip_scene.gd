@@ -14,6 +14,7 @@ var main_tween: Tween
 @onready var menu_items: Control = %MenuItems
 @onready var current_selected_equipment_container: Control = %CurrentSelectedEquipmentContainer
 @onready var costume_button_container: MarginContainer = %CostumeButtonContainer
+@onready var set_icon: TextureRect = %SetIcon
 
 signal update_description(description: String)
 signal back_pressed()
@@ -83,6 +84,24 @@ func set_actor(actor: GameActor) -> void:
 	stats_container.set_actor(actor)
 	equipment_container.set_actor(actor)
 	main_actor_container.set_actor(actor)
+	_update_costume_icon()
+
+
+func _update_costume_icon() -> void:
+	if not is_inside_tree(): return
+	
+	if current_actor and current_actor.current_set:
+		var real_item = current_actor.current_set.get_real_data()
+		if real_item:
+			var path = real_item.lpc_part
+			var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+			if AssetManager.exists(preview_path):
+				set_icon.texture = ResourceLoader.load(preview_path)
+				set_icon.visible = true
+				return
+				
+	set_icon.texture = null
+	set_icon.visible = false
 
 
 
@@ -263,7 +282,70 @@ func _process_start_change_equip(slot_id: int) -> void:
 
 
 func _process_start_change_costume() -> void:
-	pass
+	var equippable_costumes = GameManager.inventory_manager.get_equippable_items(current_actor, -1, 0, false)
+	
+	var formatted_items: Array[Dictionary] = []
+	var inner_icon_cache: Dictionary = {}
+	
+	for item_dict in equippable_costumes:
+		var current_item = item_dict.item
+		var real_item = item_dict.real_item
+		if not real_item:
+			continue
+			
+		var tex = null
+		if item_dict.icon and item_dict.icon.path:
+			var icon_id = "%s_%s" % [item_dict.icon.path, item_dict.icon.region]
+			if not icon_id in inner_icon_cache:
+				if AssetManager.exists(item_dict.icon.path):
+					var t = ResourceLoader.load(item_dict.icon.path)
+					if item_dict.icon.region:
+						tex = ImageTexture.create_from_image(t.get_image().get_region(item_dict.icon.region))
+					else:
+						tex = t
+					inner_icon_cache[icon_id] = tex
+			else:
+				tex = inner_icon_cache[icon_id]
+				
+		var new_item = {
+			"current_item": current_item,
+			"icon": tex,
+			"name": real_item.name,
+			"quantity": item_dict.quantity,
+			"disabled": item_dict.is_disabled,
+			"color": item_dict.item_color,
+			"level": -1,
+			"is_new_item": item_dict.is_new
+		}
+		formatted_items.append(new_item)
+		
+	var curren_equipped_item = current_actor.current_set
+	menu_items.set_curren_equipped_item(curren_equipped_item)
+	
+	GameManager.play_fx("ok")
+	
+	formatted_items.sort_custom(func(a, b):
+		if a.is_new_item != b.is_new_item:
+			return a.is_new_item and not b.is_new_item
+		return a.name.naturalnocasecmp_to(b.name) < 0
+	)
+	
+	var remove_item = {
+		"name": "- " + tr("Remove costume") + " -",
+		"icon": preload("uid://cy1pny48ukkqg"),
+		"disabled": false,
+		"color": Color.WHITE,
+		"is_new_item": false
+	}
+	formatted_items.insert(0, remove_item)
+	menu_items.set_items(formatted_items)
+	
+	if current_actor:
+		current_actor.is_comparation_enabled = true
+		
+	equipment_container.button_selected = -1
+	
+	_show_menu()
 #endregion
 
 
@@ -288,6 +370,8 @@ func _on_menu_items_item_hovered(index: int, item: Dictionary) -> void:
 			real_item = RPGSYSTEM.get_data("weapons", obj.id)
 		elif obj is GameArmor:
 			real_item = RPGSYSTEM.get_data("armors", obj.id)
+		elif obj is IngameCostume or obj is IngameGearSet:
+			real_item = RPGSYSTEM.get_data("costumes", obj.id)
 			
 		if real_item:
 			update_description.emit(real_item.description)
@@ -295,7 +379,10 @@ func _on_menu_items_item_hovered(index: int, item: Dictionary) -> void:
 			stats_container.set_equipment_compararison(slot_id, item.get("current_item", null))
 	
 	if not description_setted:
-		update_description.emit(tr("Remove item"))
+		if slot_id == -1:
+			update_description.emit(tr("Remove costume"))
+		else:
+			update_description.emit(tr("Remove item"))
 		stats_container.set_equipment_compararison(slot_id, null)
 
 
@@ -317,18 +404,32 @@ func _on_menu_items_item_clicked(_index: int, item: Dictionary) -> void:
 		else:
 			current_actor.remove_current_equipment(slot_id)
 			
-		equipment_container.set_actor(current_actor)
-		stats_container.set_actor(current_actor)
+		set_actor(current_actor)
+		
+		if GameManager.has_node("PartyManager") and GameManager.party_manager:
+			var party_manager = GameManager.party_manager
+			for follower in party_manager.followers:
+				if follower and is_instance_valid(follower):
+					follower.set_meta("requires_init", true)
+			party_manager.update_party_visuals(true)
 		
 		GameManager.play_fx("equip")
 		
 		if ControllerManager.current_controller == ControllerManager.CONTROLLER_TYPE.Mouse:
 			var slot_selected = equipment_container.get_button_selected()
-			Input.warp_mouse(slot_selected.global_position + slot_selected.size * 0.5)
-			await get_tree().process_frame
-			await get_tree().process_frame
-			await get_tree().process_frame
-			DisplayServer.cursor_set_shape(DisplayServer.CURSOR_POINTING_HAND)
+			if slot_selected:
+				Input.warp_mouse(slot_selected.global_position + slot_selected.size * 0.5)
+				await get_tree().process_frame
+				await get_tree().process_frame
+				await get_tree().process_frame
+				DisplayServer.cursor_set_shape(DisplayServer.CURSOR_POINTING_HAND)
+			else:
+				var costume_button = %CostumeButton
+				Input.warp_mouse(costume_button.global_position + costume_button.size * 0.5)
+				await get_tree().process_frame
+				await get_tree().process_frame
+				await get_tree().process_frame
+				DisplayServer.cursor_set_shape(DisplayServer.CURSOR_POINTING_HAND)
 			
 	_hide_menu()
 
@@ -377,7 +478,13 @@ func _hide_menu() -> void:
 	t.tween_property(menu_items, "position", menu_items_start_position, 0.4).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 	t.tween_callback(
 		func():
-			equipment_container.select_last_slot()
+			if equipment_container.button_selected == -1:
+				equipment_container.button_selected = 0
+				var manager = get_node_or_null("Manager")
+				if manager:
+					manager._select_costume()
+			else:
+				equipment_container.select_last_slot()
 			GameManager.force_show_cursor()
 			GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
 	).set_delay(0.4)

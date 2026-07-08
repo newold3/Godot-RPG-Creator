@@ -64,9 +64,21 @@ func _on_main_menu_visibility_changed() -> void:
 	if not main_menu.visible and main_menu.is_inside_tree():
 		if GameManager.gui_canvas_layer:
 			GameManager.gui_canvas_layer.remove_child(main_menu)
+		_update_map_visuals()
 
 
 func _on_main_menu_end() -> void:
 	GameManager.busy = false
 	if RPGSYSTEM.database.system.pause_day_night_in_menu:
 		DayNightManager.process_mode = Node.PROCESS_MODE_INHERIT
+	_update_map_visuals()
+
+
+func _update_map_visuals() -> void:
+	if GameManager.has_node("PartyManager") and GameManager.party_manager:
+		var party_manager = GameManager.party_manager
+		for follower in party_manager.followers:
+			if follower and is_instance_valid(follower):
+				follower.set_meta("requires_init", true)
+		party_manager.update_party_visuals(true)
+

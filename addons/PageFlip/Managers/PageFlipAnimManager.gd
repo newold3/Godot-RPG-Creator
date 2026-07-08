@@ -154,6 +154,7 @@ func force_close_book(to_front_cover: bool) -> void:
 ## Connects variables with the animation timeline elements depending on rigid physics setups.
 func start_animation(forward: bool) -> void:
 	var is_first_step = not book.is_animating
+	book.previous_spread = book.current_spread
 	book.started_page_flip_animation.emit()
 	book.is_animating = true
 	book.going_forward = forward

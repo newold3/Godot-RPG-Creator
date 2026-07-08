@@ -29,6 +29,13 @@ extends ItemList
 ## If true, fills the list with 50 debug items on ready.
 @export var debug_mode: bool = false
 
+## Array of dictionaries containing item configurations.
+## Supported keys in each dictionary:
+## - "name" (String): The item text/name to display.
+## - "icon" (Texture2D): The icon texture to draw on the left.
+## - "target_page" (String or int): The target page index to navigate to.
+## - "is_title" (bool): If true, denotes this item is a section title (disables selection, skips dots and page number).
+## - "text_color" (Color or String): Override color for drawing this item's texts and dots.
 var _item_data: Array[Dictionary] = []
 var disabled: bool = true
 
@@ -111,9 +118,12 @@ func _on_scroll_changed(_val: float) -> void:
 ## Processes mouse movement over the list and emits local position signals for external cursor handling.
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		var hovered_index: int = get_item_at_position(event.position, true)
+		if not has_focus():
+			grab_focus()
+			
+		var hovered_index: int = get_item_at_position(event.position, false)
 		
-		if hovered_index != -1:
+		if hovered_index != -1 and not is_item_disabled(hovered_index):
 			if not is_selected(hovered_index):
 				select(hovered_index)
 			
@@ -123,10 +133,19 @@ func _gui_input(event: InputEvent) -> void:
 			if get_v_scroll_bar() and get_v_scroll_bar().visible:
 				local_pos.y -= get_v_scroll_bar().value
 			
-			StaticSignal.emit(_hover_signal_name, [local_pos, self])
+			if local_pos.y < 0 or local_pos.y > size.y:
+				StaticSignal.emit(_unhover_signal_name, [self])
+			else:
+				StaticSignal.emit(_hover_signal_name, [local_pos, self])
 		else:
 			StaticSignal.emit(_unhover_signal_name, [self])
 		
+		accept_event()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var clicked_index: int = get_item_at_position(event.position, false)
+			if clicked_index != -1 and not is_item_disabled(clicked_index):
+				item_activated.emit(clicked_index)
 		accept_event()
 	elif event.is_action("ui_up") or event.is_action("ui_down") or event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept") or event.is_action("ui_select"):
 		accept_event()
@@ -141,64 +160,79 @@ func _process(_delta: float) -> void:
 	var is_shown = is_visible_in_tree() and BookAPI.is_scene_shown(self) and not BookAPI.is_busy()
 	if is_shown:
 		if not has_focus():
-			grab_focus()
+			var focus_owner = get_viewport().gui_get_focus_owner()
+			if focus_owner == null and GameManager.get_viewport().gui_get_focus_owner() == null:
+				grab_focus()
 			
-		var selected = get_selected_items()
-		if selected.is_empty() and item_count > 0:
-			select(0)
-			queue_redraw()
-			selected = [0]
-		if not selected.is_empty():
-			var sel_idx = selected[0]
-			var rect: Rect2 = get_item_rect(sel_idx)
-			var local_pos: Vector2 = rect.position + Vector2(0, rect.size.y * 0.5)
+		if has_focus():
+			var selected = get_selected_items()
+			if selected.is_empty() and item_count > 0:
+				var first_valid = _get_first_enabled_item()
+				if first_valid != -1:
+					select(first_valid)
+					queue_redraw()
+					selected = [first_valid]
 			
-			if get_v_scroll_bar() and get_v_scroll_bar().visible:
-				local_pos.y -= get_v_scroll_bar().value
+			if not selected.is_empty():
+				var sel_idx = selected[0]
+				if is_item_disabled(sel_idx):
+					var first_valid = _get_first_enabled_item()
+					if first_valid != -1:
+						select(first_valid)
+						queue_redraw()
+						sel_idx = first_valid
+					else:
+						deselect_all()
+						queue_redraw()
+						return
+				
+				var rect: Rect2 = get_item_rect(sel_idx)
+				var local_pos: Vector2 = rect.position + Vector2(0, rect.size.y * 0.5)
+				
+				if get_v_scroll_bar() and get_v_scroll_bar().visible:
+					local_pos.y -= get_v_scroll_bar().value
+				
+				if local_pos.y < 0 or local_pos.y > size.y:
+					StaticSignal.emit(_unhover_signal_name, [self])
+				else:
+					StaticSignal.emit(_hover_signal_name, [local_pos, self])
 			
-			StaticSignal.emit(_hover_signal_name, [local_pos, self])
-		
-			var direction = ControllerManager.get_pressed_direction()
-			var cols = max(1, max_columns)
-		
-			if direction == "left":
-				sel_idx -= 1
-				if sel_idx < 0:
-					sel_idx = item_count - 1
-				select(sel_idx)
-				ensure_current_is_visible()
-				queue_redraw()
-				
-			elif direction == "right":
-				sel_idx += 1
-				if sel_idx >= item_count:
-					sel_idx = 0
-				select(sel_idx)
-				ensure_current_is_visible()
-				queue_redraw()
-				
-			elif direction == "up":
-				sel_idx -= cols
-				if sel_idx < 0:
-					sel_idx = item_count - 1
-				select(sel_idx)
-				ensure_current_is_visible()
-				queue_redraw()
-				
-			elif direction == "down":
-				sel_idx += cols
-				if sel_idx >= item_count:
-					sel_idx = 0
-				select(sel_idx)
-				ensure_current_is_visible()
-				queue_redraw()
-				
-			elif ControllerManager.is_confirm_just_pressed():
-				item_activated.emit(sel_idx)
-
-		
-	else:
-		StaticSignal.emit(_unhover_signal_name, [self])
+				var direction = ControllerManager.get_pressed_direction()
+				var cols = max(1, max_columns)
+			
+				if direction == "left":
+					var next_idx = _get_next_enabled_item(sel_idx, -1)
+					if next_idx != -1:
+						select(next_idx)
+						ensure_current_is_visible()
+						queue_redraw()
+					
+				elif direction == "right":
+					var next_idx = _get_next_enabled_item(sel_idx, 1)
+					if next_idx != -1:
+						select(next_idx)
+						ensure_current_is_visible()
+						queue_redraw()
+					
+				elif direction == "up":
+					var next_idx = _get_next_enabled_item(sel_idx, -cols)
+					if next_idx != -1:
+						select(next_idx)
+						ensure_current_is_visible()
+						queue_redraw()
+					
+				elif direction == "down":
+					var next_idx = _get_next_enabled_item(sel_idx, cols)
+					if next_idx != -1:
+						select(next_idx)
+						ensure_current_is_visible()
+						queue_redraw()
+					
+				elif ControllerManager.is_confirm_just_pressed(true):
+					item_activated.emit(sel_idx)
+					
+		else:
+			StaticSignal.emit(_unhover_signal_name, [self])
 
 
 ## Cleans up forced cursor targeting when the mouse exits the control entirely or visibility changes.
@@ -218,8 +252,44 @@ func populate_custom_items(data: Array[Dictionary]) -> void:
 
 	for i in range(_item_data.size()):
 		add_item(" ")
+		var item = _item_data[i]
+		if item.get("is_title", false):
+			set_item_disabled(i, true)
 
 	queue_redraw()
+
+
+func _get_first_enabled_item() -> int:
+	for idx in range(item_count):
+		if not is_item_disabled(idx):
+			return idx
+	return -1
+
+
+func _get_next_enabled_item(start_idx: int, step: int) -> int:
+	if item_count == 0:
+		return -1
+	
+	var scan_dir = 1 if step >= 0 else -1
+	var target = (start_idx + step)
+	target = (target % item_count + item_count) % item_count
+	
+	if not is_item_disabled(target):
+		return target
+		
+	for offset in range(1, item_count):
+		var next_idx = (target + offset * scan_dir)
+		next_idx = (next_idx % item_count + item_count) % item_count
+		if not is_item_disabled(next_idx):
+			return next_idx
+			
+	return -1
+
+
+func get_item_data(idx: int) -> Dictionary:
+	if idx >= 0 and idx < _item_data.size():
+		return _item_data[idx]
+	return {}
 #endregion
 
 
@@ -276,8 +346,9 @@ func _draw() -> void:
 			draw_texture(icon, Vector2(current_x, icon_y))
 			current_x += icon.get_width() + 4.0
 
+		var is_title = data.get("is_title", false)
 		var target_x_start = rect.position.x + rect.size.x - custom_right_margin
-		var has_target = data.has("target_page")
+		var has_target = data.has("target_page") and not is_title
 		var t_text = ""
 		if has_target:
 			t_text = str(data["target_page"])
@@ -286,6 +357,14 @@ func _draw() -> void:
 
 		var name_width = 0.0
 		
+		var item_font_color = font_color
+		if data.has("text_color"):
+			var tc = data["text_color"]
+			if tc is Color:
+				item_font_color = tc
+			elif tc is String:
+				item_font_color = Color(tc)
+
 		if data.has("name"):
 			var n_text = str(data["name"])
 			var pos = Vector2(current_x, text_y)
@@ -312,7 +391,7 @@ func _draw() -> void:
 					list_font.draw_string_outline(get_canvas_item(), pos, name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
 				current_size -= outline_stack[j]
 
-			list_font.draw_string(get_canvas_item(), pos, name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, font_color)
+			list_font.draw_string(get_canvas_item(), pos, name_to_draw, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, item_font_color)
 
 		if has_target:
 			var target_pos = Vector2(target_x_start, text_y)
@@ -324,25 +403,26 @@ func _draw() -> void:
 					list_font.draw_string_outline(get_canvas_item(), target_pos, t_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
 				current_size -= outline_stack[j]
 
-			list_font.draw_string(get_canvas_item(), target_pos, t_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, font_color)
+			list_font.draw_string(get_canvas_item(), target_pos, t_text, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, item_font_color)
 
-		var dots_start_x = current_x + name_width + 4.0
-		var dots_end_x = target_x_start - 4.0
-		var filler_width = dots_end_x - dots_start_x
+		if not is_title:
+			var dots_start_x = current_x + name_width + 4.0
+			var dots_end_x = target_x_start - 4.0
+			var filler_width = dots_end_x - dots_start_x
 
-		if filler_width > 0:
-			var dot_width = list_font.get_string_size(".", HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
-			var num_dots = floor(filler_width / dot_width)
-			var filler_string = ".".repeat(num_dots)
-			var dot_color = font_color
-			dot_color.a *= 0.6
-			var current_size = total_outline_size
-			
-			for j in range(outline_stack.size()):
-				if current_size > 0:
-					var out_color = outline_color_stack[j] if j < outline_color_stack.size() else (outline_color_stack[-1] if outline_color_stack.size() > 0 else Color.BLACK)
-					list_font.draw_string_outline(get_canvas_item(), Vector2(dots_start_x, text_y), filler_string, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
-				current_size -= outline_stack[j]
-			
-			list_font.draw_string(get_canvas_item(), Vector2(dots_start_x, text_y), filler_string, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, dot_color)
+			if filler_width > 0:
+				var dot_width = list_font.get_string_size(".", HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size).x
+				var num_dots = floor(filler_width / dot_width)
+				var filler_string = ".".repeat(num_dots)
+				var dot_color = item_font_color
+				dot_color.a *= 0.6
+				var current_size = total_outline_size
+				
+				for j in range(outline_stack.size()):
+					if current_size > 0:
+						var out_color = outline_color_stack[j] if j < outline_color_stack.size() else (outline_color_stack[-1] if outline_color_stack.size() > 0 else Color.BLACK)
+						list_font.draw_string_outline(get_canvas_item(), Vector2(dots_start_x, text_y), filler_string, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, current_size, out_color)
+					current_size -= outline_stack[j]
+				
+				list_font.draw_string(get_canvas_item(), Vector2(dots_start_x, text_y), filler_string, HORIZONTAL_ALIGNMENT_LEFT, -1, list_font_size, dot_color)
 #endregion

@@ -150,6 +150,9 @@ extends Resource
 ## Path to a custom UI scene used for displaying the map name.
 @export var custom_map_name_scene_path: String = ""
 
+## Collection of crafting recipes the player has learned and can use to craft items or equipment [b]([itemtipe_itemid] = [recipes ids])[/b].
+@export var crafting_recipes: Dictionary = {}
+
 ## Dictionary of active weather effects currently applied to the map.
 @export var active_weathers: Dictionary = {}
 

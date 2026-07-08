@@ -108,10 +108,11 @@ func set_actor(actor: GameActor) -> void:
 
 func set_equipment_compararison(slot_id: int, item: Variant) -> void:
 	if current_actor:
+		var level = item.current_level if item and "current_level" in item else 1
 		comparison_item = {
 			"slot_id": slot_id,
 			"id": item.id if item else -1,
-			"level": item.current_level if item else -1,
+			"level": level,
 		}
 		set_actor(current_actor)
 

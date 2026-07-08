@@ -2,133 +2,224 @@
 class_name BaseAnimatableWindow
 extends Control
 
+
+## Signal emitted when the in animation finishes
 signal animation_in_finished
+## Signal emitted when the out animation finishes
 signal animation_out_finished
+## Signal emitted when the starting process begins
 signal started()
+## Signal emitted when the process ends
 signal end()
+## Signal emitted if the tree is exited early
 signal early_tree_exited()
+## Signal emitted when the starting sequence ends
 signal starting_end()
 
 
+@export_group("Presets Management")
+## Type the name of the new preset to save
+@export var new_preset_name: String = ""
+## Triggers the saving of the current configuration as a new preset
+@export var save_preset: bool = false:
+	set(value):
+		if value and Engine.is_editor_hint():
+			_save_current_preset()
+## Select a saved preset from the user folder
+@export var selected_preset: String = ""
+## Triggers the application of the selected preset
+@export var apply_preset: bool = false:
+	set(value):
+		if value and Engine.is_editor_hint():
+			_apply_selected_preset()
+## Check this box to confirm deletion before clicking Delete Preset
+@export var confirm_delete: bool = false
+## Triggers the deletion of the selected preset, requires confirm_delete to be true
+@export var delete_preset: bool = false:
+	set(value):
+		if value and Engine.is_editor_hint():
+			if confirm_delete:
+				_delete_selected_preset()
+				confirm_delete = false
+			else:
+				printerr("Please check 'Confirm Delete' before deleting a preset.")
+
 @export_group("Testing")
+## Toggles the animate in test from the editor
 @export var test_animate_in: bool = false:
 	set(value):
 		if value and Engine.is_editor_hint():
 			animate_in()
+## Toggles the animate out test from the editor
 @export var test_animate_out: bool = false:
 	set(value):
 		if value and Engine.is_editor_hint():
 			animate_out()
 
 @export_group("Behavior Settings")
+## The title of the scene to display
 @export var scene_title: String = "" : set = _set_scene_title
+## Prevents the window from being destroyed on hide
 @export var no_destroy_on_hide: bool = false
+## Delay before emitting the started signal
 @export var timer_to_emit_started_signal: float = 0.0
+## Delay before emitting the end signal
 @export var timer_to_emit_end_signal: float = 0.0
 
 @export_group("Movement In")
+## Enables the movement in animation
 @export var move_in_enabled: bool = true:
 	set(value):
 		move_in_enabled = value
 		notify_property_list_changed()
+## Direction from which the window moves in
 @export_enum("Top", "Bottom", "Left", "Right", "Top Left", "Top Right", "Bottom Left", "Bottom Right") var move_in_direction: int = 0
+## Easing type for the movement in animation
 @export var move_in_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the movement in animation
 @export var move_in_trans_type: Tween.TransitionType = Tween.TRANS_BACK
+## Duration of the movement in animation
 @export var move_in_duration: float = 0.5
+## Initial delay before the movement in animation starts
 @export var move_in_initial_delay: float = 0.0
 
 @export_group("Movement Out")
+## Enables the movement out animation
 @export var move_out_enabled: bool = true:
 	set(value):
 		move_out_enabled = value
 		notify_property_list_changed()
+## Reverses the movement in animation values for moving out
 @export var move_out_reverse_mode: bool = false:
 	set(value):
 		move_out_reverse_mode = value
 		notify_property_list_changed()
+## Direction to which the window moves out
 @export_enum("Top", "Bottom", "Left", "Right", "Top Left", "Top Right", "Bottom Left", "Bottom Right") var move_out_direction: int = 0
+## Easing type for the movement out animation
 @export var move_out_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the movement out animation
 @export var move_out_trans_type: Tween.TransitionType = Tween.TRANS_BACK
+## Duration of the movement out animation
 @export var move_out_duration: float = 0.5
+## Initial delay before the movement out animation starts
 @export var move_out_initial_delay: float = 0.0
 
 @export_group("Zoom In")
+## Enables the zoom in animation
 @export var zoom_in_enabled: bool = true:
 	set(value):
 		zoom_in_enabled = value
 		notify_property_list_changed()
+## Starting scale for the zoom in animation
 @export var zoom_in_start: float = 0.0
+## Ending scale for the zoom in animation
 @export var zoom_in_end: float = 1.0
+## Easing type for the zoom in animation
 @export var zoom_in_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the zoom in animation
 @export var zoom_in_trans_type: Tween.TransitionType = Tween.TRANS_BACK
+## Duration of the zoom in animation
 @export var zoom_in_duration: float = 0.5
+## Initial delay before the zoom in animation starts
 @export var zoom_in_initial_delay: float = 0.0
 
 @export_group("Zoom Out")
+## Enables the zoom out animation
 @export var zoom_out_enabled: bool = true:
 	set(value):
 		zoom_out_enabled = value
 		notify_property_list_changed()
+## Reverses the zoom in animation values for zooming out
 @export var zoom_out_reverse_mode: bool = false:
 	set(value):
 		zoom_out_reverse_mode = value
 		notify_property_list_changed()
+## Starting scale for the zoom out animation
 @export var zoom_out_start: float = 1.0
+## Ending scale for the zoom out animation
 @export var zoom_out_end: float = 0.0
+## Easing type for the zoom out animation
 @export var zoom_out_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the zoom out animation
 @export var zoom_out_trans_type: Tween.TransitionType = Tween.TRANS_BACK
+## Duration of the zoom out animation
 @export var zoom_out_duration: float = 0.5
+## Initial delay before the zoom out animation starts
 @export var zoom_out_initial_delay: float = 0.0
 
 @export_group("Fade In")
+## Enables the fade in animation
 @export var fade_in_enabled: bool = true:
 	set(value):
 		fade_in_enabled = value
 		notify_property_list_changed()
+## Easing type for the fade in animation
 @export var fade_in_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the fade in animation
 @export var fade_in_trans_type: Tween.TransitionType = Tween.TRANS_QUAD
+## Duration of the fade in animation
 @export var fade_in_duration: float = 0.5
+## Initial delay before the fade in animation starts
 @export var fade_in_initial_delay: float = 0.0
 
 @export_group("Fade Out")
+## Enables the fade out animation
 @export var fade_out_enabled: bool = true:
 	set(value):
 		fade_out_enabled = value
 		notify_property_list_changed()
+## Reverses the fade in animation values for fading out
 @export var fade_out_reverse_mode: bool = false:
 	set(value):
 		fade_out_reverse_mode = value
 		notify_property_list_changed()
+## Easing type for the fade out animation
 @export var fade_out_ease_type: Tween.EaseType = Tween.EASE_OUT
+## Transition type for the fade out animation
 @export var fade_out_trans_type: Tween.TransitionType = Tween.TRANS_QUAD
+## Duration of the fade out animation
 @export var fade_out_duration: float = 0.5
+## Initial delay before the fade out animation starts
 @export var fade_out_initial_delay: float = 0.0
 
 @export_group("Shake In")
+## Enables the shake in animation
 @export var shake_in_enabled: bool = false:
 	set(value):
 		shake_in_enabled = value
 		notify_property_list_changed()
+## Intensity of the shake in animation
 @export var shake_in_intensity: float = 10.0
+## Frequency of the shake in animation
 @export var shake_in_frequency: float = 20.0
+## Duration of the shake in animation
 @export var shake_in_duration: float = 0.5
+## Initial delay before the shake in animation starts
 @export var shake_in_initial_delay: float = 0.0
 
 @export_group("Shake Out")
+## Enables the shake out animation
 @export var shake_out_enabled: bool = false:
 	set(value):
 		shake_out_enabled = value
 		notify_property_list_changed()
+## Reverses the shake in animation values for shaking out
 @export var shake_out_reverse_mode: bool = false:
 	set(value):
 		shake_out_reverse_mode = value
 		notify_property_list_changed()
+## Intensity of the shake out animation
 @export var shake_out_intensity: float = 10.0
+## Frequency of the shake out animation
 @export var shake_out_frequency: float = 20.0
+## Duration of the shake out animation
 @export var shake_out_duration: float = 0.5
+## Initial delay before the shake out animation starts
 @export var shake_out_initial_delay: float = 0.0
 
 @export_group("Animation")
+## Automatically plays the starting animation when ready
 @export var auto_play_on_start: bool = false
 ## Initial delay before emitting the animation_in_finished signal
 ## (Leave at 0 to use the completion of the initial tween as the delay)
@@ -147,8 +238,11 @@ var is_sub_menu = false
 var exit_tree_when_end = false
 
 
+#region Lifecycle & Engine
+## Initializes the node and sets up initial configuration
 func _ready() -> void:
-	GameManager.set_text_config(self, true)
+	if not Engine.is_editor_hint():
+		GameManager.set_text_config(self, true)
 	
 	_original_position = position
 	pivot_offset = size / 2
@@ -157,44 +251,139 @@ func _ready() -> void:
 		animate_in()
 
 
+## Sets the scene title and updates the container if ready
 func _set_scene_title(value: String) -> void:
 	scene_title = value
-	if is_node_ready():
-		%TitleContainer.title = value
+	var main_scene = get_node_or_null("%TitleContainer")
+	if main_scene:
+		main_scene.title = value
 
 
+## Retrieves the main scene from the container
 func get_main_scene() -> Node:
-	if %MainSceneContainer.get_child_count() > 0:
-		return %MainSceneContainer.get_child(0)
+	var main_scene = get_node_or_null("%MainSceneContainer")
+	if main_scene and main_scene.get_child_count() > 0:
+		return main_scene.get_child(0)
 	
 	return null
+#endregion
 
 
+#region Public Methods
+## Starts the animate in process
 func start() -> void:
 	running_starting_animation = false
 	animate_in()
 
 
+## Destroys the window by playing the out animation
+func destroy() -> void:
+	animate_out()
+#endregion
+
+
+#region Signals
+## Emits the end signal
 func emit_signal_end() -> void:
 	end.emit()
 
 
+## Emits the started signal
 func emit_signal_start() -> void:
 	started.emit()
 
 
+## Emits the early tree exited signal
 func emit_signal_early_tree_exited() -> void:
 	early_tree_exited.emit()
 
 
+## Emits the starting end signal
 func emit_signal_starting_end() -> void:
 	starting_end.emit()
+#endregion
 
 
-func _apply_shake_offset() -> void:
-	position = _base_position + _shake_offset
+#region Presets Management
+## Returns the dictionary containing all saved presets
+func _get_all_presets() -> Dictionary:
+	if not FileAccess.file_exists("user://window_presets.json"):
+		return {}
 
+	var file = FileAccess.open("user://window_presets.json", FileAccess.READ)
+	var content = file.get_as_text()
+	var data = JSON.parse_string(content)
+
+	if typeof(data) == TYPE_DICTIONARY:
+		return data
+
+	return {}
+
+
+## Saves the current variable configuration as a new preset
+func _save_current_preset() -> void:
+	if new_preset_name.strip_edges() == "":
+		printerr("Preset name cannot be empty.")
+		return
+
+	var presets = _get_all_presets()
+	var current_data = {}
+
+	for prop in get_property_list():
+		var p_name = prop["name"]
+		if p_name.begins_with("move_") or p_name.begins_with("zoom_") or p_name.begins_with("fade_") or p_name.begins_with("shake_") or p_name in ["auto_play_on_start", "ready_to_process_delay", "no_destroy_on_hide", "timer_to_emit_started_signal", "timer_to_emit_end_signal"]:
+			current_data[p_name] = get(p_name)
+
+	presets[new_preset_name] = current_data
+
+	var file = FileAccess.open("user://window_presets.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify(presets, "\t"))
+
+	new_preset_name = ""
+	notify_property_list_changed()
+
+
+## Applies the currently selected preset properties
+func _apply_selected_preset() -> void:
+	var presets = _get_all_presets()
+
+	if presets.has(selected_preset):
+		var data = presets[selected_preset]
+		for key in data.keys():
+			set(key, data[key])
+		notify_property_list_changed()
+
+
+## Deletes the selected preset from the saved configuration
+func _delete_selected_preset() -> void:
+	if selected_preset == "":
+		return
+
+	var presets = _get_all_presets()
+
+	if presets.has(selected_preset):
+		presets.erase(selected_preset)
+		
+		var file = FileAccess.open("user://window_presets.json", FileAccess.WRITE)
+		file.store_string(JSON.stringify(presets, "\t"))
+		
+		selected_preset = ""
+		notify_property_list_changed()
+#endregion
+
+
+#region Property Validation
+## Validates and modifies properties in the inspector dynamically
 func _validate_property(property: Dictionary) -> void:
+	if property.name == "selected_preset":
+		property.hint = PROPERTY_HINT_ENUM
+		var presets = _get_all_presets()
+		if presets.size() > 0:
+			property.hint_string = ",".join(PackedStringArray(presets.keys()))
+		else:
+			property.hint_string = "No Presets Saved"
+		return
+
 	var property_name = property.name
 
 	var move_in_members = [
@@ -204,6 +393,7 @@ func _validate_property(property: Dictionary) -> void:
 		"move_in_duration",
 		"move_in_initial_delay"
 	]
+	
 	if property_name in move_in_members:
 		if not move_in_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -216,6 +406,7 @@ func _validate_property(property: Dictionary) -> void:
 		"zoom_in_duration",
 		"zoom_in_initial_delay"
 	]
+	
 	if property_name in zoom_in_members:
 		if not zoom_in_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -226,6 +417,7 @@ func _validate_property(property: Dictionary) -> void:
 		"fade_in_duration",
 		"fade_in_initial_delay"
 	]
+	
 	if property_name in fade_in_members:
 		if not fade_in_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -236,6 +428,7 @@ func _validate_property(property: Dictionary) -> void:
 		"shake_in_duration",
 		"shake_in_initial_delay"
 	]
+	
 	if property_name in shake_in_members:
 		if not shake_in_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -248,6 +441,7 @@ func _validate_property(property: Dictionary) -> void:
 		"move_out_duration",
 		"move_out_initial_delay"
 	]
+	
 	if property_name in move_out_members:
 		if not move_out_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -266,6 +460,7 @@ func _validate_property(property: Dictionary) -> void:
 		"zoom_out_duration",
 		"zoom_out_initial_delay"
 	]
+	
 	if property_name in zoom_out_members:
 		if not zoom_out_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -282,6 +477,7 @@ func _validate_property(property: Dictionary) -> void:
 		"fade_out_duration",
 		"fade_out_initial_delay"
 	]
+	
 	if property_name in fade_out_members:
 		if not fade_out_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -298,6 +494,7 @@ func _validate_property(property: Dictionary) -> void:
 		"shake_out_duration",
 		"shake_out_initial_delay"
 	]
+	
 	if property_name in shake_out_members:
 		if not shake_out_enabled:
 			property.usage = PROPERTY_USAGE_NO_EDITOR
@@ -306,10 +503,15 @@ func _validate_property(property: Dictionary) -> void:
 				pass
 			elif shake_out_reverse_mode:
 				property.usage = PROPERTY_USAGE_NO_EDITOR
+#endregion
 
+
+#region Animation Internals
+## Calculates the offset position based on the given direction
 func _get_offset_position(direction: int) -> Vector2:
 	var viewport_size = get_viewport_rect().size
 	var offset = Vector2.ZERO
+	
 	match direction:
 		0:
 			offset = Vector2(0, -viewport_size.y - size.y)
@@ -327,11 +529,16 @@ func _get_offset_position(direction: int) -> Vector2:
 			offset = Vector2(-viewport_size.x - size.x, viewport_size.y)
 		7:
 			offset = Vector2(viewport_size.x, viewport_size.y)
+			
 	return _original_position + offset
 
+
+## Updates the base position variable
 func _update_base_position(new_pos: Vector2) -> void:
 	_base_position = new_pos
 
+
+## Applies the shake offset based on the current progress
 func _apply_shake_progress(progress: float) -> void:
 	if progress >= 1.0:
 		_shake_offset = Vector2.ZERO
@@ -348,6 +555,15 @@ func _apply_shake_progress(progress: float) -> void:
 
 	_apply_shake_offset()
 
+
+## Applies the calculated shake offset to the window
+func _apply_shake_offset() -> void:
+	position = _base_position + _shake_offset
+#endregion
+
+
+#region Animations
+## Plays the initialization animation for the window
 func animate_in() -> void:
 	if _tween:
 		_tween.kill()
@@ -422,6 +638,7 @@ func animate_in() -> void:
 	)
 
 
+## Plays the exiting animation for the window
 func animate_out() -> void:
 	if _tween:
 		_tween.kill()
@@ -431,7 +648,6 @@ func animate_out() -> void:
 		t.tween_interval(timer_to_emit_end_signal)
 		t.tween_callback(emit_signal_end)
 		
-
 	_shake_offset = Vector2.ZERO
 	_is_shaking = false
 
@@ -513,7 +729,4 @@ func animate_out() -> void:
 	)
 	
 	emit_signal_starting_end()
-
-
-func destroy() -> void:
-	animate_out()
+#endregion

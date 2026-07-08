@@ -343,7 +343,9 @@ func _draw_item_content(item: Dictionary, rect: Rect2, text_color: Color, _index
 		var list_id = RPGSYSTEM.uid_to_id(list_type, item.current_item.id) if item.current_item.id > 0 else 1
 		var equip_id = RPGSYSTEM.uid_to_id(equip_type, curren_equipped_item.id) if curren_equipped_item.id > 0 else 1
 		
-		if list_id == equip_id and item.current_item.type == curren_equipped_item.type and item.current_item.current_level == curren_equipped_item.current_level:
+		var item_current_level = item.current_item.current_level if item and "current_item" in item and "current_level" in item.current_item else 1
+		var equip_current_level = curren_equipped_item.current_level if "current_level" in curren_equipped_item else 1
+		if list_id == equip_id and item.current_item.type == curren_equipped_item.type and item_current_level == equip_current_level:
 			var equip_icon_size = Vector2(rect.size.y * 0.6, rect.size.y * 0.6)
 			var equip_icon_pos = Vector2(
 				name_draw_pos.x + name_size.x + 4,

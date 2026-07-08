@@ -479,7 +479,7 @@ func get_current_weapon_animation() -> Dictionary:
 
 
 ## Request bake and reconstructs the character appearance mapping from the database securely
-func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
+func update_appearance_cascade(actor_id: Variant, instant: bool = false) -> void:
 	var actor = RPGSYSTEM.get_data("actors", actor_id)
 	if not actor: return
 	
@@ -506,7 +506,7 @@ func update_appearance_cascade(actor_id: int, instant: bool = false) -> void:
 			body,
 			offhand_front,
 			offhand_front,
-			get_meta("actor_id") if has_meta("actor_id") else -1
+			actor_id
 		)
 		await baker.character_baked
 	

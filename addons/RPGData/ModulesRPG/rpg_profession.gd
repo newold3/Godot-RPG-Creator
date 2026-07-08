@@ -68,6 +68,13 @@ func _init() -> void:
 	levels.append(level)
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 ## Clears all the properties of the Profession.
 func clear() -> void:
 	id = 0

@@ -27,8 +27,12 @@ func _ready() -> void:
 		_book.ended_page_flip_animation.connect(
 			func():
 				if _is_index and BookAPI.is_scene_shown(self):
-					set_process(true)
-					%ItemList.grab_focus.call_deferred()
+					var came_from_closed = (_book.previous_spread == -1 or _book.previous_spread == _book.total_spreads)
+					if came_from_closed:
+						set_process(true)
+						
+						if BookAPI._last_book_spread == -1:
+							%ItemList.grab_focus.call_deferred()
 		)
 	
 	%DescriptionContainer.get_v_scroll_bar().focus_mode = Control.FOCUS_CLICK
@@ -102,9 +106,10 @@ func _get_focusable_controls() -> Array[Control]:
 	return controls
 
 
-func _process(_delta: float) -> void:
-	if _is_index and BookAPI.is_scene_shown(self):
-		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
+#func _process(_delta: float) -> void:
+	#if _is_index and BookAPI.is_scene_shown(self):
+		#if %ItemList.has_focus() and BookAPI._last_book_spread == -1:
+			#GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
 
 
 func _build_index() -> void:
@@ -119,33 +124,72 @@ func _build_index() -> void:
 	var items: Array[Dictionary] = []
 	var enemies = RPGSYSTEM.database.enemies
 	
+	var grouped_enemies = {}
+	var rarity_names = {}
+	var rarity_order = []
+	
 	for i in range(1, enemies.size()):
 		var monster = enemies[i]
 		if not monster:
 			continue
-			
-		var dict = {}
-		
-		var killed = false
-		if GameManager.game_state:
-			var raw_death_counter = GameManager.game_state.find_stat("enemy_kills.%s" % monster._uniq_id)
-			var death_counter = raw_death_counter if raw_death_counter != null else 0
-			if death_counter > 0:
-				killed = true
-				
-		if killed:
-			dict["name"] = monster.name
-			if monster.icon and not monster.icon.is_empty():
-				dict["icon"] = monster.icon.get_texture()
+		var r_type = monster.rarity_type
+		var r_name = "Unknown"
+		var type_data = RPGSYSTEM.get_type_data("enemy", r_type)
+		if type_data and type_data.has("name"):
+			r_name = type_data.name
 		else:
-			dict["name"] = _obfuscate_text(monster.name)
+			r_name = str(r_type)
 			
-		dict["target_page"] = str((i - 1) * 2 + 2)
-		items.append(dict)
+		if not grouped_enemies.has(r_type):
+			grouped_enemies[r_type] = []
+			rarity_names[r_type] = r_name
+			rarity_order.append(r_type)
+			
+		grouped_enemies[r_type].append({
+			"monster": monster,
+			"original_index": i
+		})
 		
+	for r_type in rarity_order:
+		# 1. Rarity title (Red color)
+		items.append({
+			"name": rarity_names[r_type],
+			"is_title": true,
+			"text_color": Color.RED
+		})
+		# 2. Empty title (Red color just in case)
+		items.append({
+			"name": "",
+			"is_title": true,
+			"text_color": Color.RED
+		})
+		# 3. Enemies of this rarity ordered by database ID (original_index)
+		for entry in grouped_enemies[r_type]:
+			var monster = entry["monster"]
+			var idx = entry["original_index"]
+			var dict = {}
+			
+			var killed = false
+			if GameManager.game_state:
+				var raw_death_counter = GameManager.game_state.find_stat("enemy_kills.%s" % monster._uniq_id)
+				var death_counter = raw_death_counter if raw_death_counter != null else 0
+				if death_counter > 0:
+					killed = true
+					
+			if killed:
+				dict["name"] = monster.name
+				if monster.icon and not monster.icon.is_empty():
+					dict["icon"] = monster.icon.get_texture()
+			else:
+				dict["name"] = _obfuscate_text(monster.name)
+				
+			dict["target_page"] = str((idx - 1) * 2 + 2)
+			items.append(dict)
+			
 	%ItemList.add_items(items)
 	
-	%ItemList.grab_focus.call_deferred()
+	if _book and (_book.previous_spread == -1 or _book.previous_spread == _book.total_spreads):
+		%ItemList.grab_focus.call_deferred()
 
 
 func _obfuscate_text(input_text: String) -> String:
@@ -248,8 +292,10 @@ func _build_monster_entry() -> void:
 
 
 func _on_item_list_item_activated(index: int) -> void:
-	var target_page = (index * 2) + 2
-	BookAPI.go_to_page(target_page, BookAPI.JumpTarget.CONTENT_PAGE, true, _book)
+	var item_data = %ItemList.get_item_data(index)
+	if item_data.has("target_page"):
+		var target_page = int(item_data["target_page"])
+		BookAPI.go_to_page(target_page, BookAPI.JumpTarget.CONTENT_PAGE, true, _book)
 
 
 func _on_return_to_index_pressed() -> void:

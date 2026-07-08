@@ -49,14 +49,14 @@ var _custom_cache: Dictionary = {}
 @export_range(1, 20) var subdivision_y: int = 5
 
 ## Generates the mesh, skeleton, weights and animations.
-@export var rebuild_all: bool = false : set = _on_generate_pressed
+@export var rebuild_all: bool = false: set = _on_generate_pressed
 
 @export_category("Animation Generator")
 
 @export_group("Quick Presets")
 
 ## Select a material style to auto-configure physics.
-@export var animation_preset: PagePreset = PagePreset.CUSTOM : set = _on_preset_changed
+@export var animation_preset: PagePreset = PagePreset.CUSTOM: set = _on_preset_changed
 
 @export_group("Manual Configuration")
 
@@ -120,8 +120,7 @@ var _custom_cache: Dictionary = {}
 @export_range(0.1, 0.9, 0.01) var timing_midpoint_ratio: float = 0.5
 
 ## Generates the animations for the player.
-@export var generate_anims_btn: bool = false : set = _on_anim_pressed
-
+@export var generate_anims_btn: bool = false: set = _on_anim_pressed
 
 
 #region Runtime Initialization
@@ -132,7 +131,6 @@ func _ready():
 	self.z_index = 10
 	if animation_preset == PagePreset.CUSTOM:
 		_save_state_to_cache()
-
 
 
 ## Rebuilds the rigging and animation sequences.
@@ -218,7 +216,6 @@ func _on_preset_changed(val):
 		_generate_animations_logic()
 
 
-
 ## Saves the current custom variables to the cache dictionary.
 func _save_state_to_cache():
 	_custom_cache = {
@@ -228,7 +225,6 @@ func _save_state_to_cache():
 		"t_mid": timing_midpoint_ratio,
 		"dur_turn": anim_turn_duration, "dur_open": anim_open_close_duration, "shadow": enable_shadow
 	}
-
 
 
 ## Loads the custom variables from the cache dictionary.
@@ -254,7 +250,7 @@ func _load_state_from_cache():
 ## Calculates the bounding rectangle of the polygon.
 func _calculate_polygon_rect() -> Rect2:
 	if polygon.size() == 0:
-		return Rect2(0,0,0,0)
+		return Rect2(0, 0, 0, 0)
 	
 	var min_v = polygon[0]
 	var max_v = polygon[0]
@@ -266,7 +262,6 @@ func _calculate_polygon_rect() -> Rect2:
 		max_v.y = max(max_v.y, v.y)
 		
 	return Rect2(min_v, max_v - min_v)
-
 
 
 ## Generates the full rig logic including mesh and bones.
@@ -392,7 +387,6 @@ func _create_rig_logic(current_page_size: Vector2 = Vector2.ZERO):
 	notify_property_list_changed()
 
 
-
 ## Applies the calculated skinning weights to the generated skeleton.
 func _apply_weights_to_polygon(poly: Polygon2D, sk: Skeleton2D):
 	poly.clear_bones()
@@ -462,7 +456,6 @@ func _generate_animations_logic():
 	_create_single_anim(library, "turn_flexible_page_mirror", false, true, anim_turn_duration)
 	_create_single_anim(library, "turn_rigid_page_mirror", true, true, anim_open_close_duration)
 	notify_property_list_changed()
-
 
 
 ## Creates a single track animation and adds it to the player.
@@ -663,30 +656,26 @@ func _trigger_midpoint():
 	emit_signal("change_page_requested")
 
 
-
 ## Triggers the end animation signal.
 func _trigger_end():
 	emit_signal("end_animation")
 
 
-
 ## Rebuilds logic when the property is clicked in the inspector.
 func _on_generate_pressed(val):
 	if val:
-		rebuild_all=false
+		rebuild_all = false
 		_clean_previous_rig()
 		_create_rig_logic()
 		_generate_animations_logic()
 
 
-
 ## Animates the property when pressed in the inspector.
 func _on_anim_pressed(val):
 	if val:
-		generate_anims_btn=false
-		if anim_player and skeleton!=NodePath(""):
+		generate_anims_btn = false
+		if anim_player and skeleton != NodePath(""):
 			_generate_animations_logic()
-
 
 
 ## Resets all skeleton bones back to their original zeroed rest rotations.
@@ -699,7 +688,6 @@ func reset_bones_to_rest() -> void:
 		_reset_bone_recursive(child)
 
 
-
 ## Recursively resets bones starting from the given node down the hierarchy.
 func _reset_bone_recursive(node: Node) -> void:
 	if node is Bone2D:
@@ -707,7 +695,6 @@ func _reset_bone_recursive(node: Node) -> void:
 		node.rotation_degrees = 0.0
 	for i in range(node.get_child_count()):
 		_reset_bone_recursive(node.get_child(i))
-
 
 
 ## Cleans previous rig nodes.

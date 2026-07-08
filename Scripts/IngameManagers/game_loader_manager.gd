@@ -63,8 +63,16 @@ func _initialize_game_state() -> void:
 	game_state.followers_enabled = system.followers_enabled
 	
 	for quest in RPGSYSTEM.database.quests:
-		if quest and quest.default_unlocked:
+		if not quest: continue
+		if quest.default_unlocked:
 			game_state.quest_progress.unlocked_quests[quest._uniq_id] = true
+	
+	for item in RPGSYSTEM.database.items:
+		if not item: continue
+		for i in item.recipes.size():
+			var recipe: RPGRecipe = item.recipes[i]
+			if recipe.learned_by_default:
+				GameManager.learn_recipe(0, item._uniq_id, i)
 
 
 func _setup_initial_party() -> void:

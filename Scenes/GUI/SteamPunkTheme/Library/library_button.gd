@@ -13,7 +13,7 @@ func _process(_delta: float) -> void:
 		modulate.a = target_alpha
 
 
-func _gui_input(event: InputEvent) -> void:
+func _gui_input(_event: InputEvent) -> void:
 	if disabled: return
 	if ControllerManager.is_confirm_pressed():
 		_click()

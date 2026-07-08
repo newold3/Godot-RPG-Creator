@@ -4,11 +4,9 @@ class_name PageFlipMeshManager extends RefCounted
 var book: Node2D
 
 
-
 ## Initializes the mesh manager.
 func _init(book_node: Node2D) -> void:
 	book = book_node
-
 
 
 #region Curve Calculations
@@ -550,7 +548,7 @@ func build_spine() -> void:
 	var cover_h = h * book.cover_protrude_scale.y if book.covers_are_rigid else h
 	var offset_y = book.cover_protrude_offset.y if book.covers_are_rigid else 0.0
 	
-	var top_y = -cover_h / 2.0 + offset_y
+	var top_y = - cover_h / 2.0 + offset_y
 	var bot_y = cover_h / 2.0 + offset_y
 	
 	book._spine_poly.polygon = PackedVector2Array([Vector2(-hw, top_y), Vector2(hw, top_y), Vector2(hw, bot_y), Vector2(-hw, bot_y)])
@@ -567,7 +565,7 @@ func build_spine() -> void:
 		book._spine_poly.material.shader = book.perspective_shader
 		
 	book.visuals_container.add_child(book._spine_poly)
-	book._spine_poly.position = Vector2.ZERO
+	book._spine_poly.position = book.volume_stack_offset
 	
 	if book.is_inside_tree() and Engine.is_editor_hint():
 		book._spine_poly.owner = book.get_tree().edited_scene_root
@@ -657,36 +655,36 @@ func update_static_visuals_immediate() -> void:
 	var has_r_stack = (is_open and book.current_spread < book.total_spreads - 1)
 
 	var cv_sh_l = book.visuals_container.get_node_or_null("CoverStackShadowLeft") if book.visuals_container else null
-	if cv_sh_l: 
+	if cv_sh_l:
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(cv_sh_l, is_open)
 		cv_sh_l.modulate.a = 1.0 if is_open else 0.0
 
 	var cv_sh_r = book.visuals_container.get_node_or_null("CoverStackShadowRight") if book.visuals_container else null
-	if cv_sh_r: 
+	if cv_sh_r:
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(cv_sh_r, is_open)
 		cv_sh_r.modulate.a = 1.0 if is_open else 0.0
 
 	var st_sh_l = book.visuals_container.get_node_or_null("StackDropShadowLeft") if book.visuals_container else null
-	if st_sh_l: 
+	if st_sh_l:
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(st_sh_l, has_l_stack)
 		
 	var st_sh_r = book.visuals_container.get_node_or_null("StackDropShadowRight") if book.visuals_container else null
-	if st_sh_r: 
+	if st_sh_r:
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(st_sh_r, has_r_stack)
 
 	var sh_left = book.visuals_container.get_node_or_null("InnerShadowLeft") if book.visuals_container else null
-	if sh_left: 
+	if sh_left:
 		var show_sh_l = false
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(sh_left, show_sh_l)
 		sh_left.modulate.a = 0.0
 		
 	var sh_right = book.visuals_container.get_node_or_null("InnerShadowRight") if book.visuals_container else null
-	if sh_right: 
+	if sh_right:
 		var show_sh_r = false
 		if book.has_method("_set_page_visible"):
 			book._set_page_visible(sh_right, show_sh_r)
@@ -767,6 +765,10 @@ func update_perspective(factor: float) -> void:
 		if vol_spine:
 			apply_perspective_to_node(vol_spine, tl, tr, bl, br, bw, bh)
 			
+		var spine_cap = book._volume_root.get_node_or_null("SpineBottomCap")
+		if spine_cap:
+			apply_perspective_to_node(spine_cap, tl, tr, bl, br, bw, bh)
+			
 		for i in range(book._volume_root.get_child_count()):
 			var layer = book._volume_root.get_child(i)
 			if layer.name.begins_with("Layer_") and layer.get_child_count() >= 2:
@@ -845,12 +847,12 @@ func process_animation_update(_delta: float) -> void:
 					shadow_fade_factor = 1.0
 				elif t < mid_ratio:
 					var n = (t - half_first_part) / (mid_ratio - half_first_part)
-					shadow_fade_factor = lerp(1.0, 0.0, n)
+					shadow_fade_factor = lerp(1.0, book.min_shadow_opacity_during_flip, n)
 				elif t < half_second_part:
-					shadow_fade_factor = 0.0
+					shadow_fade_factor = book.min_shadow_opacity_during_flip
 				else:
 					var n = (t - half_second_part) / (fade_target_t - half_second_part)
-					shadow_fade_factor = lerp(0.0, 1.0, clampf(n, 0.0, 1.0))
+					shadow_fade_factor = lerp(book.min_shadow_opacity_during_flip, 1.0, clampf(n, 0.0, 1.0))
 					
 			for i in range(pts.size()):
 				var pt = pts[i]
@@ -888,7 +890,7 @@ func process_animation_update(_delta: float) -> void:
 			if sh4:
 				sh4.modulate.a = shadow_fade_factor
 				
-			book.dynamic_poly.position.y = -book.target_page_size.y / 2.0 + current_offset_y
+			book.dynamic_poly.position.y = - book.target_page_size.y / 2.0 + current_offset_y
 			book.dynamic_poly.polygons = []
 			book.dynamic_poly.polygon = pts
 			book.dynamic_poly.vertex_colors = colors

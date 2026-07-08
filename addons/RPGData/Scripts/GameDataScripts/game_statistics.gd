@@ -6,9 +6,9 @@ extends Resource
 @export var enemy_kills: Dictionary = {} # {Unique ID enemy: kill count}
 @export var battles: GameBattleStats = GameBattleStats.new() # Battle statistics (won, lost, drawn, escaped, streaks, etc.)
 @export var skills: Dictionary = {} # {Unique ID skill: total times used} (Ex: 10 = 15)
-@export var items_sold: Dictionary = {} # {item type + _ + Unique ID item: total sold} (items, weapons or armors -> Ex: 0-10 = 15)
-@export var items_purchased: Dictionary = {} # {item type + _ + Unique ID item total purchased} (items, weapons or armors -> Ex: 0-10 = 15)
-@export var items_found: Dictionary = {} # {item type + _ + Unique ID item} (items, weapons or armors -> Ex: 0-10 = 15)
+@export var items_sold: Dictionary = {} # {item type + _ + Unique ID item: total sold} (items, weapons, armors or costumes -> Ex: 0-10 = 15)
+@export var items_purchased: Dictionary = {} # {item type + _ + Unique ID item total purchased} (items, weapons, armors or costumes -> Ex: 0-10 = 15)
+@export var items_found: Dictionary = {} # {item type + _ + Unique ID item} (items, weapons armors or costumes -> Ex: 0-10 = 15)
 @export var extractions: GameExtractionStats = GameExtractionStats.new()
 @export var save_count: int = 0 # Number of times the game has been saved
 @export var game_progress: float = 0.0 # Overall game completion percentage (0.0 to 1.0)

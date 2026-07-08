@@ -210,6 +210,13 @@ static func get_parameter_list(get_real_keys: bool = true) -> Array:
 	return items
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 ## Returns the number of unique parameters in NewParamType enum.
 ## Use this to size arrays instead of hardcoding values.
 func get_new_param_array_size() -> int:

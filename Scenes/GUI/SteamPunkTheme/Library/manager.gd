@@ -49,13 +49,20 @@ func _ready() -> void:
 		_config_hand_in_selectable_books.call_deferred()
 	
 		if scene_parent and scene_parent.running_starting_animation:
-			await main_scene.animation_in_finished
+			await scene_parent.animation_in_finished
 		
 		GameManager.force_show_cursor()
 		
 		go_to_page_left.focus_entered.connect(_select_external_control.bind(go_to_page_left), CONNECT_DEFERRED)
 		go_to_page_right.focus_entered.connect(_select_external_control.bind(go_to_page_right), CONNECT_DEFERRED)
 		back.focus_entered.connect(_select_external_control.bind(back), CONNECT_DEFERRED)
+		
+		for btn in [go_to_page_left, go_to_page_right, back]:
+			if btn:
+				btn.focus_neighbor_left = btn.get_path()
+				btn.focus_neighbor_right = btn.get_path()
+				btn.focus_neighbor_top = btn.get_path()
+				btn.focus_neighbor_bottom = btn.get_path()
 		
 		started = true
 
@@ -218,7 +225,7 @@ func _process_open_book_navigation() -> void:
 				go_to_page_right.grab_focus()
 				GameManager.play_fx("cursor")
 			else:
-				back.grab_focus()
+				go_to_page_left.grab_focus()
 				GameManager.play_fx("cursor")
 		else:
 			if _current_active_control is ItemList:
@@ -241,97 +248,8 @@ func _process_open_book_navigation() -> void:
 						go_to_page_right.grab_focus()
 						GameManager.play_fx("cursor")
 					else:
-						back.grab_focus()
+						go_to_page_left.grab_focus()
 						GameManager.play_fx("cursor")
-	#GameManager.set_manual_cursor_override(current_active_control, current_active_control.global_position)
-			
-	#if not current_active_control and not valid_controls.is_empty():
-		#var internal_controls = valid_controls.filter(func(c): return _is_internal_control(c))
-		#if not internal_controls.is_empty():
-			#current_active_control = internal_controls[0]
-		#else:
-			#if back in valid_controls:
-				#current_active_control = back
-			#else:
-				#current_active_control = valid_controls[0]
-		#
-		#if is_instance_valid(current_active_control):
-			#if _is_internal_control(current_active_control):
-				#get_viewport().gui_release_focus()
-			#current_active_control.grab_focus()
-	#
-	#var direction = ControllerManager.get_pressed_direction()
-	#var should_navigate = true
-	#if current_active_control:
-		#if current_active_control is ItemList:
-			#should_navigate = false
-		#elif current_active_control is ScrollContainer or current_active_control is VBoxContainer:
-			#if direction == "up" or direction == "down":
-				#should_navigate = false
-		#elif current_active_control is HBoxContainer:
-			#if direction == "left" or direction == "right":
-				#should_navigate = false
-		#elif current_active_control is ScrollBar:
-			#if direction == "up" or direction == "down":
-				#var scrollbar = current_active_control as ScrollBar
-				#if direction == "up" and scrollbar.value > scrollbar.min_value:
-					#should_navigate = false
-					#scrollbar.value = clamp(scrollbar.value - scrollbar.step, scrollbar.min_value, scrollbar.max_value - scrollbar.page)
-				#elif direction == "down" and scrollbar.value < scrollbar.max_value - scrollbar.page:
-					#should_navigate = false
-					#scrollbar.value = clamp(scrollbar.value + scrollbar.step, scrollbar.min_value, scrollbar.max_value - scrollbar.page)
-			#
-	#if direction != "" and should_navigate and current_active_control:
-		#var next_control: Control = null
-		#var internal_controls = valid_controls.filter(func(c): return _is_internal_control(c))
-		#var external_controls = valid_controls.filter(func(c): return not _is_internal_control(c))
-		#
-		#if _is_internal_control(current_active_control):
-			#if direction == "left" or direction == "right":
-				#var idx = internal_controls.find(current_active_control)
-				#if direction == "left":
-					#if idx - 1 >= 0:
-						#next_control = internal_controls[idx - 1]
-					#else:
-						#next_control = _find_next_control(current_active_control, external_controls, direction)
-				#elif direction == "right":
-					#if idx + 1 < internal_controls.size():
-						#next_control = internal_controls[idx + 1]
-					#else:
-						#next_control = _find_next_control(current_active_control, external_controls, direction)
-			#elif direction == "up" or direction == "down":
-				#next_control = _find_next_control(current_active_control, internal_controls, direction)
-				#if not next_control:
-					#next_control = _find_next_control(current_active_control, external_controls, direction)
-		#else:
-			#next_control = _find_next_control(current_active_control, valid_controls, direction)
-			#if next_control and _is_internal_control(next_control) and not internal_controls.is_empty():
-				#if current_active_control == go_to_page_left:
-					#next_control = internal_controls[0]
-				#elif current_active_control == go_to_page_right or current_active_control == back:
-					#next_control = internal_controls[-1]
-					#
-		#if next_control and next_control != current_active_control:
-			#GameManager.play_fx("cursor")
-			#if _is_internal_control(current_active_control) and not _is_internal_control(next_control):
-				#GameManager.clear_manual_cursor_override()
-			#if _is_internal_control(next_control):
-				#get_viewport().gui_release_focus()
-			#next_control.grab_focus()
-			#current_active_control = next_control
-			#
-	#if current_active_control:
-		#if _is_internal_control(current_active_control):
-			#if not current_active_control is ItemList:
-				#_update_internal_cursor_position(current_active_control)
-		#else:
-			#GameManager.clear_manual_cursor_override()
-			
-	#if ControllerManager.is_confirm_just_pressed() and current_active_control:
-		#if _is_internal_control(current_active_control):
-			#if current_active_control is BaseButton:
-				#current_active_control.pressed.emit()
-				#GameManager.play_fx("ok")
 
 
 func _config_hand_in_selectable_books() -> void:
@@ -374,7 +292,6 @@ func _on_back_button_pressed() -> void:
 	
 	if scene_parent:
 		scene_parent.destroy()
-		scene_parent.emit_signal_end()
 		GameManager.set_cursor_manipulator(_last_manipulator)
 
 

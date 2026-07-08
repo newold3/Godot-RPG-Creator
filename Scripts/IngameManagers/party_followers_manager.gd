@@ -22,7 +22,7 @@ var _follower_cache: Array[SimpleFollower] = []
 
 #region Cache Management
 ## Stores a player node in the cache, disabling its processing, visibility, and removing it from the player group.
-func _store_player_in_cache(actor_id: int, player_node: Node2D) -> void:
+func _store_player_in_cache(actor_id: Variant, player_node: Node2D) -> void:
 	if not is_instance_valid(player_node):
 		return
 		
@@ -42,7 +42,7 @@ func _store_player_in_cache(actor_id: int, player_node: Node2D) -> void:
 
 
 ## Retrieves a player node from the cache or instantiates a new one if not found.
-func _get_player_from_cache(actor_id: int, scene_path: String) -> Node2D:
+func _get_player_from_cache(actor_id: Variant, scene_path: String) -> Node2D:
 	if _player_cache.has(actor_id):
 		var cached_node = _player_cache[actor_id]
 		if is_instance_valid(cached_node):
@@ -453,8 +453,8 @@ func update_party_visuals(instant: bool = false) -> void:
 			
 			if f_idx >= old_size or actor_changed or is_naked or requires_init:
 				follower.visible = false
-				await follower.update_appearance_cascade(target_actor_id, instant)
 				follower.set_meta("actor_id", target_actor_id)
+				await follower.update_appearance_cascade(target_actor_id, instant)
 				follower.set_meta("requires_init", false)
 				
 			follower.visible = true

@@ -40,6 +40,13 @@ func get_class(): return "RPGState"
 @export var notes: String = ""
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 func clear() -> void:
 	for v in ["name", "description", "notes"]: set(v, "")
 	for v in [messages, traits]: v.clear()

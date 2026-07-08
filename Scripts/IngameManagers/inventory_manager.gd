@@ -304,6 +304,12 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 						
 	sync_perishable_items()
 	
+	if real_item is RPGItem and added_amount > 0:
+		for i in real_item.recipes.size():
+			var recipe: RPGRecipe = real_item.recipes[i]
+			if recipe.learned_by_default:
+				GameManager.learn_recipe(0, real_item._uniq_id, i)
+	
 	return added_amount
 
 
@@ -644,8 +650,12 @@ func get_equippable_items(actor: GameActor, slot_id: int, sort_mode: int = 0, in
 		if available_qty <= 0 and not is_equipped_by_me:
 			continue
 			
-		if not is_set and not actor.can_equip(slot_id, item.id):
-			continue
+		if not is_set:
+			if not actor.can_equip(slot_id, item.id):
+				continue
+		else:
+			if actor.has_method("can_equip_costume") and not actor.can_equip_costume(item):
+				continue
 			
 		var real_data = item.get_real_data()
 		

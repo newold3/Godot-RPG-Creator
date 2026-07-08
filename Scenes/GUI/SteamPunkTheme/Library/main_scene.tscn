@@ -2,13 +2,21 @@
 
 [ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_igh7c"]
 [ext_resource type="PackedScene" uid="uid://ywtrhsddys1n" path="res://Scenes/GUI/SteamPunkTheme/Library/library.tscn" id="2_bqpa8"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_d6mpg"]
 [ext_resource type="Script" uid="uid://cdisc7hy51w4u" path="res://Scenes/GUI/SteamPunkTheme/Library/manager.gd" id="2_r84xb"]
 
 [node name="MainScene" unique_id=1740912168 instance=ExtResource("1_igh7c")]
-mouse_filter = 0
+theme = ExtResource("2_d6mpg")
 scene_title = "Library"
+timer_to_emit_end_signal = 0.12
 move_in_direction = 3
 move_in_duration = 0.5
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.35
+zoom_out_enabled = false
+fade_out_enabled = false
+ready_to_process_delay = 0.18
 
 [node name="Manager" type="Node" parent="." index="0" unique_id=162685583 node_paths=PackedStringArray("scene_parent", "back_button", "main_scene", "title_scene")]
 script = ExtResource("2_r84xb")
@@ -79,6 +87,7 @@ visible = false
 offset_top = -550.0
 offset_bottom = -510.0
 
+[connection signal="end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia" method="end"]
 [connection signal="button_pressed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia" to="Manager" method="_on_encyclopedia_button_pressed"]
 [connection signal="pressed" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_pressed"]
 [connection signal="selected" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_selected"]

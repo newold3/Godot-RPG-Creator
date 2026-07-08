@@ -89,6 +89,29 @@ func get_class(): return "RPGWeapon"
 @export var tick_interval: float = 1.0
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
+func get_craft_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in craft_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
+func get_disassemble_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in disassemble_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
 func clear() -> void:
 	for v in ["name", "description", "lpc_part", "notes", "equipment_restriction"]: set(v, "")
 	for v in [traits, upgrades, craft_materials, disassemble_materials]: v.clear()

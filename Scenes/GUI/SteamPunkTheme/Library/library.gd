@@ -44,6 +44,9 @@ var _last_tooltip: Control
 var current_book_speed_scale: float = 1.0
 var speed_scale_step: float = 40.0
 var default_pages_paths: Array[String] = []
+var _saved_focus: Control = null
+var is_opening_book: bool = false
+var _pressed_nav_button: Control = null
 
 
 @onready var book_container: Control = %Book
@@ -137,19 +140,35 @@ func get_main_book() -> PageFlip2D:
 	return animate_book
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not book_is_opened: return
 	
 	if ControllerManager.is_direction_just_pressed("left") or ControllerManager.is_direction_just_released("right") or ControllerManager.is_confirm_just_pressed(false, [], false):
 		current_book_speed_scale = 1.0
 		
-	var max_spread = animate_book.total_spreads - 1
+	_update_navigation_buttons()
+
+
+func _update_navigation_buttons() -> void:
+	if not book_is_opened: return
+	
+	var is_animating = animate_book.is_animating
+	
+	var max_spread: int = animate_book.total_spreads - 1
 	if animate_book.limit_max_pages > 0:
 		max_spread = (animate_book.limit_max_pages - 1) / 2
 		
 	var is_at_last = (animate_book.current_spread >= max_spread)
-	if %GoToPageRight.disabled != is_at_last:
-		%GoToPageRight.disabled = is_at_last
+	
+	if is_animating:
+		if not %GoToPageLeft.disabled: %GoToPageLeft.disabled = true
+		if not %GoToPageRight.disabled: %GoToPageRight.disabled = true
+		if not %Back.disabled: %Back.disabled = true
+	else:
+		if %GoToPageLeft.disabled: %GoToPageLeft.disabled = false
+		if %GoToPageRight.disabled != is_at_last:
+			%GoToPageRight.disabled = is_at_last
+		if %Back.disabled: %Back.disabled = false
 
 
 func turn_page_to(direction: String) -> void:
@@ -202,6 +221,7 @@ func open_book() -> void:
 		return
 		
 	busy = true
+	is_opening_book = true
 	book_container.mouse_filter = Control.MOUSE_FILTER_STOP
 	current_book_speed_scale = 1.0
 	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
@@ -220,6 +240,9 @@ func close_book() -> void:
 		return
 		
 	busy = true
+	is_opening_book = false
+	_saved_focus = null
+	_pressed_nav_button = null
 	book_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	current_book_speed_scale = 1.0
 	BookAPI.set_book_speed(animate_book, current_book_speed_scale)
@@ -250,6 +273,32 @@ func update_book(type: String, _is_initial_update: bool = false, open_immediatel
 			paths.resize(pages.size() * 2 + 3)
 			paths.fill(scene_path)
 			book.limit_max_pages = pages.size() * 2 + 1
+			book.set_new_pages(paths)
+		"recipes":
+			var recipes_count: int = GameManager.game_state.crafting_recipes.size()
+			var scene_path = "res://Scenes/GUI/SteamPunkTheme/Library/Books/recipes.tscn"
+			var paths: Array[String] = []
+			if recipes_count == 0:
+				paths.resize(3)
+			else:
+				paths.resize(recipes_count * 2 + 3)
+			paths.fill(scene_path)
+			book.limit_max_pages = max(1, recipes_count * 2 + 1)
+			book.set_new_pages(paths)
+		"inventory":
+			var db = RPGSYSTEM.database
+			var items_count: int = 0
+			if db:
+				items_count = db.items.size() + db.weapons.size() + db.armors.size() + db.costumes.size()
+			
+			var scene_path = "res://Scenes/GUI/SteamPunkTheme/Library/Books/items.tscn"
+			var paths: Array[String] = []
+			if items_count == 0:
+				paths.resize(3)
+			else:
+				paths.resize(items_count * 2 + 3)
+			paths.fill(scene_path)
+			book.limit_max_pages = max(1, items_count * 2 + 1)
 			book.set_new_pages(paths)
 		_:
 			book.limit_max_pages = -1
@@ -292,8 +341,8 @@ func update_book(type: String, _is_initial_update: bool = false, open_immediatel
 	
 	t.tween_callback(
 		func():
-			if _is_initial_update: book._initial_config()
 			book.play_sound(book.sfx_book_impact)
+			book._snap_book_to_exact_state()
 			book.visible = true
 			new_book.visible = false
 			last_book.visible = false
@@ -413,7 +462,12 @@ func _on_custom_target_item_list_item_hovered_local(local_position: Vector2, tar
 	var global_pos: Vector2 = %AnimateBook.viewport_to_global_curved(viewport_pos, is_left_page)
 	var sprite_offset: Vector2 = Vector2(-9.0, 2)
 	
-	GameManager.set_manual_cursor_override(target_node, global_pos + sprite_offset)
+	var instant = false
+	if is_opening_book:
+		instant = true
+		is_opening_book = false
+		
+	GameManager.set_manual_cursor_override(target_node, global_pos + sprite_offset, instant)
 
 
 ## Clears the manual cursor override when the item is no longer hovered.
@@ -424,12 +478,30 @@ func _on_custom_target_item_list_item_unhovered_local(target_node: Control) -> v
 
 
 func _on_animate_book_ended_page_flip_animation() -> void:
+	_update_navigation_buttons()
+
 	if not book_is_opened:
 		GameManager.clear_manual_cursor_override()
 		select(get_selected_book())
+		
+		if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+			GameManager.cursor_manager.hand_cursor.forced_target = null
+			
 		GameManager.force_show_cursor()
 		GameManager.force_hand_position_over_node(GameManager.get_cursor_manipulator())
+		_saved_focus = null
+		_pressed_nav_button = null
 	else:
+		if _saved_focus and is_instance_valid(_saved_focus):
+			if not _saved_focus.disabled and _saved_focus.is_visible_in_tree():
+				_saved_focus.grab_focus()
+			else:
+				%GoToPageLeft.grab_focus()
+			_saved_focus = null
+			
+		if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+			GameManager.cursor_manager.hand_cursor.forced_target = null
+			
 		GameManager.force_show_cursor()
 		var focused = get_viewport().gui_get_focus_owner()
 		if focused == %GoToPageLeft:
@@ -441,11 +513,28 @@ func _on_animate_book_ended_page_flip_animation() -> void:
 
 
 func _on_animate_book_started_page_flip_animation() -> void:
+	var last_focus = get_viewport().gui_get_focus_owner()
+	
+	if animate_book.current_spread == 0 and last_focus not in [%GoToPageLeft, %GoToPageRight, %Back]:
+		%GoToPageLeft.grab_focus()
+		last_focus = %GoToPageLeft
+		
+	if _pressed_nav_button:
+		_saved_focus = _pressed_nav_button
+		_pressed_nav_button = null
+	elif last_focus in [%GoToPageLeft, %GoToPageRight, %Back]:
+		_saved_focus = last_focus
+		
 	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
-		GameManager.cursor_manager.hand_cursor.forced_target = null
+		GameManager.cursor_manager.hand_cursor.forced_target = _saved_focus
 		GameManager.cursor_manager.hand_cursor.pause_reposition = false
-	if not book_is_opened:
+		if _saved_focus:
+			GameManager.cursor_manager.hand_cursor.force_show()
+			
+	if not book_is_opened or is_opening_book:
 		GameManager.force_hide_cursor()
+		
+	_update_navigation_buttons()
 
 
 func _enable_extra_controls() -> void:
@@ -460,9 +549,7 @@ func _enable_extra_controls() -> void:
 	t.tween_property(%BookExtraControls, "modulate:a", 1.0, 0.5)
 	t.tween_callback(
 		func():
-			%GoToPageLeft.set_disabled(false)
-			%GoToPageRight.set_disabled(false)
-			%Back.set_disabled(false)
+			_update_navigation_buttons()
 	)
 
 
@@ -477,14 +564,17 @@ func _disable_extra_controls() -> void:
 
 
 func _on_go_to_page_left_pressed() -> void:
+	_pressed_nav_button = %GoToPageLeft
 	button_pressed.emit(0)
 
 
 func _on_go_to_page_right_pressed() -> void:
+	_pressed_nav_button = %GoToPageRight
 	button_pressed.emit(1)
 
 
 func _on_back_pressed() -> void:
+	_pressed_nav_button = %Back
 	button_pressed.emit(2)
 
 
@@ -507,3 +597,7 @@ func _on_back_focus_entered() -> void:
 	GameManager.set_hand_position(MainHandCursor.HandPosition.UP, manipulator)
 	GameManager.set_cursor_offset(Vector2(0, 0), manipulator)
 	GameManager.force_show_cursor()
+
+
+func end() -> void:
+	animate_book.z_index = 1

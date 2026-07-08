@@ -67,6 +67,8 @@ func _fill_actors() -> void:
 
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return
+	
 	var manipulator = GameManager.get_cursor_manipulator()
 	if manipulator in [GameManager.MANIPULATOR_MODES.EQUIP_ACTORS_MENU, GameManager.MANIPULATOR_MODES.EQUIP_MENU]:
 		if ControllerManager.is_action_pressed("Button L1"):

@@ -17,6 +17,15 @@ func get_class(): return "RPGRecipe"
 @export var materials: Array[RPGGearUpgradeComponent] = []
 
 
+func get_materials() -> Array[Dictionary]:
+	var material_list: Array[Dictionary] = []
+	
+	for mat: RPGGearUpgradeComponent in materials:
+		material_list.append(mat.get_component())
+	
+	return material_list
+
+
 func clone(value: bool = true) -> RPGRecipe:
 	var new_recipie = duplicate(value)
 	for i in new_recipie.materials.size():

@@ -30,6 +30,13 @@ func get_class(): return "RPGSkill"
 @export var notes: String = ""
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 func clear() -> void:
 	for v in ["name", "description", "battle_message", "notes"]: set(v, "")
 	for v in [scope, invocation, required_weapons, damage, effects]: v.clear()

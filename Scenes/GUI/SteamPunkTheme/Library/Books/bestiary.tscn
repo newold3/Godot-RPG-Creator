@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bwq472mbxtx0e" path="res://Scenes/GUI/SteamPunkTheme/Library/index_book_item_list.tscn" id="6_dbdt6"]
 [ext_resource type="Texture2D" uid="uid://b4mcywqk7tb6k" path="res://InternalTests/newbook/background_decoration.png" id="6_eeeeh"]
 [ext_resource type="Shader" uid="uid://65s3byggw7ih" path="res://Assets/Shaders/hand_drawn_pencil_shader.gdshader" id="6_v8kxo"]
+[ext_resource type="Texture2D" uid="uid://dkyjiug4uhyq8" path="res://InternalTests/newbook/bestiary_gui_elements.png" id="8_a815w"]
 [ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="8_eeeeh"]
 [ext_resource type="Script" uid="uid://dn21h0h57hy11" path="res://Scripts/ScriptsBase/fit_text.gd" id="8_uft0y"]
 [ext_resource type="Texture2D" uid="uid://xmhc1tc7x0ax" path="res://InternalTests/newbook/murdered_stamp.png" id="10_crgqe"]
@@ -14,7 +15,7 @@
 [ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="11_uft0y"]
 [ext_resource type="Texture2D" uid="uid://cvgk1r5rrufqg" path="res://InternalTests/newbook/stamp_decoration2.png" id="12_5jobp"]
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="15_8o377"]
-[ext_resource type="Script" uid="uid://kliapv6uf68l" path="res://Scenes/GUI/SteamPunkTheme/Library/drop_canvas.gd" id="16_a815w"]
+[ext_resource type="Script" uid="uid://kliapv6uf68l" path="res://Scripts/ScriptsBase/drop_canvas.gd" id="16_a815w"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_g4v7s"]
 font = ExtResource("3_dbdt6")
@@ -105,9 +106,30 @@ fill_to = Vector2(0.48293516, 0.39419794)
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eeeeh"]
 texture = SubResource("GradientTexture2D_4yytr")
 
-[sub_resource type="LabelSettings" id="LabelSettings_a815w"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tl2gb"]
+resource_local_to_scene = true
+shader = ExtResource("6_v8kxo")
+shader_parameter/pencil_color = Color(0, 0, 0, 1)
+shader_parameter/pencil_strength = 0.54000002565
+shader_parameter/shade_levels = 16.0
+shader_parameter/noise_scale = 6.22
+shader_parameter/mix_amount = 0.9170000435575
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knuxp"]
+atlas = ExtResource("8_a815w")
+region = Rect2(2, 388, 720, 636)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_id0sk"]
+atlas = ExtResource("8_a815w")
+region = Rect2(1037, 360, 186, 195)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yf5fn"]
+atlas = ExtResource("8_a815w")
+region = Rect2(16, 246, 758, 76)
+
+[sub_resource type="LabelSettings" id="LabelSettings_slsac"]
 font = ExtResource("3_dbdt6")
-font_size = 49
+font_size = 48
 font_color = Color(0.6901961, 0.6039216, 0.5686275, 1)
 stacked_outline_count = 3
 stacked_shadow_count = 1
@@ -124,10 +146,10 @@ stacked_shadow_0/outline_size = 20
 resource_local_to_scene = true
 shader = ExtResource("6_v8kxo")
 shader_parameter/pencil_color = Color(0, 0, 0, 1)
-shader_parameter/pencil_strength = 0.658000031255
-shader_parameter/shade_levels = 14.000000665
+shader_parameter/pencil_strength = 0.682000032395
+shader_parameter/shade_levels = 13.6830006499425
 shader_parameter/noise_scale = 10.0
-shader_parameter/mix_amount = 0.906000043035
+shader_parameter/mix_amount = 0.8150000387125
 
 [sub_resource type="LabelSettings" id="LabelSettings_tl2gb"]
 font = ExtResource("3_dbdt6")
@@ -156,6 +178,18 @@ stacked_outline_1/color = Color(0, 0, 0, 0.30980393)
 stacked_shadow_0/offset = Vector2(1, 2.125)
 stacked_shadow_0/color = Color(0.05882353, 0.050980393, 0.039215688, 0.41568628)
 stacked_shadow_0/outline_size = 6
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_153ar"]
+atlas = ExtResource("8_a815w")
+region = Rect2(832, 268, 135, 191)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tfml"]
+atlas = ExtResource("8_a815w")
+region = Rect2(1055, 686, 458, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmnkg"]
+atlas = ExtResource("8_a815w")
+region = Rect2(1065, 23, 239, 211)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yytr"]
 bg_color = Color(0.7882353, 0.75686276, 0.72156864, 0.011764706)
@@ -187,13 +221,13 @@ stacked_shadow_0/outline_size = 6
 offsets = PackedFloat32Array(0, 0.982)
 colors = PackedColorArray(0.30588236, 0.3019608, 0.29803923, 1, 0.043137256, 0.03137255, 0.02745098, 0.41960785)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ngudq"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_id0sk"]
 gradient = SubResource("Gradient_eugdv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5jobp"]
-texture = SubResource("GradientTexture2D_ngudq")
+texture = SubResource("GradientTexture2D_id0sk")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a815w"]
 atlas = ExtResource("15_8o377")
@@ -215,7 +249,7 @@ stacked_shadow_0/outline_size = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_id0sk"]
 font = ExtResource("3_dbdt6")
-font_size = 2
+font_size = 25
 font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
 stacked_outline_count = 2
 stacked_shadow_count = 1
@@ -229,7 +263,7 @@ stacked_shadow_0/outline_size = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_t3v26"]
 font = ExtResource("3_dbdt6")
-font_size = 2
+font_size = 25
 font_color = Color(0.91475147, 0.903138, 0.78127164, 1)
 stacked_outline_count = 2
 stacked_shadow_count = 1
@@ -447,6 +481,7 @@ visible = false
 layout_mode = 2
 
 [node name="BackgroundDecoration" type="TextureRect" parent="ContentsLeftContainer" unique_id=1304292586]
+modulate = Color(1, 1, 1, 0.39215687)
 layout_mode = 0
 offset_left = 71.755
 offset_top = 78.39
@@ -454,7 +489,50 @@ offset_right = 463.755
 offset_bottom = 525.39
 texture = ExtResource("6_eeeeh")
 
+[node name="BackgroundDecoration2" type="TextureRect" parent="ContentsLeftContainer" unique_id=1507223793]
+modulate = Color(1, 1, 1, 0.21960784)
+z_index = 1
+material = SubResource("ShaderMaterial_tl2gb")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = -326.0
+offset_right = 360.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.82996416, 0.82996416)
+pivot_offset = Vector2(355, 326)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-4.7, 72.11)
+offset_transform_scale = Vector2(0.725, 0.885)
+texture = SubResource("AtlasTexture_knuxp")
+
+[node name="BackgroundDecoration3" type="TextureRect" parent="ContentsLeftContainer" unique_id=1806640521]
+modulate = Color(1, 1, 1, 0.21960784)
+material = SubResource("ShaderMaterial_tl2gb")
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -212.0
+offset_right = 252.0
+grow_vertical = 0
+pivot_offset = Vector2(355, 326)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-92.01, 72.325)
+offset_transform_scale = Vector2(0.485, 0.657)
+offset_transform_rotation = -0.02617994
+texture = SubResource("AtlasTexture_id0sk")
+expand_mode = 1
+flip_h = true
+
 [node name="VBoxContainer" type="VBoxContainer" parent="ContentsLeftContainer" unique_id=1312404752]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -467,8 +545,21 @@ theme_override_constants/separation = 24
 z_index = 10
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 11.62)
 theme_override_constants/margin_left = 41
 theme_override_constants/margin_right = 60
+
+[node name="Separation" type="TextureRect" parent="ContentsLeftContainer/VBoxContainer/MarginContainer" unique_id=1078343362]
+show_behind_parent = true
+z_as_relative = false
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 52.455)
+offset_transform_scale = Vector2(1.12, 0.575)
+texture = SubResource("AtlasTexture_yf5fn")
+expand_mode = 1
+flip_v = true
 
 [node name="Control" type="Control" parent="ContentsLeftContainer/VBoxContainer/MarginContainer" unique_id=1265141022]
 layout_mode = 2
@@ -476,26 +567,27 @@ offset_transform_enabled = true
 
 [node name="MonsterName" type="Label" parent="ContentsLeftContainer/VBoxContainer/MarginContainer/Control" unique_id=320840]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0.3647059)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -182.0
-offset_top = -25.0
-offset_right = 182.0
-offset_bottom = 25.0
+offset_left = -48.0
+offset_top = -24.0
+offset_right = 48.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.9097937, 0.8225416, 0.7925266, 1)
-text = "Monster Name"
-label_settings = SubResource("LabelSettings_a815w")
+pivot_offset = Vector2(48, 24)
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.69, 1)
+text = "Text"
+label_settings = SubResource("LabelSettings_slsac")
 horizontal_alignment = 1
-vertical_alignment = 1
 uppercase = true
 script = ExtResource("8_uft0y")
+max_font_size = 48
 allow_scaling = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="ContentsLeftContainer/VBoxContainer" unique_id=1673223178]
@@ -549,21 +641,30 @@ offset_left = 263.0
 offset_top = 516.0
 offset_right = 426.0
 offset_bottom = 564.0
-rotation = -0.23038346
+offset_transform_enabled = true
+offset_transform_rotation = -0.23038346
 
 [node name="MurderedKills" type="Label" parent="ContentsLeftContainer/MurderedContainer/Control" unique_id=2072992403]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -24.0
+offset_right = 12.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(12, 24)
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -7)
 text = "0"
 label_settings = SubResource("LabelSettings_tl2gb")
 horizontal_alignment = 2
 vertical_alignment = 1
-clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="MonsterTypeContainer" type="Control" parent="ContentsLeftContainer" unique_id=120768458]
@@ -616,26 +717,98 @@ offset_left = 20.00003
 offset_top = 120.00006
 offset_right = 270.00003
 offset_bottom = 168.00006
-rotation = -0.2268928
+offset_transform_enabled = true
+offset_transform_rotation = -0.2268928
 
 [node name="MosterType" type="Label" parent="ContentsLeftContainer/MonsterTypeContainer/TypeContainer" unique_id=361473664]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -24.0
+offset_right = 48.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Common"
+pivot_offset = Vector2(48, 24)
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -34.25)
+text = "text"
 label_settings = SubResource("LabelSettings_knuxp")
+horizontal_alignment = 1
 vertical_alignment = 1
-clip_text = true
 script = ExtResource("8_uft0y")
 min_font_size = 16
 
 [node name="ContentsRightContainer" type="Control" parent="." unique_id=2038791546]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="BackgroundDecoration" type="TextureRect" parent="ContentsRightContainer" unique_id=653812515]
+modulate = Color(1, 1, 1, 0.21960784)
+material = SubResource("ShaderMaterial_tl2gb")
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -106.0
+offset_right = 252.0
+offset_bottom = 106.0
+grow_vertical = 2
+pivot_offset = Vector2(355, 326)
+offset_transform_enabled = true
+offset_transform_position = Vector2(-79.66, -203.095)
+offset_transform_scale = Vector2(0.291, 0.397)
+offset_transform_rotation = -0.02617994
+texture = SubResource("AtlasTexture_153ar")
+expand_mode = 1
+
+[node name="BackgroundDecoration2" type="TextureRect" parent="ContentsRightContainer" unique_id=293277963]
+modulate = Color(1, 1, 1, 0.2)
+material = SubResource("ShaderMaterial_tl2gb")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_top = -212.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(355, 326)
+offset_transform_enabled = true
+offset_transform_position = Vector2(30.71, 50.34)
+offset_transform_scale = Vector2(0.87, 0.87)
+offset_transform_rotation = -0.02617994
+texture = SubResource("AtlasTexture_1tfml")
+expand_mode = 1
+
+[node name="BackgroundDecoration3" type="TextureRect" parent="ContentsRightContainer" unique_id=557329485]
+modulate = Color(1, 1, 1, 0.21960784)
+material = SubResource("ShaderMaterial_tl2gb")
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -252.0
+offset_top = -106.0
+offset_bottom = 106.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(355, 326)
+offset_transform_enabled = true
+offset_transform_position = Vector2(57.805, -85.705)
+offset_transform_scale = Vector2(0.396, 0.544)
+offset_transform_rotation = -0.02617994
+texture = SubResource("AtlasTexture_pmnkg")
+expand_mode = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="ContentsRightContainer" unique_id=1843494153]
 layout_mode = 1
@@ -656,6 +829,8 @@ theme_override_constants/margin_bottom = 19
 
 [node name="Panel" type="PanelContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2" unique_id=1129643174]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 4.275)
 theme_override_styles/panel = SubResource("StyleBoxFlat_4yytr")
 
 [node name="MarginContainer" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer2/Panel" unique_id=649308382]
@@ -796,18 +971,33 @@ label_settings = SubResource("LabelSettings_8o377")
 vertical_alignment = 1
 
 [node name="Control2" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=725908856]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExperienceValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control2" unique_id=1931990598]
-unique_name_in_owner = true
+[node name="Control" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control2" unique_id=1894817888]
 layout_mode = 2
+
+[node name="ExperienceValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/Control2/Control" unique_id=1931990598]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.5
+offset_top = -13.0
+offset_right = 6.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(6.5, 13)
 size_flags_horizontal = 3
 text = "0"
 label_settings = SubResource("LabelSettings_id0sk")
 horizontal_alignment = 2
 vertical_alignment = 1
-clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="Control3" type="HBoxContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=300922755]
@@ -829,17 +1019,32 @@ label_settings = SubResource("LabelSettings_8o377")
 vertical_alignment = 1
 
 [node name="HBoxContainer3" type="MarginContainer" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=810105276]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
-[node name="GoldValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=401187749]
-unique_name_in_owner = true
+[node name="Control" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1827775892]
 layout_mode = 2
+
+[node name="GoldValue" type="Label" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer/HBoxContainer3/Control" unique_id=401187749]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -6.5
+offset_top = -13.0
+offset_right = 6.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(6.5, 13)
 size_flags_horizontal = 3
 text = "0"
 label_settings = SubResource("LabelSettings_t3v26")
 horizontal_alignment = 2
 vertical_alignment = 1
-clip_text = true
 script = ExtResource("8_uft0y")
 
 [node name="Control" type="Control" parent="ContentsRightContainer/VBoxContainer2/MarginContainer/HBoxContainer/ItemlistContainer2/MarginContainer/VBoxContainer" unique_id=1480090497]
@@ -913,8 +1118,8 @@ font_size = 20
 outline_sizes = Array[int]([10, 8])
 outline_colors = Array[Color]([Color(0, 0, 0, 0.17254902), Color(0.60897046, 0.5569539, 0.5181383, 1)])
 outline_offsets = Array[Vector2]([Vector2(0, 2), Vector2(0, 0)])
-icon_size = Vector2(22, 22)
-vertical_separator = 8
+default_text_color = Color(0.91475147, 0.903138, 0.78127164, 1)
+icon_size = Vector2(16, 16)
 separator_style = SubResource("StyleBoxTexture_5jobp")
 percent_mode = 2
 

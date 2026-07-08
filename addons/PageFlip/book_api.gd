@@ -30,6 +30,8 @@ static var _current_book: PageFlip2D
 
 static var _register_books: Dictionary[String, PageFlip2D]
 
+static var _last_book_spread: int = -1
+
 
 # ==============================================================================
 # SETUP & REFERENCES
@@ -163,6 +165,7 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 			if final_target != -1 and final_target != book.total_spreads:
 				book.book_opened.emit()
 				
+		book.previous_spread = book.current_spread
 		book.current_spread = final_target
 		book.call("_update_static_visuals_immediate")
 		book.call("_update_volume_visuals")
@@ -185,6 +188,26 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 
 		var min_speed = 1.0
 		var max_speed = 4.5
+		
+		var random_intermediates = []
+		if actual_turns > 2:
+			var penultimate_target = final_target - 1 if going_forward else final_target + 1
+			var pool_min = min(start_spread, penultimate_target) + 1
+			var pool_max = max(start_spread, penultimate_target) - 1
+			if pool_max >= pool_min:
+				var needed = actual_turns - 2
+				var pool_size = pool_max - pool_min + 1
+				if needed >= pool_size:
+					for v in range(pool_min, pool_max + 1):
+						random_intermediates.append(v)
+				else:
+					while random_intermediates.size() < needed:
+						var r = randi_range(pool_min, pool_max)
+						if not r in random_intermediates:
+							random_intermediates.append(r)
+				random_intermediates.sort()
+				if not going_forward:
+					random_intermediates.reverse()
 
 		for i in range(actual_turns):
 			if not is_instance_valid(book): break
@@ -192,10 +215,19 @@ static func go_to_spread(book: PageFlip2D, target_spread: int, animated: bool = 
 			var is_first_step = (i == 0)
 			var is_last_step = (i == actual_turns - 1)
 			
-			var t_linear = float(i + 1) / float(actual_turns)
-			var intermediate_target = int(round(lerp(float(start_spread), float(final_target), t_linear)))
+			var intermediate_target = final_target
+			if not is_last_step:
+				if i == actual_turns - 2:
+					intermediate_target = final_target - 1 if going_forward else final_target + 1
+				else:
+					if i < random_intermediates.size():
+						intermediate_target = random_intermediates[i]
+					else:
+						var penultimate_target = final_target - 1 if going_forward else final_target + 1
+						var t_spreads = float(i + 1) / float(actual_turns - 1)
+						intermediate_target = int(round(lerp(float(start_spread), float(penultimate_target), t_spreads)))
 			
-
+			var t_linear = float(i + 1) / float(actual_turns)
 			var _current_speed = min_speed
 			if actual_turns > 1:
 				var arc = sin(t_linear * PI)
@@ -269,6 +301,7 @@ static func set_interaction_lock(book: PageFlip2D, locked: bool) -> void:
 ## Useful as a failsafe if an interactive scene closes unexpectedly.
 static func force_release_control(book: PageFlip2D) -> void:
 	if not is_instance_valid(book): return
+	_last_book_spread = book.current_spread
 	book.call("_pageflip_set_input_enabled", true)
 
 

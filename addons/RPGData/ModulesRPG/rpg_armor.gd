@@ -79,6 +79,30 @@ func get_class():
 ## Time between each tick (only used if ticks are enabled).
 @export var tick_interval: float = 1.0
 
+
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
+func get_craft_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in craft_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
+func get_disassemble_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in disassemble_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
 ## Clears all the properties of the armor.
 func clear() -> void:
 	for v in ["name", "description", "lpc_part", "notes", "equipment_restriction"]:

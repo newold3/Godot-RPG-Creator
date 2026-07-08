@@ -290,12 +290,20 @@ func _init_equipment(actor_data: RPGActor) -> void:
 
 ## Attempts to change an equipment slot to a new item (used to preview equipment, avoid using directly).
 func _set_equip(equipment_type_id: int, item_id: int, item_level: int) -> void:
-	if item_id != -1:
-		var is_weapon = equipment_type_id == 0
-		var new_equipment = _create_new_equipment(equipment_type_id, item_id, item_level, is_weapon)
-		current_gear[equipment_type_id] = new_equipment
+	if equipment_type_id == -1:
+		if item_id != -1:
+			var preview_set = IngameCostume.new()
+			preview_set.id = item_id
+			current_set = preview_set
+		else:
+			current_set = null
 	else:
-		current_gear[equipment_type_id] = null
+		if item_id != -1:
+			var is_weapon = equipment_type_id == 0
+			var new_equipment = _create_new_equipment(equipment_type_id, item_id, item_level, is_weapon)
+			current_gear[equipment_type_id] = new_equipment
+		else:
+			current_gear[equipment_type_id] = null
 		
 	restore_permanent_states_after_battle()
 	parameter_changed.emit()
@@ -329,6 +337,24 @@ func change_equipment(equipment_type_id: int, item_id: int, item_level: int, is_
 
 ## Attempts to change an equipment slot to a item in the inventory.
 func equip_equipment_from_inventory(slot_id: int, item: Variant) -> void:
+	if slot_id == -1:
+		remove_current_equipment(-1)
+		var new_set = item
+		if new_set:
+			if not is_comparation_enabled:
+				if "total_equipped" in new_set:
+					new_set.total_equipped = 1
+				else:
+					new_set.set("total_equipped", 1)
+				if "equipped" in new_set:
+					new_set.equipped = true
+				else:
+					new_set.set("equipped", true)
+			current_set = new_set
+		restore_permanent_states_after_battle()
+		parameter_changed.emit()
+		return
+
 	var equipment_type_id = slot_id
 	var item_id = item.id
 	
@@ -367,6 +393,20 @@ func get_equip_in_slot(slot_id: int) -> Variant:
 
 ## Removes the currently equipped item from the specified equipment slot.
 func remove_current_equipment(equipment_type_id: int) -> void:
+	if equipment_type_id == -1:
+		var current_equipment = current_set
+		if not current_equipment:
+			return
+		if not is_comparation_enabled:
+			if "total_equipped" in current_equipment:
+				current_equipment.total_equipped = max(0, current_equipment.total_equipped - 1)
+			if "equipped" in current_equipment:
+				current_equipment.equipped = current_equipment.total_equipped > 0
+		current_set = null
+		restore_permanent_states_after_battle()
+		parameter_changed.emit()
+		return
+
 	var current_equipment = current_gear[equipment_type_id]
 	
 	if not current_equipment:
@@ -547,6 +587,33 @@ func can_equip(equipment_type_id: int, item_id: int) -> bool:
 					return true
 	
 	return false
+
+
+## Determines whether the actor can equip the costume/set with the given ID/object.
+func can_equip_costume(costume: Variant) -> bool:
+	if not costume:
+		return false
+		
+	var real_item = costume.get_real_data() if costume.has_method("get_real_data") else costume
+	if not real_item or not real_item is RPGCostume:
+		return false
+		
+	var restrictions: RPGEquipRestrictions = real_item.equipment_restriction
+	if not restrictions:
+		return true
+		
+	if restrictions.level_restriction > 0 and restrictions.level_restriction > current_level:
+		return false
+		
+	if restrictions.class_restriction > 0 and current_class != restrictions.class_restriction:
+		return false
+		
+	if restrictions.gender_restriction > 0:
+		var real_actor = get_real_actor()
+		if real_actor and real_actor.gender != restrictions.gender_restriction:
+			return false
+			
+	return true
 
 
 ## Validates all equipped gear, removing any that are now sealed or invalid.

@@ -36,6 +36,21 @@ func get_class(): return "RPGItem"
 @export var disassemble_cost: int = 0
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
+func get_disassemble_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in disassemble_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
 func clear():
 	for v in ["name", "description", "battle_message", "notes"]: set(v, "")
 	for v in [scope, invocation, damage, effects, perishable]: v.clear()

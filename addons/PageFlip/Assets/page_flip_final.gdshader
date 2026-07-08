@@ -76,5 +76,5 @@ void fragment() {
 		if (debug_mode) base_color = vec4(1.0, 0.0, 0.0, 0.5);
 	}
 
-	COLOR = base_color;
+	COLOR = base_color * vec4(1.0, 1.0, 1.0, COLOR.a);
 }

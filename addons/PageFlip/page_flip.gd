@@ -210,6 +210,8 @@ enum JumpTarget {
 @export var outer_droop_width: float = 0.3: set = _set_outer_droop_width
 ## How dark the inner spine curve shadow is (0.0 = no shadow, 1.0 = pitch black).
 @export_range(0.0, 1.0) var spine_shadow_darkness: float = 0.4: set = _set_spine_shadow_val
+## Controls the minimum opacity of the inner shadow during flight (0.0 = fully transparent, 1.0 = fully visible).
+@export_range(0.0, 1.0) var min_shadow_opacity_during_flip: float = 0.0
 ## Vertical offset applied to inner pages to simulate stack depth.
 @export var inner_page_vertical_offset: float = 0.0: set = _set_inner_vertical_offset
 
@@ -262,6 +264,7 @@ enum JumpTarget {
 @export var max_cached_scenes: int = 6
 
 var current_spread: int = -1
+var previous_spread: int = -1
 var total_spreads: int = 0
 var is_animating: bool = false
 var going_forward: bool = true

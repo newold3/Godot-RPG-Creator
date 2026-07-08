@@ -4,11 +4,9 @@ class_name PageFlipVolumeManager extends RefCounted
 var book: Node2D
 
 
-
 ## Initializes the volume manager.
 func _init(book_node: Node2D) -> void:
 	book = book_node
-
 
 
 #region Fake 3D Volume Management
@@ -46,6 +44,17 @@ func generate_volume_layers() -> void:
 		vol_spine.material.shader = book.perspective_shader
 		
 	book._volume_root.add_child(vol_spine)
+	
+	var spine_cap = Polygon2D.new()
+	spine_cap.name = "SpineBottomCap"
+	spine_cap.color = book.spine_color.darkened(0.65) # Darkened cover color
+	spine_cap.z_index = -1
+	if book.spine_texture:
+		spine_cap.texture = book.spine_texture
+	if book.perspective_shader:
+		spine_cap.material = ShaderMaterial.new()
+		spine_cap.material.shader = book.perspective_shader
+	book._volume_root.add_child(spine_cap)
 	
 	for i in range(final_layer_count):
 		var layer_node = Node2D.new()
@@ -189,7 +198,7 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 		var L_start_is_thin = (layers_at_start == 0)
 		var L_target_is_thin = (layers_at_target == 0)
 		
-		if L_start_is_thin != L_target_is_thin: 
+		if L_start_is_thin != L_target_is_thin:
 			if L_target_is_thin:
 				count_left = 0
 			else:
@@ -200,7 +209,7 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 		var R_start_is_thin = (R_start_vol == 0)
 		var R_target_is_thin = (R_target_vol == 0)
 		
-		if R_start_is_thin != R_target_is_thin: 
+		if R_start_is_thin != R_target_is_thin:
 			if R_target_is_thin:
 				count_right = 0
 			else:
@@ -274,21 +283,20 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 		if mid_depth_scale > 0.01:
 			bot_off_mid.y += margin_y * mid_depth_scale
 			
-		var st_sh_l = book.visuals_container.get_node_or_null("StackDropShadowLeft")
+		var current_w_l = target_w + (left_inner_x * book._stack_scale_left)
+		var scale_x_l = current_w_l / book.page_width if book.page_width > 0 else 1.0
+		var current_w_r = target_w + (right_inner_x * book._stack_scale_right)
+		var scale_x_r = current_w_r / book.page_width if book.page_width > 0 else 1.0
 		
+		var st_sh_l = book.visuals_container.get_node_or_null("StackDropShadowLeft")
 		if st_sh_l:
-			var current_w_l = target_w + (left_inner_x * book._stack_scale_left)
-			var scale_x_l = current_w_l / book.page_width if book.page_width > 0 else 1.0
 			st_sh_l.scale = Vector2(scale_x_l, 1.0)
 			st_sh_l.position = Vector2(-current_w_l, current_offset_y) + bot_off_left
 			st_sh_l.modulate.a = book._stack_scale_left
 			st_sh_l.visible = not force_hide_left
 			
 		var st_sh_r = book.visuals_container.get_node_or_null("StackDropShadowRight")
-		
 		if st_sh_r:
-			var current_w_r = target_w + (right_inner_x * book._stack_scale_right)
-			var scale_x_r = current_w_r / book.page_width if book.page_width > 0 else 1.0
 			st_sh_r.scale = Vector2(scale_x_r, 1.0)
 			st_sh_r.position = Vector2(0, current_offset_y) + bot_off_right
 			st_sh_r.modulate.a = book._stack_scale_right
@@ -307,72 +315,164 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 		var p_bot_mid = Vector2(0, h_scaled / 2.0 + current_offset_y)
 		var p2 = Vector2(hw, h_scaled / 2.0 + current_offset_y)
 		
-		var p4 = p0 + bot_off_left
-		var p_deep_top_mid = p_top_mid + bot_off_mid
-		var p5 = p1 + bot_off_right
+		var uniform_bot_off = bot_off_left + bot_off_right
+		var final_bot_off_left = Vector2(bot_off_left.x, lerp(bot_off_left.y, uniform_bot_off.y, expansion_factor))
+		var final_bot_off_right = Vector2(bot_off_right.x, lerp(bot_off_right.y, uniform_bot_off.y, expansion_factor))
+		var final_bot_off_mid = Vector2(bot_off_mid.x, lerp(bot_off_mid.y, uniform_bot_off.y, expansion_factor))
 		
-		var p7 = p3 + bot_off_left
-		var p_deep_bot_mid = p_bot_mid + bot_off_mid
-		var p6 = p2 + bot_off_right
+		var p4 = p0 + final_bot_off_left
+		var p_deep_top_mid = p_top_mid + final_bot_off_mid
+		var p_deep_bot_mid = p_bot_mid + final_bot_off_mid
+		var p7 = p3 + final_bot_off_left
+		
+		var p5 = p1 + final_bot_off_right
+		var p6 = p2 + final_bot_off_right
+		
+		var tw = 1.0
+		var th = 1.0
+		if book.spine_texture:
+			tw = float(book.spine_texture.get_width())
+			th = float(book.spine_texture.get_height())
+		var slice = 1.0
+		
+		var sp_sh = book.visuals_container.get_node_or_null("SpineDropShadow")
+		if sp_sh:
+			var sh_off_lx = - book.stack_shadow_offset.x * scale_x_l
+			var sh_off_rx = book.stack_shadow_offset.x * scale_x_r
+			
+			var sp_left_x = lerp(-hw - book.stack_shadow_offset.x, sh_off_lx, book._stack_scale_left)
+			var sp_right_x = lerp(hw + book.stack_shadow_offset.x, sh_off_rx, book._stack_scale_right)
+			
+			var sp_top_y = - h_scaled / 2.0 + current_offset_y + book.stack_shadow_offset.y
+			var sp_bot_y = h_scaled / 2.0 + current_offset_y + book.stack_shadow_offset.y
+			
+			var sp_sh_pts = PackedVector2Array([
+				Vector2(sp_left_x, sp_top_y),
+				Vector2(sp_right_x, sp_top_y),
+				Vector2(sp_right_x, sp_bot_y + final_bot_off_right.y),
+				Vector2(sp_left_x, sp_bot_y + final_bot_off_left.y)
+			])
+			
+			sp_sh.polygon = sp_sh_pts
+			sp_sh.position = book.volume_stack_offset
+			sp_sh.color = Color(0, 0, 0, 0.45)
+			sp_sh.z_index = -3
+		
+		var spine_cap = book._volume_root.get_node_or_null("SpineBottomCap")
+		if spine_cap:
+			var cap_pts = PackedVector2Array()
+			var cap_uvs = PackedVector2Array()
+			var cap_faces = []
+			
+			var shift_x = 15.0
+			var cap_p3 = p3 + Vector2(shift_x, 0.0)
+			var cap_p7 = p7 + Vector2(shift_x, 0.0)
+			
+			var N = 12
+			for i in range(N + 1):
+				var t = float(i) / N
+				cap_pts.append(cap_p3.lerp(cap_p7, t))
+				cap_uvs.append(Vector2(lerp(0.0, slice, t), th))
+				
+			var dir = (cap_p7 - cap_p3).normalized()
+			var perp = Vector2(-dir.y, dir.x)
+			var bulge_amount = book.spine_width * 0.45 * expansion_factor
+			
+			for i in range(N + 1):
+				var t = float(i) / N
+				var pt_line = cap_p3.lerp(cap_p7, t)
+				var factor = lerp(0.2, 1.0, cos(t * PI / 2.0)) + 0.25 * sin(t * PI)
+				var pt_arc = pt_line + perp * bulge_amount * factor
+				cap_pts.append(pt_arc)
+				cap_uvs.append(Vector2(lerp(0.0, slice, t), th))
+				
+			for i in range(N):
+				var idx0 = i
+				var idx1 = i + 1
+				var idx2 = N + 1 + i
+				var idx3 = N + 1 + i + 1
+				cap_faces.append(PackedInt32Array([idx0, idx1, idx3]))
+				cap_faces.append(PackedInt32Array([idx0, idx3, idx2]))
+				
+			spine_cap.polygon = cap_pts
+			spine_cap.uv = cap_uvs
+			spine_cap.polygons = cap_faces
+			spine_cap.position = Vector2.ZERO
+			spine_cap.color = book.spine_color.darkened(0.65)
+			if book.spine_texture:
+				spine_cap.texture = book.spine_texture
 		
 		var pts = PackedVector2Array()
 		var uvs = PackedVector2Array()
 		var faces = []
 		var face_idx = 0
-		
-		var tw = 1.0
-		var th = 1.0
-		
-		if book.spine_texture:
-			tw = float(book.spine_texture.get_width())
-			th = float(book.spine_texture.get_height())
-			
-		var slice = 1.0
 		var mid_u = tw / 2.0
 		
 		pts.append_array([p4, p_deep_top_mid, p_top_mid, p0])
 		uvs.append_array([Vector2(0, slice), Vector2(mid_u, slice), Vector2(mid_u, 0), Vector2(0, 0)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p_deep_top_mid, p5, p1, p_top_mid])
 		uvs.append_array([Vector2(mid_u, slice), Vector2(tw, slice), Vector2(tw, 0), Vector2(mid_u, 0)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p3, p_bot_mid, p_deep_bot_mid, p7])
 		uvs.append_array([Vector2(0, th), Vector2(mid_u, th), Vector2(mid_u, th - slice), Vector2(0, th - slice)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p_bot_mid, p2, p6, p_deep_bot_mid])
 		uvs.append_array([Vector2(mid_u, th), Vector2(tw, th), Vector2(tw, th - slice), Vector2(mid_u, th - slice)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p4, p0, p3, p7])
 		uvs.append_array([Vector2(slice, 0), Vector2(0, 0), Vector2(0, th), Vector2(slice, th)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p1, p5, p6, p2])
 		uvs.append_array([Vector2(tw, 0), Vector2(tw - slice, 0), Vector2(tw - slice, th), Vector2(tw, th)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p_deep_top_mid, p4, p7, p_deep_bot_mid])
 		uvs.append_array([Vector2(mid_u, 0), Vector2(0, 0), Vector2(0, th), Vector2(mid_u, th)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		pts.append_array([p5, p_deep_top_mid, p_deep_bot_mid, p6])
 		uvs.append_array([Vector2(tw, 0), Vector2(mid_u, 0), Vector2(mid_u, th), Vector2(tw, th)])
-		faces.append(PackedInt32Array([face_idx*4, face_idx*4+1, face_idx*4+2, face_idx*4+3]))
+		faces.append(PackedInt32Array([face_idx * 4, face_idx * 4 + 1, face_idx * 4 + 2, face_idx * 4 + 3]))
 		face_idx += 1
 		
 		vol_spine.polygon = pts
 		vol_spine.uv = uvs
 		vol_spine.polygons = faces
+		
+		var runtime_spine = book.visuals_container.get_node_or_null("RuntimeSpine")
+		if runtime_spine:
+			var rs_hw = book.spine_width / 2.0 + 4.0
+			var rs_h = book.target_page_size.y
+			var rs_cover_h = rs_h * book.cover_protrude_scale.y if book.covers_are_rigid else rs_h
+			var rs_offset_y = book.cover_protrude_offset.y if book.covers_are_rigid else 0.0
+			var rs_top_y = - rs_cover_h / 2.0 + rs_offset_y
+			var rs_bot_y = rs_cover_h / 2.0 + rs_offset_y
+			
+			var rs_p0 = Vector2(-rs_hw, rs_top_y)
+			var rs_p1 = Vector2(rs_hw, rs_top_y)
+			var rs_p2 = Vector2(rs_hw, rs_bot_y) + final_bot_off_right * expansion_factor
+			var rs_p3 = Vector2(-rs_hw, rs_bot_y) + final_bot_off_left * expansion_factor
+			
+			runtime_spine.polygon = PackedVector2Array([rs_p0, rs_p1, rs_p2, rs_p3])
+			runtime_spine.position = book.volume_stack_offset
+			
+			if book.spine_texture:
+				tw = book.spine_texture.get_width()
+				th = book.spine_texture.get_height()
+				runtime_spine.uv = PackedVector2Array([Vector2(0, 0), Vector2(tw, 0), Vector2(tw, th), Vector2(0, th)])
 		
 	var left_threshold_idx = total_layers - count_left
 	var right_threshold_idx = total_layers - count_right
@@ -442,7 +542,7 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 				var current_w_l = target_cover_w + final_off_x_left
 				var scale_x_l = current_w_l / book.page_width
 				l_node.scale = Vector2(scale_x_l, book.cover_protrude_scale.y)
-				l_node.position.x = -current_w_l
+				l_node.position.x = - current_w_l
 				l_node.position.y = book.cover_protrude_offset.y + final_off_y_left
 				l_node.visible = show_l
 				
@@ -459,7 +559,7 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 				var current_w_l = target_w + final_off_x_left
 				var scale_x_l = current_w_l / book.page_width
 				l_node.scale = Vector2(scale_x_l, active_s_y)
-				l_node.position.x = -current_w_l
+				l_node.position.x = - current_w_l
 				l_node.position.y = current_offset_y + final_off_y_left
 				l_node.visible = show_l
 				

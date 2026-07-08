@@ -41,5 +41,5 @@ void fragment() {
     vec3 final_color = mix(vec3(1.0), pencil_color.rgb, 1.0 - pencil);
     final_color = mix(tex.rgb, final_color, mix_amount);
 
-    COLOR = vec4(final_color, tex.a);
+    COLOR = vec4(final_color, COLOR.a);
 }

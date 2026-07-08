@@ -59,7 +59,7 @@ func request_bake_character(
 		target_body: Sprite2D, 
 		target_off_front: Sprite2D,
 		target_wf: Sprite2D,
-		actor_id: int = -1,
+		actor_id: Variant = -1,
 		current_set: Variant = null
 	) -> void:
 
@@ -283,14 +283,27 @@ func _hybrid_scan_for_ids(folder_path: String) -> Dictionary:
 
 #region Character Data Processing
 
-func _get_updated_character_data(base_data: RPGLPCCharacter, actor_id: int) -> RPGLPCCharacter:
+func _get_updated_character_data(base_data: RPGLPCCharacter, actor_id: Variant) -> RPGLPCCharacter:
 	_ensure_database_loaded()
 	
-	if actor_id == -1: return base_data
-	var actor = GameManager.get_actor(actor_id)
+	if actor_id == null or (typeof(actor_id) == TYPE_INT and actor_id == -1) or (typeof(actor_id) == TYPE_STRING and actor_id == ""):
+		return base_data
+		
+	var actor = null
+	if typeof(actor_id) == TYPE_STRING:
+		if GameManager.game_state and actor_id in GameManager.game_state.actors:
+			actor = GameManager.game_state.actors[actor_id]
+		else:
+			# Try to convert classic ID to UID
+			var classic_id = actor_id.to_int()
+			if classic_id > 0:
+				actor = GameManager.get_actor(classic_id)
+	else:
+		actor = GameManager.get_actor(actor_id)
+		
 	if not actor: return base_data
 		
-	var new_data = base_data.duplicate()
+	var new_data = base_data.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	
 	if not new_data.inmutable:
 		_apply_actor_gear(new_data, actor)
@@ -325,12 +338,22 @@ func _apply_actor_gear(character_data: RPGLPCCharacter, actor: Variant) -> void:
 	if not ammo_context.explicitly_equipped and ammo_context.weapon_embedded:
 		character_data.equipment_parts.set("ammo", ammo_context.weapon_embedded)
 
+	if "current_set" in actor and actor.current_set:
+		_equip_resource(character_data, actor.current_set, ammo_context)
+
 
 func _equip_resource(character_data: RPGLPCCharacter, resource: Resource, ammo_context: Dictionary) -> void:
 	if resource is IngameCostume:
-		character_data.body_parts = resource.body_parts.duplicate(true)
-		character_data.equipment_parts = resource.equipment_parts.duplicate(true)
-		character_data.hidden_items = resource.hidden_items.duplicate()
+		var visual_source = resource
+		var real_costume = resource.get_real_data() if resource.has_method("get_real_data") else null
+		if real_costume and not real_costume.lpc_part.is_empty():
+			var lpc_res = load(real_costume.lpc_part)
+			if lpc_res and lpc_res is RPGLPCCharacter:
+				visual_source = lpc_res
+				
+		character_data.body_parts = visual_source.body_parts.duplicate(true)
+		character_data.equipment_parts = visual_source.equipment_parts.duplicate(true)
+		character_data.hidden_items = visual_source.hidden_items.duplicate()
 		
 		var mainhand = character_data.equipment_parts.get("mainhand")
 		var ammo = character_data.equipment_parts.get("ammo")

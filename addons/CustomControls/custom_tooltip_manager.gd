@@ -257,6 +257,8 @@ func _show_custom_tooltip_text_for_node(node: Node) -> void:
 					node.tooltip_changed.connect(_show_custom_tooltip_text_for_node.bind(node))
 		else:
 			contents = node.get_meta("current_tooltip")
+		
+		if contents.is_empty(): return
 			
 		if tooltip_tween and tooltip_tween.is_valid():
 			tooltip_tween.kill()

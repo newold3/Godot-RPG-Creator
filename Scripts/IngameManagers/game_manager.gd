@@ -350,16 +350,64 @@ func set_local_switch(switch_id: int, value: bool, target: int = 0) -> void:
 
 func is_item_in_possesion(item_type, item_id) -> bool:
 	if game_state:
+		if item_type is RPGItem: item_type = 0
+		elif item_type is RPGWeapon: item_type = 1
+		elif item_type is RPGArmor: item_type = 2
+		elif item_type is RPGCostume: item_type = 3
 		match item_type:
 			0:
-				for obj in game_state.items:
-					if obj.id == item_id: return true
+				var uid = RPGSYSTEM.id_to_uid("items", item_id)
+				if uid in game_state.items:
+					if game_state.items[uid].front().id == item_id: return true
 			1:
-				for obj in game_state.weapons:
-					if obj.id == item_id: return true
+				var uid = RPGSYSTEM.id_to_uid("weapons", item_id)
+				if uid in game_state.weapons:
+					if game_state.weapons[uid].front().id == item_id: return true
 			2:
-				for obj in game_state.armors:
-					if obj.id == item_id: return true
+				var uid = RPGSYSTEM.id_to_uid("armors", item_id)
+				if uid in game_state.armors:
+					if game_state.armors[uid].front().id == item_id: return true
+			3:
+				var uid = RPGSYSTEM.id_to_uid("costumes", item_id)
+				if uid in game_state.costumes:
+					if game_state.costumes[uid].front().id == item_id: return true
+	return false
+
+
+func learn_recipe(type: int, item_id: int, recipe_id: int = -1) -> bool:
+	if game_state:
+		var key = "%s_%s" % [type, item_id]
+		if not game_state.crafting_recipes.has(key):
+			game_state.crafting_recipes[key] = [recipe_id]
+			return true
+		else:
+			if not recipe_id in game_state.crafting_recipes[key]:
+				game_state.crafting_recipes[key].append(recipe_id)
+				return true
+	
+	return false
+
+
+func is_item_unlocked(item_type: Variant, item_id: int) -> bool:
+	var uid = RPGSYSTEM.id_to_uid(item_type, item_id)
+	
+	if item_type is RPGItem or str(item_type) == "items": item_type = 0
+	elif item_type is RPGWeapon or str(item_type) == "weapons": item_type = 1
+	elif item_type is RPGArmor or str(item_type) == "armors": item_type = 2
+	elif item_type is RPGCostume or str(item_type) == "costumes": item_type = 3
+	
+	var key = "%s_%s" % [item_type, uid]
+	
+	return GameManager.game_state.crafting_recipes.has(key) or GameManager.game_state.stats.items_found.has(key)
+
+
+func is_recipe_learned(type: int, item_id: int, recipe_id: int = -1) -> bool:
+	if game_state:
+		var key = "%s_%s" % [type, item_id]
+		if game_state.crafting_recipes.has(key):
+			if recipe_id in game_state.crafting_recipes[key] or -1 in game_state.crafting_recipes[key]:
+				return true
+				
 	return false
 
 
@@ -1032,9 +1080,9 @@ func remove_costume_amount(id: int, amount: int, include_equipment: bool = false
 
 #region CursorManager Wrappers
 ## Bridges the manual override function to the cursor manager.
-func set_manual_cursor_override(target_node: Control, global_pos: Vector2) -> void:
+func set_manual_cursor_override(target_node: Control, global_pos: Vector2, instant: bool = false) -> void:
 	if cursor_manager:
-		cursor_manager.set_manual_cursor_override(target_node, global_pos)
+		cursor_manager.set_manual_cursor_override(target_node, global_pos, instant)
 
 
 ## Bridges the clear manual override function to the cursor manager.

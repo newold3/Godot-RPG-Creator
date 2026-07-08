@@ -106,6 +106,7 @@ func _on_equipment_container_slot_selected(slot_id: int) -> void:
 
 
 func _on_costume_button_focus_entered() -> void:
+	current_zone = MenuZone.COSTUME
 	var manipulator = str(GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU_2)
 	GameManager.set_cursor_manipulator(manipulator)
 	GameManager.set_confin_area(Rect2(), manipulator)
@@ -115,8 +116,8 @@ func _on_costume_button_focus_entered() -> void:
 
 
 func _on_costume_button_pressed() -> void:
-	if current_zone != MenuZone.COSTUME: return
-	# TODO
+	current_zone = MenuZone.COSTUME
+	main_node._process_start_change_costume()
 
 
 func _on_buttons_vertical_menu_ok_pressed(index: int) -> void:
@@ -351,7 +352,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_jbong")
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton/ClipTexture" unique_id=1022207665]
+[node name="SetIcon" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton/ClipTexture" unique_id=1022207665]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

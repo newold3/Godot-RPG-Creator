@@ -14,6 +14,7 @@ var weapon_animations_data: Dictionary
 var is_playing: bool = false
 
 const VALID_DATABASE_KEYS: Array = ["actors", "classes", "professions", "skills", "items", "weapons", "armors", "costumes", "enemies", "troops", "states", "animations", "common_events", "speakers", "quests"]
+const VALID_ITEM_KEYS: Dictionary = {0: "items", 1: "weapons", 2: "armors", 3: "costumes"}
 
 static var editor_interface
 
@@ -123,16 +124,34 @@ func generate_16_digit_id() -> int:
 	return int(id)
 
 
+## Resolves a database key or array directly into a valid data array.
+func _get_data_array(key: Variant) -> Array:
+	if key in VALID_ITEM_KEYS:
+		key = VALID_ITEM_KEYS.get(key)
+		
+	if key is String and not key in VALID_DATABASE_KEYS:
+		return []
+		
+	var data: Variant = database[key] if key is String else key
+	
+	if data is Array:
+		return data
+		
+	return []
+
+
+
+## Retrieves the data of an element from the database using its key and identifier.
 func get_data(key: Variant, id: int) -> Variant:
 	if id < 0:
 		return null
 		
-	if key is String and not key in VALID_DATABASE_KEYS:
-		return null
+	if key is Object:
+		return key
 		
-	var data: Array = database[key] if key is String else key
+	var data: Array = _get_data_array(key)
 	
-	if not data: 
+	if data.is_empty():
 		return null
 		
 	if id >= 1_000_000_000_000_000:
@@ -140,7 +159,7 @@ func get_data(key: Variant, id: int) -> Variant:
 			if d and d.get("_uniq_id") == id:
 				return d
 		return null
-	
+		
 	if id > 0 and data.size() > id and data[id] and data[id].id == id:
 		return data[id]
 		
@@ -270,6 +289,7 @@ func get_type_data(_type: String, id: int) -> Dictionary:
 	return obj
 
 
+## Converts a standard identifier to a unique identifier.
 func id_to_uid(key: Variant, id: int) -> int:
 	if id < 0:
 		return -1
@@ -277,25 +297,23 @@ func id_to_uid(key: Variant, id: int) -> int:
 	if id >= 1_000_000_000_000_000:
 		return id
 		
-	if key is String and not key in VALID_DATABASE_KEYS:
+	var data: Array = _get_data_array(key)
+	
+	if data.is_empty():
 		return -1
 		
-	var data: Array = database[key] if key is String else key
-	
-	if not data: 
-		return -1
-	
 	if id > 0 and data.size() > id and data[id] and data[id].id == id:
 		return data[id]._uniq_id
-	
+		
 	for d: Variant in data:
 		if d and d.id == id:
 			return d.get("_uniq_id", -1)
-		
+			
 	return -1
 
 
 
+## Converts a unique identifier back to a standard array index or identifier.
 func uid_to_id(key: Variant, id: int) -> int:
 	if id < 0:
 		return -1
@@ -303,14 +321,11 @@ func uid_to_id(key: Variant, id: int) -> int:
 	if id < 1_000_000_000_000_000:
 		return id
 		
-	if key is String and not key in VALID_DATABASE_KEYS:
+	var data: Array = _get_data_array(key)
+	
+	if data.is_empty():
 		return -1
 		
-	var data: Array = database[key] if key is String else key
-	
-	if not data: 
-		return -1
-	
 	for i: int in data.size():
 		var d: Variant = data[i]
 		
@@ -427,6 +442,10 @@ func debug_fill_stats_randomly() -> void:
 					if randf() > 0.5: stats.items_found[key] = randi_range(1, 20)
 					if randf() > 0.7: stats.items_sold[key] = randi_range(1, 10)
 					if randf() > 0.6: stats.items_purchased[key] = randi_range(1, 15)
+					for i in item.recipes.size():
+						var recipe: RPGRecipe = item.recipes[i]
+						if not recipe.learned_by_default and randf() > 0.6:
+							GameManager.learn_recipe(0, uid, i)
 					
 		for weapon in database.weapons:
 			if weapon and weapon.id > 0:
@@ -436,6 +455,8 @@ func debug_fill_stats_randomly() -> void:
 					if randf() > 0.6: stats.items_found[key] = randi_range(1, 5)
 					if randf() > 0.8: stats.items_sold[key] = randi_range(1, 3)
 					if randf() > 0.7: stats.items_purchased[key] = randi_range(1, 5)
+					if randf() > 0.6: GameManager.learn_recipe(1, uid)
+						
 					
 		for armor in database.armors:
 			if armor and armor.id > 0:
@@ -445,6 +466,17 @@ func debug_fill_stats_randomly() -> void:
 					if randf() > 0.6: stats.items_found[key] = randi_range(1, 5)
 					if randf() > 0.8: stats.items_sold[key] = randi_range(1, 3)
 					if randf() > 0.7: stats.items_purchased[key] = randi_range(1, 5)
+					if randf() > 0.6: GameManager.learn_recipe(2, uid)
+		
+		for costume in database.costumes:
+			if costume and costume.id > 0:
+				var uid = costume._uniq_id
+				if uid > 0:
+					var key = "3_%s" % uid
+					if randf() > 0.6: stats.items_found[key] = randi_range(1, 5)
+					if randf() > 0.8: stats.items_sold[key] = randi_range(1, 3)
+					if randf() > 0.7: stats.items_purchased[key] = randi_range(1, 5)
+					if randf() > 0.6: GameManager.learn_recipe(3, uid)
 					
 		# Custom user stats
 		if database.types and database.types.user_stats:

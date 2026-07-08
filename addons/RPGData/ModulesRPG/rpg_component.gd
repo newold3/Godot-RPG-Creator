@@ -18,6 +18,26 @@ func get_class():
 @export var item_id: int = 1
 
 
+func get_item() -> Variant:
+	var current_item: Variant = null
+	var key: String
+	
+	match data_id:
+		0: key = "items"
+		1: key = "weapons"
+		2: key = "armors"
+		_: key = "costumes"
+		
+	var uid = RPGSYSTEM.id_to_uid(key, item_id)
+	current_item = RPGSYSTEM.get_data(key, uid)
+	
+	return current_item
+
+
+func _to_string() -> String:
+	return "<RPGComponent data_id=%s, item_id=%s>" % [data_id, item_id]
+
+
 ## Clones the component.
 ## @param value bool - Whether to perform a deep clone.
 ## @return RPGComponent - The cloned component.

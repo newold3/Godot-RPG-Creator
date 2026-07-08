@@ -65,6 +65,30 @@ var icon: String :
 		return preview_path
 
 
+func get_icon() -> Texture:
+	if AssetManager.exists(icon):
+		var texture = load(icon)
+		return texture
+	
+	return null
+
+
+func get_craft_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in craft_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
+func get_disassemble_materials() -> Array[Dictionary]:
+	var objs: Array[Dictionary] = []
+	for obj: RPGGearUpgradeComponent in disassemble_materials:
+		objs.append(obj.get_component())
+	
+	return objs
+
+
 ## Clears all the properties of the costume/set.
 func clear() -> void:
 	for v in ["name", "description", "lpc_part", "notes", "equipment_restriction"]:

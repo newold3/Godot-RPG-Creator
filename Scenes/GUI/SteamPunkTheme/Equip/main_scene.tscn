@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="5_1q44n"]
 [ext_resource type="Script" uid="uid://lf5jsy1h3ico" path="res://Scripts/ScriptsBase/stats_comparison.gd" id="6_7sd7a"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_qrwsq"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_1q44n"]
 viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
 
 [sub_resource type="Resource" id="Resource_l6lfr"]
@@ -16,6 +16,9 @@ metadata/_custom_type_script = "uid://lf5jsy1h3ico"
 
 [node name="MainEquipScene" unique_id=1019145880 instance=ExtResource("1_3fq4p")]
 theme = ExtResource("2_yhcol")
+save_preset = null
+apply_preset = null
+delete_preset = null
 scene_title = "Equipment"
 timer_to_emit_end_signal = 0.12
 move_in_direction = 3
@@ -27,15 +30,23 @@ zoom_out_enabled = false
 fade_out_enabled = false
 ready_to_process_delay = 0.18
 
-[node name="Background" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="1" unique_id=814727480]
-texture = SubResource("ViewportTexture_qrwsq")
+[node name="BottomLayer" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="0" unique_id=507352788]
+new_preset_name = null
+save_preset = null
+selected_preset = null
+apply_preset = null
+confirm_delete = null
+delete_preset = null
+
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1" unique_id=814727480]
+texture = SubResource("ViewportTexture_1q44n")
 metadata/_edit_lock_ = true
 
-[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="2" unique_id=823818857]
+[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" index="2" unique_id=823818857]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="3" unique_id=433102845]
+[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" index="3" unique_id=433102845]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 

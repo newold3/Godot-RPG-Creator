@@ -34,6 +34,13 @@ func get_class(): return "RPGEnemy"
 @export var battle_actions: Array[RPGActorBattleAction] = []
 
 
+func get_icon() -> Texture:
+	if icon:
+		return icon.get_texture()
+	
+	return null
+
+
 func clear() -> void:
 	for v in ["name", "description", "battler", "enemy_scene", "notes"]: set(v, "")
 	for v in [drop_items, action_patterns, traits, battle_actions]: v.clear()
@@ -140,7 +147,9 @@ func get_rewards() -> Array[Dictionary]:
 			var res_data = RPGSYSTEM.get_data(db_key, resolved_id) if is_instance_valid(RPGSYSTEM) else null
 			if res_data:
 				name_str = res_data.name
-				if res_data.icon:
+				if res_data is RPGCostume:
+					icon_tex = res_data.get_icon()
+				elif res_data.icon:
 					icon_tex = res_data.icon.get_texture()
 					
 		var min_q = min(drop.quantity, drop.quantity2)

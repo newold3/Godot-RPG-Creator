@@ -153,6 +153,7 @@ var _last_calculated_width: float = 0.0
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	focus_mode = Control.FOCUS_NONE
+	set_notify_transform(true)
 	draw.connect(_on_stats_draw)
 	gui_input.connect(_on_stats_gui_input)
 	mouse_exited.connect(_on_mouse_exited)
@@ -160,6 +161,10 @@ func _ready() -> void:
 	create_stats_data()
 	recalculate_layout()
 	queue_redraw()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		queue_redraw()
 
 
 func _on_item_rect_changed() -> void:
@@ -871,8 +876,26 @@ func _on_stats_draw() -> void:
 	if left_col_width < 10:
 		left_col_width = 10
 		
+	var visible_top: float = -1e9
+	var visible_bottom: float = 1e9
+	var p = get_parent()
+	while p and p is Control:
+		if p.clip_contents:
+			var offset_y = global_position.y - p.global_position.y
+			visible_top = -offset_y
+			visible_bottom = visible_top + p.size.y
+			break
+		p = p.get_parent()
+		
 	for data in stats_data:
 		var item_height = data.height
+		var item_full_height = item_height + item_separator
+		
+		if visible_top > -1e8:
+			var is_visible = not ((current_y + item_full_height) < visible_top or current_y > visible_bottom)
+			if not is_visible:
+				current_y += item_full_height
+				continue
 		
 		match data.type:
 			"title":
@@ -883,7 +906,7 @@ func _on_stats_draw() -> void:
 					
 				_draw_stat(font, data, current_y, item_height, left_col_width, right_col_width)
 				
-		current_y += item_height + item_separator
+		current_y += item_full_height
 
 
 
@@ -966,7 +989,6 @@ func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float, left_
 		else:
 			draw_custom_string(font, line_pos, line, font_size, text_color)
 			
-	var right_start_x = size.x - scrollbar_w - margin_right - right_col_width
 	var current_value = 0.0
 	var new_value = 0.0
 	var has_comparison = false
