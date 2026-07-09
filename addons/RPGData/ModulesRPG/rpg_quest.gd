@@ -78,9 +78,6 @@ const ItemType = RPGEnums.QuestItemType
 ## List of quests that will be unlocked upon completion of this quest.
 @export var quests_unlocked: PackedInt64Array = []
 
-## Start the chain mission immediately
-## after completing this (useful for making a quest chain).
-@export var chain_mission_id: int = -1
 
 
 # Objetive
@@ -125,7 +122,7 @@ func clear():
 	vars = ["min_level", "time_limit", "quantity", "progress"]
 	for v in vars:
 		set(v, 0)
-	vars = ["chain_quest", "chain_mission_id", "item_id", "enemy_id"]
+	vars = ["chain_quest", "item_id", "enemy_id"]
 	for v in vars:
 		set(v, -1)
 	vars = ["is_repeatable", "default_unlocked", "keep_materials"]

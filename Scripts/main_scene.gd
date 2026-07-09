@@ -53,6 +53,8 @@ func _ready() -> void:
 			%GameLoaderManager.setup_test_game()
 
 
+
+
 func show_popup_message(obj: Dictionary) -> void:
 	animate_items.add_single_item(obj)
 

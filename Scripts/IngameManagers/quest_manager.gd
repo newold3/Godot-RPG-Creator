@@ -40,7 +40,7 @@ func _process(delta: float) -> void:
 	
 	if active_quests.size() > 0:
 		for quest in active_quests.duplicate():
-			if quest.timer > 0.0:
+			if quest.timer > 0.0 and quest.status == RPGEnums.QuestStatus.ACTIVE:
 				var parent_quest = _get_parent_active_quest(quest)
 				var main_quest_id = parent_quest.id if parent_quest else quest.id
 				
@@ -50,12 +50,17 @@ func _process(delta: float) -> void:
 						quest.timer = 0.0
 						if show_debug_prints:
 							print("[QuestManager] Quest ID ", quest.id, " failed due to timeout.")
-						fail_quest(quest)
+						
+						var owner_pquest = _get_owner_quest_configuration(quest)
+						if owner_pquest and owner_pquest.on_failure_quest_page > -1:
+							quest.status = RPGEnums.QuestStatus.FAILED_PENDING_DELIVERY
+						else:
+							fail_quest(quest)
 						timer_dirty = true
 						
 	if _is_dirty or timer_dirty:
 		_validate_gather_quests()
-		if GameManager.current_map and "entity_manager" in GameManager.current_map:
+		if GameManager.current_map and GameManager.current_map.get("entity_manager") != null:
 			scan_map_events(GameManager.current_map.entity_manager.current_ingame_events)
 			
 		GameManager.update_quest_tracker()
@@ -124,6 +129,11 @@ func _get_highest_priority_icon_for_event(ingame_event: IngameEvent) -> RPGIcon:
 					highest_icon = db_quest.icon_completed
 					current_priority = 3
 					
+		if active_quest.owner_event_uniq_id == ingame_event.uniq_id and active_quest.status == RPGEnums.QuestStatus.FAILED_PENDING_DELIVERY:
+			if current_priority < 3:
+				highest_icon = db_quest.icon_failed
+				current_priority = 3
+
 		if db_quest.type == RPGEnums.QuestMode.USER_QUEST and active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			if _page_contains_user_quest_update(ingame_event, active_quest.id):
 				if current_priority < 1:
@@ -226,7 +236,7 @@ func notify_location_reached(map_id: int) -> void:
 			var db_quest = _get_quest_from_database(active_quest.id)
 			
 			if db_quest and db_quest.type == RPGEnums.QuestMode.FIND_LOCATION:
-				if db_quest.target_event.map_id == map_id:
+				if db_quest.item_id == map_id:
 					if show_debug_prints:
 						print("[QuestManager] FIND_LOCATION Objective met for Quest ID: ", active_quest.id)
 						
@@ -262,7 +272,7 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 			
 			if db_quest and db_quest.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 				if db_quest.enemy_id == enemy_id:
-					var added_progress = float(amount) / float(db_quest.enemy_amount)
+					var added_progress = float(amount) / float(db_quest.quantity)
 					active_quest.current_progress = clamp(active_quest.current_progress + added_progress, 0.0, 1.0)
 					progress_made = true
 					
@@ -303,6 +313,8 @@ func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int =
 	var owner_pquest = _get_owner_quest_configuration(new_quest)
 	if owner_pquest and owner_pquest.use_custom_timer and owner_pquest.custom_timer >= 1.0:
 		new_quest.timer = owner_pquest.custom_timer
+	elif db_quest and db_quest.time_limit > 0.0:
+		new_quest.timer = db_quest.time_limit
 	else:
 		new_quest.timer = -1.0
 		
@@ -350,7 +362,7 @@ func complete_quest(quest: GameQuest, force_subquest_cleanup: bool = false, forc
 	var db_quest = _get_quest_from_database(quest.id)
 	var is_sub = quest.parent_quest_id != -1 or force_subquest_cleanup
 	
-	if db_quest and db_quest.type == RPGEnums.QuestMode.GATHER_ITEM and not db_quest.item_preserve:
+	if db_quest and db_quest.type == RPGEnums.QuestMode.GATHER_ITEM and not db_quest.keep_materials:
 		match db_quest.item_type:
 			0:
 				GameManager.remove_item_amount(db_quest.item_id, db_quest.quantity)
@@ -391,6 +403,12 @@ func complete_quest(quest: GameQuest, force_subquest_cleanup: bool = false, forc
 		_grant_quest_rewards_and_unlocks(db_quest)
 		_trigger_chain_quest(db_quest, quest.owner_event_uniq_id)
 		
+		if db_quest.type == RPGEnums.QuestMode.FIND_LOCATION and db_quest.global_event > -1:
+			if RPGSYSTEM.database.common_events.size() > db_quest.global_event:
+				var common_event = RPGSYSTEM.database.common_events[db_quest.global_event]
+				if common_event:
+					GameInterpreter.start_common_event(null, common_event.list)
+					
 		var owner_pquest = _get_owner_quest_configuration(quest)
 		if owner_pquest and "on_complete_common_event" in owner_pquest and owner_pquest.on_complete_common_event > -1:
 			if RPGSYSTEM.database.common_events.size() > owner_pquest.on_complete_common_event:
@@ -537,7 +555,7 @@ func can_start_any_quest_for(ingame_event: IngameEvent) -> bool:
 		var was_completed_by_this_npc = historical.has(history_key)
 
 		if is_unlocked and not was_completed_by_this_npc and _are_prerequisites_met(db_quest):
-			if _are_local_pquest_requirements_met(ingame_event, event_quest):
+			if _are_local_pquest_requirements_met(ingame_event, event_quest) and _is_party_level_sufficient(db_quest.min_level):
 				var active_quest = _get_active_quest_by_id(event_quest.id)
 				if not active_quest:
 					return true
@@ -569,7 +587,7 @@ func start_next_quest_available_for(ingame_event: IngameEvent) -> void:
 		var was_completed_by_this_npc = historical.has(history_key)
 
 		if is_unlocked and not was_completed_by_this_npc:
-			if _are_prerequisites_met(db_quest) and _are_local_pquest_requirements_met(ingame_event, event_quest):
+			if _are_prerequisites_met(db_quest) and _are_local_pquest_requirements_met(ingame_event, event_quest) and _is_party_level_sufficient(db_quest.min_level):
 				if not _get_active_quest_by_id(event_quest.id):
 					target_quest = event_quest
 					if show_debug_prints:
@@ -678,6 +696,16 @@ func finish_failed_quest_for(ingame_event: IngameEvent) -> void:
 
 
 #region UTILITIES & DATA RETRIEVAL
+## Checks if the current party leader's level is at least min_level.
+func _is_party_level_sufficient(min_level: int) -> bool:
+	if min_level <= 0: return true
+	if not GameManager.game_state or GameManager.game_state.current_party.is_empty():
+		return false
+	var leader_id = GameManager.game_state.current_party[0]
+	var leader = GameManager.get_actor(leader_id)
+	return leader and leader.current_level >= min_level
+
+
 ## Checks if the NPC's local quest configuration requirements (pages and relationship) are met.
 func _are_local_pquest_requirements_met(ingame_event: IngameEvent, event_quest: RPGEventPQuest) -> bool:
 	if not event_quest.required_pages.is_empty():
