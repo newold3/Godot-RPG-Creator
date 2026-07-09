@@ -41,6 +41,8 @@ var busy: bool = false
 
 var locked_items: PackedInt32Array = []
 
+var custom_row_colors: Dictionary = {}
+
 const MINI_PADLOCK = preload("res://addons/CustomControls/Images/mini_padlock.png")
 
 signal delete_pressed(ids: PackedInt32Array)
@@ -56,6 +58,14 @@ func _ready() -> void:
 	get_v_scroll_bar().value_changed.connect(_change_back_position, CONNECT_DEFERRED)
 	gui_input.connect(_on_gui_input)
 
+
+
+func clear_custom_colors() -> void:
+	custom_row_colors.clear()
+
+
+func set_custom_color(_index: int, _text_color: Color = Color.TRANSPARENT, _bg_color: Color = Color.WHITE) -> void:
+	custom_row_colors[_index] = {"text_color": _text_color, "background_color": _bg_color}
 
 
 ## Adds or removes the padlock icon to the requested item index
@@ -90,10 +100,17 @@ func _on_back_control_draw() -> void:
 		for index in get_item_count():
 			rect = get_item_rect(index)
 			
+			var color: Color
 			if index % 2 == 0:
-				control.draw_rect(rect, odd_line_color, true)
+				color = odd_line_color
 			else:
-				control.draw_rect(rect, event_line_color, true)
+				color = event_line_color
+				
+			var color_data: Dictionary = custom_row_colors.get(index, {})
+			if not color_data.is_empty() and not color_data.background_color.is_equal_approx(Color.TRANSPARENT):
+				color = color_data.background_color
+			
+			control.draw_rect(rect, color, true)
 				
 			if separator_size > 0:
 				var separator_rect = Rect2(rect.position.x, rect.position.y + rect.size.y - separator_size, rect.size.x, separator_size)

@@ -78,19 +78,24 @@ func fill_material_list(selected_index: int = -1) -> void:
 	for mat: RPGGearUpgradeComponent in current_level_data.required_materials:
 		var current_data
 		var prefix
+		var db_key = ""
 		if mat.component.data_id == 0: # items
 			current_data = database.items
 			prefix = "<Item> "
+			db_key = "items"
 		elif mat.component.data_id == 1: # weapons
 			current_data = database.weapons
 			prefix = "<Weapon> "
+			db_key = "weapons"
 		elif mat.component.data_id == 2: # armors
 			current_data = database.armors
 			prefix = "<Armor> "
+			db_key = "armors"
 		
-		if current_data:
-			if current_data.size() > mat.component.item_id:
-				var item_name = str(mat.component.item_id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[mat.component.item_id].name
+		if current_data and not db_key.is_empty():
+			var classic_id = RPGSYSTEM.uid_to_id(db_key, mat.component.item_id)
+			if classic_id > 0 and current_data.size() > classic_id:
+				var item_name = str(classic_id).pad_zeros(str(current_data.size()).length()) + ": " + current_data[classic_id].name
 				var quantity = str(mat.quantity)
 				node.add_column([prefix + item_name, quantity])
 			else:

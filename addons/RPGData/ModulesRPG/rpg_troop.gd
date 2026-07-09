@@ -25,6 +25,8 @@ func get_class(): return "RPGTroop"
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 
 func _init() -> void:
 	_create_initial_members()
@@ -49,6 +51,7 @@ func clear() -> void:
 	_create_initial_members()
 	pages = [RPGTroopPage.new()]
 	notes = ""
+	separator = null
 
 
 func fix_pages_ids() -> void:

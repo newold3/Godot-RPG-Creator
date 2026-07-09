@@ -33,8 +33,13 @@ func _ready() -> void:
 	main_list_popup_menu.index_pressed.connect(_on_main_list_popup_menu_index_pressed)
 	main_list_popup_menu.visible = false
 	add_child(main_list_popup_menu)
+	main_list_popup_menu.add_separator()
+	main_list_popup_menu.add_item("Add Separator")
+	
 	var node: ItemList = %MainList
 	node.gui_input.connect(_on_main_list_gui_input)
+	node.item_activated.connect(_on_main_list_item_activated)
+	node.item_selected.connect(_on_main_list_item_selected)
 	visibility_changed.connect(_on_visibility_changed)
 
 
@@ -49,6 +54,7 @@ func set_data(_data: Array) -> void:
 	else:
 		_current_data_string = ""
 		
+	current_selected_index = -1
 	fill_main_list(current_id)
 	%AddDataButton.set_disabled(data.size() == 10000)
 	%RemoveDataButton.set_disabled(locked_items.has(0) or data.size() <= 1 )
@@ -63,13 +69,25 @@ func fill_main_list(selected_index: int) -> void:
 	if selected_index == -1 and node.is_anything_selected():
 		selected_index = node.get_selected_items()[0]
 	node.clear()
+	node.clear_custom_colors()
 
 	for i in range(1, data.size()):
 		var id = str(i).pad_zeros(str(data.size()-1).length())
 		
 		var data_name = id + ": " + data[i].name
-		node.add_item(data_name)
+		var is_sep = false
+		if "separator" in data[i] and not data[i].separator == null:
+			is_sep = true
+			data_name = data[i].name
+			
+		var idx = node.add_item(data_name)
 		node.set_item_tooltip_enabled(-1,  false)
+		
+		if is_sep:
+			var bg_color = data[i].separator.background_color
+			var text_color = data[i].separator.text_color
+			node.set_custom_color(i-1, text_color, bg_color)
+			%RightColumn.propagate_call("set_disabled", [true])
 
 	if selected_index >= 0 and node.get_item_count() > selected_index:
 		node.select(selected_index)
@@ -195,16 +213,27 @@ func _on_main_list_multi_selected(index: int, selected: bool) -> void:
 	%RemoveDataButton.set_disabled(locked_items.has(index) or data.size() <= 1)
 	current_selected_index = index + 1
 	
-	if is_disabled:
-		is_disabled = false
-		%RightColumn.propagate_call("set_disabled", [false])
-		%RightColumn.propagate_call("set_editable", [true])
+	var is_sep = false
+	if current_selected_index >= 1 and current_selected_index < data.size():
+		var item = data[current_selected_index]
+		if item and "separator" in item and not item.separator == null:
+			is_sep = true
+			
+	if is_sep:
+		is_disabled = true
+		disable_all(true)
+	else:
+		if is_disabled:
+			is_disabled = false
+		disable_all(false)
 	
-	_update_data_fields.call_deferred()
+		_update_data_fields.call_deferred()
 
 
 func _on_main_list_item_selected(index: int) -> void:
-	pass
+	var current_data = data[index + 1]
+	if "separator" in current_data and not current_data.separator == null:
+		%RightColumn.propagate_call("set_disabled", [true])
 
 
 func _on_name_line_edit_text_changed(new_text: String) -> void:
@@ -230,8 +259,8 @@ func reset_values(node: Node) -> void:
 		node.text = ""
 	elif node.get_class() in ["ColumnItemList", "CurveParameter"]:
 		node.clear()
-	elif node.get_class() == "CustomimagePicker":
-		node.set_icon(null)
+	elif node.has_method("get_custom_class") and node.get_custom_class() == "CustomImagePicker":
+		node.set_icon("")
 	
 	for child in node.get_children():
 		reset_values(child)
@@ -272,8 +301,16 @@ func initialize_data(item) -> void:
 
 
 func _on_main_list_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		show_main_list_popup_menu()
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			show_main_list_popup_menu()
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			var node: ItemList = %MainList
+			var index = node.get_item_at_position(event.position)
+			if index != -1 and data.size() > index + 1:
+				var current_data = data[index + 1]
+				if "separator" in current_data and not current_data.separator == null:
+					%RightColumn.propagate_call("set_disabled", [true])
 
 
 func show_main_list_popup_menu() -> void:
@@ -284,6 +321,18 @@ func show_main_list_popup_menu() -> void:
 		data_name = call("get_data").get_class()
 	data_name += "_data"
 	main_list_popup_menu.set_item_disabled(1, !StaticEditorVars.CLIPBOARD.get(data_name, null))
+	
+	var supports_sep = false
+	var node = %MainList
+	if node.is_anything_selected():
+		var selected_idx = node.get_selected_items()[0]
+		if selected_idx > 0:
+			var idx = selected_idx + 1
+			if idx < data.size() and data[idx]:
+				if "separator" in data[idx]:
+					supports_sep = true
+	main_list_popup_menu.set_item_disabled(5, !supports_sep)
+	
 	main_list_popup_menu.show()
 	var mouse_position = Vector2(DisplayServer.mouse_get_position())
 	var p: Vector2 = mouse_position - main_list_popup_menu.size * 0.5
@@ -295,6 +344,61 @@ func _on_main_list_popup_menu_index_pressed(menu_index: int) -> void:
 		0: copy_main_data()
 		1: paste_main_data()
 		3: clear_main_data()
+		5: _add_separator()
+
+
+func _add_separator() -> void:
+	var node = %MainList
+	if not node.is_anything_selected(): return
+	var selected_idx = node.get_selected_items()[0]
+	if selected_idx <= 0: return
+	
+	_show_separator_config_dialog(-1)
+
+
+func _show_separator_config_dialog(selected_idx: int) -> void:
+	var path = "res://addons/CustomControls/Dialogs/separator_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	if selected_idx != -1:
+		if "separator" in data[selected_idx] and data[selected_idx].separator == null:
+			data[selected_idx].separator = RPGSeparator.new()
+	
+	var separator = RPGSeparator.new() if selected_idx == -1 or not "separator" in data[selected_idx] else data[selected_idx].separator
+	
+	dialog.set_data(separator, false, true)
+	
+	dialog.data_changed.connect(
+		func(text: String, text_color: Color, background_color: Color):
+			separator.name = text
+			separator.text_color = text_color
+			separator.background_color = background_color
+			
+			if selected_idx == -1:
+				var node = %MainList
+				selected_idx = node.get_selected_items()[0]
+				var data_idx = selected_idx + 1
+				var new_sep = default_data_element.clone(true)
+				if "separator" in new_sep:
+					new_sep.separator = separator
+				new_sep.name = separator.name if not separator.name.is_empty() else "----------"
+				data.insert(data_idx, new_sep)
+				fix_ids()
+				need_fix_data = true
+			else:
+				data[selected_idx].name = separator.name
+				
+			fill_main_list(selected_idx)
+	)
+	
+
+
+func _on_main_list_item_activated(index: int) -> void:
+	var data_idx = index + 1
+	if data_idx < data.size() and data[data_idx]:
+		var item = data[data_idx]
+		if "separator" in item and not item.separator == null:
+			_show_separator_config_dialog(data_idx)
 
 
 func copy_main_data() -> void:

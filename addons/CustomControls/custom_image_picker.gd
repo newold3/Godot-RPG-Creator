@@ -1,7 +1,8 @@
 @tool
 extends Control
 
-func get_class(): return "CustomimagePicker"
+func get_class(): return "CustomImagePicker"
+func get_custom_class(): return "CustomImagePicker"
 
 @export var clipboard_key = "image_with_region"
 @export var custom_copy_and_paste_enabled: bool = false

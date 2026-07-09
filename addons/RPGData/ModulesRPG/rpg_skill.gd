@@ -29,6 +29,8 @@ func get_class(): return "RPGSkill"
 @export var effects: Array[RPGEffect] = []
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 
 func get_icon() -> Texture:
 	if icon:
@@ -45,6 +47,7 @@ func clear() -> void:
 	tp_cost = 0
 	occasion = 0
 	icon.clear()
+	separator = null
 
 
 func clone(value: bool = true) -> RPGSkill:

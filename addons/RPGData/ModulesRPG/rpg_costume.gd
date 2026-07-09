@@ -58,6 +58,9 @@ func get_class() -> String:
 ## Additional notes about the costume/set.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
+
 var icon: String :
 	get():
 		var lpc_part_path = lpc_part
@@ -100,6 +103,7 @@ func clear() -> void:
 	params = PackedInt32Array([0, 0, 0, 0, 0, 0, 0, 0])
 	craft_cost = 0
 	disassemble_cost = 0
+	separator = null
 	
 	var database = RPGSYSTEM.database
 	if database:

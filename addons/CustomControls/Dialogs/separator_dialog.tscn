@@ -1,0 +1,229 @@
+[gd_scene format=3 uid="uid://xo7ikwuxk8di"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_1x2vk"]
+[ext_resource type="Script" uid="uid://cbbm0h8gomdkp" path="res://addons/CustomControls/Dialogs/separator_dialog.gd" id="2_pkyow"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="3_lxhk5"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="4_dojji"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="5_ovxkk"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="6_v7xpk"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_b3m6j"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="8_ey85s"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="9_ejmkw"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_u11f1"]
+
+[sub_resource type="Gradient" id="Gradient_u5yrp"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6yyp3"]
+gradient = SubResource("Gradient_u5yrp")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7f15"]
+atlas = ExtResource("4_dojji")
+region = Rect2(72, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gukt"]
+atlas = ExtResource("4_dojji")
+region = Rect2(96, 48, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_subod"]
+texture = ExtResource("6_v7xpk")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mjylh"]
+texture = ExtResource("7_b3m6j")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7qdgr"]
+texture = ExtResource("8_ey85s")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qiqap"]
+texture = ExtResource("9_ejmkw")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_maa40"]
+texture = ExtResource("6_v7xpk")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5stfh"]
+texture = ExtResource("7_b3m6j")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sujn"]
+texture = ExtResource("8_ey85s")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfo07"]
+texture = ExtResource("9_ejmkw")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[node name="SeparatorDialog" type="Window" unique_id=138141205]
+oversampling_override = 1.0
+title = "Separator Command"
+position = Vector2i(0, 36)
+size = Vector2i(550, 182)
+wrap_controls = true
+transient = true
+unresizable = true
+theme = ExtResource("1_1x2vk")
+script = ExtResource("2_pkyow")
+
+[node name="Background" type="TextureRect" parent="." unique_id=70691590]
+material = SubResource("CanvasItemMaterial_u11f1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_6yyp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1291171472]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1450648484]
+layout_mode = 2
+
+[node name="TextContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1608132514]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextContainer" unique_id=3506632]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text: "
+
+[node name="Text" parent="MarginContainer/VBoxContainer/TextContainer" unique_id=168436908 instance=ExtResource("3_lxhk5")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Text that will be displayed centered within this separator."
+
+[node name="TextColorContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=206169344]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextColorContainer" unique_id=127694900]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Text Color: "
+
+[node name="TextColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/TextColorContainer" unique_id=236008874]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Text color used in this separator."
+mouse_default_cursor_shape = 2
+color = Color(0.23444179, 0.019523887, 0.030803958, 1)
+
+[node name="ResetTextColor" type="TextureButton" parent="MarginContainer/VBoxContainer/TextColorContainer" unique_id=607563547]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Set the \"default\" text color"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_h7f15")
+texture_hover = SubResource("AtlasTexture_3gukt")
+
+[node name="TextBackgroundColorContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=70164218]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TextBackgroundColorContainer" unique_id=1445952835]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Background Color: "
+
+[node name="BackgroundColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/TextBackgroundColorContainer" unique_id=2061849454]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Background color used in this separator."
+mouse_default_cursor_shape = 2
+color = Color(0.21134615, 0.4809336, 0.64181185, 1)
+
+[node name="ResetBackgroundColor" type="TextureButton" parent="MarginContainer/VBoxContainer/TextBackgroundColorContainer" unique_id=474989581]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Set the \"default\" text color"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_h7f15")
+texture_hover = SubResource("AtlasTexture_3gukt")
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1788973283]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=779815229]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=942554267 instance=ExtResource("5_ovxkk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_subod")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_mjylh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7qdgr")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_qiqap")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=293553189 instance=ExtResource("5_ovxkk")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_maa40")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_5stfh")
+theme_override_styles/hover = SubResource("StyleBoxTexture_4sujn")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_hfo07")
+text = "CANCEL"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextColorContainer/ResetTextColor" to="." method="_on_reset_text_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextBackgroundColorContainer/BackgroundColor" to="." method="_on_background_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TextBackgroundColorContainer/ResetBackgroundColor" to="." method="_on_reset_background_color_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/CancelButton" to="." method="_on_cancel_button_pressed"]

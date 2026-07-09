@@ -35,6 +35,8 @@ func get_class(): return "RPGItem"
 ## Cost of disassembling the armor.
 @export var disassemble_cost: int = 0
 
+@export var separator: RPGSeparator = null
+
 
 func get_icon() -> Texture:
 	if icon:
@@ -62,6 +64,7 @@ func clear():
 	occasion = 0
 	max_quantity = 0
 	icon.clear()
+	separator = null
 
 
 func _to_string() -> String:

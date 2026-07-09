@@ -9,7 +9,7 @@ var current_tab: int = -1
 var current_panel: Control
 var panels: Dictionary
 
-var cache_dialog : Dictionary = {}
+var cache_dialog: Dictionary = {}
 
 var data: RPGDATA
 var real_data: RPGDATA
@@ -374,6 +374,7 @@ func _on_options_menu_index_pressed(index: int) -> void:
 
 
 func _replace_data_with(other_data: RPGDATA) -> void:
+	RPGSYSTEM.active_editor_database = null
 	RPGSYSTEM.database = other_data
 	_on_parent_visibility_changed()
 
@@ -407,7 +408,7 @@ func _cache_file_dialog_size(dialog: Window) -> void:
 func _save_to_json() -> void:
 	var json = JSON.stringify(JSON.from_native(data, true))
 	var path = ProjectSettings.globalize_path("res://")
-	_show_select_folder_and_file_dialog(path, "json", _save_json.bind(json), FileDialog.FILE_MODE_SAVE_FILE,  ["*.json;Json Files"])
+	_show_select_folder_and_file_dialog(path, "json", _save_json.bind(json), FileDialog.FILE_MODE_SAVE_FILE, ["*.json;Json Files"])
 
 
 func _save_json(path: String, contents: String) -> void:
@@ -420,14 +421,57 @@ func _load_from_json() -> void:
 
 
 func _load_json(path: String) -> void:
-	var new_data
-	if FileAccess.file_exists(path):
-		var json: String = FileAccess.get_file_as_string(path)
-		new_data = JSON.to_native(JSON.parse_string(json), true)
-		if new_data is RPGDATA:
-			_replace_data_with(new_data)
-		else:
-			printerr("The file '%s' is not valid database" % path)
+	var dialog = AcceptDialog.new()
+	dialog.title = "Import Database"
+	# Add as child of self (MainDatabase) to avoid the exclusivity warning on /root parent
+	add_child(dialog)
+	
+	print("--- RPG Creator: Loading Database from JSON ---")
+	print("Selected Path: ", path)
+	
+	if not FileAccess.file_exists(path):
+		var err_msg = "Error: File does not exist at path:\n" + path
+		dialog.dialog_text = err_msg
+		dialog.popup_centered()
+		printerr(err_msg)
+		return
+		
+	var json_text: String = FileAccess.get_file_as_string(path)
+	print("JSON file read successfully. Length: ", json_text.length())
+	
+	var parsed = JSON.parse_string(json_text)
+	if parsed == null:
+		var err_msg = "Error: Failed to parse JSON content. Please make sure the JSON format is valid."
+		dialog.dialog_text = err_msg
+		dialog.popup_centered()
+		printerr(err_msg)
+		return
+		
+	print("JSON parsed successfully. Reconstructing native types via to_native...")
+	var new_data = JSON.to_native(parsed, true)
+	if new_data == null:
+		var err_msg = "Error: JSON.to_native returned null. The database file structure might be invalid."
+		dialog.dialog_text = err_msg
+		dialog.popup_centered()
+		printerr(err_msg)
+		return
+		
+	if not (new_data is RPGDATA):
+		var err_msg = "Error: The loaded object is not of type RPGDATA."
+		dialog.dialog_text = err_msg
+		dialog.popup_centered()
+		printerr(err_msg)
+		return
+		
+	print("Database imported successfully as RPGDATA in memory!")
+	_replace_data_with(new_data)
+	
+	# Force save to database on disk immediately
+	DatabaseLoader.save_database()
+	print("Database saved to disk successfully!")
+	
+	dialog.dialog_text = "Database loaded and saved to disk successfully!"
+	dialog.popup_centered()
 
 
 func _load_from_databse() -> void:

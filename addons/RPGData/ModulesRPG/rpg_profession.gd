@@ -62,6 +62,8 @@ func get_class():
 ## Additional notes about the Profession.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 
 func _init() -> void:
 	var level = RPGExtractionLevelComponent.new(tr("Novice"), 25)
@@ -86,6 +88,7 @@ func clear() -> void:
 	var level = RPGExtractionLevelComponent.new(tr("Novice"), 25)
 	levels.append(level)
 	notes = ""
+	separator = null
 
 
 ## Set default color preset

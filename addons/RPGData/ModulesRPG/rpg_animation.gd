@@ -60,6 +60,9 @@ func get_class():
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
+
 ## Clears all the properties of the animation.
 func clear() -> void:
 	for v in ["name", "filename"]:
@@ -73,6 +76,7 @@ func clear() -> void:
 	animation_color = Color.WHITE
 	rotation = Vector3.ZERO
 	offset = Vector2.ZERO
+	separator = null
 
 ## Clones the animation and its properties.
 ## @param value bool - Whether to perform a deep clone.

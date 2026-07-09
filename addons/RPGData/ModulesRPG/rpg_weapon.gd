@@ -88,6 +88,8 @@ func get_class(): return "RPGWeapon"
 ## Time between each tick (only used if ticks are enabled).
 @export var tick_interval: float = 1.0
 
+@export var separator: RPGSeparator = null
+
 
 func get_icon() -> Texture:
 	if icon:
@@ -124,6 +126,7 @@ func clear() -> void:
 	disassemble_cost = 0
 	tick_interval = 1.0
 	icon.clear()
+	separator = null
 	
 	var database = RPGSYSTEM.database
 	if database:

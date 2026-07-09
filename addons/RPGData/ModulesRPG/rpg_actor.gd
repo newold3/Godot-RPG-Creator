@@ -64,6 +64,8 @@ func get_class():
 ## Additional notes about the actor.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 ## Scene associated with the actor.
 @export var character_scene: String = ""
 
@@ -237,6 +239,7 @@ func clear():
 	initial_level = 1
 	max_level = 99
 	tick_interval = 1.0
+	separator = null
 	icon.clear()
 
 ## Clones the actor and its properties.
@@ -253,3 +256,7 @@ func clone(value: bool = true) -> RPGActor:
 	new_actor.icon = icon.clone(value)
 
 	return new_actor
+
+
+func _to_string() -> String:
+	return("<RPGActor name=%s, id=%s>" % [name, id])

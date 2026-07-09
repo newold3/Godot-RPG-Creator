@@ -53,6 +53,8 @@ func get_class():
 ## Additional notes about the class.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 ## ID of the class to upgrade to.
 @export var upgrade_to_class: int = 0
 
@@ -82,6 +84,7 @@ func clear():
 	upgrade_to_class = 0
 	tick_interval = 1.0
 	automatic_upgrade = false
+	separator = null
 	icon.clear()
 	
 	var database = RPGSYSTEM.database

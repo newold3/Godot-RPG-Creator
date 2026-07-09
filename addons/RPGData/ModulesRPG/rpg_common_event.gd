@@ -36,6 +36,9 @@ func get_class():
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
+
 ## Initializes the common event.
 func _init() -> void:
 	if list.size() == 0:
@@ -50,6 +53,7 @@ func clear() -> void:
 	list.clear()
 	var command = RPGEventCommand.new()
 	list.append(command)
+	separator = null
 
 ## Clones the common event and its properties.
 ## @param value bool - Whether to perform a deep clone.

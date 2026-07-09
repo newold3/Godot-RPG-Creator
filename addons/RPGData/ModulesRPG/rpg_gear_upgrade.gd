@@ -20,6 +20,8 @@ func clear() -> void:
 func clone(value: bool = true) -> RPGGearUpgrade:
 	var new_weapon_upgrade = duplicate(value)
 	for i in new_weapon_upgrade.levels.size():
+		if not new_weapon_upgrade.levels[i]:
+			new_weapon_upgrade.levels[i] = RPGGearUpgradeLevel.new()
 		new_weapon_upgrade.levels[i] = new_weapon_upgrade.levels[i].clone(value)
 		
 	return(new_weapon_upgrade)

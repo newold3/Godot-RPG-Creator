@@ -33,6 +33,8 @@ func get_class(): return "RPGEnemy"
 @export var notes: String = ""
 @export var battle_actions: Array[RPGActorBattleAction] = []
 
+@export var separator: RPGSeparator = null
+
 
 func get_icon() -> Texture:
 	if icon:
@@ -50,6 +52,7 @@ func clear() -> void:
 	gold_reward_to = 0
 	rarity_type = 0
 	icon.clear()
+	separator = null
 	
 	var database = RPGSYSTEM.database
 	if database:

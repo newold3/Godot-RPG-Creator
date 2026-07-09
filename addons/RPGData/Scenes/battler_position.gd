@@ -62,11 +62,6 @@ signal battler_deselected(scene: BattlerPositionScene)
 
 
 func _ready() -> void:
-	item_rect_changed.connect(
-		func():
-			if current_member:
-				current_member.position = (position + Vector2(size.x / 2, size.y)) / get_parent().size
-	)
 	gui_input.connect(_on_gui_input)
 	mouse_entered.connect(func(): %Selector.visible = true)
 	mouse_exited.connect(func(): %Selector.visible = false)
@@ -148,6 +143,8 @@ func move(amount: Vector2) -> void:
 	target_position.y = clamp(target_position.y, limits.min_y, limits.max_y)
 
 	position = target_position
+	if current_member and get_parent() and get_parent().size != Vector2.ZERO:
+		current_member.position = (position + Vector2(size.x / 2, size.y)) / get_parent().size
 	position_changed.emit(self, position, amount)
 
 func calculate_movement_limits() -> Dictionary:

@@ -458,7 +458,6 @@ tooltip_text = "The price when purchasing the item in a shop.
 
 [Note]: The final purchase and sale price will depend on how the “Purchase Ratio” and “Sales ratio” parameters are configured in the shop."
 allow_greater = true
-_custom_value = 0.0
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings/HBoxContainer3" unique_id=1850253283]
 layout_mode = 2
@@ -500,7 +499,6 @@ tooltip_text = "Maximum number of items you can have in your inventory.
 
 [Note]: 0 = Unlimited items"
 allow_greater = true
-_custom_value = 0.0
 
 [node name="HboxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/General/MarginContainer/GeneralSettings" unique_id=290183406]
 layout_mode = 2
@@ -627,7 +625,6 @@ Indicates the life time this item will have if it is perishable (in seconds)."
 min_value = 1.0
 allow_greater = true
 suffix = " seconds"
-_custom_value = 0.0
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Perishable/MarginContainer/Perishable/HboxContainer" unique_id=1951314992]
 layout_mode = 2
@@ -714,7 +711,6 @@ The value added to an actor's Agility when using the item. Affects the action or
 min_value = 1.0
 allow_greater = true
 allow_lesser = true
-_custom_value = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation/HboxContainer" unique_id=1925888832]
 layout_mode = 2
@@ -731,7 +727,6 @@ tooltip_text = "[title]Invocation Sucess[/title]
 The rate of success when using an item. The actual success rate is affected by the effectiveness of the target."
 allow_greater = true
 suffix = " %"
-_custom_value = 0.0
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1425754276]
 layout_mode = 2
@@ -748,7 +743,6 @@ tooltip_text = "[title]Invocation Repeat[/title]
 The number of times an effect is applied per single use."
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1269288064]
 layout_mode = 2
@@ -765,7 +759,6 @@ tooltip_text = "[title]Invocation TP Gain[/title]
 The amount of TP gained after applying an effect to a target upon successful activation."
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Invocation/MarginContainer/Invocation" unique_id=1372025513]
 layout_mode = 2
@@ -971,7 +964,6 @@ layout_mode = 2
 tooltip_text = "[title]Damage Variance[/title]
 How much the effectiveness of the skill varies (0 to 100%). Raise or lower the calculated effectiveness within the specified percentage. If the effectiveness is 100 and the variance is 20, the effectiveness will be a value between 80 and 120 (100±20)."
 suffix = " %"
-_custom_value = 0.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Damage/MarginContainer/Damage/HboxContainer3" unique_id=1474002960]
 layout_mode = 2

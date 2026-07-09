@@ -39,6 +39,9 @@ func get_class(): return "RPGState"
 @export var traits: Array[RPGTrait] = []
 @export var notes: String = ""
 
+@export var is_separator: bool = false
+@export var separator_color: Color = Color.WHITE
+
 
 func get_icon() -> Texture:
 	if icon:
