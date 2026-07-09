@@ -294,12 +294,12 @@ func _on_main_area_entered(area: Area2D) -> void:
 			var entity_id = str(entity.get_rid()) + "-Page#" + str(entity_page._uniq_id)
 			if my_is_player and not entity_is_player:
 				var entity_page_launcher = entity_page.launcher
-				if entity_page_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION]:
+				if entity_page_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.PLAYER_COLLISION]:
 					_activate_event(entity, entity_page.list, entity_id, is_solid_contact)
 			elif not entity_is_player and not my_is_player:
 				var entity_page_launcher = entity_page.launcher
-				if entity_page_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION]:
-					if entity_page_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+				if entity_page_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.EVENT_COLLISION]:
+					if entity_page_launcher == RPGEnums.LauncherMode.ANY_CONTACT:
 						_activate_event(entity, entity_page.list, entity_id, is_solid_contact)
 					else:
 						var entity_page_id = entity_page.get("_uniq_id")

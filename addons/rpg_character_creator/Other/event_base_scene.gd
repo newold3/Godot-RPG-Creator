@@ -81,6 +81,6 @@ func _start_lift_animation() -> void:
 
 
 ## Starts the event interaction.
-func start(obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
+func start(obj: Node, launcher_mode: RPGEnums.LauncherMode) -> bool:
 	return EventManager.start_event(self, obj, launcher_mode)
 #endregion

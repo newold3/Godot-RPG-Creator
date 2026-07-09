@@ -8,18 +8,7 @@ extends Resource
 ## for states that trigger effects at regular intervals.
 ## It also handles cumulative stacking through [member cumulative_effect].
 
-enum STATE_MODE {
-	STATE_CONTEXT_GLOBAL = 1,       ## Applies in all contexts (exploration and battle).
-	STATE_CONTEXT_BATTLE_ONLY = 2,  ## Applies only during battles.
-	STATE_DURATION_TURNS = 4,       ## Duration is measured in turns.
-	STATE_DURATION_SECONDS = 8,     ## Duration is measured in seconds.
-	STATE_DURATION_PERMANENT = 16,  ## State lasts indefinitely within its context.
-	STATE_TICKS_ENABLED = 32,       ## State triggers actions at regular intervals (ticks).
-	STATE_TICKS_DAMAGE = 64,        ## Regen traits do damage instead.
-	STATE_REMOVE_BY_WALKING = 128,  ## State is removed by walking steps.
-	STATE_REMOVE_BY_DAMAGE = 256,   ## State is removed when taking damage.
-	STATE_REMOVE_BY_RESTRICTION = 512 ## State is removed when restriction changes.
-}
+const STATE_MODE = RPGEnums.StateMode
 
 ## Real database ID of the state.
 @export var id: int = 0

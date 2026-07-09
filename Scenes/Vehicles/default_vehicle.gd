@@ -476,7 +476,7 @@ func _process(delta: float) -> void:
 			elif player and can_interact_from_the_vehicle:
 				var event = get_adjacent_event()
 				if event and "start" in event and not event.get_class() == "RPGExtractionScene":
-					event.start(player, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+					event.start(player, RPGEnums.LauncherMode.ACTION_BUTTON)
 		if player:
 			player.current_direction = current_direction
 			player.run_animation()
@@ -648,7 +648,7 @@ func _interact_with_click_target() -> void:
 	if node is LPCEvent or node is EmptyLPCEvent or node is GenericLPCEvent:
 		_reset(true)
 		is_moving = false
-		await node.start(player, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+		await node.start(player, RPGEnums.LauncherMode.ACTION_BUTTON)
 
 
 func force_movement(motion: Vector2, keep_direction: bool = false) -> void:

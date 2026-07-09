@@ -326,7 +326,7 @@ func _populate_objectives(box: VBoxContainer, active_q: GameQuest, db_quest: RPG
 	if db_quest.multi_quests.is_empty():
 		_add_objective_line(box, active_q, db_quest)
 	else:
-		if db_quest.type != RPGQuest.QuestMode.TALK_TO_NPC or db_quest.target_event.event_id != -1:
+		if db_quest.type != RPGEnums.QuestMode.TALK_TO_NPC or db_quest.target_event.event_id != -1:
 			_add_objective_line(box, active_q, db_quest)
 		for sub_id in db_quest.multi_quests:
 			var sub_active = QuestManager._get_active_quest_by_id(sub_id)
@@ -344,7 +344,7 @@ func _add_objective_line(parent_box: Node, active_q: GameQuest, db_quest: RPGQue
 	
 	_apply_alignment_spacing(line_container)
 	
-	var is_completed = active_q.status == GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+	var is_completed = active_q.status == RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 	var status_texture = icon_complete if is_completed else icon_incomplete
 	
 	if status_texture:
@@ -389,9 +389,9 @@ func _add_objective_line(parent_box: Node, active_q: GameQuest, db_quest: RPGQue
 
 ## Creates and configures a progress bar by duplicating the generic template.
 func _add_progress_bar_if_needed(parent: Node, active_q: GameQuest, db_quest: RPGQuest) -> void:
-	var needs_bar = db_quest.type == RPGQuest.QuestMode.USER_QUEST or \
-					db_quest.type == RPGQuest.QuestMode.GATHER_ITEM or \
-					db_quest.type == RPGQuest.QuestMode.BOUNTY_HUNTS
+	var needs_bar = db_quest.type == RPGEnums.QuestMode.USER_QUEST or \
+					db_quest.type == RPGEnums.QuestMode.GATHER_ITEM or \
+					db_quest.type == RPGEnums.QuestMode.BOUNTY_HUNTS
 					
 	if not needs_bar or not generic_bar_template: return
 	
@@ -402,10 +402,10 @@ func _add_progress_bar_if_needed(parent: Node, active_q: GameQuest, db_quest: RP
 	bar.custom_minimum_size.y = 8
 	bar.min_value = 0
 	
-	if db_quest.type == RPGQuest.QuestMode.GATHER_ITEM:
+	if db_quest.type == RPGEnums.QuestMode.GATHER_ITEM:
 		bar.max_value = db_quest.quantity
 		bar.value = _get_current_item_amount(db_quest)
-	elif db_quest.type == RPGQuest.QuestMode.BOUNTY_HUNTS:
+	elif db_quest.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 		bar.max_value = db_quest.quantity
 		bar.value = int(active_q.current_progress * db_quest.quantity)
 	else:
@@ -477,9 +477,9 @@ func _update_progress_bars_realtime() -> void:
 			else:
 				var db_quest = QuestManager._get_quest_from_database(q_id)
 				if db_quest:
-					if db_quest.type == RPGQuest.QuestMode.GATHER_ITEM:
+					if db_quest.type == RPGEnums.QuestMode.GATHER_ITEM:
 						bar.value = _get_current_item_amount(db_quest)
-					elif db_quest.type == RPGQuest.QuestMode.BOUNTY_HUNTS:
+					elif db_quest.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 						bar.value = int(active_q.current_progress * db_quest.quantity)
 					else:
 						bar.value = active_q.current_progress * 100.0
@@ -531,11 +531,11 @@ func _add_simple_label(box: Node, text: String, color: Color, settings: LabelSet
 ## Returns the raw objective description string with applied translations.
 func _get_objective_text_only(db_quest: RPGQuest) -> String:
 	match db_quest.type:
-		RPGQuest.QuestMode.TALK_TO_NPC: return tr("Talk to %s") % _get_npc_name(db_quest)
-		RPGQuest.QuestMode.GATHER_ITEM: return tr("Get %s") % _get_item_name(db_quest)
-		RPGQuest.QuestMode.BOUNTY_HUNTS: return tr("Defeat %s") % _get_enemy_name(db_quest.enemy_id)
-		RPGQuest.QuestMode.FIND_LOCATION: return tr("Reach %s") % RPGSYSTEM.map_infos.get_map_name_from_id(db_quest.target_event.map_id)
-		RPGQuest.QuestMode.USER_QUEST: return tr(db_quest.description)
+		RPGEnums.QuestMode.TALK_TO_NPC: return tr("Talk to %s") % _get_npc_name(db_quest)
+		RPGEnums.QuestMode.GATHER_ITEM: return tr("Get %s") % _get_item_name(db_quest)
+		RPGEnums.QuestMode.BOUNTY_HUNTS: return tr("Defeat %s") % _get_enemy_name(db_quest.enemy_id)
+		RPGEnums.QuestMode.FIND_LOCATION: return tr("Reach %s") % RPGSYSTEM.map_infos.get_map_name_from_id(db_quest.target_event.map_id)
+		RPGEnums.QuestMode.USER_QUEST: return tr(db_quest.description)
 	return ""
 
 
@@ -543,8 +543,8 @@ func _get_objective_text_only(db_quest: RPGQuest) -> String:
 ## Returns the progress fraction string (e.g., 2/5).
 func _get_objective_quantity_text(active_q: GameQuest, db_quest: RPGQuest) -> String:
 	match db_quest.type:
-		RPGQuest.QuestMode.GATHER_ITEM: return "%d/%d" % [_get_current_item_amount(db_quest), db_quest.quantity]
-		RPGQuest.QuestMode.BOUNTY_HUNTS: 
+		RPGEnums.QuestMode.GATHER_ITEM: return "%d/%d" % [_get_current_item_amount(db_quest), db_quest.quantity]
+		RPGEnums.QuestMode.BOUNTY_HUNTS: 
 			var req = db_quest.quantity
 			return "%d/%d" % [int(active_q.current_progress * req), req]
 	return ""

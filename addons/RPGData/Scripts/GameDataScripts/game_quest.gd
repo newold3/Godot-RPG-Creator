@@ -1,11 +1,7 @@
 class_name GameQuest
 extends Resource
 
-enum QuestStatus {
-	ACTIVE,
-	COMPLETED_PENDING_DELIVERY,
-	FAILED_PENDING_DELIVERY
-}
+const QuestStatus = RPGEnums.QuestStatus
 
 ## Unique ID of the specific local event configuration (RPGEventPQuest) that started this quest.
 @export var owner_pquest_uniq_id: int = -1

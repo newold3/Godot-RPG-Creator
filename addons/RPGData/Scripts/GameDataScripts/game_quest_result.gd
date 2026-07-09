@@ -1,11 +1,7 @@
 class_name GameQuestResult
 extends Resource
 
-enum FinalResult {
-	SUCCESS,
-	FAILED,
-	CANCELLED
-}
+const FinalResult = RPGEnums.QuestResult
 
 ## Real ID of this quest in database
 @export var id: int = -1

@@ -206,7 +206,7 @@ func _input(event: InputEvent) -> void:
 					action_found = true
 					break
 					
-				var result = await node.start(self, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+				var result = await node.start(self, RPGEnums.LauncherMode.ACTION_BUTTON)
 				if result:
 					action_found = true
 					break

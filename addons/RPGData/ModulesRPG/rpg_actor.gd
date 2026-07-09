@@ -83,81 +83,10 @@ func get_class():
 ## This offset can be useful and will be used by some menus to position the image.
 @export var pose_vertical_offset: int = 0
 
-## Enum for base parameters.
-enum BaseParamType {
-	HP = 0,    ## Hit Points
-	HIT_POINTS = 0,    ## Hit Points
-	MP = 1,    ## Magic Points
-	MAGIC_POINTS = 1,    ## Magic Points
-	ATK = 2,    ## Attack
-	ATTACK = 2,    ## Attack
-	DEF = 3,    ## Defense
-	DEFENSE = 3,    ## Defense
-	MAT = 4,    ## Magic Attack
-	MATK = 4,    ## Magic Attack
-	MAGIC_ATTACK = 4,    ## Magic Attack
-	MDF = 5,    ## Magic Defense
-	MDEF = 5,    ## Magic Defense
-	MAGIC_DEFENSE = 5,    ## Magic Defense
-	AGI = 6,    ## Agility
-	AGILITY = 6,    ## Agility
-	LUK = 7,    ## Luck
-	LUCK = 7    ## Luck
-}
-
-## Enum for extra parameters.
-enum ExtraParamType {
-	HIT = 0,    ## Hit Rate
-	HIT_RATE = 0,    ## Hit Rate
-	EVA = 1,    ## Evasion Rate
-	EVASION = 1,    ## Evasion Rate
-	EVASION_RATE = 1,    ## Evasion Rate
-	CRI = 2,    ## Critical Rate
-	CRITICAL = 2,    ## Critical Rate
-	CRITICAL_RATE = 2,    ## Critical Rate
-	CEV = 3,    ## Critical Evasion
-	CRITICAL_EVASION = 3,    ## Critical Evasion
-	CRITICAL_EVASION_RATE = 3,    ## Critical Evasion
-	MEV = 4,    ## Magic Evasion
-	MAGIC_EVASION = 4,    ## Magic Evasion
-	MAGIC_EVASION_RATE = 4,    ## Magic Evasion
-	MRF = 5,    ## Magic Reflection
-	MAGIC_REFLECTION = 5,    ## Magic Reflection
-	CNT = 6,    ## Counter Attack
-	COUNTER_ATTACK = 6,    ## Counter Attack
-	HRG = 7,    ## HP Regeneration
-	HP_REGENERATION = 7,    ## HP Regeneration
-	MRG = 8,    ## MP Regeneration
-	MP_REGENERATION = 8,    ## MP Regeneration
-	TRG = 9,    ## TP Regeneration
-	TP_REGENERATION = 9    ## TP Regeneration
-}
-
-## Enum for special parameters.
-enum SpecialParamType {
-	TGR = 0,    ## Target Rate
-	TARGET_RATE = 0,    ## Target Rate
-	GRD = 1,    ## Guard Effect
-	GUARD_EFFECT = 1,    ## Guard Effect
-	REC = 2,    ## Recovery Effect
-	RECOVERY_EFFECT = 2,    ## Recovery Effect
-	HM = 3,    ## Healing Mastery
-	HEALING_MASTERY = 3,    ## Healing Mastery
-	MCR = 4,    ## MP Cost Rate
-	MP_COST_RATE = 4,    ## MP Cost Rate
-	TCR = 5,    ## TP Charge Rate
-	TP_CHARGE_RATE = 5,    ## TP Charge Rate
-	PDR = 6,    ## Physical Damage Rate
-	PHYSICAL_DAMAGE_RATE = 6,    ## Physical Damage Rate
-	MDR = 7,    ## Magic Damage Rate
-	MAGIC_DAMAGE_RATE = 7,    ## Magic Damage Rate
-	FDR = 8,    ## Floor Damage Rate
-	FLOOR_DAMAGE_RATE = 8,    ## Floor Damage Rate
-	EXR = 9,    ## Experience Rate
-	EXPERIENCE_RATE = 9,    ## Experience Rate
-	GDR = 10,    ## Gold Rate
-	GOLD_RATE = 10    ## Gold Rate
-}
+## Redirects to RPGEnums
+const BaseParamType = RPGEnums.BaseParamType
+const ExtraParamType = RPGEnums.ExtraParamType
+const SpecialParamType = RPGEnums.SpecialParamType
 
 ## Enum for new parameters
 ## 

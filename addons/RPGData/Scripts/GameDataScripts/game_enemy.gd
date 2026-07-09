@@ -48,8 +48,8 @@ func _get_base_parameter(search_param: String) -> float:
 	var value = super._get_base_parameter(search_param)
 	var enemy_data = get_real_enemy()
 	if enemy_data:
-		if search_param in RPGActor.BaseParamType.keys():
-			var p_id = RPGActor.BaseParamType[search_param]
+		if search_param in RPGEnums.BaseParamType.keys():
+			var p_id = RPGEnums.BaseParamType[search_param]
 			if enemy_data.params.size() > p_id:
 				value = float(enemy_data.params[p_id])
 		elif search_param.begins_with("USER_PARAMETER_"):

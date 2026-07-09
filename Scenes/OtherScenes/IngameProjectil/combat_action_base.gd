@@ -89,7 +89,7 @@ func _manage_target_activation(target: Node) -> void:
 		
 		# Try Activate event with tool
 		if weapon_database:
-			if page.launcher == RPGEventPage.LAUNCHER_MODE.TOOL:
+			if page.launcher == RPGEnums.LauncherMode.TOOL:
 				for id in page.event_tool_list:
 					if id in weapon_database.tools_family:
 						var interpreter_id = "event_" + str(target.current_event.id)

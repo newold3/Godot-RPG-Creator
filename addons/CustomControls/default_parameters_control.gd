@@ -16,62 +16,62 @@ func set_title(_title: String) -> void:
 
 func _fill() -> void:
 	if not current_data: return
-	%MaxHPSpinBox.value = current_data[RPGActor.BaseParamType.HP]
-	%AttackSpinBox.value = current_data[RPGActor.BaseParamType.ATK]
-	%MagicAttackSpinBox.value = current_data[RPGActor.BaseParamType.MATK]
-	%AgilitySpinBox.value = current_data[RPGActor.BaseParamType.AGI]
-	%MaxMPSpinBox.value = current_data[RPGActor.BaseParamType.MP]
-	%DefenseSpinBox.value = current_data[RPGActor.BaseParamType.DEF]
-	%MagicDefenseSpinBox.value = current_data[RPGActor.BaseParamType.MDEF]
-	%LuckSpinBox.value = current_data[RPGActor.BaseParamType.LUK]
+	%MaxHPSpinBox.value = current_data[RPGEnums.BaseParamType.HP]
+	%AttackSpinBox.value = current_data[RPGEnums.BaseParamType.ATK]
+	%MagicAttackSpinBox.value = current_data[RPGEnums.BaseParamType.MATK]
+	%AgilitySpinBox.value = current_data[RPGEnums.BaseParamType.AGI]
+	%MaxMPSpinBox.value = current_data[RPGEnums.BaseParamType.MP]
+	%DefenseSpinBox.value = current_data[RPGEnums.BaseParamType.DEF]
+	%MagicDefenseSpinBox.value = current_data[RPGEnums.BaseParamType.MDEF]
+	%LuckSpinBox.value = current_data[RPGEnums.BaseParamType.LUK]
 
 
 ## Updates base parameter: HP
 func _on_max_hp_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.HP] = value
+	current_data[RPGEnums.BaseParamType.HP] = value
 
 
 ## Updates base parameter: Attack
 func _on_attack_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.ATK] = value
+	current_data[RPGEnums.BaseParamType.ATK] = value
 
 
 ## Updates base parameter: Magic Attack
 func _on_magic_attack_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.MATK] = value
+	current_data[RPGEnums.BaseParamType.MATK] = value
 
 
 ## Updates base parameter: Agility
 func _on_agility_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.AGI] = value
+	current_data[RPGEnums.BaseParamType.AGI] = value
 
 
 ## Updates base parameter: MP
 func _on_max_mp_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.MP] = value
+	current_data[RPGEnums.BaseParamType.MP] = value
 
 
 ## Updates base parameter: Defense
 func _on_defense_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.DEF] = value
+	current_data[RPGEnums.BaseParamType.DEF] = value
 
 
 ## Updates base parameter: Magic Defense
 func _on_magic_defense_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.MDEF] = value
+	current_data[RPGEnums.BaseParamType.MDEF] = value
 
 
 ## Updates base parameter: Luck
 func _on_luck_spin_box_value_changed(value: float) -> void:
 	if not current_data: return
-	current_data[RPGActor.BaseParamType.LUK] = value
+	current_data[RPGEnums.BaseParamType.LUK] = value
 
 
 ## Copies base parameters to the clipboard

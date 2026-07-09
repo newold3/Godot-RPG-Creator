@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func _fill_type_options() -> void:
-	var types = RPGQuest.QuestMode.keys()
+	var types = RPGEnums.QuestMode.keys()
 	var node = %TypeOptions
 	node.clear()
 	
@@ -50,7 +50,7 @@ func _fill_type_options() -> void:
 
 
 func _fill_item_type_options() -> void:
-	var types = RPGQuest.ItemType.keys()
+	var types = RPGEnums.QuestItemType.keys()
 
 	var node = %ItemTypeOptions
 	node.clear()
@@ -128,9 +128,9 @@ func _update_data_fields() -> void:
 		disable_all(false)
 		var current_data = get_data()
 
-		if current_data.type == RPGQuest.QuestMode.TALK_TO_NPC:
+		if current_data.type == RPGEnums.QuestMode.TALK_TO_NPC:
 			quest_cache.npc_id = current_data.target_event.clone(true)
-		elif current_data.type == RPGQuest.QuestMode.GATHER_ITEM:
+		elif current_data.type == RPGEnums.QuestMode.GATHER_ITEM:
 			quest_cache.item_type = current_data.item_type
 			match quest_cache.item_type:
 				0: quest_cache.item_id = current_data.item_id
@@ -139,10 +139,10 @@ func _update_data_fields() -> void:
 				3: quest_cache.set_id = current_data.set_id
 			quest_cache.item_quantity = current_data.quantity
 			quest_cache.item_preserve = current_data.keep_materials
-		elif current_data.type == RPGQuest.QuestMode.BOUNTY_HUNTS:
+		elif current_data.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 			quest_cache.enemy_id = current_data.enemy_id
 			quest_cache.enemy_quantity = current_data.quantity
-		elif current_data.type == RPGQuest.QuestMode.FIND_LOCATION:
+		elif current_data.type == RPGEnums.QuestMode.FIND_LOCATION:
 			quest_cache.map_id = current_data.item_id
 			quest_cache.global_event = current_data.global_event
 		

@@ -45,14 +45,14 @@ func fill_current_data(material_list_selected_index: int = 0) -> void:
 	fill_material_list(material_list_selected_index)
 	
 	var current_level_data: RPGGearUpgradeLevel = get_data()
-	%MaxHPSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.HP]
-	%AttackSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.ATK]
-	%MagicAttackSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.MATK]
-	%AgilitySpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.AGI]
-	%MaxMPSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.MP]
-	%DefenseSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.DEF]
-	%MagicDefenseSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.MDEF]
-	%LuckSpinBox.value = current_level_data.parameters_multiplier[RPGActor.BaseParamType.LUK]
+	%MaxHPSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.HP]
+	%AttackSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.ATK]
+	%MagicAttackSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.MATK]
+	%AgilitySpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.AGI]
+	%MaxMPSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.MP]
+	%DefenseSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.DEF]
+	%MagicDefenseSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.MDEF]
+	%LuckSpinBox.value = current_level_data.parameters_multiplier[RPGEnums.BaseParamType.LUK]
 	%CostChanged.value = current_level_data.price_increment
 	
 	var user_parameter_disabled = (database.types.user_parameters.size() == 0)
@@ -165,35 +165,35 @@ func _on_cancel_button_pressed() -> void:
 
 
 func _on_max_hp_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.HP] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.HP] = value
 
 
 func _on_attack_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.ATK] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.ATK] = value
 
 
 func _on_magic_attack_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.MATK] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.MATK] = value
 
 
 func _on_agility_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.AGI] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.AGI] = value
 
 
 func _on_max_mp_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.MP] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.MP] = value
 
 
 func _on_defense_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.DEF] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.DEF] = value
 
 
 func _on_magic_defense_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.MDEF] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.MDEF] = value
 
 
 func _on_luck_spin_box_value_changed(value: float) -> void:
-	get_data().parameters_multiplier[RPGActor.BaseParamType.LUK] = value
+	get_data().parameters_multiplier[RPGEnums.BaseParamType.LUK] = value
 
 
 func _on_auto_level_toggled(toggled_on: bool) -> void:

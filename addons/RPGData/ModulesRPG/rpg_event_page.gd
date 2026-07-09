@@ -7,8 +7,7 @@ extends Resource
 func get_class(): return "RPGEventPage"
 
 
-## Defines the possible execution triggers for the event page.
-enum LAUNCHER_MODE {ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC, PARALLEL, CALLER, ANY_CONTACT, TOOL, SIGNAL}
+const LAUNCHER_MODE = RPGEnums.LauncherMode
 
 
 ## Unique identifier used for internal referencing and persistence.

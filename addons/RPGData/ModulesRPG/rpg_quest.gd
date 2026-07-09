@@ -9,23 +9,8 @@ extends  Resource
 func get_class(): return "RPGQuest"
 
 
-## List of available quest types:
-enum QuestMode {
-	TALK_TO_NPC, ## Talk to a specific npc
-	GATHER_ITEM, ## Gather a set number of items throughout the world
-	BOUNTY_HUNTS, ## Track down and eliminate specific targets
-	FIND_LOCATION, ## Enter a specific location.
-	USER_QUEST ## User quests are only completed when indicated by a command in a common event/event.[br]This type of mission can also be completed based on progress set by a command in a common event.
-}
-
-## List of item type used in variable [item_type]
-enum ItemType {
-	ITEM, ## The type of object searched is of type [b]Item ID[/b].
-	WEAPON, ## The type of object searched is of type [b]Weapon ID[/b].
-	ARMOR, ## The type of object searched is of type [b]Armor ID[/b].
-	SET_COSTUME, ## The type of object searched is of type [b]Set / Costume ID[/b].
-	ENEMY ## The type of object searched is of type [b]Kill Enemy ID[/b].
-}
+const QuestMode = RPGEnums.QuestMode
+const ItemType = RPGEnums.QuestItemType
 
 # General Settings
 ## Unique identifier used for internal referencing and persistence.

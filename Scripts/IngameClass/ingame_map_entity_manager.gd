@@ -173,9 +173,9 @@ func setup_events() -> void:
 				current_ingame_events[ev._uniq_id] = ingame_event
 				var interpreter_id = "event_" + str(ev._uniq_id)
 				
-				if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
+				if page.launcher == RPGEnums.LauncherMode.AUTOMATIC:
 					automatic_events.append({"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id})
-				elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+				elif page.launcher == RPGEnums.LauncherMode.PARALLEL:
 					GameInterpreter.register_interpreter(ingame_event.lpc_event, page.list, true, interpreter_id)
 					
 			ingame_event.update_label_name(page)
@@ -574,9 +574,9 @@ func spawn_event(ev: RPGEvent) -> void:
 		if ingame_event:
 			current_ingame_events[uniq_id] = ingame_event
 			
-			if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
+			if page.launcher == RPGEnums.LauncherMode.AUTOMATIC:
 				GameInterpreter.auto_start_automatic_events([{"obj": ingame_event.lpc_event, "commands": page.list, "id": interpreter_id}])
-			elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+			elif page.launcher == RPGEnums.LauncherMode.PARALLEL:
 				GameInterpreter.register_interpreter(ingame_event.lpc_event, page.list, true, interpreter_id)
 				
 		ingame_event.update_label_name(page)

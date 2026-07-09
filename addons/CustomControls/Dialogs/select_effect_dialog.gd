@@ -381,7 +381,14 @@ func set_tab_and_selected_data() -> void:
 	node.set_pressed(true)
 	node.toggled.emit(true)
 	
-	if [6, 7, 8, 9, 10, 11].has(data.code):
+	if [
+		RPGEnums.EffectCode.ADD_BUFF,
+		RPGEnums.EffectCode.ADD_DEBUFF,
+		RPGEnums.EffectCode.REMOVE_BUFF,
+		RPGEnums.EffectCode.REMOVE_DEBUFF,
+		RPGEnums.EffectCode.SPECIAL_EFFECT,
+		RPGEnums.EffectCode.GROW
+	].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
 		if node.get_item_count() > data.data_id:
@@ -389,33 +396,46 @@ func set_tab_and_selected_data() -> void:
 		else:
 			node.select(-1)
 			
-	if [1, 2].has(data.code):
+	if [RPGEnums.EffectCode.RECOVER_HP, RPGEnums.EffectCode.RECOVER_MP].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
 		node.set_value(data.value1)
 		node_name = "%" + "C%s-3" % str(data.code - 1)
 		node = get_node(node_name)
 		node.set_value(data.value2)
-	elif [3].has(data.code):
+	elif [RPGEnums.EffectCode.GAIN_TP].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
 		node.set_value(data.value1)
-	elif [4, 5, 6, 7, 8, 9, 11].has(data.code):
+	elif [
+		RPGEnums.EffectCode.ADD_STATE,
+		RPGEnums.EffectCode.REMOVE_STATE,
+		RPGEnums.EffectCode.ADD_BUFF,
+		RPGEnums.EffectCode.ADD_DEBUFF,
+		RPGEnums.EffectCode.REMOVE_BUFF,
+		RPGEnums.EffectCode.REMOVE_DEBUFF,
+		RPGEnums.EffectCode.GROW
+	].has(data.code):
 		node_name = "%" + "C%s-3" % str(data.code - 1)
 		node = get_node_or_null(node_name)
 		if node:
 			node.set_value(data.value2)
 			
-	if [6, 7].has(data.code):
+	if [RPGEnums.EffectCode.ADD_BUFF, RPGEnums.EffectCode.ADD_DEBUFF].has(data.code):
 		node_name = "%" + "C%s-4" % str(data.code - 1)
 		node = get_node_or_null(node_name)
 		if node:
 			node.set_value(data.value3)
 	
-	if [4, 5, 12, 13].has(data.code):
+	if [
+		RPGEnums.EffectCode.ADD_STATE,
+		RPGEnums.EffectCode.REMOVE_STATE,
+		RPGEnums.EffectCode.LEARN_SKILL,
+		RPGEnums.EffectCode.COMMON_EVENT
+	].has(data.code):
 		node_name = "%" + "C%s-2" % str(data.code - 1)
 		node = get_node(node_name)
-		var db_key = "states" if [4, 5].has(data.code) else ("skills" if [12].has(data.code) else "common_events")
+		var db_key = "states" if [RPGEnums.EffectCode.ADD_STATE, RPGEnums.EffectCode.REMOVE_STATE].has(data.code) else ("skills" if [RPGEnums.EffectCode.LEARN_SKILL].has(data.code) else "common_events")
 		
 		data_id_cache[data.code - 1] = data.data_id
 		

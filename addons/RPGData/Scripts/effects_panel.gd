@@ -82,29 +82,29 @@ func get_column(item: RPGEffect) -> Array:
 	
 	column.append(left[item.code - 1])
 	
-	if [1, 2].has(item.code):
+	if [RPGEnums.EffectCode.RECOVER_HP, RPGEnums.EffectCode.RECOVER_MP].has(item.code):
 		var text = "%s %% + %s x Pharmacology" % [item.value1, item.value2]
 		column.append(text)
-	elif [3].has(item.code):
+	elif [RPGEnums.EffectCode.GAIN_TP].has(item.code):
 		var text = "%s" % item.value1
 		column.append(text)
-	elif [4, 5].has(item.code):
+	elif [RPGEnums.EffectCode.ADD_STATE, RPGEnums.EffectCode.REMOVE_STATE].has(item.code):
 		var state = RPGSYSTEM.get_data("states", item.data_id)
 		if state:
 			column.append(state.name + " " + str(item.value2) + " %")
 		else:
 			column.append("⚠ Invalid Data")
-	elif [6, 7].has(item.code):
+	elif [RPGEnums.EffectCode.ADD_BUFF, RPGEnums.EffectCode.ADD_DEBUFF].has(item.code):
 		var param = _get_parameter_name(item.data_id)
 		if not param.is_empty():
-			var value = " +" + str(item.value3) if item.code == 6 \
+			var value = " +" + str(item.value3) if item.code == RPGEnums.EffectCode.ADD_BUFF \
 				else " -" + str(item.value3)
 			column.append(
 				param + value + "% x " + str(item.value2) + " turns"
 			)
 		else:
 			column.append("⚠ Invalid Data")
-	elif [8, 9].has(item.code):
+	elif [RPGEnums.EffectCode.REMOVE_BUFF, RPGEnums.EffectCode.REMOVE_DEBUFF].has(item.code):
 		var param = _get_parameter_name(item.data_id)
 		if not param.is_empty():
 			var number = " (All)" if item.value2 == 0 \
@@ -113,25 +113,25 @@ func get_column(item: RPGEffect) -> Array:
 			column.append(param + number)
 		else:
 			column.append("⚠ Invalid Data")
-	elif [10].has(item.code):
+	elif [RPGEnums.EffectCode.SPECIAL_EFFECT].has(item.code):
 		var list = ["Escape"]
 		if list.size() > item.data_id:
 			column.append(list[item.data_id])
 		else:
 			column.append("⚠ Invalid Data")
-	elif [11].has(item.code):
+	elif [RPGEnums.EffectCode.GROW].has(item.code):
 		var param = _get_parameter_name(item.data_id)
 		if not param.is_empty():
 			column.append(param + " + " + str(item.value2))
 		else:
 			column.append("⚠ Invalid Data")
-	elif [12].has(item.code):
+	elif [RPGEnums.EffectCode.LEARN_SKILL].has(item.code):
 		var skill = RPGSYSTEM.get_data("skills", item.data_id)
 		if skill:
 			column.append(skill.name)
 		else:
 			column.append("⚠ Invalid Data")
-	elif [13].has(item.code):
+	elif [RPGEnums.EffectCode.COMMON_EVENT].has(item.code):
 		var ce = RPGSYSTEM.get_data("common_events", item.data_id)
 		if ce:
 			column.append(ce.name)

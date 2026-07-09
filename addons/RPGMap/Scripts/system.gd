@@ -515,16 +515,16 @@ func debug_fill_stats_randomly() -> void:
 	stats.extractions.critical_performs = randi_range(0, stats.extractions.total_success)
 	stats.extractions.super_critical_performs = randi_range(0, stats.extractions.critical_performs)
 	
-	if not stats.missions:
-		stats.missions = GameMissionStats.new()
-	stats.missions.completed = randi_range(0, 30)
-	stats.missions.in_progress = randi_range(0, 10)
-	stats.missions.failed = randi_range(0, 5)
-	stats.missions.total_found = stats.missions.completed + stats.missions.in_progress + stats.missions.failed
+	if not stats.quests:
+		stats.quests = GameQuestStats.new()
+	stats.quests.completed = randi_range(0, 30)
+	stats.quests.in_progress = randi_range(0, 10)
+	stats.quests.failed = randi_range(0, 5)
+	stats.quests.total_found = stats.quests.completed + stats.quests.in_progress + stats.quests.failed
 	
 	# Fill random missions from database
-	stats.missions.missions.clear()
-	stats.missions.historical_dictionary.clear()
+	stats.quests.quests.clear()
+	stats.quests.historical_dictionary.clear()
 	if database and database.quests:
 		for quest in database.quests:
 			if quest and quest.id > 0:
@@ -537,8 +537,8 @@ func debug_fill_stats_randomly() -> void:
 					result.status = randi() % 3
 					result.count = randi_range(1, 3)
 					result.quest_completed_at = Time.get_unix_time_from_system() - randf_range(0.0, 604800.0)
-					stats.missions.missions.append(result)
-					stats.missions.historical_dictionary[quest.id] = result.status
+					stats.quests.quests.append(result)
+					stats.quests.historical_dictionary[quest.id] = result.status
 
 	# Random achievements
 	for i in range(1, 4):

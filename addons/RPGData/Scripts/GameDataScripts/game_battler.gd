@@ -25,51 +25,33 @@ extends Resource
 ## Stores all user parameters defined in database.
 @export var user_params: PackedInt32Array = []
 
-enum TraitCode {
-	PARAM_BASE = 5,
-	ADD_STATE = 28,
-	PERMANENT_STATE = 28,
-	EQUIP_WEAPON = 17,
-	EQUIP_ARMOR = 18,
-	LOCK_EQUIP = 19,
-	SEAL_EQUIP = 20,
-	ADD_SKILL_TYPE = 13,
-	SEAL_SKILL_TYPE = 14,
-	ADD_SKILL = 15,
-	SEAL_SKILL = 16,
-	ELEMENT_ATTACK = 1,
-	ELEMENT_DEFENSE = 27,
-	USER_PARAMETER = 101,
-	DEBUFF_RATE = 2,
-	STATE_RATE = 3,
-	STATE_RESIST = 4
-}
+const TraitCode = RPGEnums.TraitCode
 
 const DEFAULT_EXTRA_PARAMS = {
-	RPGActor.ExtraParamType.HIT: 1.0,
-	RPGActor.ExtraParamType.EVA: 0.05,
-	RPGActor.ExtraParamType.CRI: 0.04,
-	RPGActor.ExtraParamType.CEV: 0.01,
-	RPGActor.ExtraParamType.MEV: 0.0,
-	RPGActor.ExtraParamType.MRF: 0.0,
-	RPGActor.ExtraParamType.CNT: 0.0,
-	RPGActor.ExtraParamType.HRG: 0.0,
-	RPGActor.ExtraParamType.MRG: 0.0,
-	RPGActor.ExtraParamType.TRG: 0.0
+	RPGEnums.ExtraParamType.HIT: 1.0,
+	RPGEnums.ExtraParamType.EVA: 0.05,
+	RPGEnums.ExtraParamType.CRI: 0.04,
+	RPGEnums.ExtraParamType.CEV: 0.01,
+	RPGEnums.ExtraParamType.MEV: 0.0,
+	RPGEnums.ExtraParamType.MRF: 0.0,
+	RPGEnums.ExtraParamType.CNT: 0.0,
+	RPGEnums.ExtraParamType.HRG: 0.0,
+	RPGEnums.ExtraParamType.MRG: 0.0,
+	RPGEnums.ExtraParamType.TRG: 0.0
 }
 
 const DEFAULT_SPECIAL_PARAMS = {
-	RPGActor.SpecialParamType.TGR: 1.0,
-	RPGActor.SpecialParamType.GRD: 1.0,
-	RPGActor.SpecialParamType.REC: 1.0,
-	RPGActor.SpecialParamType.HM: 1.0,
-	RPGActor.SpecialParamType.MCR: 1.0,
-	RPGActor.SpecialParamType.TCR: 1.0,
-	RPGActor.SpecialParamType.PDR: 1.0,
-	RPGActor.SpecialParamType.MDR: 1.0,
-	RPGActor.SpecialParamType.FDR: 1.0,
-	RPGActor.SpecialParamType.EXR: 1.0,
-	RPGActor.SpecialParamType.GDR: 1.0
+	RPGEnums.SpecialParamType.TGR: 1.0,
+	RPGEnums.SpecialParamType.GRD: 1.0,
+	RPGEnums.SpecialParamType.REC: 1.0,
+	RPGEnums.SpecialParamType.HM: 1.0,
+	RPGEnums.SpecialParamType.MCR: 1.0,
+	RPGEnums.SpecialParamType.TCR: 1.0,
+	RPGEnums.SpecialParamType.PDR: 1.0,
+	RPGEnums.SpecialParamType.MDR: 1.0,
+	RPGEnums.SpecialParamType.FDR: 1.0,
+	RPGEnums.SpecialParamType.EXR: 1.0,
+	RPGEnums.SpecialParamType.GDR: 1.0
 }
 
 const TICKS_ENABLED = {
@@ -244,33 +226,33 @@ func add_state(state: RPGState, is_permanent: bool = false, usage_count: bool = 
 			return t.code == TICKS_ENABLED.CODE and TICKS_ENABLED.DATA_IDS.has(t.data_id)
 	)
 
-	var state_mode: GameState.STATE_MODE = GameState.STATE_MODE.STATE_CONTEXT_GLOBAL
+	var state_mode: RPGEnums.StateMode = RPGEnums.StateMode.STATE_CONTEXT_GLOBAL
 
 	if is_permanent:
-		state_mode |= GameState.STATE_MODE.STATE_DURATION_PERMANENT
+		state_mode |= RPGEnums.StateMode.STATE_DURATION_PERMANENT
 
 	if enable_ticks:
-		state_mode |= GameState.STATE_MODE.STATE_TICKS_ENABLED
+		state_mode |= RPGEnums.StateMode.STATE_TICKS_ENABLED
 
 	if state.is_damage_tick:
-		state_mode |= GameState.STATE_MODE.STATE_TICKS_DAMAGE
+		state_mode |= RPGEnums.StateMode.STATE_TICKS_DAMAGE
 
 	if state.remove_at_battle_end:
-		state_mode |= GameState.STATE_MODE.STATE_CONTEXT_BATTLE_ONLY
+		state_mode |= RPGEnums.StateMode.STATE_CONTEXT_BATTLE_ONLY
 
 	if state.remove_by_time:
-		state_mode |= GameState.STATE_MODE.STATE_DURATION_SECONDS
+		state_mode |= RPGEnums.StateMode.STATE_DURATION_SECONDS
 	elif state.auto_removal_timing > 0:
-		state_mode |= GameState.STATE_MODE.STATE_DURATION_TURNS
+		state_mode |= RPGEnums.StateMode.STATE_DURATION_TURNS
 
 	if state.remove_by_walking:
-		state_mode |= GameState.STATE_MODE.STATE_REMOVE_BY_WALKING
+		state_mode |= RPGEnums.StateMode.STATE_REMOVE_BY_WALKING
 
 	if state.remove_by_damage:
-		state_mode |= GameState.STATE_MODE.STATE_REMOVE_BY_DAMAGE
+		state_mode |= RPGEnums.StateMode.STATE_REMOVE_BY_DAMAGE
 
 	if state.remove_by_restriction:
-		state_mode |= GameState.STATE_MODE.STATE_REMOVE_BY_RESTRICTION
+		state_mode |= RPGEnums.StateMode.STATE_REMOVE_BY_RESTRICTION
 
 	var duration_value = state.max_time if state.remove_by_time else randi_range(state.min_turns, state.max_turns)
 	var is_new_state = true
@@ -288,7 +270,7 @@ func add_state(state: RPGState, is_permanent: bool = false, usage_count: bool = 
 			game_state.duration = duration_value
 
 		if is_permanent:
-			game_state.state_mode |= GameState.STATE_MODE.STATE_DURATION_PERMANENT
+			game_state.state_mode |= RPGEnums.StateMode.STATE_DURATION_PERMANENT
 
 		if usage_count:
 			game_state.usage_count += 1
@@ -824,12 +806,12 @@ func _get_unified_param_key(param: String) -> String:
 
 
 func _find_real_param(param: String) -> String:
-	if param in RPGActor.BaseParamType.keys():
-		return "base" + str(RPGActor.BaseParamType[param])
-	elif param in RPGActor.ExtraParamType.keys():
-		return "extra" + str(RPGActor.ExtraParamType[param])
-	elif param in RPGActor.SpecialParamType.keys():
-		return "special" + str(RPGActor.SpecialParamType[param])
+	if param in RPGEnums.BaseParamType.keys():
+		return "base" + str(RPGEnums.BaseParamType[param])
+	elif param in RPGEnums.ExtraParamType.keys():
+		return "extra" + str(RPGEnums.ExtraParamType[param])
+	elif param in RPGEnums.SpecialParamType.keys():
+		return "special" + str(RPGEnums.SpecialParamType[param])
 	elif param.begins_with("USER_PARAMETER_"):
 		var u_id = param.replace("USER_PARAMETER_", "").to_int()
 		return "USER_PARAM_" + str(u_id)
@@ -841,7 +823,7 @@ func _find_real_param(param: String) -> String:
 
 
 func _get_trait_code(param: String) -> int:
-	if param in RPGActor.BaseParamType.keys() or param in RPGActor.ExtraParamType.keys() or param in RPGActor.SpecialParamType.keys():
+	if param in RPGEnums.BaseParamType.keys() or param in RPGEnums.ExtraParamType.keys() or param in RPGEnums.SpecialParamType.keys():
 		return TraitCode.PARAM_BASE
 
 	if param.begins_with("USER_PARAMETER_"):
@@ -858,12 +840,12 @@ func _get_param_type_id(param: String) -> int:
 			if all_params[i] == "":
 				_param_offsets_cache.append(i + 1)
 
-	if param in RPGActor.BaseParamType.keys():
-		return RPGActor.BaseParamType[param] + (_param_offsets_cache[0] if _param_offsets_cache.size() > 0 else 0)
-	elif param in RPGActor.ExtraParamType.keys():
-		return RPGActor.ExtraParamType[param] + (_param_offsets_cache[1] if _param_offsets_cache.size() > 1 else 0)
-	elif param in RPGActor.SpecialParamType.keys():
-		return RPGActor.SpecialParamType[param] + (_param_offsets_cache[2] if _param_offsets_cache.size() > 2 else 0)
+	if param in RPGEnums.BaseParamType.keys():
+		return RPGEnums.BaseParamType[param] + (_param_offsets_cache[0] if _param_offsets_cache.size() > 0 else 0)
+	elif param in RPGEnums.ExtraParamType.keys():
+		return RPGEnums.ExtraParamType[param] + (_param_offsets_cache[1] if _param_offsets_cache.size() > 1 else 0)
+	elif param in RPGEnums.SpecialParamType.keys():
+		return RPGEnums.SpecialParamType[param] + (_param_offsets_cache[2] if _param_offsets_cache.size() > 2 else 0)
 	elif param.begins_with("USER_PARAMETER_"):
 		var u_id = param.replace("USER_PARAMETER_", "").to_int()
 		return u_id + (_param_offsets_cache[3] if _param_offsets_cache.size() > 3 else 0)
@@ -873,7 +855,7 @@ func _get_param_type_id(param: String) -> int:
 
 
 func _is_rate_parameter(param: String) -> bool:
-	if param in RPGActor.BaseParamType.keys(): return false
+	if param in RPGEnums.BaseParamType.keys(): return false
 	if param.begins_with("USER_PARAMETER_"): return false
 	if param in ["LEVEL", "EXPERIENCE", "TP"]: return false
 	return true
@@ -884,10 +866,10 @@ func _is_rate_parameter(param: String) -> bool:
 #region VirtualMethods
 ## VIRTUAL: Override this to provide the raw base value of a parameter before traits/buffs.
 func _get_base_parameter(search_param: String) -> float:
-	if search_param in RPGActor.ExtraParamType.keys():
-		return DEFAULT_EXTRA_PARAMS[RPGActor.ExtraParamType[search_param]] * 100.0
-	elif search_param in RPGActor.SpecialParamType.keys():
-		return DEFAULT_SPECIAL_PARAMS[RPGActor.SpecialParamType[search_param]] * 100.0
+	if search_param in RPGEnums.ExtraParamType.keys():
+		return DEFAULT_EXTRA_PARAMS[RPGEnums.ExtraParamType[search_param]] * 100.0
+	elif search_param in RPGEnums.SpecialParamType.keys():
+		return DEFAULT_SPECIAL_PARAMS[RPGEnums.SpecialParamType[search_param]] * 100.0
 	return 0.0
 
 

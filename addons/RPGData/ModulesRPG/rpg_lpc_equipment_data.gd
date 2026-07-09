@@ -5,12 +5,7 @@ extends  Resource
 
 func get_class(): return "RPGLPCEquipmentData"
 
-enum SetMode {
-	FULL_STRICT = 0, ## Delete everything that is not included in the set (including weapons).
-	FULL_HYBRID = 1, ## Delete all clothing that is not brought, but KEEP previous weapons.
-	PARTIAL     = 2, ## Just replace what it comes with, keep everything else (layer)
-	CUSTOME     = 3  ## Solo sustituye lo que trae, mantiene todo lo demás (capa)
-}
+const SetMode = RPGEnums.SetMode
 
 
 @export var mask: RPGLPCEquipmentPart = RPGLPCEquipmentPart.new()

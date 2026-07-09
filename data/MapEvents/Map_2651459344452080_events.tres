@@ -1612,7 +1612,6 @@ legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_7i1fv"]
 script = ExtResource("3_pu3ch")
-use_switch1 = true
 pressure_targets = PackedInt64Array(0)
 
 [sub_resource type="Resource" id="Resource_ccm0x"]
@@ -3857,7 +3856,10 @@ is_quest_page = true
 
 [sub_resource type="Resource" id="Resource_uwcgy"]
 script = ExtResource("3_pu3ch")
+use_switch2 = true
 pressure_targets = PackedInt64Array(0)
+switch2_id = 18
+variable_value = 0
 
 [sub_resource type="Resource" id="Resource_o5qkx"]
 script = ExtResource("4_4d10c")
@@ -4289,7 +4291,6 @@ y = 11
 pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_vjxbx"), SubResource("Resource_sx4mc"), SubResource("Resource_njmpn"), SubResource("Resource_5u2bb")])
 quests = Array[ExtResource("9_sopbs")]([SubResource("Resource_m40gu")])
 relationship = SubResource("Resource_ipcge")
-_editor_last_page_used = 3
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_2ra5b"]

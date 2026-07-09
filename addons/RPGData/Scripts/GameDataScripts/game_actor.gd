@@ -102,8 +102,8 @@ func _get_base_parameter(search_param: String) -> float:
 	var value = super._get_base_parameter(search_param)
 	var class_data = get_real_class()
 	if class_data:
-		if search_param in RPGActor.BaseParamType.keys():
-			var p_id = RPGActor.BaseParamType[search_param]
+		if search_param in RPGEnums.BaseParamType.keys():
+			var p_id = RPGEnums.BaseParamType[search_param]
 			if class_data.params[p_id].data.size() > current_level:
 				value = float(class_data.params[p_id].data[current_level])
 		elif search_param == "LEVEL":
@@ -119,7 +119,7 @@ func _get_base_parameter(search_param: String) -> float:
 				value = float(class_data.user_parameters[u_id])
 			else:
 				value = default_val
-	if search_param in RPGActor.BaseParamType.keys() or search_param.begins_with("USER_PARAMETER_"):
+	if search_param in RPGEnums.BaseParamType.keys() or search_param.begins_with("USER_PARAMETER_"):
 		for gear in current_gear:
 			if gear and gear.id > 0:
 				var real_data = gear.get_real_data()

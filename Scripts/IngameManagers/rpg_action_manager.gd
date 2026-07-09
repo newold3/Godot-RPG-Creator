@@ -29,21 +29,7 @@ enum ScopeStatus {
 	UNCONDITIONAL = 2
 }
 
-enum EffectCode {
-	NONE = 0,
-	RECOVER_HP = 1,
-	RECOVER_MP = 2,
-	GAIN_TP = 3,
-	ADD_STATE = 4,
-	REMOVE_STATE = 5,
-	ADD_BUFF = 6,
-	ADD_DEBUFF = 7,
-	REMOVE_BUFF = 8,
-	REMOVE_DEBUFF = 9,
-	SPECIAL_EFFECT = 10,
-	GROW = 11,
-	LEARN_SKILL = 12
-}
+const EffectCode = RPGEnums.EffectCode
 
 
 @warning_ignore("unused_signal")

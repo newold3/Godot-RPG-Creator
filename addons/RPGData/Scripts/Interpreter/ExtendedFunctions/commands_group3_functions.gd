@@ -141,17 +141,17 @@ func _command_0018() -> void:
 						9: # Escape Count
 							target_value = GameManager.game_state.stats.battles.escaped
 						10: # Quests Failed
-							target_value = GameManager.game_state.stats.missions.failed
+							target_value = GameManager.game_state.stats.quests.failed
 						11: # Quests in Progress
-							target_value = GameManager.game_state.stats.missions.in_progress
+							target_value = GameManager.game_state.stats.quests.in_progress
 						12: # Total Completed Quest
-							target_value = GameManager.game_state.stats.missions.completed
+							target_value = GameManager.game_state.stats.quests.completed
 						13: # Total Enemy Kills
 							target_value = GameManager.game_state.stats.enemy_kills.get(value2, 0)
 						14: # Total Money Earned
 							target_value = GameManager.game_state.stats.total_money_earned
 						15: # Total Quest Found
-							target_value = GameManager.game_state.stats.missions.total_found
+							target_value = GameManager.game_state.stats.quests.total_found
 						16: # Total Relationships Started
 							target_value = GameManager.game_state.stats.relationships.size()
 						17: # Total Relationships Maximized
@@ -236,7 +236,7 @@ func _command_0018() -> void:
 							][value2 - 39]
 							target_value = GameManager.game_state.stats[option]
 						49, 50, 51, 52: # mission
-							var stats = GameManager.game_state.stats.missions
+							var stats = GameManager.game_state.stats.quests
 							var option = [
 								"completed", "in_progress", "failed", "total_found"
 							][value2 - 49]

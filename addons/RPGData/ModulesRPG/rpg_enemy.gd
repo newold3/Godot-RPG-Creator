@@ -72,8 +72,8 @@ func get_parameter(parameter: String) -> float:
 
 	var param_index: int = -1
 
-	if RPGActor.BaseParamType.keys().has(parameter):
-		param_index = RPGActor.BaseParamType[parameter]
+	if RPGEnums.BaseParamType.keys().has(parameter):
+		param_index = RPGEnums.BaseParamType[parameter]
 
 	if param_index == -1:
 		return 0.0

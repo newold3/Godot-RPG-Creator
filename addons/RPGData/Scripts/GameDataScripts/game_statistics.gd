@@ -20,7 +20,7 @@ extends Resource
 @export var max_level_reached: int = 0 # Highest level achieved by player
 @export var dialogues_completed: int = 0 # Number of dialogue conversations completed
 @export var rare_items_found: int = 0 # Number of rare/unique items discovered (* This statistic needs to be increased manually)
-@export var missions: GameMissionStats = GameMissionStats.new() # Mission statistics (completed, in_progress, failed, total_found)
+@export var quests: GameQuestStats = GameQuestStats.new() # Quest statistics (completed, in_progress, failed, total_found)
 @export var relationships: Dictionary = {} # NPC relationship data (Unique Map ID_Unique Event ID = GameRelationship) (* This statistic needs to be increased manually)
 @export var achievements: Dictionary = {} # Achievement data (Achievement ID = GameAchievement)
 @export var map_visited: Dictionary = {} # Array of visited map IDs

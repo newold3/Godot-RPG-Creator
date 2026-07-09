@@ -50,7 +50,7 @@ func _process(delta: float) -> void:
 						quest.timer = 0.0
 						if show_debug_prints:
 							print("[QuestManager] Quest ID ", quest.id, " failed due to timeout.")
-						fail_mission(quest)
+						fail_quest(quest)
 						timer_dirty = true
 						
 	if _is_dirty or timer_dirty:
@@ -100,7 +100,7 @@ func _is_event_related_to_active_quest(ingame_event: IngameEvent) -> bool:
 				return true
 				
 		var db_quest = _get_quest_from_database(active_quest.id)
-		if db_quest and db_quest.type == RPGQuest.QuestMode.USER_QUEST and active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if db_quest and db_quest.type == RPGEnums.QuestMode.USER_QUEST and active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			if _page_contains_user_quest_update(ingame_event, active_quest.id):
 				return true
 				
@@ -118,13 +118,13 @@ func _get_highest_priority_icon_for_event(ingame_event: IngameEvent) -> RPGIcon:
 		if not db_quest:
 			continue
 			
-		if active_quest.target_event_uniq_id == ingame_event.uniq_id and db_quest.type == RPGQuest.QuestMode.TALK_TO_NPC:
-			if active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if active_quest.target_event_uniq_id == ingame_event.uniq_id and db_quest.type == RPGEnums.QuestMode.TALK_TO_NPC:
+			if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 				if current_priority < 3:
 					highest_icon = db_quest.icon_completed
 					current_priority = 3
 					
-		if db_quest.type == RPGQuest.QuestMode.USER_QUEST and active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if db_quest.type == RPGEnums.QuestMode.USER_QUEST and active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			if _page_contains_user_quest_update(ingame_event, active_quest.id):
 				if current_priority < 1:
 					highest_icon = db_quest.icon_progress
@@ -152,7 +152,7 @@ func _get_highest_priority_icon_for_event(ingame_event: IngameEvent) -> RPGIcon:
 			var active_quest = _get_active_quest_by_id(event_quest.id)
 			if not active_quest:
 				var progress = GameManager.game_state.quest_progress
-				var historical = GameManager.game_state.stats.missions.historical_dictionary
+				var historical = GameManager.game_state.stats.quests.historical_dictionary
 				
 				var is_unlocked = progress.unlocked_quests.has(db_quest.id) or ("_uniq_id" in db_quest and progress.unlocked_quests.has(db_quest._uniq_id))
 				
@@ -222,15 +222,15 @@ func notify_location_reached(map_id: int) -> void:
 	var objective_advanced = false
 	
 	for active_quest in active_quests.duplicate():
-		if active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			var db_quest = _get_quest_from_database(active_quest.id)
 			
-			if db_quest and db_quest.type == RPGQuest.QuestMode.FIND_LOCATION:
+			if db_quest and db_quest.type == RPGEnums.QuestMode.FIND_LOCATION:
 				if db_quest.target_event.map_id == map_id:
 					if show_debug_prints:
 						print("[QuestManager] FIND_LOCATION Objective met for Quest ID: ", active_quest.id)
 						
-					active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+					active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 					objective_advanced = true
 					
 	for active_quest in active_quests.duplicate():
@@ -244,7 +244,7 @@ func notify_location_reached(map_id: int) -> void:
 			if pquest and not _is_custom_page_valid(pquest.target_page):
 				if show_debug_prints:
 					print("[QuestManager] Deferred auto-delivery triggered for Quest ID: ", check_id)
-				complete_mission(p_active)
+				complete_quest(p_active)
 				objective_advanced = true
 				
 	if objective_advanced:
@@ -257,10 +257,10 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 	var progress_made = false
 	
 	for active_quest in active_quests.duplicate():
-		if active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			var db_quest = _get_quest_from_database(active_quest.id)
 			
-			if db_quest and db_quest.type == RPGQuest.QuestMode.BOUNTY_HUNTS:
+			if db_quest and db_quest.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 				if db_quest.enemy_id == enemy_id:
 					var added_progress = float(amount) / float(db_quest.enemy_amount)
 					active_quest.current_progress = clamp(active_quest.current_progress + added_progress, 0.0, 1.0)
@@ -270,7 +270,7 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 						print("[QuestManager] BOUNTY_HUNTS progress updated for Quest ID: ", active_quest.id)
 						
 					if active_quest.current_progress >= 1.0:
-						active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 						
 						var parent_quest = _get_parent_active_quest(active_quest)
 						var check_id = parent_quest.id if parent_quest else active_quest.id
@@ -280,7 +280,7 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 							var pquest = _get_owner_quest_configuration(p_active)
 							
 							if pquest and not _is_custom_page_valid(pquest.target_page):
-								complete_mission(p_active)
+								complete_quest(p_active)
 								
 	if progress_made:
 		_is_dirty = true
@@ -295,7 +295,7 @@ func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int =
 	var new_quest = GameQuest.new()
 	new_quest.id = final_id
 	new_quest.parent_quest_id = parent_id
-	new_quest.status = GameQuest.QuestStatus.ACTIVE
+	new_quest.status = RPGEnums.QuestStatus.ACTIVE
 	new_quest.owner_event_uniq_id = owner_uniq_id
 	new_quest.owner_pquest_uniq_id = owner_pquest_uniq_id
 	new_quest.target_event_uniq_id = target_uniq_id
@@ -309,7 +309,7 @@ func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int =
 	if show_debug_prints:
 		print("[QuestManager] Quest Accepted: ID ", final_id, " | Parent: ", parent_id)
 		
-	add_active_mission(new_quest)
+	add_active_quest(new_quest)
 	
 	if db_quest and not db_quest.multi_quests.is_empty():
 		for sub_id in db_quest.multi_quests:
@@ -322,7 +322,7 @@ func accept_quest(quest_id: int, owner_uniq_id: int, owner_pquest_uniq_id: int =
 
 
 ## Adds a newly discovered quest to the game state, updates player stats, and emits the start signal.
-func add_active_mission(quest: GameQuest) -> void:
+func add_active_quest(quest: GameQuest) -> void:
 	if not GameManager.game_state:
 		return
 		
@@ -330,8 +330,8 @@ func add_active_mission(quest: GameQuest) -> void:
 	if not progress_array.has(quest):
 		progress_array.append(quest)
 		
-	GameManager.game_state.stats.missions.total_found += 1
-	GameManager.game_state.stats.missions.in_progress += 1
+	GameManager.game_state.stats.quests.total_found += 1
+	GameManager.game_state.stats.quests.in_progress += 1
 	
 	setup_active_quest()
 	_is_dirty = true
@@ -340,7 +340,7 @@ func add_active_mission(quest: GameQuest) -> void:
 
 
 ## Processes a successfully completed quest, granting rewards, and cascading cleanup to sub-quests.
-func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_repeatable: bool = false) -> void:
+func complete_quest(quest: GameQuest, force_subquest_cleanup: bool = false, force_repeatable: bool = false) -> void:
 	if not GameManager.game_state:
 		return
 		
@@ -350,7 +350,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 	var db_quest = _get_quest_from_database(quest.id)
 	var is_sub = quest.parent_quest_id != -1 or force_subquest_cleanup
 	
-	if db_quest and db_quest.type == RPGQuest.QuestMode.GATHER_ITEM and not db_quest.item_preserve:
+	if db_quest and db_quest.type == RPGEnums.QuestMode.GATHER_ITEM and not db_quest.item_preserve:
 		match db_quest.item_type:
 			0:
 				GameManager.remove_item_amount(db_quest.item_id, db_quest.quantity)
@@ -367,12 +367,12 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 			progress_array.remove_at(i)
 			break
 			
-	GameManager.game_state.stats.missions.in_progress -= 1
-	GameManager.game_state.stats.missions.completed += 1
+	GameManager.game_state.stats.quests.in_progress -= 1
+	GameManager.game_state.stats.quests.completed += 1
 	
 	var is_repeatable = force_repeatable or (db_quest and db_quest.is_repeatable)
 	var result = GameQuestResult.new()
-	result.generate_from_active_quest(quest, GameQuestResult.FinalResult.SUCCESS)
+	result.generate_from_active_quest(quest, RPGEnums.QuestResult.SUCCESS)
 	
 	_archive_quest_result(result, is_repeatable)
 	
@@ -381,11 +381,11 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 	var history_key = _get_history_key(quest.owner_event_uniq_id, local_uid)
 	
 	if is_repeatable:
-		GameManager.game_state.stats.missions.historical_dictionary.erase(db_key)
-		GameManager.game_state.stats.missions.historical_dictionary.erase(history_key)
+		GameManager.game_state.stats.quests.historical_dictionary.erase(db_key)
+		GameManager.game_state.stats.quests.historical_dictionary.erase(history_key)
 	else:
-		GameManager.game_state.stats.missions.historical_dictionary[db_key] = GameQuestResult.FinalResult.SUCCESS
-		GameManager.game_state.stats.missions.historical_dictionary[history_key] = GameQuestResult.FinalResult.SUCCESS
+		GameManager.game_state.stats.quests.historical_dictionary[db_key] = RPGEnums.QuestResult.SUCCESS
+		GameManager.game_state.stats.quests.historical_dictionary[history_key] = RPGEnums.QuestResult.SUCCESS
 			
 	if not is_sub and db_quest:
 		_grant_quest_rewards_and_unlocks(db_quest)
@@ -401,7 +401,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 		for sub_id in db_quest.multi_quests:
 			var sub_active = _get_active_quest_by_id(sub_id, quest.id)
 			if sub_active:
-				complete_mission(sub_active, true, is_repeatable)
+				complete_quest(sub_active, true, is_repeatable)
 				
 	setup_active_quest()
 	_is_dirty = true
@@ -412,7 +412,7 @@ func complete_mission(quest: GameQuest, force_subquest_cleanup: bool = false, fo
 
 
 ## Processes a failed quest, updating stats, archiving the result, and emitting the fail signal.
-func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_repeatable: bool = false) -> void:
+func fail_quest(quest: GameQuest, force_subquest_cleanup: bool = false, force_repeatable: bool = false) -> void:
 	if not GameManager.game_state:
 		return
 		
@@ -428,11 +428,11 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 			progress_array.remove_at(i)
 			break
 			
-	GameManager.game_state.stats.missions.in_progress -= 1
+	GameManager.game_state.stats.quests.in_progress -= 1
 	
 	var is_repeatable = force_repeatable or (db_quest and db_quest.is_repeatable)
 	var result = GameQuestResult.new()
-	result.generate_from_active_quest(quest, GameQuestResult.FinalResult.FAILED)
+	result.generate_from_active_quest(quest, RPGEnums.QuestResult.FAILED)
 	
 	_archive_quest_result(result, is_repeatable)
 	
@@ -441,11 +441,11 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 	var history_key = _get_history_key(quest.owner_event_uniq_id, local_uid)
 	
 	if is_repeatable:
-		GameManager.game_state.stats.missions.historical_dictionary.erase(db_key)
-		GameManager.game_state.stats.missions.historical_dictionary.erase(history_key)
+		GameManager.game_state.stats.quests.historical_dictionary.erase(db_key)
+		GameManager.game_state.stats.quests.historical_dictionary.erase(history_key)
 	else:
-		GameManager.game_state.stats.missions.historical_dictionary[db_key] = GameQuestResult.FinalResult.FAILED
-		GameManager.game_state.stats.missions.historical_dictionary[history_key] = GameQuestResult.FinalResult.FAILED
+		GameManager.game_state.stats.quests.historical_dictionary[db_key] = RPGEnums.QuestResult.FAILED
+		GameManager.game_state.stats.quests.historical_dictionary[history_key] = RPGEnums.QuestResult.FAILED
 			
 	if not is_sub and db_quest:
 		var owner_pquest = _get_owner_quest_configuration(quest)
@@ -458,7 +458,7 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 		for sub_id in db_quest.multi_quests:
 			var sub_active = _get_active_quest_by_id(sub_id, quest.id)
 			if sub_active:
-				fail_mission(sub_active, true, is_repeatable)
+				fail_quest(sub_active, true, is_repeatable)
 				
 	setup_active_quest()
 	_is_dirty = true
@@ -472,18 +472,18 @@ func fail_mission(quest: GameQuest, force_subquest_cleanup: bool = false, force_
 
 #region EVENT INTERACTION (INTERCEPTOR)
 ## Intercepts the player interaction with an event to manage quest flows.
-func manage_mission_for_event(event: IngameEvent) -> bool:
+func manage_quest_for_event(event: IngameEvent) -> bool:
 	var objective_advanced = false
 	
 	for active_quest in active_quests.duplicate():
-		if active_quest.target_event_uniq_id == event.uniq_id and active_quest.status == GameQuest.QuestStatus.ACTIVE:
+		if active_quest.target_event_uniq_id == event.uniq_id and active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			var db_quest = _get_quest_from_database(active_quest.id)
-			if db_quest and db_quest.type == RPGQuest.QuestMode.TALK_TO_NPC:
+			if db_quest and db_quest.type == RPGEnums.QuestMode.TALK_TO_NPC:
 				if _is_event_on_required_page(event, db_quest.target_event.event_page_id):
 					if show_debug_prints:
 						print("[QuestManager] Objective TALK_TO_NPC met for Quest ID: ", active_quest.id)
 						
-					active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+					active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 					objective_advanced = true
 					
 					var parent_quest = _get_parent_active_quest(active_quest)
@@ -493,7 +493,7 @@ func manage_mission_for_event(event: IngameEvent) -> bool:
 						var p_active = _get_active_quest_by_id(check_id)
 						var pquest = _get_owner_quest_configuration(p_active)
 						if pquest and not _is_custom_page_valid(pquest.target_page):
-							complete_mission(p_active)
+							complete_quest(p_active)
 							
 	if objective_advanced:
 		_is_dirty = true
@@ -503,11 +503,11 @@ func manage_mission_for_event(event: IngameEvent) -> bool:
 		finish_cluster_delivery(event)
 		return true
 		
-	if can_finish_failed_mission_for(event):
-		finish_failed_mission_for(event)
+	if can_finish_failed_quest_for(event):
+		finish_failed_quest_for(event)
 		return true
 		
-	if can_start_any_mission_for(event):
+	if can_start_any_quest_for(event):
 		start_next_quest_available_for(event)
 		return true
 		
@@ -516,13 +516,13 @@ func manage_mission_for_event(event: IngameEvent) -> bool:
 
 
 ## Checks if the event offers any mission that the player meets all requirements to start.
-func can_start_any_mission_for(ingame_event: IngameEvent) -> bool:
+func can_start_any_quest_for(ingame_event: IngameEvent) -> bool:
 	var event_res = _get_event_resource(ingame_event)
 	if not event_res:
 		return false
 
 	var progress = GameManager.game_state.quest_progress
-	var historical = GameManager.game_state.stats.missions.historical_dictionary
+	var historical = GameManager.game_state.stats.quests.historical_dictionary
 
 	for event_quest in event_res.quests:
 		var db_quest = _get_quest_from_database(event_quest.id)
@@ -553,7 +553,7 @@ func start_next_quest_available_for(ingame_event: IngameEvent) -> void:
 		return
 
 	var progress = GameManager.game_state.quest_progress
-	var historical = GameManager.game_state.stats.missions.historical_dictionary
+	var historical = GameManager.game_state.stats.quests.historical_dictionary
 	var target_quest: RPGEventPQuest = null
 
 	for event_quest in event_res.quests:
@@ -640,23 +640,23 @@ func finish_cluster_delivery(ingame_event: IngameEvent) -> void:
 
 
 ## Checks if the event has an assigned mission in a failed state ready to report.
-func can_finish_failed_mission_for(ingame_event: IngameEvent) -> bool:
+func can_finish_failed_quest_for(ingame_event: IngameEvent) -> bool:
 	for active_quest in active_quests:
 		if active_quest.owner_event_uniq_id == ingame_event.uniq_id:
-			if active_quest.status == GameQuest.QuestStatus.FAILED_PENDING_DELIVERY:
+			if active_quest.status == RPGEnums.QuestStatus.FAILED_PENDING_DELIVERY:
 				return true
 	return false
 
 
 
 ## Executes the fail sequence for a failed mission assigned to this owner event.
-func finish_failed_mission_for(ingame_event: IngameEvent) -> void:
+func finish_failed_quest_for(ingame_event: IngameEvent) -> void:
 	var target_active_quest: GameQuest = null
 	var target_event_quest: RPGEventPQuest = null
 	
 	for active_quest in active_quests:
 		if active_quest.owner_event_uniq_id == ingame_event.uniq_id:
-			if active_quest.status == GameQuest.QuestStatus.FAILED_PENDING_DELIVERY:
+			if active_quest.status == RPGEnums.QuestStatus.FAILED_PENDING_DELIVERY:
 				target_active_quest = active_quest
 				target_event_quest = _get_event_pquest_data_from_owner(ingame_event, active_quest.id)
 				break
@@ -667,12 +667,12 @@ func finish_failed_mission_for(ingame_event: IngameEvent) -> void:
 		if target_event_quest.on_failure_quest_page > -1:
 			var commands = _get_commands_from_page_index(ingame_event, target_event_quest.on_failure_quest_page)
 			await GameInterpreter.start_event(ingame_event.lpc_event, commands, false, interpreter_id)
-			fail_mission(target_active_quest)
+			fail_quest(target_active_quest)
 		else:
 			var commands = _generate_fallback_fail_commands(target_event_quest, target_active_quest)
 			if not commands.is_empty():
 				await GameInterpreter.start_event(ingame_event.lpc_event, commands, false, interpreter_id)
-			fail_mission(target_active_quest)
+			fail_quest(target_active_quest)
 #endregion
 
 
@@ -724,14 +724,14 @@ func _get_parent_active_quest(child_quest: GameQuest) -> GameQuest:
 ## Validates if the parent quest and all its multi-quests are entirely fulfilled.
 func _is_cluster_ready_to_deliver(parent_quest_id: int) -> bool:
 	var parent_active = _get_active_quest_by_id(parent_quest_id)
-	if not parent_active or parent_active.status != GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
+	if not parent_active or parent_active.status != RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
 	
 	var parent_db = _get_quest_from_database(parent_quest_id)
 	if not parent_db: return false
 	
 	for sub_id in parent_db.multi_quests:
 		var sub_active = _get_active_quest_by_id(sub_id, parent_active.id)
-		if not sub_active or sub_active.status != GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
+		if not sub_active or sub_active.status != RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY: return false
 		
 	return true
 
@@ -856,14 +856,14 @@ func _trigger_chain_quest(db_quest: RPGQuest, owner_uniq_id: int) -> void:
 ## Validates if all required prerequisite quests exist in the historical dictionary as SUCCESS.
 func _are_prerequisites_met(db_quest: RPGQuest) -> bool:
 	if not db_quest or db_quest.prerequisites.is_empty(): return true
-	var historical = GameManager.game_state.stats.missions.historical_dictionary
+	var historical = GameManager.game_state.stats.quests.historical_dictionary
 	
 	for pre_req in db_quest.prerequisites:
 		var target_db = _get_quest_from_database(pre_req)
 		
 		var was_completed = historical.has(pre_req) or (target_db and "_uniq_id" in target_db and historical.has(target_db._uniq_id))
 		
-		var required_state = GameQuestResult.FinalResult.SUCCESS
+		var required_state = RPGEnums.QuestResult.SUCCESS
 		var state_from_id = historical.get(pre_req, -1)
 		var state_from_uid = historical.get(target_db._uniq_id if target_db and "_uniq_id" in target_db else -1, -1)
 		
@@ -1002,15 +1002,15 @@ func _get_owner_quest_configuration(active_quest: GameQuest) -> RPGEventPQuest:
 ## Validates all GATHER_ITEM quests dynamically based on current inventory.
 func _validate_gather_quests() -> void:
 	for active_quest in active_quests:
-		if active_quest.status == GameQuest.QuestStatus.FAILED_PENDING_DELIVERY:
+		if active_quest.status == RPGEnums.QuestStatus.FAILED_PENDING_DELIVERY:
 			continue
 			
 		var db_quest = _get_quest_from_database(active_quest.id)
-		if db_quest and db_quest.type == RPGQuest.QuestMode.GATHER_ITEM:
+		if db_quest and db_quest.type == RPGEnums.QuestMode.GATHER_ITEM:
 			var is_ready = _is_gather_quest_ready(db_quest)
 			
-			if is_ready and active_quest.status == GameQuest.QuestStatus.ACTIVE:
-				active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+			if is_ready and active_quest.status == RPGEnums.QuestStatus.ACTIVE:
+				active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 				
 				var parent_quest = _get_parent_active_quest(active_quest)
 				var check_id = parent_quest.id if parent_quest else active_quest.id
@@ -1019,10 +1019,10 @@ func _validate_gather_quests() -> void:
 					var p_active = _get_active_quest_by_id(check_id)
 					var pquest = _get_owner_quest_configuration(p_active)
 					if pquest and not _is_custom_page_valid(pquest.target_page):
-						complete_mission(p_active)
+						complete_quest(p_active)
 						
-			elif not is_ready and active_quest.status == GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY:
-				active_quest.status = GameQuest.QuestStatus.ACTIVE
+			elif not is_ready and active_quest.status == RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY:
+				active_quest.status = RPGEnums.QuestStatus.ACTIVE
 
 
 
@@ -1166,7 +1166,7 @@ func execute_interpreter_command_manage_quest(params: Dictionary) -> void:
 		match op_type:
 			0:
 				var is_active = _get_active_quest_by_id(q_id)
-				var historical = GameManager.game_state.stats.missions.historical_dictionary
+				var historical = GameManager.game_state.stats.quests.historical_dictionary
 				
 				var db_key = db_quest._uniq_id if db_quest and "_uniq_id" in db_quest and db_quest._uniq_id > 0 else q_id
 				var was_completed = historical.has(db_key) or historical.has(q_id)
@@ -1176,17 +1176,17 @@ func execute_interpreter_command_manage_quest(params: Dictionary) -> void:
 					accept_quest(q_id, owner_id, local_id, target_uniq)
 					
 			1:
-				_cancel_mission(q_id)
+				_cancel_quest(q_id)
 				
 			2:
 				var active_q = _get_active_quest_by_id(q_id)
 				if active_q:
-					complete_mission(active_q)
+					complete_quest(active_q)
 					
 			3:
 				var active_q = _get_active_quest_by_id(q_id)
 				if active_q:
-					fail_mission(active_q)
+					fail_quest(active_q)
 					
 			4:
 				if db_quest:
@@ -1198,7 +1198,7 @@ func execute_interpreter_command_manage_quest(params: Dictionary) -> void:
 				_is_dirty = true
 				
 			5:
-				_reset_mission(q_id)
+				_reset_quest(q_id)
 				
 			6:
 				var progress_val = params.get("progress", 0.0)
@@ -1212,17 +1212,17 @@ func execute_interpreter_command_manage_quest(params: Dictionary) -> void:
 func update_user_quest_progress(quest_id: int, added_progress: float) -> void:
 	var active_quest = _get_active_quest_by_id(quest_id)
 	
-	if not active_quest or active_quest.status != GameQuest.QuestStatus.ACTIVE:
+	if not active_quest or active_quest.status != RPGEnums.QuestStatus.ACTIVE:
 		return
 		
 	var db_quest = _get_quest_from_database(quest_id)
-	if not db_quest or db_quest.type != RPGQuest.QuestMode.USER_QUEST:
+	if not db_quest or db_quest.type != RPGEnums.QuestMode.USER_QUEST:
 		return
 		
 	active_quest.current_progress = clamp(active_quest.current_progress + added_progress, 0.0, 1.0)
 	
 	if active_quest.current_progress >= 1.0:
-		active_quest.status = GameQuest.QuestStatus.COMPLETED_PENDING_DELIVERY
+		active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 		
 		var parent_quest = _get_parent_active_quest(active_quest)
 		var check_id = parent_quest.id if parent_quest else active_quest.id
@@ -1232,7 +1232,7 @@ func update_user_quest_progress(quest_id: int, added_progress: float) -> void:
 			var pquest = _get_owner_quest_configuration(p_active)
 			
 			if pquest and not _is_custom_page_valid(pquest.target_page):
-				complete_mission(p_active)
+				complete_quest(p_active)
 				return
 				
 	_is_dirty = true
@@ -1240,13 +1240,13 @@ func update_user_quest_progress(quest_id: int, added_progress: float) -> void:
 
 
 ## Silently removes a quest from the active list without sending it to the historical record.
-func _cancel_mission(quest_id: int, force_repeatable: bool = false) -> void:
+func _cancel_quest(quest_id: int, force_repeatable: bool = false) -> void:
 	var db_quest = _get_quest_from_database(quest_id)
 	var is_repeatable = force_repeatable or (db_quest and db_quest.is_repeatable)
 	
 	if db_quest:
 		for sub_id in db_quest.multi_quests:
-			_cancel_mission(sub_id, is_repeatable)
+			_cancel_quest(sub_id, is_repeatable)
 			
 	var db_key = db_quest._uniq_id if db_quest and "_uniq_id" in db_quest and db_quest._uniq_id > 0 else quest_id
 	var progress_array = GameManager.game_state.quest_progress.active_quests
@@ -1255,10 +1255,10 @@ func _cancel_mission(quest_id: int, force_repeatable: bool = false) -> void:
 		if progress_array[i].id == db_key or progress_array[i].id == quest_id:
 			var quest_to_cancel = progress_array[i]
 			progress_array.remove_at(i)
-			GameManager.game_state.stats.missions.in_progress -= 1
+			GameManager.game_state.stats.quests.in_progress -= 1
 			
 			var result = GameQuestResult.new()
-			result.generate_from_active_quest(quest_to_cancel, GameQuestResult.FinalResult.CANCELLED)
+			result.generate_from_active_quest(quest_to_cancel, RPGEnums.QuestResult.CANCELLED)
 			
 			_archive_quest_result(result, is_repeatable)
 			
@@ -1266,11 +1266,11 @@ func _cancel_mission(quest_id: int, force_repeatable: bool = false) -> void:
 			var history_key = _get_history_key(quest_to_cancel.owner_event_uniq_id, local_uid)
 			
 			if is_repeatable:
-				GameManager.game_state.stats.missions.historical_dictionary.erase(db_key)
-				GameManager.game_state.stats.missions.historical_dictionary.erase(history_key)
+				GameManager.game_state.stats.quests.historical_dictionary.erase(db_key)
+				GameManager.game_state.stats.quests.historical_dictionary.erase(history_key)
 			else:
-				GameManager.game_state.stats.missions.historical_dictionary[db_key] = GameQuestResult.FinalResult.CANCELLED
-				GameManager.game_state.stats.missions.historical_dictionary[history_key] = GameQuestResult.FinalResult.CANCELLED
+				GameManager.game_state.stats.quests.historical_dictionary[db_key] = RPGEnums.QuestResult.CANCELLED
+				GameManager.game_state.stats.quests.historical_dictionary[history_key] = RPGEnums.QuestResult.CANCELLED
 				
 			_is_dirty = true
 			break
@@ -1278,11 +1278,11 @@ func _cancel_mission(quest_id: int, force_repeatable: bool = false) -> void:
 
 
 ## Wipes all memory of a quest, removing it from active arrays and the historical dictionary.
-func _reset_mission(quest_id: int) -> void:
+func _reset_quest(quest_id: int) -> void:
 	var db_quest = _get_quest_from_database(quest_id)
 	if db_quest:
 		for sub_id in db_quest.multi_quests:
-			_reset_mission(sub_id)
+			_reset_quest(sub_id)
 			
 	var owner_id = -1
 	var local_pquest_uid = -1
@@ -1292,9 +1292,9 @@ func _reset_mission(quest_id: int) -> void:
 		owner_id = active_q.owner_event_uniq_id
 		local_pquest_uid = active_q.owner_pquest_uniq_id if "owner_pquest_uniq_id" in active_q and active_q.owner_pquest_uniq_id > 0 else active_q.id
 		
-	_cancel_mission(quest_id)
+	_cancel_quest(quest_id)
 	
-	var historical = GameManager.game_state.stats.missions.historical_dictionary
+	var historical = GameManager.game_state.stats.quests.historical_dictionary
 	var db_key = db_quest._uniq_id if db_quest and "_uniq_id" in db_quest and db_quest._uniq_id > 0 else quest_id
 	
 	if historical.has(db_key):
@@ -1305,7 +1305,7 @@ func _reset_mission(quest_id: int) -> void:
 		if historical.has(history_key):
 			historical.erase(history_key)
 			
-	var results_array = GameManager.game_state.stats.missions.missions
+	var results_array = GameManager.game_state.stats.quests.quests
 	for i in range(results_array.size() - 1, -1, -1):
 		if results_array[i].id == quest_id:
 			results_array.remove_at(i)
@@ -1316,7 +1316,7 @@ func _reset_mission(quest_id: int) -> void:
 
 ## Internal helper to compress repeatable quest results or append new unique ones.
 func _archive_quest_result(result: GameQuestResult, is_repeatable: bool) -> void:
-	var history = GameManager.game_state.stats.missions.missions
+	var history = GameManager.game_state.stats.quests.quests
 	var merged = false
 	
 	if is_repeatable:

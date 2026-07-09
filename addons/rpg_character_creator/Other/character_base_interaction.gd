@@ -207,7 +207,7 @@ func _interact_with_click_target() -> void:
 			if "current_event" in node and node.current_event is RPGEvent and node.current_event.next_page_has_pressure():
 				return
 				
-			await node.start(current_entity, RPGEventPage.LAUNCHER_MODE.ACTION_BUTTON)
+			await node.start(current_entity, RPGEnums.LauncherMode.ACTION_BUTTON)
 		elif node.get_class() == "RPGExtractionScene":
 			if not node.extraction_data.is_depleted():
 				GameManager.manage_extraction_scene(node)
@@ -290,11 +290,11 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 			var is_pressure = page.condition.use_pressure if page and page.condition else false
 			
 			if not is_pressure:
-				if self_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION and entity.is_in_group("player"):
+				if self_launcher == RPGEnums.LauncherMode.PLAYER_COLLISION and entity.is_in_group("player"):
 					activate_self = true
-				elif self_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+				elif self_launcher == RPGEnums.LauncherMode.ANY_CONTACT:
 					activate_self = true
-				elif self_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION and not entity.is_in_group("player"):
+				elif self_launcher == RPGEnums.LauncherMode.EVENT_COLLISION and not entity.is_in_group("player"):
 					if "current_event_page" in entity and entity.current_event_page:
 						var other_id = entity.get("current_event")._uniq_id if "current_event" in entity else -1
 						var event_trigger_list = page.get("event_trigger_list")
@@ -309,13 +309,13 @@ func _process_event_contact(contacting_entities: Array, stop_movement_on_activat
 				var other_launcher = other_page.launcher
 				
 				if im_player:
-					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
-					   other_launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
+					if other_launcher == RPGEnums.LauncherMode.ANY_CONTACT or \
+					   other_launcher == RPGEnums.LauncherMode.PLAYER_COLLISION:
 						activate_other = true
 				else:
-					if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+					if other_launcher == RPGEnums.LauncherMode.ANY_CONTACT:
 						activate_other = true
-					elif other_launcher == RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION:
+					elif other_launcher == RPGEnums.LauncherMode.EVENT_COLLISION:
 						var other_trigger_list = other_page.get("event_trigger_list")
 						if self_id in other_trigger_list:
 							activate_other = true
@@ -404,8 +404,8 @@ func _check_contact(tile: Vector2i, check_passable: bool = false) -> bool:
 					if "current_event_page" in ev and ev.current_event_page:
 						var other_page = ev.current_event_page
 						
-						if other_page.launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT or \
-						   other_page.launcher == RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION:
+						if other_page.launcher == RPGEnums.LauncherMode.ANY_CONTACT or \
+						   other_page.launcher == RPGEnums.LauncherMode.PLAYER_COLLISION:
 							
 							var ev_passable = ev.character_options.passable
 							var passability_ok = (check_passable and ev_passable) or (not check_passable and not ev_passable)
@@ -605,8 +605,8 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 	if my_page:
 		var my_launcher = my_page.launcher
 		
-		if my_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION]:
-			if my_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+		if my_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.EVENT_COLLISION]:
+			if my_launcher == RPGEnums.LauncherMode.ANY_CONTACT:
 				return true
 			elif other_page:
 				var other_id = other_page.get("_uniq_id")
@@ -618,8 +618,8 @@ func _can_activate_event(my_entity, other_entity) -> bool:
 	if other_page:
 		var other_launcher = other_page.launcher
 		
-		if other_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.EVENT_COLLISION]:
-			if other_launcher == RPGEventPage.LAUNCHER_MODE.ANY_CONTACT:
+		if other_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.EVENT_COLLISION]:
+			if other_launcher == RPGEnums.LauncherMode.ANY_CONTACT:
 				return true
 			elif my_page:
 				var my_id = my_page.get("_uniq_id")
@@ -643,7 +643,7 @@ func _handle_player_contact(player, entity, entity_is_player: bool) -> Dictionar
 	
 	var entity_launcher = entity_page.launcher
 	
-	if entity_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION]:
+	if entity_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.PLAYER_COLLISION]:
 		if not entity in current_entity._ignore_events_contact:
 			_add_mutual_ignore(entity, player)
 			return {"can_move": true, "contacts": [entity]}
@@ -660,7 +660,7 @@ func _handle_event_vs_player(event, player, my_is_solid: bool, my_is_moving: boo
 	
 	var my_launcher = my_page.launcher
 	
-	if my_launcher in [RPGEventPage.LAUNCHER_MODE.ANY_CONTACT, RPGEventPage.LAUNCHER_MODE.PLAYER_COLLISION]:
+	if my_launcher in [RPGEnums.LauncherMode.ANY_CONTACT, RPGEnums.LauncherMode.PLAYER_COLLISION]:
 		if not event in current_entity._ignore_events_contact:
 			_add_mutual_ignore(event, player)
 			return {"can_move": true, "contacts": [event]}

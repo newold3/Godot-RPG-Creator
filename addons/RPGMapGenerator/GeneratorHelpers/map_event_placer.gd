@@ -282,10 +282,10 @@ func is_tile_valid_for_event_placement(tile_pos: Vector2i, grid: PackedByteArray
 			var is_wall: bool = (tile_val == 2 or tile_val == 9)
 			var is_floor: bool = (tile_val == 1 or (_generator._is_world_mode() and tile_val in [1, 4, 5, 8, 10, 6, 7]))
 			
-			if mode == MapGeneratorEvent.PLACEMENT.FLOOR and not is_floor:
+			if mode == RPGEnums.MapPlacement.FLOOR and not is_floor:
 				return false
 				
-			if mode == MapGeneratorEvent.PLACEMENT.WALL and not is_wall:
+			if mode == RPGEnums.MapPlacement.WALL and not is_wall:
 				return false
 				
 	if wall_margins != Vector4i(0, 0, 0, 0):
@@ -331,7 +331,7 @@ func is_tile_valid_for_event_placement(tile_pos: Vector2i, grid: PackedByteArray
 							break
 			if clearance_failed: return false
 			
-	if rules.event_position != MapGeneratorEvent.EVENT_POSITION.ANYWHERE:
+	if rules.event_position != RPGEnums.MapEventPosition.ANYWHERE:
 		if _generator.get("environment_placer"):
 			var env_placer = _generator.environment_placer
 			if env_placer.has_method("check_environment_position_dynamic"):

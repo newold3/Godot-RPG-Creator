@@ -102,7 +102,7 @@ func handle_modern_refresh(page: RPGEventPage) -> void:
 	var target_dir = page.direction if page.options.fixed_direction else lpc_event.current_direction
 	load_event_graphics(page, target_dir)
 	
-	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC or page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+	if page.launcher == RPGEnums.LauncherMode.AUTOMATIC or page.launcher == RPGEnums.LauncherMode.PARALLEL:
 		map.call_deferred("deferred_injection", self, page, interpreter_id)
 
 
@@ -122,7 +122,7 @@ func handle_legacy_refresh(page: RPGEventPage) -> void:
 	var target_dir = page.direction if page.options.fixed_direction else lpc_event.current_direction
 	load_event_graphics(page, target_dir)
 	
-	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC or page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+	if page.launcher == RPGEnums.LauncherMode.AUTOMATIC or page.launcher == RPGEnums.LauncherMode.PARALLEL:
 		inject_parallel_auto_after_interpreter(page)
 	
 	_final_update(page)
@@ -288,9 +288,9 @@ func inject_parallel_auto_after_interpreter(page: RPGEventPage) -> void:
 
 
 func perform_injection(page: RPGEventPage, interpreter_id: String) -> void:
-	if page.launcher == RPGEventPage.LAUNCHER_MODE.AUTOMATIC:
+	if page.launcher == RPGEnums.LauncherMode.AUTOMATIC:
 		GameInterpreter.auto_start_automatic_events([{"obj": lpc_event, "commands": page.list, "id": interpreter_id}])
-	elif page.launcher == RPGEventPage.LAUNCHER_MODE.PARALLEL:
+	elif page.launcher == RPGEnums.LauncherMode.PARALLEL:
 		GameInterpreter.register_interpreter(lpc_event, page.list, true, interpreter_id)
 
 

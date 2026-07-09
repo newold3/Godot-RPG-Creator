@@ -2,24 +2,8 @@
 class_name MapGeneratorEvent
 extends Resource
 
-enum PLACEMENT {
-	ANYWHERE,
-	FLOOR,
-	WALL
-}
-
-enum EVENT_POSITION {
-	ANYWHERE = 0,
-	AT_THE_TOP = 1,
-	AT_THE_BOTTOM = 2,
-	AT_THE_CENTER = 3,
-	ON_THE_LEFT = 4,
-	ON_THE_RIGHT = 5,
-	TOP_LEFT = 6,
-	TOP_RIGHT = 7,
-	BOTTOM_LEFT = 8,
-	BOTTOM_RIGHT = 9
-}
+const PLACEMENT = RPGEnums.MapPlacement
+const EVENT_POSITION = RPGEnums.MapEventPosition
 
 @export var event: RPGEvent
 @export var locked: bool = false

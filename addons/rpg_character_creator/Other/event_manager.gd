@@ -63,7 +63,7 @@ static func start_lift_animation(event_node: Node) -> void:
 
 
 ## Triggers the event interaction logic and starts the interpreter if applicable.
-static func start_event(event_node: Node, obj: Node, launcher_mode: RPGEventPage.LAUNCHER_MODE) -> bool:
+static func start_event(event_node: Node, obj: Node, launcher_mode: RPGEnums.LauncherMode) -> bool:
 	if event_node.is_invalid_event:
 		return false
 		
@@ -78,7 +78,7 @@ static func start_event(event_node: Node, obj: Node, launcher_mode: RPGEventPage
 	var ingame_event = GameManager.current_map.get_in_game_event_by_uniq_id(event_node.current_event._uniq_id, true)
 
 	
-	if QuestManager.manage_mission_for_event(ingame_event):
+	if QuestManager.manage_quest_for_event(ingame_event):
 		return true
 		
 	if is_liftable(event_node):

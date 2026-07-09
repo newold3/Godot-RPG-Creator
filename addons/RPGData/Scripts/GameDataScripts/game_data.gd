@@ -11,7 +11,6 @@ extends Resource
 @export var switches: Array = []
 @export var self_switches: Dictionary = {}
 @export var current_gold: int = 0
-@export var current_missions: Array[GameMission] = []
 @export var statistics: GameStatistics = GameStatistics.new()
 
 
