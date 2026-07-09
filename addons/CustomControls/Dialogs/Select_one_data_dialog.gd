@@ -20,8 +20,20 @@ func set_data(_title : String, _data: Array, _real_ids: Array, selected_id: int,
 	for i in _data.size():
 		var item = _data[i]
 		node.add_item(item)
-		node.set_item_metadata(-1, _real_ids[i])
-		if selected_id == _real_ids[i]:
+		var real_id = _real_ids[i]
+		node.set_item_metadata(-1, real_id)
+		
+		var is_sep = false
+		if real_id != -1 and data is Array:
+			for item_obj in data:
+				if item_obj and item_obj.get("_uniq_id") == real_id:
+					if "separator" in item_obj and item_obj.separator != null:
+						is_sep = true
+					break
+		if is_sep:
+			node.set_item_disabled(node.get_item_count() - 1, true)
+			
+		if selected_id == real_id:
 			node.select(i)
 			_on_options_item_selected(i)
 			selected_setted = true

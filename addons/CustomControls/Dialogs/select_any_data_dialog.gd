@@ -171,16 +171,27 @@ func fill_list2(lis1_index: int, list2_index: int) -> void:
 	
 	list.busy = true
 	for i in range(from, to):
-		var item_name = data[i].name
+		var item_name = data[i].name if data[i] != null else ""
 		var item = "%s:%s" % [str(i).pad_zeros(s-1), item_name]
-		list.add_item(item)
+		var idx = list.add_item(item)
+		if data[i] != null and "separator" in data[i] and data[i].separator != null:
+			list.set_item_disabled(idx, true)
 	list.busy = false
 	list.queue_redraw()
 	
-	if list2_index < list.item_count and list2_index >= 0:
-		list.select(list2_index)
-	elif list.item_count > 0:
-		list.select(0)
+	var target_select_index = -1
+	if list2_index < list.item_count and list2_index >= 0 and not list.is_item_disabled(list2_index):
+		target_select_index = list2_index
+	else:
+		# Find first non-disabled item
+		for i in list.item_count:
+			if not list.is_item_disabled(i):
+				target_select_index = i
+				break
+	if target_select_index != -1:
+		list.select(target_select_index)
+	else:
+		list.deselect_all()
 
 
 ## Clears the items list.
@@ -204,10 +215,15 @@ func _on_list_2_item_selected(index2: int) -> void:
 ## Emits the selected ID and closes/hides the dialog.
 func _on_ok_button_pressed() -> void:
 	if busy: return
+	var selected_items = %List2.get_selected_items()
+	if selected_items.is_empty():
+		return
+	var index2 = selected_items[0]
+	if %List2.is_item_disabled(index2):
+		return
 	busy = true
 	var index1 = %List1.get_selected_items()[0] * 20
-	var index2 = %List2.get_selected_items()[0] + 1
-	var index = index1 + index2
+	var index = index1 + index2 + 1
 	selected.emit(index, target)
 	if !destroy_on_hide:
 		hide()
@@ -225,6 +241,8 @@ func _on_cancel_button_pressed() -> void:
 
 ## Emits the item selected signal and confirms choice.
 func _on_list_2_item_activated(index2: int) -> void:
+	if %List2.is_item_disabled(index2):
+		return
 	var index1 = %List1.get_selected_items()[0] * 20
 	var index = index1 + index2 + 1
 	item_selected.emit(index)
@@ -233,9 +251,14 @@ func _on_list_2_item_activated(index2: int) -> void:
 
 ## Confirms choice from the page list.
 func _on_list_1_item_activated(index: int) -> void:
+	var selected_items = %List2.get_selected_items()
+	if selected_items.is_empty():
+		return
+	var index2 = selected_items[0]
+	if %List2.is_item_disabled(index2):
+		return
 	var index1 = index * 20
-	var index2 = %List2.get_selected_items()[0] + 1
-	var final_index = index1 + index2
+	var final_index = index1 + index2 + 1
 	item_selected.emit(final_index)
 	_on_ok_button_pressed()
 

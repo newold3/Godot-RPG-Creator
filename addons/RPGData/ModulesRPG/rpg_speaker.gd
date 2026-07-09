@@ -26,6 +26,8 @@ func get_class(): return "RPGSpeaker"
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 
 func clear() -> void:
 	for obj in [name, face, character]: obj.clear()
@@ -38,6 +40,7 @@ func clear() -> void:
 	notes = ""
 	text_bold = false
 	text_italic = false
+	separator = null
 
 
 func clone(value: bool = true) -> RPGSpeaker:

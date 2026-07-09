@@ -72,6 +72,8 @@ func _get_all_items() -> Array:
 		
 	# 1. Items
 	for item in db.items:
+		if item and ("separator" in item and item.separator != null):
+			continue
 		if item and item.id > 0:
 			list.append({
 				"type": "item",
@@ -82,6 +84,8 @@ func _get_all_items() -> Array:
 				
 	# 2. Weapons
 	for weapon in db.weapons:
+		if weapon and ("separator" in weapon and weapon.separator != null):
+			continue
 		if weapon and weapon.id > 0:
 			list.append({
 				"type": "weapon",
@@ -92,6 +96,8 @@ func _get_all_items() -> Array:
 			
 	# 3. Armors
 	for armor in db.armors:
+		if armor and ("separator" in armor and armor.separator != null):
+			continue
 		if armor and armor.id > 0:
 			list.append({
 				"type": "armor",
@@ -102,6 +108,8 @@ func _get_all_items() -> Array:
 			
 	# 4. Sets/Costumes
 	for costume in db.costumes:
+		if costume and ("separator" in costume and costume.separator != null):
+			continue
 		if costume and costume.id > 0:
 			list.append({
 				"type": "set",

@@ -64,8 +64,8 @@ func clear_custom_colors() -> void:
 	custom_row_colors.clear()
 
 
-func set_custom_color(_index: int, _text_color: Color = Color.TRANSPARENT, _bg_color: Color = Color.WHITE) -> void:
-	custom_row_colors[_index] = {"text_color": _text_color, "background_color": _bg_color}
+func set_custom_color(_index: int, _text_color: Color = Color.TRANSPARENT, _bg_color: Color = Color.WHITE, _name: String = "-------") -> void:
+	custom_row_colors[_index] = {"text_color": _text_color, "background_color": _bg_color, "name": _name}
 
 
 ## Adds or removes the padlock icon to the requested item index
@@ -83,7 +83,46 @@ func lock_item(index: int, value: bool) -> void:
 
 
 
-## Draws the custom background grid and row lines behind the item list
+func _draw() -> void:
+	for index in get_item_count():
+		var color_data: Dictionary = custom_row_colors.get(index, {})
+		if not color_data.is_empty():
+			var rect = get_item_rect(index)
+			var current_name = color_data.get("name", "-----")
+			var font = get_theme_default_font()
+			var font_size = get_theme_default_font_size()
+			var text_color = color_data.text_color
+			
+			if text_color.is_equal_approx(Color.TRANSPARENT):
+				text_color = get("theme_override_colors/font_color")
+				
+			var text_pos_x = rect.position.x
+			var text_pos_y = rect.position.y + (rect.size.y * 0.5) + (font.get_ascent(font_size) * 0.5) - 3
+			
+			var p = Vector2(text_pos_x, text_pos_y)
+
+			draw_string_outline(
+				font,
+				p,
+				current_name,
+				HORIZONTAL_ALIGNMENT_CENTER,
+				rect.size.x,
+				font_size,
+				6,
+				Color.BLACK
+			)
+			draw_string(
+				font,
+				p,
+				current_name,
+				HORIZONTAL_ALIGNMENT_CENTER,
+				rect.size.x,
+				font_size,
+				text_color
+			)
+
+
+## Handles the background drawing for the back control
 func _on_back_control_draw() -> void:
 	if busy:
 		return
@@ -107,11 +146,12 @@ func _on_back_control_draw() -> void:
 				color = event_line_color
 				
 			var color_data: Dictionary = custom_row_colors.get(index, {})
-			if not color_data.is_empty() and not color_data.background_color.is_equal_approx(Color.TRANSPARENT):
-				color = color_data.background_color
-			
-			control.draw_rect(rect, color, true)
+			if not color_data.is_empty():
+				if not color_data.background_color.is_equal_approx(Color.TRANSPARENT):
+					color = color_data.background_color
 				
+			control.draw_rect(rect, color, true)
+			
 			if separator_size > 0:
 				var separator_rect = Rect2(rect.position.x, rect.position.y + rect.size.y - separator_size, rect.size.x, separator_size)
 				control.draw_rect(separator_rect, separator_color)

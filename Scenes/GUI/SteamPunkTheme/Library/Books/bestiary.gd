@@ -130,7 +130,7 @@ func _build_index() -> void:
 	
 	for i in range(1, enemies.size()):
 		var monster = enemies[i]
-		if not monster:
+		if not monster or ("separator" in monster and monster.separator != null):
 			continue
 		var r_type = monster.rarity_type
 		var r_name = "Unknown"

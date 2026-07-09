@@ -615,3 +615,69 @@ func select_all() -> void:
 # Verificar si un item está seleccionado
 func is_item_selected(id: int) -> bool:
 	return id in selected_items
+
+
+func set_item_metadata(idx: int, metadata: Variant) -> void:
+	super(idx, metadata)
+	_check_and_disable_if_separator(idx)
+
+
+func _check_and_disable_if_separator(idx: int) -> void:
+	if idx < 0:
+		var n = get_item_count()
+		idx = n - idx
+		if idx > 0 or idx >= n: return
+		
+	var metadata = get_item_metadata(idx)
+	if typeof(metadata) != TYPE_INT and typeof(metadata) != TYPE_FLOAT:
+		return
+	var id = int(metadata)
+	if id <= 0:
+		return
+	
+	var keys = []
+	var control_name = name.to_lower()
+	if "actor" in control_name or "fixedvalue" in control_name:
+		keys = ["actors"]
+	elif "class" in control_name or "rol" in control_name:
+		keys = ["classes"]
+	elif "profession" in control_name:
+		keys = ["professions"]
+	elif "skill" in control_name:
+		keys = ["skills"]
+	elif "weapon" in control_name:
+		keys = ["weapons"]
+	elif "armor" in control_name:
+		keys = ["armors"]
+	elif "item" in control_name:
+		keys = ["items"]
+	elif "state" in control_name:
+		keys = ["states"]
+	elif "enemy" in control_name:
+		keys = ["enemies"]
+	elif "troop" in control_name:
+		keys = ["troops"]
+	elif "costume" in control_name:
+		keys = ["costumes"]
+	elif "animation" in control_name:
+		keys = ["animations"]
+	elif "event" in control_name:
+		keys = ["common_events"]
+	elif "quest" in control_name:
+		keys = ["quests"]
+	elif "speaker" in control_name:
+		keys = ["speakers"]
+	
+	if id >= 1_000_000_000_000_000:
+		for k in RPGSYSTEM.VALID_DATABASE_KEYS:
+			if not k in keys:
+				keys.append(k)
+	elif keys.is_empty():
+		keys = RPGSYSTEM.VALID_DATABASE_KEYS
+
+	for key in keys:
+		var item = RPGSYSTEM.get_data(key, id)
+		if item:
+			if "separator" in item and item.separator != null:
+				set_item_disabled(idx, true)
+				break

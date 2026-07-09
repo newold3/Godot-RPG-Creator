@@ -4,7 +4,7 @@ extends Resource
 
 
 @export var name: String = ""
-@export var background_color: Color = Color(1.0, 0.565, 0.0, 1.0)
+@export var background_color: Color = Color(0.998, 0.9, 0.817, 1.0)
 @export var text_color: Color = Color(1.0, 1.0, 1.0, 1.0)
 
 

@@ -19,11 +19,17 @@ func fill_quests() -> void:
 	node.clear()
 	for i: int in range(1, RPGSYSTEM.database.quests.size(), 1):
 		var quest: RPGQuest = RPGSYSTEM.database.quests[i]
+		var is_sep = false
+		if quest and "separator" in quest and quest.separator != null:
+			is_sep = true
 		node.add_item("%s: %s" % [quest.id, quest.name])
 		node.set_item_metadata(-1, quest.id)
+		var item_idx = node.get_item_count() - 1
+		if is_sep:
+			node.set_item_disabled(item_idx, true)
 		if quest.id ==  current_editing_quest:
-			node.set_item_text(i - 1, ACTIVE_QUEST + node.get_item_text(i - 1))
-			node.set_item_disabled(i, true)
+			node.set_item_text(item_idx, ACTIVE_QUEST + node.get_item_text(item_idx))
+			node.set_item_disabled(item_idx, true)
 
 
 func set_main_quest_selected(idx: int) -> void:

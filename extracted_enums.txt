@@ -1,0 +1,164 @@
+--- Enum #1: STATE_MODE in addons/RPGData/Scripts/GameDataScripts/game_state.gd ---
+STATE_CONTEXT_GLOBAL = 1,       ## Applies in all contexts (exploration and battle).
+	STATE_CONTEXT_BATTLE_ONLY = 2,  ## Applies only during battles.
+	STATE_DURATION_TURNS = 4,       ## Duration is measured in turns.
+	STATE_DURATION_SECONDS = 8,     ## Duration is measured in seconds.
+	STATE_DURATION_PERMANENT = 16,  ## State lasts indefinitely within its context.
+	STATE_TICKS_ENABLED = 32,       ## State triggers actions at regular intervals (ticks).
+	STATE_TICKS_DAMAGE = 64,        ## Regen traits do damage instead.
+	STATE_REMOVE_BY_WALKING = 128,  ## State is removed by walking steps.
+	STATE_REMOVE_BY_DAMAGE = 256,   ## State is removed when taking damage.
+	STATE_REMOVE_BY_RESTRICTION = 512 ## State is removed when restriction changes.
+
+--- Enum #2: FinalResult in addons/RPGData/Scripts/GameDataScripts/game_quest_result.gd ---
+SUCCESS,
+	FAILED,
+	CANCELLED
+
+--- Enum #3: QuestStatus in addons/RPGData/Scripts/GameDataScripts/game_quest.gd ---
+ACTIVE,
+	COMPLETED_PENDING_DELIVERY,
+	FAILED_PENDING_DELIVERY
+
+--- Enum #4: MissionState in addons/RPGData/Scripts/GameDataScripts/game_mission.gd ---
+NOT_STARTED, IN_PROGRESS, READY_TO_COMPLETE, COMPLETED, FAILED
+
+--- Enum #5: TraitCode in addons/RPGData/Scripts/GameDataScripts/game_battler.gd ---
+PARAM_BASE = 5,
+	ADD_STATE = 28,
+	PERMANENT_STATE = 28,
+	EQUIP_WEAPON = 17,
+	EQUIP_ARMOR = 18,
+	LOCK_EQUIP = 19,
+	SEAL_EQUIP = 20,
+	ADD_SKILL_TYPE = 13,
+	SEAL_SKILL_TYPE = 14,
+	ADD_SKILL = 15,
+	SEAL_SKILL = 16,
+	ELEMENT_ATTACK = 1,
+	ELEMENT_DEFENSE = 27,
+	USER_PARAMETER = 101,
+	DEBUFF_RATE = 2,
+	STATE_RATE = 3,
+	STATE_RESIST = 4
+
+--- Enum #6: STATE in addons/RPGData/Scripts/GameDataScripts/game_achievements.gd ---
+COMPLETE, UNFINISHED
+
+--- Enum #7: LAUNCHER_MODE in addons/RPGData/ModulesRPG/rpg_event_page.gd ---
+ACTION_BUTTON, PLAYER_COLLISION, EVENT_COLLISION, AUTOMATIC, PARALLEL, CALLER, ANY_CONTACT, TOOL, SIGNAL
+
+--- Enum #8: SetMode in addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd ---
+FULL_STRICT = 0, ## Delete everything that is not included in the set (including weapons).
+	FULL_HYBRID = 1, ## Delete all clothing that is not brought, but KEEP previous weapons.
+	PARTIAL     = 2, ## Just replace what it comes with, keep everything else (layer)
+	CUSTOME     = 3  ## Solo sustituye lo que trae, mantiene todo lo demás (capa)
+
+--- Enum #9: PLACEMENT in addons/RPGData/ModulesRPG/rpg_map_generator_event.gd ---
+ANYWHERE,
+	FLOOR,
+	WALL
+
+--- Enum #10: EVENT_POSITION in addons/RPGData/ModulesRPG/rpg_map_generator_event.gd ---
+ANYWHERE = 0,
+	AT_THE_TOP = 1,
+	AT_THE_BOTTOM = 2,
+	AT_THE_CENTER = 3,
+	ON_THE_LEFT = 4,
+	ON_THE_RIGHT = 5,
+	TOP_LEFT = 6,
+	TOP_RIGHT = 7,
+	BOTTOM_LEFT = 8,
+	BOTTOM_RIGHT = 9
+
+--- Enum #11: ALIGN in addons/RPGData/Scenes/edit_battler_presets.gd ---
+LEFT, HORIZONTAL_CENTER, RIGHT, TOP, VERTICAL_CENTER, BOTTOM
+
+--- Enum #12: QuestMode in addons/RPGData/ModulesRPG/rpg_quest.gd ---
+TALK_TO_NPC, ## Talk to a specific npc
+	GATHER_ITEM, ## Gather a set number of items throughout the world
+	BOUNTY_HUNTS, ## Track down and eliminate specific targets
+	FIND_LOCATION, ## Enter a specific location.
+	USER_QUEST ## User quests are only completed when indicated by a command in a common event/event.[br]This type of mission can also be completed based on progress set by a command in a common event.
+
+--- Enum #13: ItemType in addons/RPGData/ModulesRPG/rpg_quest.gd ---
+ITEM, ## The type of object searched is of type [b]Item ID[/b].
+	WEAPON, ## The type of object searched is of type [b]Weapon ID[/b].
+	ARMOR, ## The type of object searched is of type [b]Armor ID[/b].
+	SET_COSTUME, ## The type of object searched is of type [b]Set / Costume ID[/b].
+	ENEMY ## The type of object searched is of type [b]Kill Enemy ID[/b].
+
+--- Enum #14: BaseParamType in addons/RPGData/ModulesRPG/rpg_actor.gd ---
+HP = 0,    ## Hit Points
+	HIT_POINTS = 0,    ## Hit Points
+	MP = 1,    ## Magic Points
+	MAGIC_POINTS = 1,    ## Magic Points
+	ATK = 2,    ## Attack
+	ATTACK = 2,    ## Attack
+	DEF = 3,    ## Defense
+	DEFENSE = 3,    ## Defense
+	MAT = 4,    ## Magic Attack
+	MATK = 4,    ## Magic Attack
+	MAGIC_ATTACK = 4,    ## Magic Attack
+	MDF = 5,    ## Magic Defense
+	MDEF = 5,    ## Magic Defense
+	MAGIC_DEFENSE = 5,    ## Magic Defense
+	AGI = 6,    ## Agility
+	AGILITY = 6,    ## Agility
+	LUK = 7,    ## Luck
+	LUCK = 7    ## Luck
+
+--- Enum #15: ExtraParamType in addons/RPGData/ModulesRPG/rpg_actor.gd ---
+HIT = 0,    ## Hit Rate
+	HIT_RATE = 0,    ## Hit Rate
+	EVA = 1,    ## Evasion Rate
+	EVASION = 1,    ## Evasion Rate
+	EVASION_RATE = 1,    ## Evasion Rate
+	CRI = 2,    ## Critical Rate
+	CRITICAL = 2,    ## Critical Rate
+	CRITICAL_RATE = 2,    ## Critical Rate
+	CEV = 3,    ## Critical Evasion
+	CRITICAL_EVASION = 3,    ## Critical Evasion
+	CRITICAL_EVASION_RATE = 3,    ## Critical Evasion
+	MEV = 4,    ## Magic Evasion
+	MAGIC_EVASION = 4,    ## Magic Evasion
+	MAGIC_EVASION_RATE = 4,    ## Magic Evasion
+	MRF = 5,    ## Magic Reflection
+	MAGIC_REFLECTION = 5,    ## Magic Reflection
+	CNT = 6,    ## Counter Attack
+	COUNTER_ATTACK = 6,    ## Counter Attack
+	HRG = 7,    ## HP Regeneration
+	HP_REGENERATION = 7,    ## HP Regeneration
+	MRG = 8,    ## MP Regeneration
+	MP_REGENERATION = 8,    ## MP Regeneration
+	TRG = 9,    ## TP Regeneration
+	TP_REGENERATION = 9    ## TP Regeneration
+
+--- Enum #16: SpecialParamType in addons/RPGData/ModulesRPG/rpg_actor.gd ---
+TGR = 0,    ## Target Rate
+	TARGET_RATE = 0,    ## Target Rate
+	GRD = 1,    ## Guard Effect
+	GUARD_EFFECT = 1,    ## Guard Effect
+	REC = 2,    ## Recovery Effect
+	RECOVERY_EFFECT = 2,    ## Recovery Effect
+	HM = 3,    ## Healing Mastery
+	HEALING_MASTERY = 3,    ## Healing Mastery
+	MCR = 4,    ## MP Cost Rate
+	MP_COST_RATE = 4,    ## MP Cost Rate
+	TCR = 5,    ## TP Charge Rate
+	TP_CHARGE_RATE = 5,    ## TP Charge Rate
+	PDR = 6,    ## Physical Damage Rate
+	PHYSICAL_DAMAGE_RATE = 6,    ## Physical Damage Rate
+	MDR = 7,    ## Magic Damage Rate
+	MAGIC_DAMAGE_RATE = 7,    ## Magic Damage Rate
+	FDR = 8,    ## Floor Damage Rate
+	FLOOR_DAMAGE_RATE = 8,    ## Floor Damage Rate
+	EXR = 9,    ## Experience Rate
+	EXPERIENCE_RATE = 9,    ## Experience Rate
+	GDR = 10,    ## Gold Rate
+	GOLD_RATE = 10    ## Gold Rate
+
+--- Enum #17: NewParamType in addons/RPGData/ModulesRPG/rpg_actor.gd ---
+# STAMINA = 0, ENERGY = 0
+	# FOCUS = 1, CONCENTRATION = 1
+

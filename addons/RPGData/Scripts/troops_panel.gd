@@ -68,7 +68,12 @@ func fill_enemy_list() -> void:
 	
 	for enemy in database.enemies:
 		if not enemy: continue
+		var is_sep = false
+		if "separator" in enemy and enemy.separator != null:
+			is_sep = true
 		node.add_item("%s: %s" % [enemy.id, enemy.name])
+		if is_sep:
+			node.set_item_disabled(node.get_item_count() - 1, true)
 
 
 func _on_event_page_container_tab_changed(tab: int) -> void:
@@ -323,8 +328,12 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 
 
 func _on_add_enemy_pressed() -> void:
+	var node = %EnemyList
+	var selected_idx = node.selected
+	if selected_idx == -1 or node.is_item_disabled(selected_idx):
+		return
 	var current_data = get_data()
-	var enemy_id = %EnemyList.get_selected_id() + 1
+	var enemy_id = node.get_selected_id() + 1
 	var member = RPGTroopMember.new(1, enemy_id, 2, Vector2(0.12, 0.3))
 	current_data.members.append(member)
 	

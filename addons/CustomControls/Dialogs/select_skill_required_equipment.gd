@@ -50,11 +50,17 @@ func fill_items(selected_equipment: int, selected_uid: int) -> void:
 		var item = data_list[i]
 		if not item: continue
 		
+		var is_sep = false
+		if item and "separator" in item and item.separator != null:
+			is_sep = true
+		
 		var id_padded = str(i).pad_zeros(str(data_list.size()).length())
 		var data_name = "%s: %s" % [id_padded, item.name]
 		%ItemList.add_item(data_name)
 		
 		var item_index = %ItemList.get_item_count() - 1
+		if is_sep:
+			%ItemList.set_item_disabled(item_index, true)
 		%ItemList.set_item_metadata(item_index, item._uniq_id)
 		
 		if item._uniq_id == selected_uid:

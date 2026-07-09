@@ -33,8 +33,13 @@ func _fill_usage_restriction() -> void:
 	
 	for c: RPGClass in database.classes:
 		if not c: continue
+		var is_sep = false
+		if "separator" in c and c.separator != null:
+			is_sep = true
 		node.add_item("%s: %s" % [c.id, c.name])
 		node.set_item_metadata(-1, c._uniq_id)
+		if is_sep:
+			node.set_item_disabled(node.get_item_count() - 1, true)
 	
 	node = %RequiresActorGender
 	node.clear()

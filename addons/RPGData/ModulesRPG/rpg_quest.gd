@@ -130,6 +130,8 @@ enum ItemType {
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+@export var separator: RPGSeparator = null
+
 
 func clear():
 	var vars = ["name", "category", "description"]
@@ -153,6 +155,8 @@ func clear():
 	icon_progress.path = "res://Scenes/QuestMarkers/quest_in_progress.tscn"
 	icon_completed.path = "res://Scenes/QuestMarkers/quest_completed.tscn"
 	icon_failed.path = "res://Scenes/QuestMarkers/quest_failed.tscn"
+	
+	separator = null
 
 
 func clear_objetive() -> void:

@@ -37,10 +37,14 @@ func _ready() -> void:
 	main_list_popup_menu.add_item("Add Separator")
 	
 	var node: ItemList = %MainList
-	node.gui_input.connect(_on_main_list_gui_input)
-	node.item_activated.connect(_on_main_list_item_activated)
-	node.item_selected.connect(_on_main_list_item_selected)
-	visibility_changed.connect(_on_visibility_changed)
+	if not node.gui_input.is_connected(_on_main_list_gui_input):
+		node.gui_input.connect(_on_main_list_gui_input)
+	if not node.item_activated.is_connected(_on_main_list_item_activated):
+		node.item_activated.connect(_on_main_list_item_activated)
+	if not node.item_selected.is_connected(_on_main_list_item_selected):
+		node.item_selected.connect(_on_main_list_item_selected)
+	if not node.visibility_changed.is_connected(_on_visibility_changed):
+		visibility_changed.connect(_on_visibility_changed)
 
 
 func set_data(_data: Array) -> void:
@@ -78,7 +82,7 @@ func fill_main_list(selected_index: int) -> void:
 		var is_sep = false
 		if "separator" in data[i] and not data[i].separator == null:
 			is_sep = true
-			data_name = data[i].name
+			data_name = " "
 			
 		var idx = node.add_item(data_name)
 		node.set_item_tooltip_enabled(-1,  false)
@@ -86,7 +90,8 @@ func fill_main_list(selected_index: int) -> void:
 		if is_sep:
 			var bg_color = data[i].separator.background_color
 			var text_color = data[i].separator.text_color
-			node.set_custom_color(i-1, text_color, bg_color)
+			var text = data[i].separator.name if not data[i].separator.name.is_empty() else "------"
+			node.set_custom_color(i-1, text_color, bg_color, text)
 			%RightColumn.propagate_call("set_disabled", [true])
 
 	if selected_index >= 0 and node.get_item_count() > selected_index:
@@ -303,6 +308,10 @@ func initialize_data(item) -> void:
 func _on_main_list_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_RIGHT:
+			var node: ItemList = %MainList
+			var index = node.get_item_at_position(event.position)
+			if index != -1:
+				node.select(index)
 			show_main_list_popup_menu()
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			var node: ItemList = %MainList
@@ -360,13 +369,15 @@ func _show_separator_config_dialog(selected_idx: int) -> void:
 	var path = "res://addons/CustomControls/Dialogs/separator_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
+	var is_new_item: bool = selected_idx == -1
+	
 	if selected_idx != -1:
 		if "separator" in data[selected_idx] and data[selected_idx].separator == null:
 			data[selected_idx].separator = RPGSeparator.new()
 	
 	var separator = RPGSeparator.new() if selected_idx == -1 or not "separator" in data[selected_idx] else data[selected_idx].separator
 	
-	dialog.set_data(separator, false, true)
+	dialog.set_data(separator)
 	
 	dialog.data_changed.connect(
 		func(text: String, text_color: Color, background_color: Color):
@@ -388,7 +399,10 @@ func _show_separator_config_dialog(selected_idx: int) -> void:
 			else:
 				data[selected_idx].name = separator.name
 				
-			fill_main_list(selected_idx)
+			if is_new_item:
+				fill_main_list(selected_idx)
+			else:
+				fill_main_list(selected_idx - 1)
 	)
 	
 

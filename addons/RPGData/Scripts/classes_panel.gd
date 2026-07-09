@@ -121,6 +121,10 @@ func fill_class_list(target_uid: int = 0) -> void:
 		var cl = database.classes[i]
 		if not cl: continue
 		
+		var is_sep = false
+		if cl and "separator" in cl and cl.separator != null:
+			is_sep = true
+		
 		var n = cl.name
 		if n.is_empty():
 			n = "Class %s" % i
@@ -128,6 +132,9 @@ func fill_class_list(target_uid: int = 0) -> void:
 		node.add_item(n)
 		var item_index = node.get_item_count() - 1
 		node.set_item_metadata(item_index, cl._uniq_id)
+		
+		if is_sep:
+			node.set_item_disabled(item_index, true)
 		
 		if cl._uniq_id == target_uid:
 			selected_idx = item_index

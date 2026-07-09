@@ -157,11 +157,15 @@ func fill_evolve_skills() -> void:
 		var skill = database.skills[i]
 		if not skill: continue
 		
+		var is_sep = false
+		if skill and "separator" in skill and skill.separator != null:
+			is_sep = true
+		
 		node.add_item("%s: %s" % [str(i).pad_zeros(str(database.skills.size()).length()), skill.name])
 		var item_index = node.get_item_count() - 1
 		node.set_item_metadata(item_index, skill._uniq_id)
 		
-		if skill._uniq_id == current_uid:
+		if skill._uniq_id == current_uid or is_sep:
 			node.set_item_disabled(item_index, true)
 
 

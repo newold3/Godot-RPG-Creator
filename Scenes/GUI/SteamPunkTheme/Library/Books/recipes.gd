@@ -66,6 +66,8 @@ func _get_all_recipes() -> Array:
 		
 	# 1. Items
 	for item in db.items:
+		if item and ("separator" in item and item.separator != null):
+			continue
 		if item and not item.recipes.is_empty():
 			for i in range(item.recipes.size()):
 				var recipe = item.recipes[i]
@@ -84,6 +86,8 @@ func _get_all_recipes() -> Array:
 				
 	# 2. Weapons
 	for weapon in db.weapons:
+		if weapon and ("separator" in weapon and weapon.separator != null):
+			continue
 		if weapon:
 			if GameManager.is_recipe_learned(1, weapon._uniq_id):
 				list.append({
@@ -100,6 +104,8 @@ func _get_all_recipes() -> Array:
 			
 	# 3. Armors
 	for armor in db.armors:
+		if armor and ("separator" in armor and armor.separator != null):
+			continue
 		if armor:
 			if GameManager.is_recipe_learned(2, armor._uniq_id):
 				list.append({
@@ -116,6 +122,8 @@ func _get_all_recipes() -> Array:
 			
 	# 4. Sets/Costumes
 	for costume in db.costumes:
+		if costume and ("separator" in costume and costume.separator != null):
+			continue
 		if costume:
 			if GameManager.is_recipe_learned(2, costume._uniq_id):
 				list.append({

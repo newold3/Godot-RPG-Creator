@@ -39,8 +39,7 @@ func get_class(): return "RPGState"
 @export var traits: Array[RPGTrait] = []
 @export var notes: String = ""
 
-@export var is_separator: bool = false
-@export var separator_color: Color = Color.WHITE
+@export var separator: RPGSeparator = null
 
 
 func get_icon() -> Texture:
@@ -64,6 +63,7 @@ func clear() -> void:
 	min_turns = 1
 	max_turns = 1
 	icon.clear()
+	separator = null
 
 
 func clone(value: bool = true) -> RPGState:

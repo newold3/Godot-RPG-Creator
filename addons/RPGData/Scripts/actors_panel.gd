@@ -236,9 +236,14 @@ func fill_classes() -> void:
 	
 	for i in range(1, database.classes.size(), 1):
 		var c = database.classes[i]
+		var is_sep = false
+		if c and "separator" in c and c.separator != null:
+			is_sep = true
 		var id = str(i).pad_zeros(str(database.classes.size()-1).length())
 		var data_name = id + ": " + c.name
 		node.add_item(data_name)
+		if is_sep:
+			node.set_item_disabled(node.get_item_count() - 1, true)
 
 
 func set_class(selected_index: int) -> void:
