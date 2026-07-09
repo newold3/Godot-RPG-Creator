@@ -7,7 +7,7 @@
 > Until we reach the beta phase, it won’t be safe to start any project. But you can try these alpha versions to give me feedback on whether you like the added systems, report any bugs that appear, or any strange behavior.
 > If you want to make an RPG right now, you wouldn’t be able to with the current state of the tool. However, you can create a walking simulator with dialogues and cutscenes, avoiding most commands (you can still use switches, variables, conditionals, loops, jump to labels, play sounds, and even give and use items controlled by variables, but without the supporting visual interface for item usage).
 
-Video on youtube: https://youtu.be/1eVzQd9EiM4
+Video on youtube: [Preview](https://www.youtube.com/watch?v=UdT0F5VJUGI)
 
 <img width="2515" height="1291" alt="image3" src="https://github.com/user-attachments/assets/c181dada-5216-44d5-a0d6-481c2d4e51a6" />
 
