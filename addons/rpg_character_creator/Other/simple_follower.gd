@@ -50,6 +50,23 @@ var _last_player_head_pos: Vector2 = Vector2.ZERO
 
 var is_fading_transition: bool = false
 
+var is_custom_follower: bool = false
+var custom_character_type: int = 0
+var custom_character_path: String = ""
+var custom_character_region: Rect2 = Rect2()
+var instanced_scene: Node = null
+
+var custom_animation_data = {
+	"idle_left": [Vector2(0, 0)],
+	"idle_down": [Vector2(0, 192)],
+	"idle_right": [Vector2(0, 384)],
+	"idle_up": [Vector2(0, 576)],
+	"walk_left": [Vector2(192, 0), Vector2(384, 0), Vector2(576, 0), Vector2(768, 0), Vector2(960, 0), Vector2(1152, 0), Vector2(1344, 0), Vector2(1536, 0)],
+	"walk_down": [Vector2(192, 192), Vector2(384, 192), Vector2(576, 192), Vector2(768, 192), Vector2(960, 192), Vector2(1152, 192), Vector2(1344, 192), Vector2(1536, 192)],
+	"walk_right": [Vector2(192, 384), Vector2(384, 384), Vector2(576, 384), Vector2(768, 384), Vector2(960, 384), Vector2(1152, 384), Vector2(1344, 384), Vector2(1536, 384)],
+	"walk_up": [Vector2(192, 576), Vector2(384, 576), Vector2(576, 576), Vector2(768, 576), Vector2(960, 576), Vector2(1152, 576), Vector2(1344, 576), Vector2(1536, 576)]
+}
+
 @onready var animations = {
 	"player": RPGSYSTEM.player_animations_data.animations,
 	"weapon": RPGSYSTEM.weapon_animations_data.animations
@@ -79,6 +96,14 @@ func _ready() -> void:
 
 ## Main processing loop handling physics syncing, jumping, and history catching
 func _process(delta: float) -> void:
+	if is_custom_follower and custom_character_type == 2 and instanced_scene and instanced_scene.has_method("process_event_state"):
+		var state = {
+			"is_moving": current_animation == "walk" and is_sync_active,
+			"direction": current_direction,
+			"delta": delta
+		}
+		instanced_scene.call("process_event_state", state)
+
 	if is_manual_animation:
 		return
 	
@@ -395,6 +420,20 @@ func run_animation() -> void:
 	
 	if fixed_direction != -1:
 		current_direction = fixed_direction
+		
+	if is_custom_follower:
+		if custom_character_type == 2:
+			return
+		elif custom_character_type == 0:
+			var dir_key = CharacterBase.DIRECTIONS.find_key(current_direction)
+			if dir_key:
+				var anim_id = (current_animation + "_" + str(dir_key)).to_lower()
+				if custom_animation_data.has(anim_id):
+					var current_anim_array = custom_animation_data[anim_id]
+					if current_frame >= current_anim_array.size():
+						current_frame = 0
+					body.region_rect.position = current_anim_array[current_frame]
+		return
 	
 	_update_weapon_textures()
 	
@@ -480,6 +519,17 @@ func get_current_weapon_animation() -> Dictionary:
 
 ## Request bake and reconstructs the character appearance mapping from the database securely
 func update_appearance_cascade(actor_id: Variant, instant: bool = false) -> void:
+	is_custom_follower = false
+	if instanced_scene:
+		instanced_scene.queue_free()
+		instanced_scene = null
+	wings.visible = true
+	offhand_back.visible = true
+	mainhand_back.visible = true
+	body.visible = true
+	offhand_front.visible = true
+	mainhand_front.visible = true
+
 	var actor = RPGSYSTEM.get_data("actors", actor_id)
 	if not actor: return
 	
@@ -722,4 +772,68 @@ func destroy(move_time: float = 0.5) -> void:
 	
 	await tween.finished
 	queue_free()
+
+
+func setup_custom_graphics(char_type: int, char_path: String, region: Rect2 = Rect2()) -> void:
+	is_custom_follower = true
+	custom_character_type = char_type
+	custom_character_path = char_path
+	custom_character_region = region
+	
+	# Hide default parts
+	wings.visible = false
+	offhand_back.visible = false
+	mainhand_back.visible = false
+	offhand_front.visible = false
+	mainhand_front.visible = false
+	
+	if instanced_scene:
+		instanced_scene.queue_free()
+		instanced_scene = null
+		
+	if char_type == 2: # Scene
+		body.visible = false
+		if ResourceLoader.exists(char_path):
+			var scn = load(char_path)
+			if scn:
+				instanced_scene = scn.instantiate()
+				add_child(instanced_scene)
+	else: # LPC (0) or Image (1)
+		body.visible = true
+		if char_type == 0: # LPC
+			var texture_path = ""
+			if char_path.ends_with(".tres"):
+				if ResourceLoader.exists(char_path):
+					var res = load(char_path)
+					if res and "scene_path" in res:
+						var scene_path: String = res.scene_path
+						var regex = RegEx.new()
+						regex.compile("_event\\.tscn$")
+						var base_name = regex.sub(scene_path.get_file(), "", true)
+						texture_path = scene_path.get_base_dir() + "/" + base_name + "_character_minimalist.png"
+			else:
+				texture_path = char_path
+				
+			if not ResourceLoader.exists(texture_path) and ResourceLoader.exists(char_path) and char_path.ends_with(".png"):
+				texture_path = char_path
+				
+			if ResourceLoader.exists(texture_path):
+				body.texture = load(texture_path)
+				body.region_enabled = true
+				body.region_rect = Rect2(0, 192, 192, 192)
+		else: # Image
+			if ResourceLoader.exists(char_path):
+				var tex = load(char_path)
+				body.texture = tex
+				if region.has_area():
+					body.region_enabled = true
+					body.region_rect = region
+				else:
+					body.region_enabled = false
+					
+				body.centered = true
+				body.offset.y = -tex.get_height() / 2.0
+				if GameManager.current_map:
+					var tile_size = GameManager.get_map_tile_size()
+					body.offset.y += tile_size.y - 4
 #endregion

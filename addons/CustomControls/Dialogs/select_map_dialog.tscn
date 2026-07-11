@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dqlsyvihj5mcm"]
+[gd_scene format=3 uid="uid://dqlsyvihj5mcm"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_btquo"]
 [ext_resource type="Script" uid="uid://bcjdcpo03f1im" path="res://addons/CustomControls/Dialogs/select_map_dialog.gd" id="2_btquo"]
@@ -13,7 +13,7 @@ gradient = SubResource("Gradient_vvvrv")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6qwe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btquo"]
 resource_local_to_scene = true
 content_margin_left = 3.0
 content_margin_right = 3.0
@@ -25,7 +25,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.113725, 0.133333, 0.160784, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mopbk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7dfa5"]
 resource_local_to_scene = true
 draw_center = false
 border_width_left = 1
@@ -42,15 +42,44 @@ gradient = SubResource("Gradient_earww")
 fill_from = Vector2(0.547009, 1)
 fill_to = Vector2(0.559829, 0)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exses"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1jog6"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vf6bb"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4bpvm"]
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_oswm7")
 
-[node name="SelectMapDialog" type="Window"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q4svn"]
+resource_local_to_scene = true
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(1, 1, 1, 1)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0hj7o"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c4k5r"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ddlca"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_oswm7")
+
+[node name="SelectMapDialog" type="Window" unique_id=346479861]
+oversampling_override = 1.0
 title = "Select Map"
 position = Vector2i(0, 36)
 size = Vector2i(640, 320)
@@ -60,7 +89,7 @@ exclusive = true
 theme = ExtResource("1_btquo")
 script = ExtResource("2_btquo")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=917983561]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,7 +97,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_fg0k8")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1516158945]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -79,31 +108,64 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2064666614]
 layout_mode = 2
 
-[node name="MapList" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_1jog6")]
+[node name="MapList" parent="MarginContainer/VBoxContainer" unique_id=683524535 instance=ExtResource("3_1jog6")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 tooltip_text = "[title]Map List[/title]
 Contains the list of maps created."
 theme_override_constants/v_separation = -1
-theme_override_styles/focus = SubResource("StyleBoxFlat_y6qwe")
-theme_override_styles/panel = SubResource("StyleBoxFlat_y6qwe")
-theme_override_styles/hovered = SubResource("StyleBoxFlat_mopbk")
-theme_override_styles/selected = SubResource("StyleBoxTexture_exses")
-theme_override_styles/selected_focus = SubResource("StyleBoxTexture_vf6bb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_btquo")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btquo")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_7dfa5")
+theme_override_styles/selected = SubResource("StyleBoxTexture_1jog6")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_4bpvm")
+item_count = 5
+item_0/text = "Map: EventCommandTesting"
+item_1/text = "Map: DefaultMap"
+item_2/text = "Map: TestMap"
+item_3/text = "Map: RPGMap0004"
+item_4/text = "Map: auto_gen_map_1"
 odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
 event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=166969305]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="AreaContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1719891845]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/AreaContainer" unique_id=202716554]
+layout_mode = 2
+text = "Select Area from selected map"
+
+[node name="AreaList" parent="MarginContainer/VBoxContainer/AreaContainer" unique_id=194885044 instance=ExtResource("3_1jog6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "[title]Map List[/title]
+Contains the list of maps created."
+theme_override_constants/v_separation = -1
+theme_override_styles/panel = SubResource("StyleBoxFlat_q4svn")
+theme_override_styles/focus = SubResource("StyleBoxFlat_q4svn")
+theme_override_styles/hovered = SubResource("StyleBoxFlat_0hj7o")
+theme_override_styles/selected = SubResource("StyleBoxTexture_c4k5r")
+theme_override_styles/selected_focus = SubResource("StyleBoxTexture_ddlca")
+odd_line_color = Color(0.172549, 0.184314, 0.192157, 1)
+event_line_color = Color(0.145098, 0.156863, 0.164706, 1)
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=811223992]
 layout_mode = 2
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_4bpvm")]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1705542472]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1265784610 instance=ExtResource("4_4bpvm")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -112,7 +174,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_4bpvm")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=45080935 instance=ExtResource("4_4bpvm")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -122,5 +184,6 @@ Closes this window without saving any changes."
 text = "Cancel"
 
 [connection signal="item_activated" from="MarginContainer/VBoxContainer/MapList" to="." method="_on_map_list_item_activated"]
+[connection signal="item_activated" from="MarginContainer/VBoxContainer/AreaContainer/AreaList" to="." method="_on_area_list_item_activated"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

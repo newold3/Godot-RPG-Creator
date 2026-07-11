@@ -71,6 +71,9 @@ var preview_counter: int = 0
 ## Regex used to parse the return value of get_class() from script source code.
 static var _class_regex: RegEx = RegEx.new()
 
+## Regex used to parse the extends parent class/script.
+static var _extends_regex: RegEx = RegEx.new()
+
 ## Thread used for asynchronous file processing to prevent editor freezes.
 var cache_thread: Thread
 
@@ -90,6 +93,7 @@ var thread_exit: bool = false
 func _enter_tree() -> void:
 	# Compile regex once on startup to save performance
 	_class_regex.compile("func\\s+get_class[\\s\\S]*?return\\s*[\"']([^\"']+)[\"']")
+	_extends_regex.compile("\\bextends\\s+([A-Za-z0-9_\\.]+|\\\"[^\\\"]+\\\"|'[^']+')")
 	main_scene = self
 	
 	cache_mutex = Mutex.new()
@@ -171,10 +175,13 @@ func _process(delta: float) -> void:
 			cache_semaphore.post()
 			
 			cache_mutex.lock()
+			var is_empty = pending_files_to_process.is_empty()
 			cache_setted = true
 			cache_mutex.unlock()
 			
 			set_process(false)
+			if is_empty:
+				StaticSignal.emit("_cache_ready")
 
 
 ## Removes invalid or deleted file entries from the cache.
@@ -261,8 +268,7 @@ func _thread_process_loop() -> void:
 
 ## Called asynchronously when a batch of files finishes processing in the thread.
 func _on_batch_finished() -> void:
-	save()
-	StaticSignal.emit("_cache_ready")
+	await save()
 
 
 ## Thread-safe method to add a file to a specific cache category.
@@ -360,6 +366,7 @@ static func rebuild(full_scan: bool = false) -> void:
 		if full_scan:
 			main_scene.cache_mutex.lock()
 			cache.clear()
+			main_scene._known_files.clear()
 			main_scene.cache_mutex.unlock()
 		main_scene.set_process(true)
 		main_scene.build_cache()
@@ -377,7 +384,8 @@ func build_cache() -> void:
 		"vehicles": {}, "weather": {}, "expressive_bubbles": {}, "numerical_input_scenes": {},
 		"text_input_scenes": {}, "transition_scenes": {}, "videos": {}, "map_parallax_scenes": {},
 		"battle_background_scenes": {}, "tilesets": {}, "timer_scenes": {},
-		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}, "label_settings": {}
+		"shop_scene": {}, "extraction_scenes": {}, "weapon_attack_scripts": {}, "label_settings": {},
+		"instant_text_scenes": {}
 	}
 	cache_mutex.unlock()
 	
@@ -679,6 +687,7 @@ func _parse_tscn_root_data(file_path: String) -> Dictionary:
 		return result
 		
 	var ext_resources = {}
+	var in_root_node = false
 	
 	while not f.eof_reached():
 		var line = f.get_line().strip_edges()
@@ -699,6 +708,10 @@ func _parse_tscn_root_data(file_path: String) -> Dictionary:
 				ext_resources[id] = path
 				
 		elif line.begins_with("[node "):
+			if in_root_node:
+				break
+				
+			in_root_node = true
 			var type_start = line.find(" type=\"")
 			
 			if type_start != -1:
@@ -706,16 +719,6 @@ func _parse_tscn_root_data(file_path: String) -> Dictionary:
 				var type_end = line.find("\"", type_start)
 				result["type"] = line.substr(type_start, type_end - type_start)
 				
-			var script_start = line.find(" script=ExtResource(\"")
-			
-			if script_start != -1:
-				script_start += 21
-				var script_end = line.find("\")", script_start)
-				var script_id = line.substr(script_start, script_end - script_start)
-				
-				if ext_resources.has(script_id):
-					result["script_path"] = ext_resources[script_id]
-					
 			var instance_start = line.find(" instance=ExtResource(\"")
 			
 			if instance_start != -1:
@@ -726,8 +729,20 @@ func _parse_tscn_root_data(file_path: String) -> Dictionary:
 				if ext_resources.has(instance_id):
 					result["instance_path"] = ext_resources[instance_id]
 					
-			break
-			
+		elif in_root_node:
+			if line.begins_with("script = ExtResource(\""):
+				var script_start = 22
+				var script_end = line.find("\")", script_start)
+				var script_id = line.substr(script_start, script_end - script_start)
+				if ext_resources.has(script_id):
+					result["script_path"] = ext_resources[script_id]
+			elif line.begins_with("script=ExtResource(\""):
+				var script_start = 20
+				var script_end = line.find("\")", script_start)
+				var script_id = line.substr(script_start, script_end - script_start)
+				if ext_resources.has(script_id):
+					result["script_path"] = ext_resources[script_id]
+					
 	f.close()
 	
 	return result
@@ -748,14 +763,30 @@ func _check_and_cache_script(file_path: String, script_res: Resource) -> bool:
 			current_script = current_script.get_base_script()
 			
 	if class_identifier == "":
-		var base_script = script_res.get_base_script()
-		while base_script:
-			var base_name = base_script.get_global_name()
-			if base_name != "":
-				if _is_valid_cache_class(base_name):
-					class_identifier = base_name
-					break
-			base_script = base_script.get_base_script()
+		var current_script = script_res
+		while current_script:
+			# Check global name first
+			var global_name = current_script.get_global_name()
+			if global_name != "" and _is_valid_cache_class(global_name):
+				class_identifier = global_name
+				break
+				
+			# Check regex extends in source code
+			var source = current_script.source_code
+			var extends_match = _extends_regex.search(source)
+			if extends_match:
+				var parent = extends_match.get_string(1).strip_edges().replace("\"", "").replace("'", "")
+				if parent.begins_with("res://") or parent.ends_with(".gd"):
+					if ResourceLoader.exists(parent):
+						current_script = load(parent)
+						continue
+				else:
+					if _is_valid_cache_class(parent):
+						class_identifier = parent
+						break
+						
+			# Check base script fallback
+			current_script = current_script.get_base_script()
 			
 	if class_identifier != "":
 		return _match_identifier_to_cache(file_path, class_identifier)
@@ -783,6 +814,7 @@ func _match_identifier_to_cache(file_path: String, class_identifier: String) -> 
 		"LPCEnemy": _add_to_cache("enemies", file_path)
 		"DialogBase": _add_to_cache("message_dialogs", file_path)
 		"ScrollText": _add_to_cache("scroll_scenes", file_path)
+		"InstantText": _add_to_cache("instant_text_scenes", file_path)
 		"RPGVehicle": _add_to_cache("vehicles", file_path)
 		"GameTransition": _add_to_cache("transition_scenes", file_path)
 		"TimerScene": _add_to_cache("timer_scenes", file_path)

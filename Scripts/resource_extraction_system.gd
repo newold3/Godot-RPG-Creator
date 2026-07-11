@@ -203,6 +203,10 @@ func _extraction_success():
 	# Generate rewards
 	var rewards = _generate_rewards()
 	
+	# Notify QuestManager of extracted items
+	for reward in rewards:
+		QuestManager.notify_item_extracted(reward.item_id, reward.quantity)
+	
 	# Update node state
 	_update_node_state()
 	

@@ -472,11 +472,17 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 	followers = followers.filter(func(f): return is_instance_valid(f))
 	
 	var max_active = RPGSYSTEM.database.system.party_active_members
-	var needed = 0
-	
-	if game_state.current_party.size() > 1:
-		needed = min(game_state.current_party.size() - 1, max_active - 1)
+	var party_needed = 0
+	if game_state.followers_enabled and game_state.current_party.size() > 1:
+		party_needed = min(game_state.current_party.size() - 1, max_active - 1)
 		
+	var escort_needed = 0
+	var escorted_list = []
+	if "escorted_npcs" in game_state:
+		escorted_list = game_state.escorted_npcs
+		escort_needed = escorted_list.size()
+		
+	var needed = party_needed + escort_needed
 	var insert_idx = current_player.get_index()
 	var is_loading = not save_data_list.is_empty()
 	
@@ -495,21 +501,8 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 			if not f.is_in_group("follower"):
 				f.add_to_group("follower")
 				
-			var f_actor_id = game_state.current_party[f_idx + 1]
-			if f_actor_id > 0 and f_actor_id < 1000000:
-				f_actor_id = RPGSYSTEM.id_to_uid("actors", f_actor_id)
-				game_state.current_party[f_idx + 1] = f_actor_id
-				
-			f.set_meta("actor_id", f_actor_id)
-			f.set_meta("party_id", f_idx + 1)
-			f.follower_id = f_idx + 1
 			f.z_index = current_player.z_index
 			f.visible = true
-			f.is_sync_active = false
-			
-			@warning_ignore("incompatible_ternary")
-			var target = current_player if f_idx == 0 else followers[f_idx - 1]
-			f.target_node = target
 			
 			if not f.is_inside_tree():
 				current_map.add_child(f)
@@ -538,13 +531,44 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 				
 			f.current_animation = "idle"
 			f.is_fading_transition = not (instant or is_loading)
-			
-			if f.has_method("run_animation"):
-				f.run_animation()
-				
 			followers.append(f)
 			f.set_meta("requires_init", true)
 			
+	# Configure all followers (both party and escort)
+	for f_idx in range(followers.size()):
+		var f = followers[f_idx]
+		if not is_instance_valid(f): continue
+		
+		@warning_ignore("incompatible_ternary")
+		var target = current_player if f_idx == 0 else followers[f_idx - 1]
+		f.target_node = target
+		f.follower_id = f_idx + 1
+		f.set_meta("party_id", f_idx + 1)
+		f.is_sync_active = game_state.followers_tracking_enabled
+		
+		var is_escort = (f_idx >= party_needed)
+		if is_escort:
+			var escort_idx = f_idx - party_needed
+			var npc = escorted_list[escort_idx]
+			f.set_meta("actor_id", 0)
+			f.set_meta("is_escort", true)
+			
+			var r = npc.character_region
+			var rect = Rect2(r[0], r[1], r[2], r[3])
+			f.setup_custom_graphics(npc.character_type, npc.character_path, rect)
+			f.set_meta("requires_init", false)
+		else:
+			f.set_meta("is_escort", false)
+			var f_actor_id = game_state.current_party[f_idx + 1]
+			if f_actor_id > 0 and f_actor_id < 1000000:
+				f_actor_id = RPGSYSTEM.id_to_uid("actors", f_actor_id)
+				game_state.current_party[f_idx + 1] = f_actor_id
+			f.set_meta("actor_id", f_actor_id)
+			# Standard party graphics will be initialized by update_party_visuals() cascade.
+			
+		if f.has_method("run_animation"):
+			f.run_animation()
+
 	while followers.size() > needed:
 		var f = followers.pop_back()
 		if is_instance_valid(f):

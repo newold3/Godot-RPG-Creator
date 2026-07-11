@@ -120,6 +120,22 @@ func get_event_page_name(map_id: int, event_id: int, page_id: int) -> String:
 	return page_name
 
 
+func get_event_regions(map_id: int) -> Array:
+	return map_infos.get_map_event_regions(map_id)
+
+
+func get_event_region_name(map_id: int, region_id: int) -> String:
+	return map_infos.get_event_region_name(map_id, region_id)
+
+
+func get_enemy_spawn_regions(map_id: int) -> Array:
+	return map_infos.get_map_enemy_spawn_regions(map_id)
+
+
+func get_enemy_spawn_region_name(map_id: int, region_id: int) -> String:
+	return map_infos.get_enemy_spawn_region_name(map_id, region_id)
+
+
 func get_map_name_from_path(map_path: String) -> String:
 	return map_infos.get_map_name_from_path(map_path)
 

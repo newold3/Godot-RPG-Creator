@@ -228,6 +228,9 @@ texture = SubResource("GradientTexture2D_v6eua")
 resource_local_to_scene = true
 texture = SubResource("GradientTexture2D_v6eua")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_l11yk"]
+blend_mode = 1
+
 [sub_resource type="GDScript" id="GDScript_4daem"]
 script/source = "@tool
 extends EffekseerEmitter2D
@@ -613,7 +616,6 @@ min_value = 0.1
 max_value = 500.0
 step = 0.1
 rounded = false
-_custom_value = 0.0
 
 [node name="SpeedSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1819289703 instance=ExtResource("9_g3jsv")]
 unique_name_in_owner = true
@@ -625,7 +627,6 @@ min_value = 0.1
 max_value = 5.0
 step = 0.01
 rounded = false
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer" unique_id=65252875]
 layout_mode = 2
@@ -653,7 +654,6 @@ tooltip_text = "[title]Offset X[/title]
 Moves the animation horizontally from its relative position indicated by \"Vertical Align\"."
 allow_greater = true
 allow_lesser = true
-_custom_value = 0.0
 
 [node name="OffsetYSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1064860627 instance=ExtResource("9_g3jsv")]
 unique_name_in_owner = true
@@ -663,7 +663,6 @@ tooltip_text = "[title]Offset Y[/title]
 Moves the animation vertically from its relative position indicated by \"Vertical Align\"."
 allow_greater = true
 allow_lesser = true
-_custom_value = 0.0
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer" unique_id=853098905]
 layout_mode = 2
@@ -690,7 +689,6 @@ min_value = -360.0
 max_value = 360.0
 allow_greater = true
 prefix = "X: "
-_custom_value = 0.0
 
 [node name="RotationYSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=841166132 instance=ExtResource("9_g3jsv")]
 unique_name_in_owner = true
@@ -704,7 +702,6 @@ min_value = -360.0
 max_value = 360.0
 allow_greater = true
 prefix = "Y: "
-_custom_value = 0.0
 
 [node name="RotationZSpinBox" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab1/GeneralConfig/MarginContainer/VBoxContainer/HBoxContainer6" unique_id=1929450594 instance=ExtResource("9_g3jsv")]
 unique_name_in_owner = true
@@ -718,7 +715,6 @@ min_value = -360.0
 max_value = 360.0
 allow_greater = true
 prefix = "Z: "
-_custom_value = 0.0
 
 [node name="Tab2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer" unique_id=890586926]
 unique_name_in_owner = true
@@ -805,7 +801,7 @@ size_flags_vertical = 3
 
 [node name="SoundList" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab2/Sounds/MarginContainer/VBoxContainer/ScrollContainer" unique_id=342346369 instance=ExtResource("10_wtme7")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(449, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -934,7 +930,7 @@ size_flags_vertical = 3
 
 [node name="FlashList" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab3/Flashes/MarginContainer/VBoxContainer2/ScrollContainer" unique_id=558803979 instance=ExtResource("10_wtme7")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(440, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1063,7 +1059,7 @@ size_flags_vertical = 3
 
 [node name="ShakeList" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/AnimationTabContainer/Tab4/Shakes/MarginContainer/VBoxContainer3/ScrollContainer" unique_id=1372487485 instance=ExtResource("10_wtme7")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(508, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1151,8 +1147,8 @@ script = ExtResource("10_g230f")
 enable_manipulation = true
 
 [node name="AnimationsBackground" type="ColorRect" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/VBoxContainer2/ColorRect/MarginContainer/FitContainer" unique_id=825918096]
-clip_contents = true
 custom_minimum_size = Vector2(1152, 640)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1236,6 +1232,7 @@ mouse_filter = 2
 autoplay = false
 unique_name_in_owner = true
 process_mode = 3
+material = SubResource("CanvasItemMaterial_l11yk")
 script = SubResource("GDScript_4daem")
 
 [node name="SceneAnimations" type="Control" parent="RightColumn/MarginContainer/VBoxContainer/CustomPanel/MarginContainer/VBoxContainer/PanelContainer2/MarginContainer/HBoxContainer/VBoxContainer2/ColorRect/MarginContainer/FitContainer/AnimationsBackground/Control" unique_id=2072372653]

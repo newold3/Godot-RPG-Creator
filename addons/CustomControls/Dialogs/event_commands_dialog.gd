@@ -50,6 +50,8 @@ const FAVORITE_BUTTON = preload("uid://dsmo7ri8d6djp")
 static var _last_filter_used: String
 
 var _collapse_buttons_map: Dictionary = {}
+var _code_script_instance: Node = null
+var _param_struct_cache: Dictionary = {}
 
 signal request_command_created(command_code: int, from_dialog: Window)
 signal request_update_favorite_buttons()
@@ -96,6 +98,9 @@ func _ready() -> void:
 					var favorite_button =  b.get_meta("favorite_button")
 					favorite_button.set_pressed_no_signal(button_id in favorite_commands)
 			else:
+				current_button_hovered = null
+				if has_node("%HoveredCode"):
+					%HoveredCode.text = "-"
 				if favorite_buttons_need_refresh:
 					favorite_buttons_need_refresh = false
 					request_update_favorite_buttons.emit()
@@ -383,12 +388,58 @@ func _show_favorite_button(node: Control) -> void:
 			b.position.x = node.size.x - b.size.x - 2
 			b.position.y = -b.size.y / 2
 			b.show()
+	
+	if has_node("%HoveredCode"):
+		var button_id = int(node.name)
+		if button_id > 0:
+			%HoveredCode.text = _get_codes_for_button(button_id)
 
 
 func _hide_favorite_button(node: Control) -> void:
 	if not node.get_global_rect().has_point(node.get_global_mouse_position()):
 		if node.get_child_count() > 0:
 			node.get_child(0).hide()
+		if current_button_hovered == node:
+			current_button_hovered = null
+			if has_node("%HoveredCode"):
+				%HoveredCode.text = "-"
+
+
+func _get_codes_for_button(button_id: int) -> String:
+	if not _code_script_instance:
+		_code_script_instance = load("res://addons/CustomControls/code_script.gd").new()
+	
+	var command_codes = _code_script_instance.command_codes
+	var primary_code = button_id
+	if button_id in command_codes:
+		primary_code = command_codes[button_id].get("command_code", button_id)
+	
+	# Fetch param_struct dynamically from CustomEditItemList
+	if _param_struct_cache.is_empty():
+		var list_instance = load("res://addons/CustomControls/custom_edit_item_list.gd").new()
+		if list_instance:
+			_param_struct_cache = list_instance.get_param_struct()
+			list_instance.free()
+	
+	var codes = [primary_code]
+	if primary_code in _param_struct_cache:
+		var data = _param_struct_cache[primary_code]
+		var start = data.get("start_code", primary_code)
+		var end = data.get("end_code", -1)
+		var childs = data.get("childs", [])
+		
+		if end != -1:
+			for code in range(start, end + 1):
+				if not code in codes:
+					codes.append(code)
+		for child in childs:
+			if not child in codes:
+				codes.append(child)
+				
+	var str_list = []
+	for c in codes:
+		str_list.append(str(c))
+	return ", ".join(str_list)
 
 
 func enable_start_battle_button(value: bool) -> void:

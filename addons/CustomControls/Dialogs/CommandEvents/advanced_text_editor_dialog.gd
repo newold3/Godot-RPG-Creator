@@ -18,6 +18,7 @@ var preview_main_config: Dictionary = {}
 var preview_need_refresh: bool = false
 
 var old_text: String
+var old_scene: String
 
 var fast_text_enabled: bool = false
 
@@ -99,6 +100,10 @@ func _ready() -> void:
 	%HighlightCommands.set_pressed_no_signal(highlighter_commands_disabled)
 	
 	%Timer.start()
+	
+	var menu = %TextEdit.get_menu()
+	if menu:
+		menu.about_to_popup.connect(_on_text_edit_menu_popup)
 
 
 func _on_focus_entered() -> void:
@@ -154,11 +159,15 @@ func set_scroll_mode_dialog() -> void:
 
 
 func set_instant_text_mode_dialog() -> void:
-	var buttons = [%ImageEffect, %RemoveImage, %ShowNameBox, %RemoveNameBox, %Sound, %ShakeMessage, %PauseText, %ShowWholeLine, %DontWaitPlayerInput, %NewParagraph, %PreviewText, %EnterSpeaker, %ExitSpeaker, %ChangeBlipFx]
+	var buttons = [%ImageEffect, %RemoveImage, %ShowNameBox, %RemoveNameBox, %Sound, %ShakeMessage, %PauseText, %ShowWholeLine, %DontWaitPlayerInput, %NewParagraph, %PreviewText, %EnterSpeaker, %ExitSpeaker, %ChangeBlipFx, %PreviewScrollText]
 	for b in buttons:
 		b.visible = false
 	title = TranslationManager.tr("Instant Text Editor")
-	%BottomButtonContainer.visible = false
+	%PreviewScrollText.visible = true
+	%BottomButtonContainer.visible = true
+	%InitialConfigContainer.visible = false
+	%ScrollConfigContainer.visible = false
+	%InstantConfigContainer.visible = true
 	dialog_mode = 2
 
 
@@ -213,7 +222,7 @@ func set_main_config(config: Dictionary) -> void:
 func set_config(config: Dictionary):
 	busy = true
 	message_initial_config = config.duplicate()
-	
+
 	if dialog_mode == 0:
 		if !message_initial_config:
 			message_initial_config.merge(cache.message_config)
@@ -258,7 +267,7 @@ func set_config(config: Dictionary):
 			if real_index == target_selected:
 				%Target.select(i)
 				break
-	else:
+	elif dialog_mode == 1:
 		%ScrollSpeed.value = message_initial_config.get("scroll_speed", 100)
 		message_initial_config.scroll_speed = %ScrollSpeed.value
 		%ScrollType.select(clamp(message_initial_config.get("scroll_direction", 0), 0, %ScrollType.get_item_count() - 1))
@@ -270,6 +279,14 @@ func set_config(config: Dictionary):
 		message_initial_config.enable_fast_forward = %FastForward.is_pressed()
 		%MultiplySpeed.value = message_initial_config.get("multiply_value", 2.5)
 		%MultiplySpeed.set_disabled(!%FastForward.is_pressed())
+		
+		%DisplayAsFloatingDialog.set_visible(false)
+		%InstantText.set_visible(false)
+		%NowaitForInput.set_visible(false)
+		%Target.visible = false
+	else:
+		var scene_path = message_initial_config.get("instant_scene", "")
+		%InstantScenePath.text = scene_path.get_file() if scene_path else TranslationManager.tr("Default")
 		
 		%DisplayAsFloatingDialog.set_visible(false)
 		%InstantText.set_visible(false)
@@ -1749,6 +1766,22 @@ func _on_scene_path_pressed() -> void:
 	dialog.fill_files("scroll_scenes")
 
 
+func _on_instant_scene_path_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/select_file_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	await get_tree().process_frame
+	
+	dialog.destroy_on_hide = true
+	dialog.target_callable = _on_select_instant_text_scene
+	dialog.set_dialog_mode(0)
+	
+	var file_selected_path = message_initial_config.get("instant_scene", "")
+	if file_selected_path:
+		dialog.set_file_selected(file_selected_path)
+	
+	dialog.fill_files("instant_text_scenes")
+
+
 func _on_select_scroll_scene(path: String) -> void:
 	if !%ScrollConfigContainer.visible: return
 	message_initial_config.scroll_scene = path
@@ -1756,10 +1789,24 @@ func _on_select_scroll_scene(path: String) -> void:
 	preview_need_refresh = true
 
 
+func _on_select_instant_text_scene(path: String) -> void:
+	if !%InstantScenePath.visible: return
+	message_initial_config.instant_scene = path
+	%InstantScenePath.text = path.get_file()
+	preview_need_refresh = true
+
+
 func _on_scene_path_middle_click_pressed() -> void:
 	if !%ScrollConfigContainer.visible: return
 	message_initial_config.scroll_scene = ""
 	%ScenePath.text = TranslationManager.tr("Default")
+	preview_need_refresh = true
+
+
+func _on_instant_scene_path_middle_click_pressed() -> void:
+	if !%InstantConfigContainer.visible: return
+	message_initial_config.instant_scene = ""
+	%InstantConfigContainer.text = TranslationManager.tr("Default")
 	preview_need_refresh = true
 
 
@@ -1796,6 +1843,32 @@ func _on_preview_scroll_text_pressed() -> void:
 	preview_message_dialog.set_data(text, message_initial_config)
 
 
+func _on_preview_instant_text_pressed() -> void:
+	propagate_call("apply")
+
+	if !preview_message_dialog:
+		var path = "res://addons/CustomControls/Dialogs/preview_scroll_scene_dialog.tscn"
+		showing_preview_window = true
+		preview_message_dialog = load(path).instantiate()
+		preview_message_dialog.tree_exited.connect(
+			func():
+				preview_message_dialog = null
+				showing_preview_window = false
+		)
+		preview_message_dialog.visible = false
+		add_child(preview_message_dialog)
+		await get_tree().process_frame
+		preview_message_dialog.hide()
+		preview_message_dialog.show()
+	else:
+		await get_tree().process_frame
+		preview_message_dialog.hide()
+		preview_message_dialog.show()
+	
+	var text = %TextEdit.text
+	preview_message_dialog.set_data(text, message_initial_config)
+
+
 func convert_to_simple_text_edit() -> void:
 	%TopButtonContainer.propagate_call("set_mouse_filter", [Control.MOUSE_FILTER_IGNORE])
 	%TopButtonContainer.visible = false
@@ -1807,12 +1880,20 @@ func _on_timer_timeout() -> void:
 	var node = %TextEdit
 	if preview_message_dialog and node:
 		var text = node.text
-		if text == old_text: 
+		if text == old_text and dialog_mode == 0: 
+			return
+		elif text == old_text and dialog_mode == 1 and message_initial_config.get("scroll_scene", "") == old_scene: 
+			return
+		elif text == old_text and dialog_mode == 2 and message_initial_config.get("instant_scene", "") == old_scene: 
 			return
 		old_text = text
 		if dialog_mode == 0:
 			preview_message_dialog.set_text(text, message_initial_config)
 		else:
+			if dialog_mode == 1:
+				old_scene = message_initial_config.get("scroll_scene", "")
+			else:
+				old_scene = message_initial_config.get("instant_scene", "")
 			preview_message_dialog.set_data(text, message_initial_config)
 			
 
@@ -1997,4 +2078,51 @@ func _parse_ids_to_uids(clean_text: String) -> String:
 				secure_text = secure_text.substr(0, start_pos) + new_tag + secure_text.substr(end_pos)
 				
 	return secure_text
+#endregion
+
+
+#region Lorem Ipsum Generator
+const LOCAL_LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+func _on_text_edit_menu_popup() -> void:
+	var menu = %TextEdit.get_menu()
+	if menu:
+		if menu.get_item_index(9999) == -1:
+			menu.add_separator()
+			menu.add_item("Fill Lorem Ipsum", 9999)
+			if not menu.id_pressed.is_connected(_on_text_edit_menu_id_pressed):
+				menu.id_pressed.connect(_on_text_edit_menu_id_pressed)
+
+
+func _on_text_edit_menu_id_pressed(id: int) -> void:
+	if id == 9999:
+		_fill_lorem_ipsum()
+
+
+func _fill_lorem_ipsum() -> void:
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.request_completed.connect(
+		func(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray):
+			var text = ""
+			if result == HTTPRequest.RESULT_SUCCESS and response_code == 200:
+				text = body.get_string_from_utf8().strip_edges()
+				if text.is_empty() or text.begins_with("<"):
+					text = LOCAL_LOREM_IPSUM
+			else:
+				text = LOCAL_LOREM_IPSUM
+				
+			insert_or_replace_text(text)
+			print("insert text from web")
+			http_request.queue_free()
+	)
+	
+	var paragraphs = randi_range(6, 10)
+	var url = "https://baconipsum.com/api/?type=meat-and-filler&paras=%d&format=text" % paragraphs
+	var error = http_request.request(url)
+	
+	if error != OK:
+		print("insert text local")
+		insert_or_replace_text(LOCAL_LOREM_IPSUM)
+		http_request.queue_free()
 #endregion

@@ -19,6 +19,12 @@ extends Resource
 ## Dictionary mapping map paths to their packed array of extraction event IDs.
 @export var map_extraction_events: Dictionary = {}
 
+## Dictionary mapping map paths to their array of converted event region dictionaries.
+@export var map_event_regions: Dictionary = {}
+
+## Dictionary mapping map paths to their array of converted enemy spawn region dictionaries.
+@export var map_enemy_spawn_regions: Dictionary = {}
+
 ## Dictionary mapping global unique event IDs to their corresponding map paths.
 @export var global_event_lookup: Dictionary = {}
 
@@ -101,6 +107,8 @@ func validate_and_clean_project() -> void:
 		map_ids.erase(map_path)
 		map_events.erase(map_path)
 		map_extraction_events.erase(map_path)
+		map_event_regions.erase(map_path)
+		map_enemy_spawn_regions.erase(map_path)
 
 	for map_path in map_events:
 		if map_path in maps:
@@ -130,6 +138,8 @@ func fix_maps(data: Array) -> void:
 		set_map_id(map_path, map.internal_id)
 		set_map_events(map.internal_id, map.events)
 		set_map_extraction_events(map.internal_id, map.extraction_events)
+		set_map_event_regions(map.internal_id, map.event_regions)
+		set_map_enemy_spawn_regions(map.internal_id, map.regions)
 	
 	for i in range(maps.size() - 1, -1, -1):
 		var map_path = maps[i]
@@ -154,6 +164,8 @@ func fix_maps(data: Array) -> void:
 						global_event_lookup.erase(item["uid"])
 			map_events.erase(map_path)
 			map_extraction_events.erase(map_path)
+			map_event_regions.erase(map_path)
+			map_enemy_spawn_regions.erase(map_path)
 			
 	save.call_deferred()
 
@@ -179,6 +191,52 @@ func set_map_extraction_events(map_id: int, extraction_events: Array) -> void:
 			ids.append(item.id)
 			
 	map_extraction_events[map_path_key] = ids
+
+
+
+## Updates the dictionary containing all event region data for a specific map.
+func set_map_event_regions(map_id: int, event_regions: Array) -> void:
+	var map_path_key: String = ""
+	for key in map_ids:
+		if map_ids[key] == map_id:
+			map_path_key = key
+			break
+			
+	if map_path_key == "":
+		return
+		
+	var items: Array = []
+	for item in event_regions:
+		if item != null:
+			items.append({
+				"id": item.id,
+				"name": item.name
+			})
+			
+	map_event_regions[map_path_key] = items
+
+
+
+## Updates the dictionary containing all enemy spawn region data for a specific map.
+func set_map_enemy_spawn_regions(map_id: int, enemy_spawn_regions: Array) -> void:
+	var map_path_key: String = ""
+	for key in map_ids:
+		if map_ids[key] == map_id:
+			map_path_key = key
+			break
+			
+	if map_path_key == "":
+		return
+		
+	var items: Array = []
+	for item in enemy_spawn_regions:
+		if item != null:
+			items.append({
+				"id": item.id,
+				"name": item.name
+			})
+			
+	map_enemy_spawn_regions[map_path_key] = items
 
 
 
@@ -330,6 +388,53 @@ func get_map_extraction_events(map_id: int) -> PackedInt32Array:
 	
 	return extraction_events
 
+
+
+## Retrieves the array of event region dictionaries for a given map ID.
+func get_map_event_regions(map_id: int) -> Array:
+	var event_regions: Array = []
+	for key in map_ids:
+		if map_ids[key] == map_id:
+			event_regions = map_event_regions.get(key, [])
+			break
+	event_regions.sort_custom(
+		func(a, b):
+			return a.id < b.id
+	)
+	return event_regions
+
+
+
+## Retrieves the name of a specific event region using its map ID and region ID.
+func get_event_region_name(map_id: int, region_id: int) -> String:
+	var regions = get_map_event_regions(map_id)
+	for region_data in regions:
+		if region_data.has("id") and region_data["id"] == region_id:
+			return region_data.get("name", "")
+	return ""
+
+
+
+## Retrieves the array of enemy spawn region dictionaries for a given map ID.
+func get_map_enemy_spawn_regions(map_id: int) -> Array:
+	var enemy_spawn_regions: Array = []
+	for key in map_ids:
+		if map_ids[key] == map_id:
+			enemy_spawn_regions = map_enemy_spawn_regions.get(key, [])
+			break
+	
+	return enemy_spawn_regions
+
+
+
+## Retrieves the name of a specific enemy spawn region using its map ID and region ID.
+func get_enemy_spawn_region_name(map_id: int, region_id: int) -> String:
+	var regions = get_map_enemy_spawn_regions(map_id)
+	for region_data in regions:
+		if region_data.has("id") and region_data["id"] == region_id:
+			return region_data.get("name", "")
+	return ""
+
 #endregion
 
 
@@ -383,6 +488,8 @@ func update_file_path(old_file: String, new_file: String) -> void:
 		var old_map_id = map_ids.get(old_file, 0)
 		var old_events = map_events.get(old_file, [])
 		var old_extractions = map_extraction_events.get(old_file, [])
+		var old_event_regions = map_event_regions.get(old_file, [])
+		var old_enemy_spawn_regions = map_enemy_spawn_regions.get(old_file, [])
 		
 		if new_file.length() > 0:
 			maps[index] = new_file
@@ -393,12 +500,16 @@ func update_file_path(old_file: String, new_file: String) -> void:
 		map_ids.erase(old_file)
 		map_events.erase(old_file)
 		map_extraction_events.erase(old_file)
+		map_event_regions.erase(old_file)
+		map_enemy_spawn_regions.erase(old_file)
 		
 		if new_file.length() > 0:
 			map_names[new_file] = old_map_name
 			map_ids[new_file] = old_map_id
 			map_events[new_file] = old_events
 			map_extraction_events[new_file] = old_extractions
+			map_event_regions[new_file] = old_event_regions
+			map_enemy_spawn_regions[new_file] = old_enemy_spawn_regions
 			
 			for item in old_events:
 				if item.has("uid"):

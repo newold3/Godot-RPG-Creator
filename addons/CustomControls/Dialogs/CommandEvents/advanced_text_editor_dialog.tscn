@@ -458,6 +458,44 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrgew"]
+resource_local_to_scene = true
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q2tw8"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_ctwx1")
+fill_from = Vector2(0.542735, 0.995726)
+fill_to = Vector2(0.58547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wum46"]
+resource_local_to_scene = true
+texture = SubResource("GradientTexture2D_q2tw8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3n5l2"]
+resource_local_to_scene = true
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.113725, 0.133333, 0.160784, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
 [node name="AdvancedTextEditorDialog" type="Window" unique_id=1886097728]
 process_priority = 10
 oversampling_override = 1.0
@@ -887,6 +925,17 @@ mouse_default_cursor_shape = 2
 texture_normal = SubResource("AtlasTexture_ftd5p")
 texture_hover = SubResource("AtlasTexture_3438f")
 
+[node name="PreviewInstantText" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=1706438758]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+tooltip_text = "Displays a preview of the dialog"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_ftd5p")
+texture_hover = SubResource("AtlasTexture_3438f")
+
 [node name="DisplayAsFloatingDialog" type="CheckBox" parent="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer" unique_id=249378049]
 unique_name_in_owner = true
 layout_mode = 2
@@ -1095,7 +1144,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Defines the width of the image displayed in the text window (or leave it at 0 to display the actual width of the image)."
 allow_greater = true
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2" unique_id=1169485778]
 layout_mode = 2
@@ -1113,7 +1161,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Defines the height of the image displayed in the text window (or leave at 0 to adjust the height in relation to the width)."
 allow_greater = true
-_custom_value = 0.0
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InitialConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1122274648]
 visible = false
@@ -1177,7 +1224,6 @@ size_flags_vertical = 4
 tooltip_text = "Scroll at whitch text scrolls"
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer2" unique_id=799512084]
 custom_minimum_size = Vector2(150, 0)
@@ -1254,7 +1300,46 @@ rounded = false
 editable = false
 prefix = "x "
 disabled = true
-_custom_value = 0.0
+
+[node name="InstantConfigContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer" unique_id=1938885673 instance=ExtResource("1_acjup")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hrgew")
+style1 = SubResource("StyleBoxFlat_hrgew")
+style2 = SubResource("StyleBoxTexture_wum46")
+style3 = SubResource("StyleBoxFlat_3n5l2")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer" unique_id=1293577578]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer" unique_id=1318314172]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer" unique_id=1831178343]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.683386, 0.996094, 0.680923, 1)
+text = "Config:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer" unique_id=1503799240]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=421873276]
+layout_mode = 2
+text = "Secene Path:"
+
+[node name="InstantScenePath" parent="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1396925744 instance=ExtResource("7_154nb")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Indicate the scene to be used to display the text. The scene must be of the 'InstantText' type.
+
+Click the middle button to use the default scene."
+text = "Default"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1464384854]
 custom_minimum_size = Vector2(0, 12)
@@ -1328,6 +1413,7 @@ wait_time = 0.3
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/WordWrapText" to="." method="_on_word_warp_text_toggled"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PreviewText" to="." method="_on_preview_text_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PreviewScrollText" to="." method="_on_preview_scroll_text_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/PreviewInstantText" to="." method="_on_preview_instant_text_pressed"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/DisplayAsFloatingDialog" to="." method="_on_display_as_floating_dialog_toggled"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/Target" to="." method="_on_targets_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/MarginContainer/TopButtonContainer/MarginContainer/VBoxContainer/InstantText" to="." method="_on_instant_text_toggled"]
@@ -1347,6 +1433,8 @@ wait_time = 0.3
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/ScrollType" to="." method="_on_scroll_type_item_selected"]
 [connection signal="toggled" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer2/FastForward" to="." method="_on_fast_forward_toggled"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/BottomButtonContainer/ScrollConfigContainer/MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/HBoxContainer/MultiplySpeed" to="." method="_on_multiply_speed_value_changed"]
+[connection signal="middle_click_pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/InstantScenePath" to="." method="_on_instant_scene_path_middle_click_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BottomButtonContainer/InstantConfigContainer/MarginContainer/VBoxContainer/HBoxContainer/InstantScenePath" to="." method="_on_instant_scene_path_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -29,6 +29,7 @@ extends Control
 
 # Datos del actor y estadísticas
 var current_actor: GameActor
+var _comparison_actor: GameActor
 var current_stats: Dictionary = {}
 var stats_data: Array[Dictionary] = []
 var hovered_stat: Dictionary = {}
@@ -446,108 +447,12 @@ func _evaluate_equipment_comparison() -> void:
 	if not current_actor or not show_comparison:
 		_on_equipment_evaluation_result(-1)  # No comparison
 		return
-	
-	# Obtener pesos para la clase actual
-	var class_id = current_actor.current_class
-	var weights: Dictionary
-	
-	if class_id > 0 and RPGSYSTEM.database.classes.size() > class_id:
-		weights = RPGSYSTEM.database.classes[class_id].weights
-	else:
-		weights = {
-			"HP": 1.5,
-			"MP": 1.0,
-			"ATK": 2.0,   
-			"DEF": 1.8,
-			"MATK": 1.5,
-			"MDEF": 1.2,
-			"AGI": 1.3,
-			"LUCK": 0.8
-		}
-	
-	# Usar las estadísticas principales reales del sistema
-	var main_stats = []
-	if stats_structure.has("Main Stats"):
-		main_stats = stats_structure["Main Stats"]
-	
-	# Si no hay stats principales, usar las primeras 8 de main_parameters
-	if main_stats.is_empty() and RPGSYSTEM.database.types.main_parameters.size() >= 8:
-		for i in range(0, min(8, RPGSYSTEM.database.types.main_parameters.size())):
-			main_stats.append(RPGSYSTEM.database.types.main_parameters[i])
-	
-	var current_score = 0.0
-	var new_score = 0.0
-	var stats_found = 0
-	
-	# Verificar HP crítico - usar el primer stat como HP
-	var hp_current = 0
-	var hp_new = 0
-	if main_stats.size() > 0 and main_stats[0] in current_stats:
-		hp_current = current_stats[main_stats[0]][0]
-		hp_new = current_stats[main_stats[0]][1]
-	
-	var hp_percentage = float(hp_new) / float(hp_current) if hp_current > 0 else 1.0
-	var is_hp_critical = hp_percentage <= 0.1
-	
-	# Mapeo de nombres de stats a pesos
-	var stat_name_mapping = {
-		# Posibles variaciones de nombres
-		0: "HP",    # Primera stat es HP
-		1: "MP",    # Segunda stat es MP  
-		2: "ATK",   # Tercera stat es ATK
-		3: "DEF",   # etc...
-		4: "MATK",
-		5: "MDEF", 
-		6: "AGI",
-		7: "LUCK"
-	}
-	
-	# Calcular puntuaciones
-	for i in range(main_stats.size()):
-		var stat_name = main_stats[i]
-		if stat_name in current_stats:
-			var current_value = current_stats[stat_name][0]
-			var new_value = current_stats[stat_name][1]
-			
-			# Obtener peso usando el mapeo por índice
-			var weight_key = stat_name_mapping.get(i, "HP")
-			var weight = weights.get(weight_key, 1.0)
-			
-			var current_weighted = current_value * weight
-			var new_weighted = new_value * weight
-			
-			# Penalización por HP crítico (solo para el primer stat)
-			if i == 0 and is_hp_critical:
-				var hp_difference = new_value - current_value
-				var penalty_multiplier = 1.0 + (7.0 * (0.1 - hp_percentage) / 0.1)
-				penalty_multiplier = min(penalty_multiplier, 8.0)
-				var critical_penalty = abs(hp_difference) * penalty_multiplier
-				new_weighted -= critical_penalty
-			
-			current_score += current_weighted
-			new_score += new_weighted
-			stats_found += 1
-	
-	# Si no se encontraron estadísticas, devolver -1
-	if stats_found == 0:
-		_on_equipment_evaluation_result(-1)
-		return
-	
-	# Determinar resultado
-	var score_difference = new_score - current_score
-	var current_is_better = 0
-	var tolerance = 2.0
-	
-	if is_hp_critical:
-		current_is_better = 1  # Actual es mejor (HP crítico)
-	elif abs(score_difference) <= tolerance:
-		current_is_better = -1  # Igual
-	elif score_difference > 0:
-		current_is_better = 0   # Nuevo es mejor
-	else:
-		current_is_better = 1   # Actual es mejor
-	
-	_on_equipment_evaluation_result(current_is_better)
+		
+	var result: int = -1
+	if _comparison_actor:
+		result = current_actor.compare_stats_to(_comparison_actor)
+		
+	_on_equipment_evaluation_result(result)
 
 
 func _on_equipment_evaluation_result(result: int) -> void:
@@ -565,12 +470,12 @@ func set_actor(actor: GameActor) -> void:
 	current_actor = actor
 	current_stats.clear()
 	
-	var copy_actor: GameActor = actor.duplicate_deep(Resource.DEEP_DUPLICATE_NONE)
+	_comparison_actor = actor.duplicate_deep(Resource.DEEP_DUPLICATE_NONE)
 	if comparison_item:
 		if comparison_item.id != -1:
-			copy_actor._set_equip(comparison_item.slot_id, comparison_item.id, comparison_item.level)
+			_comparison_actor._set_equip(comparison_item.slot_id, comparison_item.id, comparison_item.level)
 		else:
-			copy_actor._set_equip(comparison_item.slot_id, -1, 0)
+			_comparison_actor._set_equip(comparison_item.slot_id, -1, 0)
 	
 	# Cargar estadísticas principales y secundarias
 	for section_name in stats_structure:
@@ -579,11 +484,11 @@ func set_actor(actor: GameActor) -> void:
 			var real_stat = stat.replace(" ", "_")
 			if section_name != "Secondary Stats":
 				var value1 = actor.get_parameter(real_stat)
-				var value2 = copy_actor.get_parameter(real_stat)
+				var value2 = _comparison_actor.get_parameter(real_stat)
 				current_stats[stat] = [value1, value2]
 			else:
 				var value1 = actor.get_user_parameter(i)
-				var value2 = copy_actor.get_user_parameter(i)
+				var value2 = _comparison_actor.get_user_parameter(i)
 				current_stats[stat] = [value1, value2]
 	
 	# Cargar estadísticas de elementos
@@ -592,8 +497,8 @@ func set_actor(actor: GameActor) -> void:
 		for element in elements:
 			var attack_rate_value = actor.get_element_attack_rate(element)
 			var defense_rate_value = actor.get_element_defense_rate(element)
-			var copy_attack_rate_value = copy_actor.get_element_attack_rate(element)
-			var copy_defense_rate_value = copy_actor.get_element_defense_rate(element)
+			var copy_attack_rate_value = _comparison_actor.get_element_attack_rate(element)
+			var copy_defense_rate_value = _comparison_actor.get_element_defense_rate(element)
 			current_stats[element + "_0"] = [attack_rate_value, copy_attack_rate_value]
 			current_stats[element + "_1"] = [defense_rate_value, copy_defense_rate_value]
 	

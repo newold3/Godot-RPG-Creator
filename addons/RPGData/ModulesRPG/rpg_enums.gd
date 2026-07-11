@@ -141,7 +141,10 @@ enum QuestMode {
 	GATHER_ITEM,    ## Requires gathering specific items.
 	BOUNTY_HUNTS,   ## Requires defeating specific enemies.
 	FIND_LOCATION,  ## Requires reaching / exploring a map location.
-	USER_QUEST      ## Handled manually via common events and scripting.
+	USER_QUEST,     ## Handled manually via common events and scripting.
+	ESCORT_NPC,     ## Escort NPC to destination map.
+	CRAFT_ITEMS,    ## Requires crafting specific items.
+	EXTRACTION_ITEMS ## Requires extracting specific resources.
 }
 
 ## Enum for item types requested in a quest objective.
@@ -215,4 +218,11 @@ enum MapEventPosition {
 	TOP_RIGHT = 7,      ## Placed at top-right.
 	BOTTOM_LEFT = 8,    ## Placed at bottom-left.
 	BOTTOM_RIGHT = 9    ## Placed at bottom-right.
+}
+
+## Enum for equipment comparison results.
+enum EquipComparison {
+	EQUAL = -1,     ## Stats difference is within tolerance (neutral / no change).
+	UPGRADE = 0,    ## New equipment has significantly better stats (upgrade).
+	DOWNGRADE = 1   ## New equipment has significantly worse stats, or critical HP (downgrade).
 }

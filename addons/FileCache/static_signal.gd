@@ -43,23 +43,25 @@ static func make() -> String:
 
 
 ## Stores a callable in the array associated with the signal name.
-static func connect_static_signal(signal_name: String, method: Callable, _flags: int = 0) -> bool:
+static func connect_static_signal(signal_name: String, method: Callable, flags: int = 0) -> bool:
 	if not signals.has(signal_name):
 		signals[signal_name] = []
 	
-	if not signals[signal_name].has(method):
-		signals[signal_name].append(method)
-		return true
-	
-	return false
+	for conn in signals[signal_name]:
+		if conn.callable == method:
+			return false
+			
+	signals[signal_name].append({"callable": method, "flags": flags})
+	return true
 
 
 ## Removes a specific callable from the array associated with the signal name.
 static func disconnect_static_signal(signal_name: String, method: Callable) -> bool:
-	if signals.has(signal_name) and signals[signal_name].has(method):
-		signals[signal_name].erase(method)
-		return true
-	
+	if signals.has(signal_name):
+		for i in range(signals[signal_name].size()):
+			if signals[signal_name][i].callable == method:
+				signals[signal_name].remove_at(i)
+				return true
 	return false
 
 
@@ -68,16 +70,26 @@ static func emit(signal_name: String, parameters: Array = []) -> bool:
 	if not signals.has(signal_name):
 		return false
 	
-	var callables_to_remove: Array = []
+	var connections = signals[signal_name].duplicate()
+	var oneshots_to_remove: Array[Callable] = []
 	
-	for method in signals[signal_name]:
+	for conn in connections:
+		var method: Callable = conn.callable
+		var flags: int = conn.flags
+		
 		if method.is_valid():
-			method.callv(parameters)
+			if flags & CONNECT_DEFERRED:
+				method.callv.call_deferred(parameters)
+			else:
+				method.callv(parameters)
+				
+			if flags & CONNECT_ONE_SHOT:
+				oneshots_to_remove.append(method)
 		else:
-			callables_to_remove.append(method)
+			oneshots_to_remove.append(method)
 			
-	for invalid_method in callables_to_remove:
-		signals[signal_name].erase(invalid_method)
+	for method in oneshots_to_remove:
+		disconnect_static_signal(signal_name, method)
 	
 	return true
 
@@ -90,15 +102,19 @@ static func exist_static_signal(signal_name: String) -> bool:
 ## Checks if a specific callable is currently stored under the given signal name.
 static func is_static_signal_connected(signal_name: String, method: Callable) -> bool:
 	if signals.has(signal_name):
-		return signals[signal_name].has(method)
-	
+		for conn in signals[signal_name]:
+			if conn.callable == method:
+				return true
 	return false
 
 
 ## Retrieves the array of callables associated with a given signal name.
 static func get_static_signal(signal_name: String) -> Array:
 	if signals.has(signal_name):
-		return signals[signal_name].duplicate()
+		var list = []
+		for conn in signals[signal_name]:
+			list.append(conn.callable)
+		return list
 	
 	return []
 
@@ -157,8 +173,8 @@ static func debug_info() -> void:
 	
 	for signal_name in signals.keys():
 		print("Signal: %s - Connections: %d" % [signal_name, signals[signal_name].size()])
-		for method in signals[signal_name]:
-			print("  -> %s" % method)
+		for conn in signals[signal_name]:
+			print("  -> %s (Flags: %d)" % [conn.callable, conn.flags])
 			
 	print("===============================")
 #endregion

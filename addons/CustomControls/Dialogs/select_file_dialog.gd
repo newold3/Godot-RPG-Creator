@@ -1073,8 +1073,10 @@ func _remove_from_favorite(path: String) -> void:
 
 ## Triggers standard re-scans updating general layout arrays completely.
 func _on_rebuild_cache_pressed() -> void:
+	%Loading.visible = true
+	%AnimatedSprite2D.play("default")
 	FileCache.rebuild(true)
-	await FileCache.cache_setted
+	await StaticSignal.wait_for("_cache_ready")
 	_refresh_view()
 
 

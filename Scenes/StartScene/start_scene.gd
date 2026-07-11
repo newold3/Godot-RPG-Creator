@@ -38,7 +38,10 @@ func create_main_scene() -> void:
 	var node = preload("res://Scenes/main_scene.tscn")
 	var ins = node.instantiate()
 	ins.initialize_title_scene = true
-	get_parent().add_child(ins)
+	var p = get_parent()
+	if not p:
+		p = get_tree().root
+	p.add_child(ins)
 	
 	await get_tree().process_frame
 	queue_free()

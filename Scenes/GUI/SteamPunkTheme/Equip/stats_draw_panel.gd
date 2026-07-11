@@ -32,6 +32,7 @@ extends Control
 
 #region InternalVariables
 var current_actor: GameActor
+var _comparison_actor: GameActor
 var current_stats: Dictionary = {}
 var stats_data: Array[Dictionary] = []
 var hovered_stat: Dictionary = {}
@@ -563,13 +564,13 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 	current_actor = actor
 	current_stats.clear()
 	
-	var copy_actor: GameActor = actor.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
+	_comparison_actor = actor.duplicate_deep(Resource.DEEP_DUPLICATE_ALL)
 	
 	if _comparison_item and not _comparison_item.is_empty():
 		if _comparison_item.id != -1:
-			copy_actor._set_equip(_comparison_item.slot_id, _comparison_item.id, _comparison_item.level)
+			_comparison_actor._set_equip(_comparison_item.slot_id, _comparison_item.id, _comparison_item.level)
 		else:
-			copy_actor._set_equip(_comparison_item.slot_id, -1, 0)
+			_comparison_actor._set_equip(_comparison_item.slot_id, -1, 0)
 			
 	for section_name in stats_structure:
 		for stat_label in stats_structure[section_name]:
@@ -583,10 +584,10 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 			if section_name == "Secondary Stats":
 				var u_id = internal_key.replace("USER_PARAMETER_", "").to_int()
 				value1 = actor.get_user_parameter(u_id)
-				value2 = copy_actor.get_user_parameter(u_id)
+				value2 = _comparison_actor.get_user_parameter(u_id)
 			else:
 				value1 = actor.get_parameter(internal_key)
-				value2 = copy_actor.get_parameter(internal_key)
+				value2 = _comparison_actor.get_parameter(internal_key)
 				
 			current_stats[stat_label] = [value1, value2]
 			
@@ -595,8 +596,8 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 		for element in elements:
 			var attack_rate_value = actor.get_element_attack_rate(element)
 			var defense_rate_value = actor.get_element_defense_rate(element)
-			var copy_attack_rate_value = copy_actor.get_element_attack_rate(element)
-			var copy_defense_rate_value = copy_actor.get_element_defense_rate(element)
+			var copy_attack_rate_value = _comparison_actor.get_element_attack_rate(element)
+			var copy_defense_rate_value = _comparison_actor.get_element_defense_rate(element)
 			
 			current_stats[element + "_0"] = [attack_rate_value, copy_attack_rate_value]
 			current_stats[element + "_1"] = [defense_rate_value, copy_defense_rate_value]
@@ -607,7 +608,7 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 			continue
 			
 		var debuff_rate = actor.get_debuff_rate(i) * 100.0 if actor.has_method("get_debuff_rate") else 100.0
-		var copy_debuff_rate = copy_actor.get_debuff_rate(i) * 100.0 if copy_actor.has_method("get_debuff_rate") else 100.0
+		var copy_debuff_rate = _comparison_actor.get_debuff_rate(i) * 100.0 if _comparison_actor.has_method("get_debuff_rate") else 100.0
 		current_stats["debuff_" + str(i)] = [debuff_rate, copy_debuff_rate]
 		
 	var states = RPGSYSTEM.database.states
@@ -617,10 +618,10 @@ func set_actor(actor: GameActor, _comparison_item: Dictionary = {}) -> void:
 			continue
 			
 		var is_immune_actor = _is_state_immune(actor, state._uniq_id)
-		var is_immune_copy = _is_state_immune(copy_actor, state._uniq_id)
+		var is_immune_copy = _is_state_immune(_comparison_actor, state._uniq_id)
 		
 		var state_rate = 0.0 if is_immune_actor else (actor.get_state_rate(state._uniq_id) * 100.0 if actor.has_method("get_state_rate") else 100.0)
-		var copy_state_rate = 0.0 if is_immune_copy else (copy_actor.get_state_rate(state._uniq_id) * 100.0 if copy_actor.has_method("get_state_rate") else 100.0)
+		var copy_state_rate = 0.0 if is_immune_copy else (_comparison_actor.get_state_rate(state._uniq_id) * 100.0 if _comparison_actor.has_method("get_state_rate") else 100.0)
 		
 		current_stats["state_" + str(state._uniq_id)] = [
 			-1.0 if is_immune_actor else state_rate,
@@ -651,98 +652,12 @@ func _evaluate_equipment_comparison() -> void:
 	if not current_actor or not show_comparison:
 		_on_equipment_evaluation_result(-1)
 		return
-	
-	var class_id = current_actor.current_class
-	var weights: Dictionary
-	var current_class_data = RPGSYSTEM.get_data("classes", class_id)
-	
-	if current_class_data:
-		weights = current_class_data.weights
-	else:
-		weights = {
-			"HP": 1.5,
-			"MP": 1.0,
-			"ATK": 2.0,
-			"DEF": 1.8,
-			"MATK": 1.5,
-			"MDEF": 1.2,
-			"AGI": 1.3,
-			"LUCK": 0.8
-		}
-	
-	var main_stats = []
-	if stats_structure.has("Main Stats"):
-		main_stats = stats_structure["Main Stats"]
-	
-	if main_stats.is_empty() and RPGSYSTEM.database.types.main_parameters.size() >= 8:
-		for i in range(0, min(8, RPGSYSTEM.database.types.main_parameters.size())):
-			main_stats.append(RPGSYSTEM.database.types.main_parameters[i])
-	
-	var current_score = 0.0
-	var new_score = 0.0
-	var stats_found = 0
-	
-	var hp_current = 0
-	var hp_new = 0
-	if main_stats.size() > 0 and main_stats[0] in current_stats:
-		hp_current = current_stats[main_stats[0]][0]
-		hp_new = current_stats[main_stats[0]][1]
-	
-	var hp_percentage = float(hp_new) / float(hp_current) if hp_current > 0 else 1.0
-	var is_hp_critical = hp_percentage <= 0.1
-	
-	var stat_name_mapping = {
-		0: "HP",
-		1: "MP",
-		2: "ATK",
-		3: "DEF",
-		4: "MATK",
-		5: "MDEF",
-		6: "AGI",
-		7: "LUCK"
-	}
-	
-	for i in range(main_stats.size()):
-		var stat_name = main_stats[i]
-		if stat_name in current_stats:
-			var current_value = current_stats[stat_name][0]
-			var new_value = current_stats[stat_name][1]
-			
-			var weight_key = stat_name_mapping.get(i, "HP")
-			var weight = weights.get(weight_key, 1.0)
-			
-			var current_weighted = current_value * weight
-			var new_weighted = new_value * weight
-			
-			if i == 0 and is_hp_critical:
-				var hp_difference = new_value - current_value
-				var penalty_multiplier = 1.0 + (7.0 * (0.1 - hp_percentage) / 0.1)
-				penalty_multiplier = min(penalty_multiplier, 8.0)
-				var critical_penalty = abs(hp_difference) * penalty_multiplier
-				new_weighted -= critical_penalty
-			
-			current_score += current_weighted
-			new_score += new_weighted
-			stats_found += 1
-	
-	if stats_found == 0:
-		_on_equipment_evaluation_result(-1)
-		return
-	
-	var score_difference = new_score - current_score
-	var current_is_better = 0
-	var tolerance = 2.0
-	
-	if is_hp_critical:
-		current_is_better = 1
-	elif abs(score_difference) <= tolerance:
-		current_is_better = -1
-	elif score_difference > 0:
-		current_is_better = 0
-	else:
-		current_is_better = 1
-	
-	_on_equipment_evaluation_result(current_is_better)
+		
+	var result: int = -1
+	if _comparison_actor:
+		result = current_actor.compare_stats_to(_comparison_actor)
+		
+	_on_equipment_evaluation_result(result)
 
 
 

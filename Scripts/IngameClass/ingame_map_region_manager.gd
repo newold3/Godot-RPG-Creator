@@ -123,6 +123,10 @@ func _on_event_monitor_body_entered(_body_rid: RID, body: Node2D, _body_shape_in
 		
 		if action_type == "event_region": 
 			var reg := (region_data as EventRegion)
+			
+			if body.is_in_group("player"):
+				QuestManager.notify_region_entered(map.internal_id, reg.id)
+				
 			var triggers = reg.triggers
 			
 			var is_in_player_group = body.is_in_group("player")

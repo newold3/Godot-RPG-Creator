@@ -345,7 +345,6 @@ tooltip_text = "[title]Minimun Level Required[/title]
 Minimum party level required to start this quest"
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="VBoxContainer4" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings" unique_id=1239070400]
 layout_mode = 2
@@ -401,7 +400,6 @@ size_flags_horizontal = 3
 tooltip_text = "Time limit to complete the quest. A value of 0 means there is no time limit to complete the quest.
 This time is used to automatically finish the quest (terminating it as failed)."
 allow_greater = true
-_custom_value = 0.0
 
 [node name="VBoxContainer3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Group1/MarginContainer/GeneralSettings" unique_id=786771668]
 layout_mode = 2
@@ -515,9 +513,12 @@ Type of quest:
  \"GATHER_ITEM\": Gather a set number of items throughout the world
  \"BOUNTY_HUNTS\": Track down and eliminate specific targets
  \"FIND_LOCATION\": Enter a specific location (These quests are completed immediately upon entering the location (or re-entering it)). 
- \"USER_QUEST\": User quests are only completed when indicated by a command in a common event/event.[/ul]"
+ \"USER_QUEST\": User quests are only completed when indicated by a command in a common event/event.
+ \"ESCORT_NPC\": Escort an NPC to a destination map or region.
+ \"CRAFT_ITEMS\": Craft specific items to complete the objective.
+ \"EXTRACTION_ITEMS\": Extract items from resource nodes.[/ul]"
 selected = 0
-item_count = 5
+item_count = 8
 popup/item_0/text = "Talk To Npc"
 popup/item_0/id = 0
 popup/item_1/text = "Gather Item"
@@ -528,6 +529,12 @@ popup/item_3/text = "Find Location"
 popup/item_3/id = 3
 popup/item_4/text = "User Quest"
 popup/item_4/id = 4
+popup/item_5/text = "Escort Npc"
+popup/item_5/id = 5
+popup/item_6/text = "Craft Items"
+popup/item_6/id = 6
+popup/item_7/text = "Extraction Items"
+popup/item_7/id = 7
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer" unique_id=713111091]
 layout_mode = 2
@@ -597,7 +604,6 @@ size_flags_horizontal = 3
 tooltip_text = "Number of enemies to kill to fulfill this objective."
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="ObjetiveParam3" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer" unique_id=1344703992]
 unique_name_in_owner = true
@@ -632,7 +638,6 @@ tooltip_text = "Quantity of the item required to complete this mission.
 [Note]: Weapons and armor only count the ones available in the inventory, not the equipped ones."
 min_value = 1.0
 allow_greater = true
-_custom_value = 0.0
 
 [node name="Preserve" type="CheckBox" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam3" unique_id=684203672]
 unique_name_in_owner = true
@@ -658,7 +663,6 @@ size_flags_horizontal = 3
 step = 0.01
 rounded = false
 allow_greater = true
-_custom_value = 0.0
 
 [node name="ObjetiveParam5" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer" unique_id=487656591]
 unique_name_in_owner = true
@@ -696,7 +700,9 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-tooltip_text = "Choose the map to be visited to complete this objective"
+tooltip_text = "Choose the map to be visited to complete this objective.
+
+[Note]: When the objective is an escort mission, if a valid area is specified within a map, the mission is completed upon entering that area; otherwise, it is completed upon entering the map."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Map"
 
@@ -761,7 +767,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Amount of gold received for completing this quest"
 allow_greater = true
-_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=241545013]
 layout_mode = 2
@@ -775,7 +780,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 tooltip_text = "Amount of experience received for completing this quest"
 allow_greater = true
-_custom_value = 0.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group1/MarginContainer/VBoxContainer" unique_id=448528878]
 layout_mode = 2
@@ -821,7 +825,7 @@ size_flags_vertical = 3
 
 [node name="RewardList" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab2/Group2/MarginContainer/ScrollContainer" unique_id=297888036 instance=ExtResource("12_ehwfu")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 23)
+custom_minimum_size = Vector2(762, 23)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

@@ -30,6 +30,9 @@ extends Resource
 ## Current state and progression of the player's active and unlocked quests.
 @export var quest_progress: GameQuestProgress = GameQuestProgress.new()
 
+## Array of dictionaries representing NPCs currently escorting the player.
+@export var escorted_npcs: Array[Dictionary] = []
+
 ## Dictionary of extraction items sorted by map ID and item ID.
 @export var extraction_items: Dictionary = {}
 

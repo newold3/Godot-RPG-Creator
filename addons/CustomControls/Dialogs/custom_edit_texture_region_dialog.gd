@@ -47,6 +47,7 @@ var moving_rect: bool = false
 var rect_start_pos: Vector2
 var mouse_start_pos: Vector2
 var auto_crop_rects: Array[Rect2] = []
+var just_warped: bool = false
 
 @onready var texture_preview: Control = %EditedTexture
 @onready var grid: Control = %Grid
@@ -87,6 +88,8 @@ func set_default_values() -> void:
 	snap_separation = options.get("snap_separation", Vector2i.ZERO)
 	snap_step = options.get("snap_step", Vector2i(32, 32))
 	column_and_rows = options.get("column_and_rows", Vector2i.ONE)
+	var merge_close_rects = options.get("merge_close_rects", true)
+	var epsilon_val = options.get("epsilon_value", 2.0)
 	
 	if not FileCache.options.has("region_dialog_options"):
 		FileCache.options.region_dialog_options = {
@@ -96,6 +99,8 @@ func set_default_values() -> void:
 			"snap_separation": snap_separation,
 			"snap_step": snap_step,
 			"column_and_rows": column_and_rows,
+			"merge_close_rects": merge_close_rects,
+			"epsilon_value": epsilon_val,
 		}
 	
 	backup_snap_options.snap_step = snap_step
@@ -115,6 +120,11 @@ func set_default_values() -> void:
 	%SeparationX.value = snap_separation.x
 	%SeparationY.value = snap_separation.y
 	%AdjustmentMode.select(current_mode_index)
+	%MergeCloseCheckBox.button_pressed = merge_close_rects
+	%MergeCloseCheckBox.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
+	%EpsilonSpinBox.value = epsilon_val
+	%EpsilonLabel.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
+	%EpsilonSpinBox.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
 	busy = false
 
 	%AdjustmentMode.item_selected.emit.call_deferred(current_mode_index)
@@ -129,6 +139,8 @@ func _save_config() -> void:
 		"snap_separation": snap_separation,
 		"snap_step": snap_step,
 		"column_and_rows": column_and_rows,
+		"merge_close_rects": %MergeCloseCheckBox.button_pressed,
+		"epsilon_value": %EpsilonSpinBox.value,
 	}
 
 
@@ -190,6 +202,7 @@ func edit(object: Object, region: Rect2):
 			_on_adjustment_mode_item_selected(1)
 		
 	updated.emit()
+	center_and_fit_texture()
 
 
 #endregion
@@ -330,6 +343,12 @@ func _on_grid_gui_input(event: InputEvent):
 				elif event.button_index == MOUSE_BUTTON_MIDDLE:
 					moving = true
 				elif event.button_index == MOUSE_BUTTON_LEFT:
+					if event.double_click:
+						var tex_pos = _screen_to_texture(mouse_pos)
+						if rect.has_area() and rect.has_point(tex_pos):
+							_on_ok_button_pressed()
+							return
+							
 					if snap_mode == SnapMode.SNAP_AUTO_CROP:
 						var tex_pos = _screen_to_texture(mouse_pos)
 						for r in auto_crop_rects:
@@ -374,7 +393,10 @@ func _on_grid_gui_input(event: InputEvent):
 		texture_preview.queue_redraw()
 
 	elif event is InputEventMouseMotion and moving:
-		force_change_draw_offset(event.relative / draw_zoom)
+		if just_warped:
+			just_warped = false
+		else:
+			force_change_draw_offset(event.relative / draw_zoom)
 
 	elif event is InputEventMouseMotion and drawing_rect:
 		_update_drag(event.position)
@@ -442,6 +464,7 @@ func force_change_draw_offset(off: Vector2) -> void:
 			p2.y = 0
 		if p2 != p1:
 			texture_preview.warp_mouse(p2)
+			just_warped = true
 	
 	var texture = _get_texture()
 	if texture:
@@ -661,7 +684,8 @@ func _calculate_auto_crop_rects() -> void:
 	bitmap.create_from_image_alpha(img)
 	
 	var rect_full = Rect2(0, 0, img.get_width(), img.get_height())
-	var polygons = bitmap.opaque_to_polygons(rect_full, 0.1)
+	var epsilon = %EpsilonSpinBox.value if has_node("%EpsilonSpinBox") else 2.0
+	var polygons = bitmap.opaque_to_polygons(rect_full, epsilon)
 	
 	for poly in polygons:
 		if poly.size() == 0: continue
@@ -686,6 +710,30 @@ func _calculate_auto_crop_rects() -> void:
 					break
 			if not is_duplicate:
 				auto_crop_rects.append(r)
+
+	if %MergeCloseCheckBox.button_pressed:
+		# Merge close rectangles (islands of pixels within 5 pixels of each other) using an optimized O(N^2) pass
+		var temp_rects = auto_crop_rects.duplicate()
+		var final_rects: Array[Rect2] = []
+		var merge_threshold = 5.0
+		while temp_rects.size() > 0:
+			var current = temp_rects.pop_front()
+			var merged = true
+			while merged:
+				merged = false
+				var j = 0
+				while j < temp_rects.size():
+					if current.grow(merge_threshold).intersects(temp_rects[j]):
+						current = current.merge(temp_rects[j])
+						temp_rects.remove_at(j)
+						merged = true
+					else:
+						j += 1
+			final_rects.append(current)
+		
+		auto_crop_rects = final_rects
+
+
 
 
 ## Expands over connected opaque pixels retrieving its bounding area coordinates.
@@ -807,11 +855,27 @@ func _on_adjustment_mode_item_selected(index: int) -> void:
 
 	size.x = 0
 	
-	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+	var is_auto_crop = (snap_mode == SnapMode.SNAP_AUTO_CROP)
+	%MergeCloseCheckBox.visible = is_auto_crop
+	%EpsilonLabel.visible = is_auto_crop
+	%EpsilonSpinBox.visible = is_auto_crop
+	if is_auto_crop:
 		_calculate_auto_crop_rects()
 		texture_preview.queue_redraw()
 		
 	updated.emit()
+
+
+func _on_merge_close_check_box_toggled(button_pressed: bool) -> void:
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		_calculate_auto_crop_rects()
+		updated.emit()
+
+
+func _on_epsilon_spin_box_value_changed(value: float) -> void:
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		_calculate_auto_crop_rects()
+		updated.emit()
 
 
 ## Updates snap_step based on current column_and_rows and texture size.
@@ -969,6 +1033,32 @@ func _pos_to_cell(tex_pos: Vector2) -> Vector2i:
 		cy = clamp(cy, 0, max_cy)
 
 	return Vector2i(cx, cy)
+
+
+## Calculates zoom and offset to fit the texture entirely centered within the preview canvas.
+func center_and_fit_texture() -> void:
+	var texture = _get_texture()
+	if not texture: return
+	var tex_size = texture.get_size()
+	var canvas_size = texture_preview.size
+	if canvas_size.x <= 0 or canvas_size.y <= 0:
+		# If canvas is not yet laid out, defer calculation
+		call_deferred("center_and_fit_texture")
+		return
+	
+	# Calculate optimal zoom to fit with some margin (e.g. 24 pixels margin)
+	var margin = 24.0
+	var available_w = max(10.0, canvas_size.x - margin * 2.0)
+	var available_h = max(10.0, canvas_size.y - margin * 2.0)
+	
+	var zoom_x = available_w / tex_size.x
+	var zoom_y = available_h / tex_size.y
+	var optimal_zoom = min(zoom_x, zoom_y)
+	
+	draw_zoom = clamp(optimal_zoom, 0.1, 10.0)
+	draw_ofs = Vector2.ZERO
+	
+	updated.emit()
 
 
 #endregion

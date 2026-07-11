@@ -116,7 +116,7 @@ func _get_value_color(current: float, new_value: float, invert: bool = false) ->
 
 
 ## Evaluates overall equipment changes to trigger the upgrade icon.
-func evaluate_equipment_comparison(control: Control, current_actor: GameActor, current_stats: Dictionary, stats_structure: Dictionary, show_comparison: bool) -> void:
+func evaluate_equipment_comparison(control: Control, current_actor: GameActor, _current_stats: Dictionary, _stats_structure: Dictionary, show_comparison: bool) -> void:
 	var upgrade_node: TextureRect = null
 	if upgrade_icon_path != NodePath("") and control.has_node(upgrade_icon_path):
 		upgrade_node = control.get_node(upgrade_icon_path) as TextureRect
@@ -125,97 +125,11 @@ func evaluate_equipment_comparison(control: Control, current_actor: GameActor, c
 		_apply_evaluation_result(upgrade_node, -1, show_comparison)
 		return
 		
-	var class_id = current_actor.current_class
-	var weights: Dictionary
-	var current_class_data = RPGSYSTEM.get_data("classes", class_id)
-	
-	if current_class_data:
-		weights = current_class_data.weights
-	else:
-		weights = {
-			"HP": 1.5,
-			"MP": 1.0,
-			"ATK": 2.0,
-			"DEF": 1.8,
-			"MATK": 1.5,
-			"MDEF": 1.2,
-			"AGI": 1.3,
-			"LUCK": 0.8
-		}
+	var result: int = -1
+	if control and "_comparison_actor" in control and control._comparison_actor:
+		result = current_actor.compare_stats_to(control._comparison_actor)
 		
-	var main_stats = []
-	if stats_structure.has("Main Stats"):
-		main_stats = stats_structure["Main Stats"]
-		
-	if main_stats.is_empty() and RPGSYSTEM.database.types.main_parameters.size() >= 8:
-		for i in range(0, min(8, RPGSYSTEM.database.types.main_parameters.size())):
-			main_stats.append(RPGSYSTEM.database.types.main_parameters[i])
-			
-	var current_score = 0.0
-	var new_score = 0.0
-	var stats_found = 0
-	
-	var hp_current = 0
-	var hp_new = 0
-	if main_stats.size() > 0 and main_stats[0] in current_stats and current_stats[main_stats[0]] is Array:
-		hp_current = current_stats[main_stats[0]][0]
-		hp_new = current_stats[main_stats[0]][1]
-		
-	var hp_percentage = float(hp_new) / float(hp_current) if hp_current > 0 else 1.0
-	var is_hp_critical = hp_percentage <= 0.1
-	
-	var stat_name_mapping = {
-		0: "HP",
-		1: "MP",
-		2: "ATK",
-		3: "DEF",
-		4: "MATK",
-		5: "MDEF",
-		6: "AGI",
-		7: "LUCK"
-	}
-	
-	for i in range(main_stats.size()):
-		var stat_name = main_stats[i]
-		if stat_name in current_stats and current_stats[stat_name] is Array:
-			var current_val = current_stats[stat_name][0]
-			var new_val = current_stats[stat_name][1]
-			
-			var weight_key = stat_name_mapping.get(i, "HP")
-			var weight = weights.get(weight_key, 1.0)
-			
-			var current_weighted = current_val * weight
-			var new_weighted = new_val * weight
-			
-			if i == 0 and is_hp_critical:
-				var hp_difference = new_val - current_val
-				var penalty_multiplier = 1.0 + (7.0 * (0.1 - hp_percentage) / 0.1)
-				penalty_multiplier = min(penalty_multiplier, 8.0)
-				var critical_penalty = abs(hp_difference) * penalty_multiplier
-				new_weighted -= critical_penalty
-				
-			current_score += current_weighted
-			new_score += new_weighted
-			stats_found += 1
-			
-	if stats_found == 0:
-		_apply_evaluation_result(upgrade_node, -1, show_comparison)
-		return
-		
-	var score_difference = new_score - current_score
-	var current_is_better = 0
-	var tolerance = 2.0
-	
-	if is_hp_critical:
-		current_is_better = 1
-	elif abs(score_difference) <= tolerance:
-		current_is_better = -1
-	elif score_difference > 0:
-		current_is_better = 0
-	else:
-		current_is_better = 1
-		
-	_apply_evaluation_result(upgrade_node, current_is_better, show_comparison)
+	_apply_evaluation_result(upgrade_node, result, show_comparison)
 
 
 

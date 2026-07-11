@@ -235,10 +235,54 @@ func notify_location_reached(map_id: int) -> void:
 		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
 			var db_quest = _get_quest_from_database(active_quest.id)
 			
-			if db_quest and db_quest.type == RPGEnums.QuestMode.FIND_LOCATION:
-				if db_quest.item_id == map_id:
+			if db_quest:
+				if db_quest.type == RPGEnums.QuestMode.FIND_LOCATION:
+					if db_quest.item_id == map_id:
+						if show_debug_prints:
+							print("[QuestManager] FIND_LOCATION Objective met for Quest ID: ", active_quest.id)
+						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
+						objective_advanced = true
+				elif db_quest.type == RPGEnums.QuestMode.ESCORT_NPC:
+					# Completa solo si no hay una región específica (region_id == -1 o no definido)
+					var has_region = "region_id" in db_quest and db_quest.region_id >= 0
+					if db_quest.item_id == map_id and not has_region:
+						if show_debug_prints:
+							print("[QuestManager] ESCORT_NPC Map Objective met for Quest ID: ", active_quest.id)
+						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
+						objective_advanced = true
+					
+	for active_quest in active_quests.duplicate():
+		var parent_quest = _get_parent_active_quest(active_quest)
+		var check_id = parent_quest.id if parent_quest else active_quest.id
+		
+		if _is_cluster_ready_to_deliver(check_id):
+			var p_active = _get_active_quest_by_id(check_id)
+			var pquest = _get_owner_quest_configuration(p_active)
+			
+			if pquest and not _is_custom_page_valid(pquest.target_page):
+				if show_debug_prints:
+					print("[QuestManager] Deferred auto-delivery triggered for Quest ID: ", check_id)
+				complete_quest(p_active)
+				objective_advanced = true
+				
+	if objective_advanced:
+		_is_dirty = true
+
+
+
+## Notifies the QuestManager that the player has entered an EventRegion.
+func notify_region_entered(map_id: int, region_id: int) -> void:
+	var objective_advanced = false
+	
+	for active_quest in active_quests.duplicate():
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
+			var db_quest = _get_quest_from_database(active_quest.id)
+			
+			if db_quest and db_quest.type == RPGEnums.QuestMode.ESCORT_NPC:
+				# Target map must match and target region must match
+				if db_quest.item_id == map_id and "region_id" in db_quest and db_quest.region_id == region_id:
 					if show_debug_prints:
-						print("[QuestManager] FIND_LOCATION Objective met for Quest ID: ", active_quest.id)
+						print("[QuestManager] ESCORT_NPC Region Objective met for Quest ID: ", active_quest.id)
 						
 					active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
 					objective_advanced = true
@@ -278,6 +322,76 @@ func notify_enemy_killed(enemy_id: int, amount: int = 1) -> void:
 					
 					if show_debug_prints:
 						print("[QuestManager] BOUNTY_HUNTS progress updated for Quest ID: ", active_quest.id)
+						
+					if active_quest.current_progress >= 1.0:
+						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
+						
+						var parent_quest = _get_parent_active_quest(active_quest)
+						var check_id = parent_quest.id if parent_quest else active_quest.id
+						
+						if _is_cluster_ready_to_deliver(check_id):
+							var p_active = _get_active_quest_by_id(check_id)
+							var pquest = _get_owner_quest_configuration(p_active)
+							
+							if pquest and not _is_custom_page_valid(pquest.target_page):
+								complete_quest(p_active)
+								
+	if progress_made:
+		_is_dirty = true
+
+
+
+## Notifies the manager that an item has been crafted, updating CRAFT_ITEMS quests.
+func notify_item_crafted(item_id: int, amount: int = 1) -> void:
+	var progress_made = false
+	
+	for active_quest in active_quests.duplicate():
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
+			var db_quest = _get_quest_from_database(active_quest.id)
+			
+			if db_quest and db_quest.type == RPGEnums.QuestMode.CRAFT_ITEMS:
+				if db_quest.item_id == item_id:
+					var added_progress = float(amount) / float(db_quest.quantity)
+					active_quest.current_progress = clamp(active_quest.current_progress + added_progress, 0.0, 1.0)
+					progress_made = true
+					
+					if show_debug_prints:
+						print("[QuestManager] CRAFT_ITEMS progress updated for Quest ID: ", active_quest.id)
+						
+					if active_quest.current_progress >= 1.0:
+						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
+						
+						var parent_quest = _get_parent_active_quest(active_quest)
+						var check_id = parent_quest.id if parent_quest else active_quest.id
+						
+						if _is_cluster_ready_to_deliver(check_id):
+							var p_active = _get_active_quest_by_id(check_id)
+							var pquest = _get_owner_quest_configuration(p_active)
+							
+							if pquest and not _is_custom_page_valid(pquest.target_page):
+								complete_quest(p_active)
+								
+	if progress_made:
+		_is_dirty = true
+
+
+
+## Notifies the manager that an item has been extracted from a resource node, updating EXTRACTION_ITEMS quests.
+func notify_item_extracted(item_id: int, amount: int = 1) -> void:
+	var progress_made = false
+	
+	for active_quest in active_quests.duplicate():
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
+			var db_quest = _get_quest_from_database(active_quest.id)
+			
+			if db_quest and db_quest.type == RPGEnums.QuestMode.EXTRACTION_ITEMS:
+				if db_quest.item_id == item_id:
+					var added_progress = float(amount) / float(db_quest.quantity)
+					active_quest.current_progress = clamp(active_quest.current_progress + added_progress, 0.0, 1.0)
+					progress_made = true
+					
+					if show_debug_prints:
+						print("[QuestManager] EXTRACTION_ITEMS progress updated for Quest ID: ", active_quest.id)
 						
 					if active_quest.current_progress >= 1.0:
 						active_quest.status = RPGEnums.QuestStatus.COMPLETED_PENDING_DELIVERY
@@ -421,6 +535,7 @@ func complete_quest(quest: GameQuest, force_subquest_cleanup: bool = false, forc
 			if sub_active:
 				complete_quest(sub_active, true, is_repeatable)
 				
+	_remove_escorted_npc(quest.id)
 	setup_active_quest()
 	_is_dirty = true
 	
@@ -478,6 +593,7 @@ func fail_quest(quest: GameQuest, force_subquest_cleanup: bool = false, force_re
 			if sub_active:
 				fail_quest(sub_active, true, is_repeatable)
 				
+	_remove_escorted_npc(quest.id)
 	setup_active_quest()
 	_is_dirty = true
 	
@@ -491,6 +607,11 @@ func fail_quest(quest: GameQuest, force_subquest_cleanup: bool = false, force_re
 #region EVENT INTERACTION (INTERCEPTOR)
 ## Intercepts the player interaction with an event to manage quest flows.
 func manage_quest_for_event(event: IngameEvent) -> bool:
+	var standby_escort = get_active_standby_escort_quest_for(event)
+	if standby_escort:
+		recruit_escort_npc(event, standby_escort)
+		return true
+
 	var objective_advanced = false
 	
 	for active_quest in active_quests.duplicate():
@@ -530,6 +651,97 @@ func manage_quest_for_event(event: IngameEvent) -> bool:
 		return true
 		
 	return false
+
+
+
+## Returns whether the NPC target of an active escort quest has already been recruited (joined as follower).
+func is_event_recruited(event_uniq_id: int) -> bool:
+	if not GameManager.game_state or not "escorted_npcs" in GameManager.game_state:
+		return false
+	
+	for escorted in GameManager.game_state.escorted_npcs:
+		var quest_id = escorted.get("quest_id", -1)
+		var db_quest = _get_quest_from_database(quest_id)
+		if db_quest and db_quest.type == RPGEnums.QuestMode.ESCORT_NPC:
+			if db_quest.target_event and db_quest.target_event.event_id == event_uniq_id:
+				return true
+	return false
+
+
+
+## Finds if there is an active escort quest targeting this NPC where recruitment is pending (NPC is in standby).
+func get_active_standby_escort_quest_for(event: IngameEvent) -> GameQuest:
+	for active_quest in active_quests:
+		if active_quest.status == RPGEnums.QuestStatus.ACTIVE:
+			var db_quest = _get_quest_from_database(active_quest.id)
+			if db_quest and db_quest.type == RPGEnums.QuestMode.ESCORT_NPC:
+				if db_quest.target_event and db_quest.target_event.event_id == event.uniq_id:
+					if not is_event_recruited(event.uniq_id):
+						return active_quest
+	return null
+
+
+
+## Executes standby dialogue commands, recruits the NPC as follower, hides it, and updates visuals.
+func recruit_escort_npc(ingame_event: IngameEvent, active_quest: GameQuest) -> void:
+	var db_quest = _get_quest_from_database(active_quest.id)
+	if not db_quest:
+		return
+		
+	var target_ev = db_quest.target_event
+	var char_type = 0
+	var char_path = ""
+	var char_region = Rect2()
+	var commands: Array[RPGEventCommand] = []
+	
+	var file_path = "res://data/MapEvents/Map_%s_events.tres" % str(target_ev.map_id)
+	if ResourceLoader.exists(file_path):
+		var events_res = load(file_path)
+		if events_res:
+			var rpg_ev = events_res.get_event_by_uniq_id(target_ev.event_id)
+			if rpg_ev:
+				var page_idx = target_ev.event_page_id
+				var rpg_page = null
+				if page_idx >= 0 and page_idx < rpg_ev.pages.size():
+					rpg_page = rpg_ev.pages[page_idx]
+				elif rpg_ev.pages.size() > 0:
+					rpg_page = rpg_ev.pages[0]
+				if rpg_page:
+					char_type = rpg_page.character_type
+					char_path = rpg_page.character_path
+					char_region = rpg_page.character_region
+					commands = rpg_page.list
+	
+	var interpreter_id = "escort_recruit_" + str(ingame_event.uniq_id)
+	if not commands.is_empty():
+		await GameInterpreter.start_event(ingame_event.lpc_event, commands, false, interpreter_id)
+	
+	var npc_data = {
+		"character_type": char_type,
+		"character_path": char_path,
+		"character_region": [char_region.position.x, char_region.position.y, char_region.size.x, char_region.size.y],
+		"quest_id": active_quest.id
+	}
+	
+	if GameManager.game_state:
+		var already_escorting = false
+		for item in GameManager.game_state.escorted_npcs:
+			if item.get("quest_id") == active_quest.id:
+				already_escorting = true
+				break
+		if not already_escorting:
+			GameManager.game_state.escorted_npcs.append(npc_data)
+			
+	if ingame_event.lpc_event and is_instance_valid(ingame_event.lpc_event):
+		if GameManager.current_map:
+			GameManager.current_map.remove_event_position_in_layout(ingame_event.lpc_event)
+		ingame_event.lpc_event.queue_free()
+		if GameManager.current_map_events:
+			GameManager.current_map_events.erase(ingame_event.uniq_id)
+			
+	if GameManager.main_scene and GameManager.main_scene.has_node("%PartyManager"):
+		var party_manager = GameManager.main_scene.get_node("%PartyManager")
+		party_manager.update_party_visuals(false)
 
 
 
@@ -1366,4 +1578,16 @@ func _get_history_key(event_uid: int, local_pquest_uid: int) -> String:
 		return str(local_pquest_uid)
 		
 	return str(event_uid) + "_" + str(local_pquest_uid)
+
+
+func _remove_escorted_npc(quest_id: int) -> void:
+	if GameManager.game_state:
+		var escorted = GameManager.game_state.escorted_npcs
+		for i in range(escorted.size() - 1, -1, -1):
+			if escorted[i].get("quest_id") == quest_id:
+				escorted.remove_at(i)
+		
+		if GameManager.main_scene and GameManager.main_scene.has_node("%PartyManager"):
+			var party_manager = GameManager.main_scene.get_node("%PartyManager")
+			party_manager.update_party_visuals(false)
 #endregion

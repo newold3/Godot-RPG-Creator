@@ -14,6 +14,7 @@ var quest_cache: Dictionary = {
 	"enemy_id": 1,
 	"enemy_quantity": 1,
 	"map_id": -1,
+	"region_id": -1,
 	"global_event": -1
 }
 
@@ -116,6 +117,7 @@ func clear_cache() -> void:
 	quest_cache.enemy_quantity = 1
 	quest_cache.map_id = -1
 	quest_cache.global_event = -1
+	quest_cache.region_id = -1
 
 
 func _update_data_fields() -> void:
@@ -130,19 +132,27 @@ func _update_data_fields() -> void:
 
 		if current_data.type == RPGEnums.QuestMode.TALK_TO_NPC:
 			quest_cache.npc_id = current_data.target_event.clone(true)
-		elif current_data.type == RPGEnums.QuestMode.GATHER_ITEM:
+		elif (
+			current_data.type == RPGEnums.QuestMode.GATHER_ITEM or
+			current_data.type == RPGEnums.QuestMode.CRAFT_ITEMS or
+			current_data.type == RPGEnums.QuestMode.EXTRACTION_ITEMS
+		):
 			quest_cache.item_type = current_data.item_type
 			match quest_cache.item_type:
 				0: quest_cache.item_id = current_data.item_id
 				1: quest_cache.weapon_id = current_data.item_id
 				2: quest_cache.armor_id = current_data.item_id
-				3: quest_cache.set_id = current_data.set_id
+				3: quest_cache.set_id = current_data.item_id # Or current_data.set_id
 			quest_cache.item_quantity = current_data.quantity
 			quest_cache.item_preserve = current_data.keep_materials
 		elif current_data.type == RPGEnums.QuestMode.BOUNTY_HUNTS:
 			quest_cache.enemy_id = current_data.enemy_id
 			quest_cache.enemy_quantity = current_data.quantity
 		elif current_data.type == RPGEnums.QuestMode.FIND_LOCATION:
+			quest_cache.map_id = current_data.item_id
+			quest_cache.global_event = current_data.global_event
+		elif current_data.type == RPGEnums.QuestMode.ESCORT_NPC:
+			quest_cache.npc_id = current_data.target_event.clone(true)
 			quest_cache.map_id = current_data.item_id
 			quest_cache.global_event = current_data.global_event
 		
@@ -230,7 +240,7 @@ func _on_type_options_item_selected(index: int) -> void:
 			current_data.quantity = quest_cache.enemy_quantity
 			
 			set_npc_name()
-		1:
+		1, 6, 7:
 			%ObjetiveParam1.visible = true
 			%ObjetiveParam3.visible = true
 			
@@ -263,8 +273,21 @@ func _on_type_options_item_selected(index: int) -> void:
 			
 			set_map_name()
 			set_global_event_name()
+		5:
+			%ObjetiveParam5.visible = true
+			%ObjetiveParam6.visible = true
+			%ObjetiveParam7.visible = true
+			
+			current_data.target_event = quest_cache.npc_id.clone(true)
+			current_data.item_id = quest_cache.map_id
+			current_data.region_id = quest_cache.region_id
+			current_data.global_event = quest_cache.global_event
+			
+			set_npc_name()
+			set_area_map_name()
+			set_global_event_name()
 	
-	if index < 4:
+	if index != 4:
 		%ParametersLabel.visible = true
 
 
@@ -533,6 +556,31 @@ func set_map_name() -> void:
 		%TargetMap.text = tr("Select Map")
 
 
+func set_area_map_name() -> void:
+	var node = %TargetMap
+	
+	var map_id = get_data().item_id
+	var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
+	var text: String = ""
+	
+	if map_name or RPGSYSTEM.map_infos.get_map_by_id(map_id):
+		text = "Map: < %s >" % (map_name if not map_name.is_empty() else map_id)
+	else:
+		text = tr("Select Map")
+	
+	var region_id = get_data().region_id
+	var region_name: String = ""
+	
+	if region_id >= 0:
+		region_name = RPGSYSTEM.map_infos.get_event_region_name(map_id, region_id)
+		if region_name.is_empty():
+			region_name = "#%s" % region_id
+		%TargetMap.text = text + " " + tr("Region") + ": " + region_name
+	else:
+		region_name = tr("No region needed")
+		%TargetMap.text = text + " (" + region_name + ")"
+
+
 func set_global_event_name() -> void:
 	var current_data = get_data()
 	var global_event_id = current_data.global_event
@@ -556,6 +604,7 @@ func _on_item_type_options_item_selected(index: int) -> void:
 		else quest_cache.weapon_id if index == 1 \
 		else quest_cache.armor_id if index == 2 \
 		else quest_cache.set_id
+	
 	
 	set_item_name(index, get_data().item_id)
 
@@ -629,14 +678,27 @@ func _on_target_map_pressed() -> void:
 	var path = "res://addons/CustomControls/Dialogs/select_map_dialog.tscn"
 	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 	
-	dialog.set_selected(get_data().item_id)
-	
-	dialog.selected_item.connect(
-		func(index):
-			quest_cache.map_id = index
-			get_data().item_id = index
-			set_map_name()
-	)
+	if %TypeOptions.get_selected_id() == 5:
+		dialog.enable_areas(true)
+		dialog.set_selected(get_data().item_id, get_data().region_id)
+		
+		dialog.area_selected.connect(
+			func(map_id: int, region_id: int):
+				quest_cache.map_id = map_id
+				quest_cache.region_id = region_id
+				get_data().item_id = map_id
+				get_data().region_id = region_id
+				set_area_map_name()
+		)
+	else:
+		dialog.set_selected(get_data().item_id)
+		
+		dialog.selected_item.connect(
+			func(index):
+				quest_cache.map_id = index
+				get_data().item_id = index
+				set_map_name()
+		)
 
 
 func _on_target_event_pressed() -> void:

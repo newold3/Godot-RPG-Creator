@@ -142,6 +142,8 @@ func setup_events() -> void:
 					events_to_spawn.append(found_event.duplicate(true))
 	
 	for ev: RPGEvent in events_to_spawn:
+		if QuestManager.is_event_recruited(ev._uniq_id):
+			continue
 		ev.initialize_page_ids()
 		var page: RPGEventPage = ev.get_active_page()
 		

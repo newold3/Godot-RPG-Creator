@@ -769,6 +769,110 @@ func get_skills() -> Dictionary:
 
 
 
+## Compares this actor's stats against another actor's stats (usually a duplicate with different equipment)
+## using the class weights, HP critical penalty, and tolerance.
+## Returns one of RPGEnums.EquipComparison values: EQUAL (-1), UPGRADE (0), DOWNGRADE (1).
+func compare_stats_to(other_actor: GameActor) -> int:
+	var class_id = current_class
+	var weights: Dictionary = {}
+	var current_class_data = RPGSYSTEM.get_data("classes", class_id)
+	
+	if current_class_data:
+		weights = current_class_data.weights
+	else:
+		weights = {
+			"HP": 1.5,
+			"MP": 1.0,
+			"ATK": 2.0,
+			"DEF": 1.8,
+			"MATK": 1.5,
+			"MDEF": 1.2,
+			"AGI": 1.3,
+			"LUCK": 0.8
+		}
+		
+	var main_stats: Array = []
+	var display_names = RPGSYSTEM.database.types.main_parameters
+	var internal_keys = RPGActor.get_parameter_list(true)
+	
+	var base_keys: Array = []
+	for k in internal_keys:
+		if k != "":
+			base_keys.append(k)
+			if base_keys.size() == 8:
+				break
+				
+	for i in range(min(8, display_names.size())):
+		if i < base_keys.size():
+			main_stats.append({
+				"name": display_names[i],
+				"internal": base_keys[i]
+			})
+			
+	var current_score: float = 0.0
+	var new_score: float = 0.0
+	var stats_found: int = 0
+	
+	var hp_current: float = 0.0
+	var hp_new: float = 0.0
+	
+	if main_stats.size() > 0:
+		var hp_key = main_stats[0]["internal"]
+		hp_current = get_parameter(hp_key)
+		hp_new = other_actor.get_parameter(hp_key)
+		
+	var hp_percentage: float = float(hp_new) / float(hp_current) if hp_current > 0 else 1.0
+	var is_hp_critical: bool = hp_percentage <= 0.1
+	
+	var stat_name_mapping: Dictionary = {
+		0: "HP",
+		1: "MP",
+		2: "ATK",
+		3: "DEF",
+		4: "MATK",
+		5: "MDEF",
+		6: "AGI",
+		7: "LUCK"
+	}
+	
+	for i in range(main_stats.size()):
+		var internal_key = main_stats[i]["internal"]
+		var current_value = get_parameter(internal_key)
+		var new_value = other_actor.get_parameter(internal_key)
+		
+		var weight_key = stat_name_mapping.get(i, "HP")
+		var weight: float = weights.get(weight_key, 1.0)
+		
+		var current_weighted: float = current_value * weight
+		var new_weighted: float = new_value * weight
+		
+		if i == 0 and is_hp_critical:
+			var hp_difference: float = new_value - current_value
+			var penalty_multiplier: float = 1.0 + (7.0 * (0.1 - hp_percentage) / 0.1)
+			penalty_multiplier = min(penalty_multiplier, 8.0)
+			var critical_penalty: float = abs(hp_difference) * penalty_multiplier
+			new_weighted -= critical_penalty
+			
+		current_score += current_weighted
+		new_score += new_weighted
+		stats_found += 1
+		
+	if stats_found == 0:
+		return RPGEnums.EquipComparison.EQUAL
+		
+	var score_difference: float = new_score - current_score
+	var tolerance: float = 2.0
+	
+	if is_hp_critical:
+		return RPGEnums.EquipComparison.DOWNGRADE
+	elif abs(score_difference) <= tolerance:
+		return RPGEnums.EquipComparison.EQUAL
+	elif score_difference > 0:
+		return RPGEnums.EquipComparison.UPGRADE
+	else:
+		return RPGEnums.EquipComparison.DOWNGRADE
+
+
 #region Utility
 ## Returns the string representation of the object.
 func _to_string() -> String:

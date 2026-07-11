@@ -20,6 +20,8 @@ func _ready() -> void:
 	setup_effects()
 	set_process(false)
 	scroll_finished.connect(end)
+	if RPGDialogFunctions.there_are_any_dialog_open():
+		start()
 
 
 func setup_effects():
@@ -47,7 +49,7 @@ func _process(delta: float) -> void:
 	var current_speed: float = speed
 	if config.get("enable_fast_forward", true):
 		if Input.is_action_pressed("ui_select"):
-			current_speed = speed * config.get("multiply_value", 2.5)
+			current_speed = speed * config.get("multiply_speed", 2.5)
 	message_container.position.y += current_speed * delta
 	if (
 		(direction == 0 and message_container.position.y <= -message.get_content_height()) or

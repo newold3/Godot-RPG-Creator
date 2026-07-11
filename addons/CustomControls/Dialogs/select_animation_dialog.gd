@@ -47,7 +47,7 @@ func fill_files() -> void:
 	
 	if !FileCache.cache_setted:
 		FileCache.rescan_files()
-		await FileCache.cache_setted
+		await StaticSignal.wait_for("_cache_ready")
 	var file_id = "animations"
 	if file_id in FileCache.cache:
 		files.append_array(FileCache.cache[file_id].keys())

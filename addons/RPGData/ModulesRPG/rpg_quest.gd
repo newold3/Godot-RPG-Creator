@@ -88,6 +88,9 @@ const ItemType = RPGEnums.QuestItemType
 ## ID of the selected item/map.
 @export var item_id: int = -1
 
+## ID used to identify the required area when the mission type is set to Escort.
+@export var region_id: int = -1
+
 ## ID of the selected enemy.
 @export var enemy_id: int = -1
 

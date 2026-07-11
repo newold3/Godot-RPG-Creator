@@ -451,6 +451,8 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 			_:
 				raw_items.append_array(_extract_items_from_dict(state.items))
 				
+		var grouped_items: Dictionary = {}
+		
 		for item in raw_items:
 			var real_data = item.get_real_data()
 			if not real_data or (real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or (real_data is RPGItem and real_data.item_category != 1 and collection == 5):
@@ -480,46 +482,56 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				
 			var item_qty = 1 if is_perish else item.quantity
 			
-			var icon: RPGIcon
-			if real_data is RPGCostume:
-				var path = real_data.lpc_part
-				var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
-				icon = RPGIcon.new(preview_path)
-			elif "icon" in real_data:
-				icon = real_data.icon
-			else:
-				icon = RPGIcon.new()
-
-			var dict_item = {
-				"item": item,
-				"real_item": real_data,
-				"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
-				"icon": icon,
-				"item_color": _get_item_color_for_item(real_data),
-				"quantity": item_qty,
-				"item_type": item_type,
-				"item_id": item.id,
-				"is_disabled": is_disabled,
-				"is_new": item.newly_added,
-				"date_added": item.last_added_date,
-				"is_perishable": is_perish,
-				"lifetime": life,
-				"max_lifetime": max_life,
-				"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,
-				"description": real_data.description
-			}
-			
-			if real_data is RPGItem:
-				var scope: RPGScope = real_data.scope
-				var target_id = SCOPE.ONE if scope.number == 0 \
-					else SCOPE.ALL if scope.number == 1 \
-					else SCOPE.RANDOM
-				var targets_amount = scope.random
-				dict_item["target_id"] = target_id
-				dict_item["targets_amount"] = targets_amount
-				dict_item["scope_status"] = scope.status
+			var current_exp = item.get("current_experience") if "current_experience" in item else 0
+			var group_key = str(item_type) + "_" + str(item.id) + "_" + str(level) + "_" + str(current_exp) + "_" + str(equipped)
+			if is_perish:
+				group_key += "_" + str(item.get_instance_id())
 				
-			items.append(dict_item)
+			if grouped_items.has(group_key):
+				grouped_items[group_key]["quantity"] += item_qty
+			else:
+				var icon: RPGIcon
+				if real_data is RPGCostume:
+					var path = real_data.lpc_part
+					var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+					icon = RPGIcon.new(preview_path)
+				elif "icon" in real_data:
+					icon = real_data.icon
+				else:
+					icon = RPGIcon.new()
+
+				var dict_item = {
+					"item": item,
+					"real_item": real_data,
+					"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped,
+					"icon": icon,
+					"item_color": _get_item_color_for_item(real_data),
+					"quantity": item_qty,
+					"item_type": item_type,
+					"item_id": item.id,
+					"is_disabled": is_disabled,
+					"is_new": item.newly_added,
+					"date_added": item.last_added_date,
+					"is_perishable": is_perish,
+					"lifetime": life,
+					"max_lifetime": max_life,
+					"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,
+					"description": real_data.description
+				}
+				
+				if real_data is RPGItem:
+					var scope: RPGScope = real_data.scope
+					var target_id = SCOPE.ONE if scope.number == 0 \
+						else SCOPE.ALL if scope.number == 1 \
+						else SCOPE.RANDOM
+					var targets_amount = scope.random
+					dict_item["target_id"] = target_id
+					dict_item["targets_amount"] = targets_amount
+					dict_item["scope_status"] = scope.status
+					
+				grouped_items[group_key] = dict_item
+				
+		items = grouped_items.values()
 			
 	if not previous_list.is_empty():
 		var new_ordered_list: Array = []
@@ -642,6 +654,8 @@ func get_equippable_items(actor: GameActor, slot_id: int, sort_mode: int = 0, in
 		if actor.current_gear.size() > slot_id:
 			current_equipped = actor.current_gear[slot_id]
 			
+	var grouped_items: Dictionary = {}
+	
 	for item in raw_items:
 		var item_total_equipped = item.get("total_equipped", 0) if "total_equipped" in item else 0
 		var available_qty = item.quantity - item_total_equipped
@@ -664,39 +678,47 @@ func get_equippable_items(actor: GameActor, slot_id: int, sort_mode: int = 0, in
 			
 		var item_type: int = 3 if is_set else (1 if is_weapon else 2)
 		var level = -1 if not "current_level" in item else item.current_level
+		var current_exp = item.get("current_experience", 0) if "current_experience" in item else 0
 		
-		var icon: RPGIcon
-		
-		if real_data is RPGCostume:
-			var path = real_data.lpc_part
-			var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
-			icon = RPGIcon.new(preview_path)
-		elif "icon" in real_data:
-			icon = real_data.icon
-		else:
-			icon = RPGIcon.new()
-			
+		var group_key = str(item.id) + "_" + str(level) + "_" + str(current_exp) + "_" + str(is_equipped_by_me)
 		var display_qty = available_qty + (1 if is_equipped_by_me else 0)
-		var equipped_text = " E" if is_equipped_by_me else ""
-		var date_add = item.last_added_date if "last_added_date" in item else 0
-		var is_new_item = item.newly_added if "newly_added" in item else false
 		
-		items.append({
-			"item": item,
-			"real_item": real_data,
-			"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped_text,
-			"icon": icon,
-			"item_color": _get_item_color_for_item(real_data),
-			"quantity": display_qty,
-			"item_type": item_type,
-			"item_id": item.id,
-			"is_disabled": false,
-			"is_new": is_new_item,
-			"date_added": date_add,
-			"is_equipped": is_equipped_by_me,
-			"is_remove_option": false,
-			"description": real_data.description if "description" in real_data else ""
-		})
+		if grouped_items.has(group_key):
+			grouped_items[group_key]["quantity"] += display_qty
+		else:
+			var icon: RPGIcon
+			
+			if real_data is RPGCostume:
+				var path = real_data.lpc_part
+				var preview_path = path.get_basename().trim_suffix("_data") + "_preview.png"
+				icon = RPGIcon.new(preview_path)
+			elif "icon" in real_data:
+				icon = real_data.icon
+			else:
+				icon = RPGIcon.new()
+				
+			var equipped_text = " E" if is_equipped_by_me else ""
+			var date_add = item.last_added_date if "last_added_date" in item else 0
+			var is_new_item = item.newly_added if "newly_added" in item else false
+			
+			grouped_items[group_key] = {
+				"item": item,
+				"real_item": real_data,
+				"name": real_data.name + (" ⬥" + str(level) if level != -1 else "") + equipped_text,
+				"icon": icon,
+				"item_color": _get_item_color_for_item(real_data),
+				"quantity": display_qty,
+				"item_type": item_type,
+				"item_id": item.id,
+				"is_disabled": false,
+				"is_new": is_new_item,
+				"date_added": date_add,
+				"is_equipped": is_equipped_by_me,
+				"is_remove_option": false,
+				"description": real_data.description if "description" in real_data else ""
+			}
+			
+	items.append_array(grouped_items.values())
 		
 	var sort_func: Callable
 	match sort_mode:
