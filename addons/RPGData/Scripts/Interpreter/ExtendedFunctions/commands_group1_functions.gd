@@ -428,11 +428,94 @@ func _command_0009() -> void:
 # Code 10 (Parent) parameters: { scroll_speed, scroll_direction, scroll_scene, enable_fast_forward }
 # Code 11 (Scrolling Text Line) parameters: { line }
 func _command_0010() -> void:
-	debug_print("Command 10 is not implemented")
+	debug_print("Processing command: Scrolling Dialog (code 10)")
+	
+	if not GameManager.over_message_layer:
+		return
+	
+	# Collect all text lines from the following code-11 commands
+	var current_index = current_interpreter.command_index + 1
+	var lines: PackedStringArray = []
+	while true:
+		var cmd = current_interpreter.get_command(current_index)
+		if not cmd:
+			break
+		if cmd.get("ignore_command"):
+			current_index += 1
+			continue
+		if cmd.code == 11:
+			lines.append(cmd.parameters.get("line", ""))
+		else:
+			break
+		current_index += 1
+	
+	# Advance the interpreter past the collected lines
+	current_interpreter.go_to(current_index - 1)
+	
+	# Determine the scroll scene to use
+	var config: Dictionary = current_command.parameters.duplicate()
+	var scene_path: String = str(config.get("scroll_scene", ""))
+	if not ResourceLoader.exists(scene_path):
+		scene_path = "res://Scenes/DialogTemplates/scroll_scene_1.tscn"
+	
+	if not ResourceLoader.exists(scene_path):
+		return
+	
+	# Instantiate and configure the scroll scene
+	var scene: ScrollText = load(scene_path).instantiate()
+	GameManager.over_message_layer.add_child(scene)
+	scene.set_config(config)
+	scene.set_text("\n".join(lines))
+	
+	# Wait until the scene removes itself (end() calls queue_free)
+	await scene.tree_exited
 
 
 # Command Instant Text (Codes 34, 35)
 # Code 34 (Line 1) parameters: { first_line }
 # Code 35 (All other lines) parameters: { line }
 func _command_0034() -> void:
-	debug_print("Command 34 is not implemented")
+	debug_print("Processing command: Instant Text (code 34)")
+	
+	if not GameManager.over_message_layer:
+		return
+	
+	# Collect all text lines: first_line from code-34, then line from code-35 siblings
+	var lines: PackedStringArray = []
+	lines.append(current_command.parameters.get("first_line", ""))
+	
+	var current_index = current_interpreter.command_index + 1
+	while true:
+		var cmd = current_interpreter.get_command(current_index)
+		if not cmd:
+			break
+		if cmd.get("ignore_command"):
+			current_index += 1
+			continue
+		if cmd.code == 35:
+			lines.append(cmd.parameters.get("line", ""))
+		else:
+			break
+		current_index += 1
+	
+	# Advance the interpreter past the collected lines
+	current_interpreter.go_to(current_index - 1)
+	
+	# Determine the instant text scene to use (reads from current message config)
+	var message_config: Dictionary = GameManager.game_state.current_message_config
+	var scene_path: String = str(message_config.get("instant_scene", ""))
+	if not ResourceLoader.exists(scene_path):
+		scene_path = "res://Scenes/DialogTemplates/instant_text_scene1.tscn"
+	
+	if not ResourceLoader.exists(scene_path):
+		return
+	
+	# Instantiate and configure the instant text scene
+	var scene: InstantText = load(scene_path).instantiate()
+	GameManager.over_message_layer.add_child(scene)
+	scene.set_config(message_config)
+	scene.set_text("\n".join(lines))
+	scene.start()
+	
+	# Wait until the scene removes itself (end() calls queue_free)
+	await scene.tree_exited

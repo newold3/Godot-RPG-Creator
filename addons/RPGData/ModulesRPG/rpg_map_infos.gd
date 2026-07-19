@@ -314,6 +314,18 @@ func update_single_event(map_id: int, event: RPGEvent) -> void:
 
 #region GETTERS
 
+## Get the list of maps added to the project (list of unique IDs).
+func get_map_list() -> PackedInt64Array:
+	var list: PackedInt64Array = []
+	for map_path in map_ids.keys():
+		var id = map_ids[map_path]
+		# ignore core maps
+		if id in [8600607177269889, 8017326834547071]: continue
+		list.append(id)
+
+	return list
+
+
 ## Returns the map name given its file path.
 func get_map_name_from_path(map_path: String) -> String:
 	return map_names.get(map_path, "")

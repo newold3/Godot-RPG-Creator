@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://xmhssbwputj2"]
+
+[ext_resource type="Script" uid="uid://daxmb40ulljbf" path="res://addons/CustomControls/Dialogs/preview_instant_text_scene_dialog.gd" id="1_oifhi"]
+[ext_resource type="PackedScene" uid="uid://ds36c2ttavkme" path="res://Scenes/DialogTemplates/instant_text_scene1.tscn" id="2_oifhi"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_tcwic"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_arebi"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="5_k4kwn"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_2fdg3"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_8ksmb"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="8_fyqbh"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ptt5k"]
+
+[sub_resource type="Gradient" id="Gradient_iupmq"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_45mwd"]
+gradient = SubResource("Gradient_iupmq")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g4v7s"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_861fj"]
+texture = ExtResource("4_arebi")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fjntg"]
+texture = ExtResource("5_k4kwn")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kcofd"]
+texture = ExtResource("6_2fdg3")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pygfq"]
+texture = ExtResource("7_8ksmb")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wppfp"]
+atlas = ExtResource("8_fyqbh")
+region = Rect2(72, 48, 24, 24)
+
+[node name="PreviewInstantTextSceneDialog" type="Window" unique_id=1231842085]
+oversampling_override = 1.0
+title = "Preview Scroll Scene"
+position = Vector2i(0, 36)
+size = Vector2i(800, 600)
+always_on_top = true
+script = ExtResource("1_oifhi")
+
+[node name="Background" type="TextureRect" parent="." unique_id=411841346]
+material = SubResource("CanvasItemMaterial_ptt5k")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_45mwd")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=645929886]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=432759910]
+layout_mode = 2
+
+[node name="SceneContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=968517860]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_g4v7s")
+
+[node name="InstantTextScene" parent="MarginContainer/VBoxContainer/SceneContainer" unique_id=863801373 instance=ExtResource("2_oifhi")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=957179809]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1531828082]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+alignment = 1
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1872226579 instance=ExtResource("3_tcwic")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_861fj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fjntg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kcofd")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_pygfq")
+text = "Close Window"
+
+[node name="RepeatButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1297376116 instance=ExtResource("3_tcwic")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(39, 0)
+layout_mode = 2
+tooltip_text = "[title]Repeat Effect[/title]
+Repeat Scroll Effect"
+theme_override_styles/normal = SubResource("StyleBoxTexture_861fj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fjntg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_kcofd")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_pygfq")
+text = "
+"
+icon = SubResource("AtlasTexture_wppfp")
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/RepeatButton" to="." method="_on_repeat_button_pressed"]

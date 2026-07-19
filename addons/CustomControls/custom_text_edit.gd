@@ -38,6 +38,12 @@ func disabled_expand_icon() -> void:
 	queue_redraw()
 
 
+func enable_expand_icon() -> void:
+	show_expand_icon = true
+	set_process_input(true)
+	queue_redraw()
+
+
 func _process(delta: float) -> void:
 	if select_all_delay > 0:
 		select_all_delay -= delta
@@ -56,6 +62,7 @@ func set_disabled(value: bool) -> void:
 			text = get_meta("original_text")
 		if back_normal_style:
 			set("theme_override_styles/normal", back_normal_style)
+		enable_expand_icon()
 	else:
 		set_selecting_enabled(false)
 		set_process_input(false)
@@ -65,6 +72,7 @@ func set_disabled(value: bool) -> void:
 		if not back_normal_style:
 			back_normal_style = get("theme_override_styles/normal")
 		set("theme_override_styles/normal", StyleBoxEmpty.new())
+		disabled_expand_icon()
 
 
 func _on_focus_entered() -> void:

@@ -232,6 +232,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	RPGMapsInfo.map_infos.get_map_list()
 	MAP_LAYERS = {
 		"ground": find_child("GroundBase"),
 		"ground_detail": find_child("GroundDetail"),

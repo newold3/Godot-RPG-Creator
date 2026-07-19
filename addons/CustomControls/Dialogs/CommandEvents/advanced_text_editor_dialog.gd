@@ -163,7 +163,7 @@ func set_instant_text_mode_dialog() -> void:
 	for b in buttons:
 		b.visible = false
 	title = TranslationManager.tr("Instant Text Editor")
-	%PreviewScrollText.visible = true
+	%PreviewInstantText.visible = true
 	%BottomButtonContainer.visible = true
 	%InitialConfigContainer.visible = false
 	%ScrollConfigContainer.visible = false
@@ -184,6 +184,25 @@ func set_fast_edit_text(text: String) -> void:
 	%Target.visible = false
 	%InstantText.visible = false
 	%NowaitForInput.visible = false
+
+
+## Configures the editor in Dialog Manager mode.
+## Injects the full parent command data (face, name, position, scroll config, etc.)
+## and hides preview controls that are not applicable in this context.
+## [param mode]: 0 = normal dialog, 1 = scrolling text, 2 = instant text.
+func set_dialog_manager_mode(mode: int) -> void:
+	fast_text_enabled = false
+	if mode == 1:
+		set_scroll_mode_dialog()
+	elif mode == 2:
+		set_instant_text_mode_dialog()
+	
+	var nodes = [
+		%DisplayAsFloatingDialog, %Target, %InstantText,
+		%NowaitForInput, %BottomButtonContainer
+	]
+	for node in nodes:
+		node.propagate_call("set_disabled", [true])
 
 
 func set_parameters(_parameters: Array[RPGEventCommand]) -> void:
@@ -1847,7 +1866,7 @@ func _on_preview_instant_text_pressed() -> void:
 	propagate_call("apply")
 
 	if !preview_message_dialog:
-		var path = "res://addons/CustomControls/Dialogs/preview_scroll_scene_dialog.tscn"
+		var path = "res://addons/CustomControls/Dialogs/preview_instant_text_scene_dialog.tscn"
 		showing_preview_window = true
 		preview_message_dialog = load(path).instantiate()
 		preview_message_dialog.tree_exited.connect(

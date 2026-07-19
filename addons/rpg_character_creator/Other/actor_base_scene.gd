@@ -95,7 +95,7 @@ func maintain_current_look() -> void:
 
 
 func _process(delta: float) -> void:
-	if busy2: return
+	if busy2 or GameInterpreter.is_busy(): return
 	super(delta)
 	if GameManager.loading_game or is_invalid_event:
 		return
@@ -164,7 +164,7 @@ func _process(delta: float) -> void:
 
 ## Handles player input events for movement cancellation and interaction
 func _input(event: InputEvent) -> void:
-	if GameManager.loading_game or is_invalid_event:
+	if GameManager.loading_game or is_invalid_event or GameInterpreter.is_busy():
 		return
 
 	if event.is_action_pressed("ui_up") or event.is_action_pressed("ui_down") or event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right") or event.is_action_pressed("ui_select"):

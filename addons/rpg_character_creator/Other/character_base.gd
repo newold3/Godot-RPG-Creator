@@ -198,6 +198,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameInterpreter.is_busy(): return
+	
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
 		if is_dual_animation:
 			disable_dual_animation()
