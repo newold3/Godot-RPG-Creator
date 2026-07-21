@@ -2,6 +2,8 @@
 
 **An Open Source tool to create your own RPGs, built with Godot Engine.**
 
+❗Important: To test the latest version, download the development branch.
+
 > ⚠️ **STATUS: ALPHA**
 > This project is currently in an early development stage (Alpha). It is functional but may contain bugs, incomplete features, or mechanics subject to change. Use it at your own risk and remember to make backups!
 > Until we reach the beta phase, it won’t be safe to start any project. But you can try these alpha versions to give me feedback on whether you like the added systems, report any bugs that appear, or any strange behavior.
