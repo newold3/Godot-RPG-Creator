@@ -5,7 +5,8 @@ var material_map: Dictionary = {
 	"water": preload("uid://us28d63nntdh"),
 	"💧": preload("uid://us28d63nntdh"),
 	"lava": "res://shaders/lava_material.tres",
-	"🔥": "res://shaders/lava_material.tres"
+	"🔥": "res://shaders/lava_material.tres",
+	"wind": preload("uid://bulxm6s15hff0")
 }
 
 

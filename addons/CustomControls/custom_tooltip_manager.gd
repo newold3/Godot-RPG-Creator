@@ -390,7 +390,7 @@ func _create_tooltip(title: String, contents: String, parent_node) -> void:
 			if color_index and TOOLTIP_COLORS.size() > int(color_index):
 				current_color = TOOLTIP_COLORS[int(color_index)].to_html()
 			var t = m.get_string()
-			if !"table=" in t and !"color=" in t and !"[cell]" in t and !"[ul]" in t and !"[/" in t:
+			if !"table=" in t and !"color=" in t and !"[cell]" in t and !"[ul]" in t and !"[/" in t and !"[ol]" in t:
 				var t2 = m.get_string(2)
 				formatted_contents = formatted_contents.replace(t, "[color=%s]%s[/color]" % [current_color, t2])
 				

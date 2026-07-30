@@ -1,93 +1,43 @@
+// original wind shader from https://github.com/Maujoe/godot-simple-wind-shader-2d/tree/master/assets/maujoe.simple_wind_shader_2d
+// original script modified by HungryProton so that the assets are moving differently : https://pastebin.com/VL3AfV8D
+//
+// speed - The speed of the wind movement.
+// minStrength - The minimal strength of the wind movement.
+// maxStrength - The maximal strength of the wind movement.
+// strengthScale - Scalefactor for the wind strength.
+// interval - The time between minimal and maximal strength changes.
+// detail - The detail (number of waves) of the wind movement.
+// distortion - The strength of geometry distortion.
+// heightOffset - The height where the wind begins to move. By default 0.0.
+
 shader_type canvas_item;
 render_mode blend_mix;
 
-uniform bool pixel_mode = true;
-uniform float pixel_amount = 32.0;
-uniform float distortion : hint_range(0.0, 0.1) = 0.01;
+// Wind settings.
+uniform float speed = 1.0;
+uniform float minStrength : hint_range(0.0, 1.0) = 0.05;
+uniform float maxStrength : hint_range(0.0, 1.0) = 0.01;
+uniform float strengthScale = 100.0;
+uniform float interval = 3.5;
+uniform float detail = 1.0;
+uniform float distortion : hint_range(0.0, 1.0);
+uniform float heightOffset : hint_range(0.0, 1.0);
 
-/// Noise Texture System
-uniform bool texture_noise_system = true;
-uniform float noise_speed = 1.0;
-uniform int noise_direction : hint_range(-1, 1) = -1;
-uniform sampler2D noise_texture : source_color ,repeat_enable;
+// With the offset value, you can if you want different moves for each asset. Just put a random value (1, 2, 3) in the editor. Don't forget to mark the material as unique if you use this
+uniform float offset = 0; 
 
-/// Worley System
-uniform bool worley_noise_system = false;
-uniform float worley_cell_density = 10.0;
-uniform float worley_speed = 2.0;
 
-/// Bordes Effect
-uniform sampler2D mask_texture : source_color, filter_nearest;
-uniform bool edge_and_mask = false;
-uniform float alpha_value : hint_range(0.0, 1.0) = 1.0;
-
-/// Worley Methods
-vec2 random(vec2 uv) {
-	return vec2(fract(sin(dot(uv.xy,
-		vec2(12.9898,78.233))) * 43758.5453123));
+float getWind(vec2 vertex, vec2 uv, float time){
+    float diff = pow(maxStrength - minStrength, 2.0);
+    float strength = clamp(minStrength + diff + sin(time / interval) * diff, minStrength, maxStrength) * strengthScale;
+    float wind = (sin(time) + cos(time * detail)) * strength * max(0.0, (1.0-uv.y) - heightOffset);
+    
+    return wind; 
 }
 
-float worley(vec2 uv, float columns, float rows, float time) {
-
-	vec2 index_uv = floor(vec2(uv.x * columns, uv.y * rows));
-	vec2 fract_uv = fract(vec2(uv.x * columns, uv.y * rows));
-
-	float minimum_dist = 1.0;
-
-	for (int y= -1; y <= 1; y++) {
-		for (int x= -1; x <= 1; x++) {
-			vec2 neighbor = vec2(float(x),float(y));
-			vec2 point = random(index_uv + neighbor);
-			point = vec2( cos(time * point.x * worley_speed), sin(time * point.y * worley_speed) ) * 0.5 + 0.5;
-
-			vec2 diff = neighbor + point - fract_uv;
-			float dist = length(diff);
-			minimum_dist = min(minimum_dist, dist);
-		}
-	}
-
-	return minimum_dist;
-}
-
-void fragment() {
-	vec4 uv_result = vec4(0.0);
-	vec2 uv;
-
-	/// Pixel Mode
-	if (pixel_mode){
-		uv = floor(UV * pixel_amount) / pixel_amount;
-	}else{
-		uv = UV;
-	}
-
-	/// Noise Texture System
-	if (texture_noise_system){
-		vec4 noise_uv = texture(noise_texture, uv + TIME * noise_speed * float(noise_direction));
-		uv_result += noise_uv;
-	}
-
-	/// Worley Noise System
-	if (worley_noise_system){
-		float worley = worley(uv, worley_cell_density, worley_cell_density, TIME);
-		vec4 result = texture(TEXTURE, vec2(worley));
-		uv_result += result;
-	}
-
-	/// Blend
-	vec2 noise_uv = mix(uv, uv_result.rg, distortion);
-
-	if (edge_and_mask){
-		vec4 base = texture(TEXTURE, uv);
-		vec4 blend = texture(mask_texture, noise_uv);
-
-		vec4 final_color = mix(base, blend, blend.a);
-
-		COLOR = final_color;
-		COLOR.a = (texture(TEXTURE, noise_uv).a) * alpha_value;
-	}
-	else
-	{
-		COLOR = texture(TEXTURE, noise_uv);
-		COLOR.a = (texture(TEXTURE, noise_uv).a) * alpha_value;
-	}
+void vertex() {
+    vec4 pos = MODEL_MATRIX * vec4(0.0, 0.0, 0.0, 1.0);
+    float time = TIME * speed + offset;
+    //float time = TIME * speed + pos.x * pos.y  ; not working when moving...
+    VERTEX.x += getWind(VERTEX.xy, UV, time);
 }

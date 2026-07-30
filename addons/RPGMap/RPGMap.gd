@@ -65,6 +65,8 @@ var selected_cursor: NinePatchRect
 
 var toggled_regions_button: Button
 
+var export_map_button: Button
+
 var scene_preview: Variant
 
 var floating_panel: PanelContainer
@@ -598,7 +600,6 @@ func _on_editor_selection_changed() -> void:
 		
 		if inspector and inspector.get_edited_object() != current_object:
 			busy = true
-			#EditorInterface.edit_node(current_object)
 			busy = false
 
 
@@ -695,6 +696,14 @@ func _enter_tree() -> void:
 	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, toggled_regions_button)
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(toggled_regions_button)
 	toggled_regions_button.visible = false
+	
+	var export_path = "res://addons/RPGMap/Scenes/export_map_button.tscn"
+	
+	export_map_button = load(export_path).instantiate()
+	export_map_button.pressed.connect(_on_export_map_pressed)
+	add_control_to_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, export_map_button)
+	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(export_map_button)
+	export_map_button.visible = false
 	
 	add_custom_type("RPGMap", "TileMap", preload("res://addons/RPGData/ModulesRPG/rpg_map.gd"), null)
 	get_tree().node_added.connect(_on_node_added)
@@ -934,6 +943,10 @@ func _exit_tree() -> void:
 	if toggled_regions_button:
 		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, toggled_regions_button)
 		toggled_regions_button.queue_free()
+		
+	if export_map_button:
+		remove_control_from_container(EditorPlugin.CONTAINER_CANVAS_EDITOR_MENU, export_map_button)
+		export_map_button.queue_free()
 		
 	if tile_popup_menu: tile_popup_menu.queue_free()
 	if extraction_tile_popup_menu: extraction_tile_popup_menu.queue_free()
@@ -1475,6 +1488,9 @@ func _make_visible(visible: bool) -> void:
 			var config = edit_configs.get(current_edit_mode)
 			if config and config.show_regions:
 				toggled_regions_button.visible = true
+				
+	if is_instance_valid(export_map_button):
+		export_map_button.visible = visible and current_object != null
 
 
 func deactivate_edit_mode_and_show_output() -> void:
@@ -1566,6 +1582,8 @@ func _edit(object: Object) -> void:
 			extraction_events_dock.close()
 			events_dock.close()
 		current_object = null
+		if is_instance_valid(export_map_button):
+			export_map_button.visible = false
 		return
 		
 	var is_same_map = (current_object == object)
@@ -1589,7 +1607,9 @@ func _edit(object: Object) -> void:
 		
 	if current_object:
 		initialize_state = 0
-		
+		if is_instance_valid(export_map_button):
+			export_map_button.visible = is_in_2d_screen
+			
 	if is_instance_valid(events_dock):
 		if current_object:
 			if not _current_floating_state:
@@ -1748,6 +1768,9 @@ func _handles(object: Object) -> bool:
 			
 		if is_instance_valid(toggled_regions_button):
 			toggled_regions_button.visible = false
+			
+		if is_instance_valid(export_map_button):
+			export_map_button.visible = false
 			
 		if current_object:
 			if "shadow_manager" in current_object and current_object.shadow_manager:
@@ -4466,4 +4489,139 @@ func cleanup_old_temp_files(max_age_seconds: int = 60) -> void:
 			
 		if current_time - file_time > max_age_seconds:
 			DirAccess.remove_absolute(file_path)
+#endregion
+
+
+#region Map Exporter
+
+## Triggered when the export map button is pressed
+func _on_export_map_pressed() -> void:
+	if current_object:
+		_export_map_to_images(current_object)
+
+
+
+## Gathers all TileMapLayer nodes recursively from the given node
+func _get_all_tilemap_layers(node: Node) -> Array[TileMapLayer]:
+	var layers: Array[TileMapLayer] = []
+	
+	if node is TileMapLayer:
+		layers.append(node)
+		
+	for child in node.get_children():
+		layers.append_array(_get_all_tilemap_layers(child))
+		
+	return layers
+
+
+
+## Exports the map layers into dynamic chunks and generates a JSON manifest
+func _export_map_to_images(map: RPGMap) -> void:
+	var layers = _get_all_tilemap_layers(map)
+	
+	if layers.is_empty():
+		print("No TileMapLayers found in the map.")
+		return
+		
+	var tile_size = map.tile_size if "tile_size" in map else Vector2i(32, 32)
+	var max_chunk_size = 1080
+	
+	var viewport = SubViewport.new()
+	
+	viewport.transparent_bg = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	
+	var base_control = EditorInterface.get_base_control()
+	
+	base_control.add_child(viewport)
+	
+	var json_data = {
+		"map_name": map.name,
+		"tile_size": {"x": tile_size.x, "y": tile_size.y},
+		"max_chunk_size": max_chunk_size,
+		"chunks": []
+	}
+	
+	var export_dir = "res://data/MapLayers/Map_" + str(map.internal_id)
+	
+	DirAccess.make_dir_recursive_absolute(export_dir)
+	
+	var layer_index = 0
+	
+	for layer in layers:
+		if not layer.visible:
+			layer_index += 1
+			continue
+			
+		var used = layer.get_used_rect()
+		
+		if not used.has_area():
+			layer_index += 1
+			continue
+			
+		var layer_pixel_rect = Rect2i(used.position * tile_size, used.size * tile_size)
+		var dup = layer.duplicate(0)
+		var groups = dup.get_groups()
+		
+		dup.set_script(null)
+		
+		for g in groups:
+			dup.remove_from_group(g)
+			
+		viewport.add_child(dup)
+		
+		var chunks_x = ceil(float(layer_pixel_rect.size.x) / max_chunk_size)
+		var chunks_y = ceil(float(layer_pixel_rect.size.y) / max_chunk_size)
+		
+		for cy in range(chunks_y):
+			for cx in range(chunks_x):
+				var chunk_w = min(max_chunk_size, layer_pixel_rect.size.x - (cx * max_chunk_size))
+				var chunk_h = min(max_chunk_size, layer_pixel_rect.size.y - (cy * max_chunk_size))
+				
+				viewport.size = Vector2i(chunk_w, chunk_h)
+				
+				var offset_x = layer_pixel_rect.position.x + (cx * max_chunk_size)
+				var offset_y = layer_pixel_rect.position.y + (cy * max_chunk_size)
+				
+				dup.position = -Vector2(offset_x, offset_y)
+				dup.modulate = Color.WHITE
+				dup.self_modulate = Color.WHITE
+				
+				await get_tree().process_frame
+				await get_tree().process_frame
+				
+				var img = viewport.get_texture().get_image()
+				
+				if not img.is_invisible():
+					var file_name = "layer_" + str(layer_index) + "_chunk_" + str(cx) + "_" + str(cy) + ".png"
+					var file_path = export_dir + "/" + file_name
+					
+					img.save_png(file_path)
+					
+					var chunk_info = {
+						"layer": layer_index,
+						"layer_name": layer.name,
+						"width": chunk_w,
+						"height": chunk_h,
+						"grid_x": cx,
+						"grid_y": cy,
+						"local_x": offset_x,
+						"local_y": offset_y,
+						"file": file_name
+					}
+					
+					json_data["chunks"].append(chunk_info)
+					
+		dup.queue_free()
+		layer_index += 1
+		
+	var json_string = JSON.stringify(json_data, "\t")
+	var json_file = FileAccess.open(export_dir + "/map_data.json", FileAccess.WRITE)
+	
+	json_file.store_string(json_string)
+	json_file.close()
+	viewport.queue_free()
+	
+	print("Map exported successfully to: " + export_dir)
+
 #endregion

@@ -5,6 +5,16 @@ extends Node2D
 
 #region Exports
 @export_category("Editor Fields")
+## Toggles the visualization of the map overlays inside the editor.
+@export var preview_overlays: bool = false:
+	set(value):
+		preview_overlays = value
+		if Engine.is_editor_hint():
+			if preview_overlays:
+				_load_overlays()
+			else:
+				_clear_overlays()
+
 ## Changes the size for tiles to all TileMapLayers added to this control.
 ## You can only paint events on the part of the grid that is drawn.
 @export var tile_size: Vector2i = Vector2i(32, 32):
@@ -182,6 +192,8 @@ var last_extraction_event_pasted_id: int
 
 var events_page_hp: Dictionary = {}
 
+var _current_overlays: Array[Sprite2D] = []
+
 var map_layout: MapLayout
 var shadow_manager: IngameMapShadowManager
 var editor_canvas: IneditorMapEditorCanvas
@@ -232,6 +244,10 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		preview_overlays = false
+		notify_property_list_changed()
+	
 	RPGMapsInfo.map_infos.get_map_list()
 	MAP_LAYERS = {
 		"ground": find_child("GroundBase"),
@@ -460,6 +476,8 @@ func _start_game_mode() -> void:
 	
 	events_page_hp = {}
 	
+	_load_overlays()
+	
 	var parent = get_tree().get_first_node_in_group("start_scene_main")
 	if not parent or parent is not MainScene:
 		await get_tree().process_frame
@@ -564,6 +582,53 @@ func _start_game_mode() -> void:
 			GameManager.main_scene.setup_minimap(self)
 		else:
 			GameManager.main_scene.hide_minimap()
+
+
+## Loads and instantiates all available painted overlay chunks for this map.
+func _load_overlays() -> void:
+	if Engine.is_editor_hint():
+		_clear_overlays()
+		
+	var map_dir: String = "res://data/MapLayers/Map_" + str(internal_id)
+	var json_path: String = map_dir + "/map_data.json"
+	
+	if not FileAccess.file_exists(json_path):
+		return
+		
+	var json_string: String = FileAccess.get_file_as_string(json_path)
+	var parsed_data = JSON.parse_string(json_string)
+	
+	if typeof(parsed_data) != TYPE_DICTIONARY or not parsed_data.has("chunks"):
+		return
+		
+	for chunk in parsed_data["chunks"]:
+		var overlay_filename: String = "_overlay_" + chunk["file"]
+		var overlay_path: String = map_dir + "/" + overlay_filename
+		
+		if FileAccess.file_exists(overlay_path) or ResourceLoader.exists(overlay_path):
+			var layer_node: Node = get_node_or_null(chunk["layer_name"])
+			
+			if is_instance_valid(layer_node) and layer_node is TileMapLayer:
+				var sprite: Sprite2D = Sprite2D.new()
+				
+				sprite.texture = load(overlay_path)
+				sprite.centered = false
+				sprite.position = Vector2(chunk["local_x"], chunk["local_y"])
+				sprite.name = "Overlay_" + str(chunk["grid_x"]) + "_" + str(chunk["grid_y"])
+				
+				layer_node.add_child(sprite)
+				
+				if Engine.is_editor_hint():
+					_current_overlays.append(sprite)
+
+
+## Removes all currently loaded overlay chunks from this map.
+func _clear_overlays() -> void:
+	for overlay in _current_overlays:
+		if is_instance_valid(overlay):
+			overlay.queue_free()
+			
+	_current_overlays.clear()
 
 
 func register_hp_page(event_id: int, page_id: int, hp_value: int) -> void:

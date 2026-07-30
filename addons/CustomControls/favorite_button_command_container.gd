@@ -66,7 +66,11 @@ func fill() -> void:
 
 		if not real_button.is_empty():
 			var button = real_button[0]
-			b.text = button.text.get_slice(" ", 0)
+			if button.icon:
+				b.text = ""
+				b.icon = button.icon
+			else:
+				b.text = button.text.get_slice(" ", 0)
 			
 			var help_text = button.get_meta("current_tooltip") if button.has_meta("current_tooltip") else button.tooltip_text
 			b.tooltip_text = help_text

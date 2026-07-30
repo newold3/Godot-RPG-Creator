@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://q8f56yc3oyiv"]
+
+[ext_resource type="Theme" uid="uid://b4gu77yogv7hw" path="res://addons/CustomControls/Resources/Themes/editor_buitton_themes.tres" id="1_l7aw8"]
+[ext_resource type="Texture2D" uid="uid://dg6n6y38ggxlw" path="res://addons/RPGMap/Assets/Images/save.png" id="2_l7aw8"]
+
+[node name="ExportMapButton" type="Button" unique_id=1027077947]
+offset_right = 109.0
+offset_bottom = 31.0
+tooltip_text = "[title]Map Exporter[/title]
+Exports map layers into chunks.
+
+Generated base images can be safely deleted, as the plugin does not use them in-game.
+To paint over them:
+
+[ol]Open the chunk in an external editor that supports layers.
+Create one or more new layers and paint over the map.
+Hide the base map layer when finished.
+Export the image to the exact same folder using its original name, but add the prefix \"_overlay_\".[/ol]"
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_l7aw8")
+text = "Export Map"
+icon = ExtResource("2_l7aw8")
