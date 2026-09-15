@@ -122,7 +122,7 @@ A huge thank you to everyone who supports the development of Godot RPG Creator! 
 * Be the first to claim these top tiers and get your name/logo featured here!
 
 ### 🛠️ Dev Support & Supporters
-* Spots available! Join the campaign to help me dedicate more hours to programming and new features.
+* **IJsbrand**
 
 ---
 
