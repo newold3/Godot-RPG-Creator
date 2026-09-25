@@ -119,10 +119,9 @@ A huge thank you to everyone who supports the development of Godot RPG Creator! 
 [☕ ko-fi](https://ko-fi.com/newold3)
 
 ### 👑 VIP & Insider Contributors
-* Be the first to claim these top tiers and get your name/logo featured here!
+* **IJsbrand**
 
 ### 🛠️ Dev Support & Supporters
-* **IJsbrand**
 
 ---
 
