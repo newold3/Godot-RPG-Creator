@@ -64,6 +64,9 @@ func get_class():
 ## Additional notes about the actor.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 ## Scene associated with the actor.
@@ -170,6 +173,10 @@ func clear():
 	tick_interval = 1.0
 	separator = null
 	icon.clear()
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 ## Clones the actor and its properties.
 ## @param value bool - Whether to perform a deep clone.
@@ -183,6 +190,7 @@ func clone(value: bool = true) -> RPGActor:
 		new_actor.battle_actions[i] = new_actor.battle_actions[i].clone(value)
 
 	new_actor.icon = icon.clone(value)
+	new_actor.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_actor
 

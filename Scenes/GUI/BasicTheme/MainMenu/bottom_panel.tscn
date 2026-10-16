@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/bottom_panel.gd" id="1_script"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="2_panel"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gold_num"]
+font = ExtResource("3_font")
+font_size = 20
+font_color = Color(1, 1, 1, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gold_lbl"]
+font = ExtResource("3_font")
+font_size = 18
+font_color = Color(1, 0.85, 0.3, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="BottomMainMenu" type="PanelContainer"]
+custom_minimum_size = Vector2(240, 56)
+offset_right = 240.0
+offset_bottom = 56.0
+theme_override_styles/panel = ExtResource("2_panel")
+script = ExtResource("1_script")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="GoldIcon" type="TextureRect" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldNumber" type="Label" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+label_settings = SubResource("LabelSettings_gold_num")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GoldLabel" type="Label" parent="HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "G"
+label_settings = SubResource("LabelSettings_gold_lbl")
+vertical_alignment = 1

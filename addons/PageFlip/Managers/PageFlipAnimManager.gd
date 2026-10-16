@@ -574,8 +574,8 @@ func start_animation(forward: bool) -> void:
 			nd.visible = true
 			tween.tween_property(nd, "modulate:a", data["target"], motion_duration)
 
-	var start_thin_L = (book.current_spread <= 0)
-	var end_thin_L = (target_spread_idx <= 0)
+	var start_thin_L = (book.current_spread <= 0) if book.total_spreads > 1 else (book.current_spread < 0)
+	var end_thin_L = (target_spread_idx <= 0) if book.total_spreads > 1 else (target_spread_idx < 0)
 
 	if start_thin_L and not end_thin_L:
 		book._stack_scale_left = 0.0
@@ -588,8 +588,8 @@ func start_animation(forward: bool) -> void:
 	else:
 		book._stack_scale_left = 1.0
 
-	var start_thin_R = (book.current_spread >= book.total_spreads - 1)
-	var end_thin_R = (target_spread_idx >= book.total_spreads - 1)
+	var start_thin_R = (book.current_spread >= book.total_spreads - 1) if book.total_spreads > 1 else (book.current_spread > 0)
+	var end_thin_R = (target_spread_idx >= book.total_spreads - 1) if book.total_spreads > 1 else (target_spread_idx > 0)
 
 	if start_thin_R and not end_thin_R:
 		book._stack_scale_right = 0.0

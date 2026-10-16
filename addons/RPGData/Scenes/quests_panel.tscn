@@ -536,6 +536,31 @@ popup/item_6/id = 6
 popup/item_7/text = "Extraction Items"
 popup/item_7/id = 7
 
+[node name="ArrivalPageContainer" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1938572011]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/ArrivalPageContainer" unique_id=1938572012]
+layout_mode = 2
+text = "Arrival Page:"
+
+[node name="ArrivalPage" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/ArrivalPageContainer" unique_id=1938572013 instance=ExtResource("8_t8mp3")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+tooltip_text = "Select a quest page of the target NPC to execute when arriving at the destination.
+
+[Left Click]: Select Quest Page
+[Right Click / Middle Click]: Set to None
+
+[Note]: You must select a valid event page (marked as a quest page 📜)."
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
+text = "Arrival Page: None"
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer" unique_id=713111091]
 layout_mode = 2
 
@@ -666,7 +691,6 @@ allow_greater = true
 
 [node name="ObjetiveParam5" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer" unique_id=487656591]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -705,6 +729,16 @@ tooltip_text = "Choose the map to be visited to complete this objective.
 [Note]: When the objective is an escort mission, if a valid area is specified within a map, the mission is completed upon entering that area; otherwise, it is completed upon entering the map."
 theme_override_colors/font_disabled_color = Color(1, 1, 1, 0)
 text = "Select Map"
+
+[node name="EscortWarningLabel" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer" unique_id=983172645]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚠ Escort to the same map requires a target region, or choose a different destination map."
+autowrap_mode = 2
 
 [node name="ObjetiveParam7" type="HBoxContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer" unique_id=564818394]
 unique_name_in_owner = true
@@ -871,7 +905,10 @@ size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=452128857]
 layout_mode = 2
+size_flags_horizontal = 3
 text = " Available:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="MissionAvailable" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1746696547 instance=ExtResource("7_xlkk8")]
 unique_name_in_owner = true
@@ -883,7 +920,11 @@ tooltip_text = "Icon shown above an NPC when a quest is available."
 
 [node name="Label2" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=754679110]
 layout_mode = 2
-text = "   In Progress:"
+size_flags_horizontal = 3
+text = "In
+Progress:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="MissionProgress" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=590950645 instance=ExtResource("7_xlkk8")]
 unique_name_in_owner = true
@@ -895,7 +936,11 @@ tooltip_text = "Icon shown above an NPC when a quest is in progress."
 
 [node name="Label3" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1813599390]
 layout_mode = 2
-text = "   Is Completed:"
+size_flags_horizontal = 3
+text = "Is
+Completed:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="MissionCompleted" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=380538287 instance=ExtResource("7_xlkk8")]
 unique_name_in_owner = true
@@ -907,7 +952,10 @@ tooltip_text = "Icon shown above an NPC when a quest is ready for completion."
 
 [node name="Label4" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=939591167]
 layout_mode = 2
-text = "   Is Failed:"
+size_flags_horizontal = 3
+text = "Is Failed:"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="MissionFailed" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1451194151 instance=ExtResource("7_xlkk8")]
 unique_name_in_owner = true
@@ -916,6 +964,22 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 tooltip_text = "Icon shown above an NPC when a quest is ready for completion."
+
+[node name="Label5" type="Label" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1938572014]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Escort
+Standby:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MissionEscort" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1938572015 instance=ExtResource("7_xlkk8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+tooltip_text = "Icon shown above an NPC target waiting to be escorted."
 
 [node name="Notes" type="PanelContainer" parent="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3" unique_id=1638004681]
 layout_mode = 2
@@ -964,6 +1028,9 @@ wrap_mode = 1
 [connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5/ChainQuest" to="." method="_on_chain_quest_middle_click_pressed"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer5/ChainQuest" to="." method="_on_chain_quest_pressed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/TypeOptions" to="." method="_on_type_options_item_selected"]
+[connection signal="middle_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/ArrivalPageContainer/ArrivalPage" to="." method="_on_arrival_page_middle_click_pressed"]
+[connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/ArrivalPageContainer/ArrivalPage" to="." method="_on_arrival_page_pressed"]
+[connection signal="right_click_pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer/ArrivalPageContainer/ArrivalPage" to="." method="_on_arrival_page_right_click_pressed"]
 [connection signal="item_selected" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam1/ItemTypeOptions" to="." method="_on_item_type_options_item_selected"]
 [connection signal="pressed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2/EnemyID" to="." method="_on_enemy_id_pressed"]
 [connection signal="value_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/Mission/MarginContainer/VBoxContainer/VBoxContainer2/ObjetiveContainer/ObjetiveParam2/EnemyQuantity" to="." method="_on_enemy_quantity_value_changed"]
@@ -995,4 +1062,7 @@ wrap_mode = 1
 [connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionFailed" to="." method="_on_mission_failed_clicked"]
 [connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionFailed" to="." method="_on_mission_failed_paste_requested"]
 [connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionFailed" to="." method="_on_mission_failed_remove_requested"]
+[connection signal="clicked" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionEscort" to="." method="_on_mission_escort_clicked"]
+[connection signal="paste_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionEscort" to="." method="_on_mission_escort_paste_requested"]
+[connection signal="remove_requested" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Icons/MarginContainer/VBoxContainer/HBoxContainer/MissionEscort" to="." method="_on_mission_escort_remove_requested"]
 [connection signal="text_changed" from="RightColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab3/Notes/MarginContainer/VBoxContainer/Notes" to="." method="_on_notes_text_changed"]

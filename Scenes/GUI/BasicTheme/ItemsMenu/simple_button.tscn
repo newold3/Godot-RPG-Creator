@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/ItemsMenu/simple_number_button.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_font"]
+
+[node name="Button" type="Button"]
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.4, 0.7, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.9, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "1"
+flat = true
+script = ExtResource("1_script")

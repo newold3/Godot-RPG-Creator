@@ -455,8 +455,16 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 		
 		for item in raw_items:
 			var real_data = item.get_real_data()
-			if not real_data or (real_data is RPGItem and real_data.item_category > 1 and not include_hidden_items) or (real_data is RPGItem and real_data.item_category != 1 and collection == 5):
+			if not real_data:
 				continue
+				
+			if real_data is RPGItem:
+				if real_data.item_type > 1 and not include_hidden_items:
+					continue
+				if collection == 1 and real_data.item_type == 1:
+					continue
+				if collection == 5 and real_data.item_type != 1:
+					continue
 				
 			var item_type: int = 0
 			if item is GameWeapon:
@@ -465,7 +473,7 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 				item_type = 2
 			elif item is IngameCostume or item is IngameGearSet:
 				item_type = 3
-			elif real_data is RPGItem and real_data.item_category == 1:
+			elif real_data is RPGItem and real_data.item_type == 1:
 				item_type = 4
 				
 			var level = -1 if not "current_level" in item else item.current_level
@@ -513,6 +521,7 @@ func get_items(include_hidden_items: bool = false, sort_mode: int = 0, collectio
 					"is_new": item.newly_added,
 					"date_added": item.last_added_date,
 					"is_perishable": is_perish,
+					"consumable": real_data.consumable if real_data is RPGItem else true,
 					"lifetime": life,
 					"max_lifetime": max_life,
 					"mp_cost": real_data.mp_cost if "mp_cost" in real_data else 0,

@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="6_760sy"]
 [ext_resource type="Script" uid="uid://5xgqhpxuvjtm" path="res://addons/RPGData/ModulesRPG/rpg_lpc_character.gd" id="7_th2lu"]
 [ext_resource type="Texture2D" uid="uid://drmwly7elnp42" path="res://Scenes/Players/Darian/Darian_battler.png" id="8_3r3sq"]
+[ext_resource type="Texture2D" uid="uid://dqaookt8tko18" path="res://Assets/Images/Other/character_mask1.png" id="8_k7e6w"]
 
 [sub_resource type="Resource" id="Resource_agi1j"]
 script = ExtResource("2_xrug5")
@@ -786,6 +787,10 @@ character_preview = "res://Scenes/Players/Darian/Darian/Darian_character.png"
 battler_preview = "res://Scenes/Players/Darian/Darian/Darian_battler.png"
 scene_path = "res://Scenes/Players/Darian/Darian/Darian.tscn"
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6lfr"]
+atlas = ExtResource("8_k7e6w")
+region = Rect2(0, 0, 64, 64)
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xbtvb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4ncqf"]
@@ -815,7 +820,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("FullBody:scale")
+tracks/1/path = NodePath("Mask/FullBody:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -830,7 +835,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FullBody:scale")
+tracks/0/path = NodePath("Mask/FullBody:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -858,31 +863,16 @@ actor_data = SubResource("Resource_5lj6t")
 preview_direction = false
 can_move_on_terrains = PackedStringArray("^lava", "^water")
 
-[node name="FullBody" type="Marker2D" parent="." unique_id=2001521656]
-unique_name_in_owner = true
-position = Vector2(0, 1)
+[node name="Mask" type="Polygon2D" parent="." unique_id=135677966]
+clip_children = 1
+texture = SubResource("AtlasTexture_l6lfr")
+polygon = PackedVector2Array(-26, -70, 34, -71, 40, 59, -29, 61)
+uv = PackedVector2Array(-22, -50, 26, -50, 26, 0, -24, 0)
 
-[node name="WingsBack" type="Sprite2D" parent="FullBody" unique_id=234246005]
+[node name="FullBody" type="Marker2D" parent="Mask" unique_id=2001521656]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_xbtvb")
-position = Vector2(0, -32)
-region_enabled = true
-region_rect = Rect2(0, 640, 64, 64)
-region_filter_clip_enabled = true
 
-[node name="OffhandBack" type="Sprite2D" parent="FullBody" unique_id=1756854157]
-unique_name_in_owner = true
-position = Vector2(0, -32)
-region_enabled = true
-
-[node name="MainHandBack" type="Sprite2D" parent="FullBody" unique_id=1333655760]
-unique_name_in_owner = true
-position = Vector2(0, -32)
-region_enabled = true
-region_rect = Rect2(0, 384, 192, 192)
-region_filter_clip_enabled = true
-
-[node name="Body" type="Sprite2D" parent="FullBody" unique_id=1438129758]
+[node name="WingsBack" type="Sprite2D" parent="Mask/FullBody" unique_id=234246005]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_xbtvb")
 position = Vector2(0, -32)
@@ -890,14 +880,34 @@ region_enabled = true
 region_rect = Rect2(0, 640, 64, 64)
 region_filter_clip_enabled = true
 
-[node name="MainHandFront" type="Sprite2D" parent="FullBody" unique_id=61645645]
+[node name="OffhandBack" type="Sprite2D" parent="Mask/FullBody" unique_id=1756854157]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+
+[node name="MainHandBack" type="Sprite2D" parent="Mask/FullBody" unique_id=1333655760]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true
 region_rect = Rect2(0, 384, 192, 192)
 region_filter_clip_enabled = true
 
-[node name="OffhandFront" type="Sprite2D" parent="FullBody" unique_id=1889123036]
+[node name="Body" type="Sprite2D" parent="Mask/FullBody" unique_id=1438129758]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_xbtvb")
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 640, 64, 64)
+region_filter_clip_enabled = true
+
+[node name="MainHandFront" type="Sprite2D" parent="Mask/FullBody" unique_id=61645645]
+unique_name_in_owner = true
+position = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(0, 384, 192, 192)
+region_filter_clip_enabled = true
+
+[node name="OffhandFront" type="Sprite2D" parent="Mask/FullBody" unique_id=1889123036]
 unique_name_in_owner = true
 position = Vector2(0, -32)
 region_enabled = true

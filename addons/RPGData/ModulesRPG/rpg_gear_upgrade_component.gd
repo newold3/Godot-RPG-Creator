@@ -10,6 +10,9 @@ func get_class(): return "RPGGearUpgradeComponent"
 @export var quantity: int = 1
 @export var percent: float = 100.0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func get_component() -> Dictionary:
 	var obj = {}
@@ -27,5 +30,6 @@ func get_component() -> Dictionary:
 func clone(value: bool = true) -> RPGGearUpgradeComponent:
 	var new_upgrade_component = duplicate(value)
 	new_upgrade_component.component = new_upgrade_component.component.clone(value)
+	new_upgrade_component.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return(new_upgrade_component)

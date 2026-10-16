@@ -347,3 +347,27 @@ func _on_fix_curve_button_pressed() -> void:
 	%CurrentValueSpinBox.value = current_data.data[level]
 	
 	busy = false
+
+
+func _on_three_control_points_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/three_control_points_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	var current_data = data[selected_index].data
+	var min_value = %MinValueSpinBox.value
+	var max_value = %MaxValueSpinBox.value
+	dialog.set_data(current_data, min_value, max_value)
+	
+	dialog.data_changed.connect(_on_data_options_item_selected)
+
+
+func _on_use_formula_pressed() -> void:
+	var path = "res://addons/CustomControls/Dialogs/curve_formula_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	var current_data = data[selected_index].data
+	var min_value = %MinValueSpinBox.value
+	var max_value = %MaxValueSpinBox.value
+	dialog.set_data(current_data, min_value, max_value)
+	
+	dialog.data_changed.connect(_on_data_options_item_selected)

@@ -1,5 +1,5 @@
 @tool
-extends CommandBaseDialog
+extends "command_base_dialog.gd"
 
 #region Variables
 var current_trait: RPGTrait

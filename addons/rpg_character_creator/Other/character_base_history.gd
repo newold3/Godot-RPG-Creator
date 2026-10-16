@@ -26,6 +26,21 @@ func _add_snapshot(snapshot: Dictionary = {}) -> void:
 	if body_node:
 		visual_rect = body_node.region_rect
 	
+	var mask_region = Rect2()
+	var mask_offset = Vector2.ZERO
+	var mask_texture_path = ""
+	var mask_node = current_entity.get_node_or_null("Mask")
+	if not mask_node:
+		mask_node = current_entity.get_node_or_null("Polygon2D")
+	
+	if mask_node:
+		if "texture" in mask_node and mask_node.texture:
+			mask_texture_path = mask_node.texture.resource_path
+			if mask_node.texture is AtlasTexture:
+				mask_region = mask_node.texture.region
+		if "texture_offset" in mask_node:
+			mask_offset = mask_node.texture_offset
+			
 	if not snapshot:
 		snapshot = {
 			"pos": current_entity.global_position,
@@ -39,7 +54,10 @@ func _add_snapshot(snapshot: Dictionary = {}) -> void:
 			"animation": current_entity.current_animation,
 			"is_jumping": current_entity.is_jumping,
 			"is_dual": current_entity.is_dual_animation,
-			"frame": current_entity.current_frame
+			"frame": current_entity.current_frame,
+			"mask_region": mask_region,
+			"mask_offset": mask_offset,
+			"mask_texture_path": mask_texture_path
 		}
 	
 	current_entity.movement_history.push_back(snapshot)

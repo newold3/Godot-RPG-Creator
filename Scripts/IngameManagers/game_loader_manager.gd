@@ -27,6 +27,9 @@ func setup_new_game() -> void:
 	_initialize_transition_system()
 	_load_starting_map()
 	
+	QuestManager.setup_active_quest()
+	GameManager.update_quest_tracker()
+	
 	GameManager.set_deferred("game_started", true)
 	GameManager.set_deferred("loading_game", false)
 
@@ -40,10 +43,16 @@ func setup_test_game() -> void:
 	_setup_day_night_config()
 	_initialize_transition_system()
 	_start_test_map()
+	
+	QuestManager.setup_active_quest()
+	GameManager.update_quest_tracker()
 
 
 func _initialize_game_state() -> void:
 	var game_state = GameUserData.new()
+	game_state.quest_progress = GameQuestProgress.new()
+	var empty_escorts: Array[Dictionary] = []
+	game_state.escorted_npcs = empty_escorts
 	GameManager.game_state = game_state
 	var system = RPGSYSTEM.database.system
 	

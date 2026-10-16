@@ -135,7 +135,14 @@ func add_trait_state(state: RPGTrait) -> void:
 	if state.data_id > 0:
 		var real_state = RPGSYSTEM.get_data("states", state.data_id)
 		if real_state:
+			if is_inmune_to_state(real_state):
+				return
 			add_state(real_state, true, true)
+
+
+## Checks if a specific state is currently active and marked as permanent.
+func has_permanent_state(state_id: int) -> bool:
+	return current_states.any(func(s: GameState): return s != null and s.id == state_id and s.is_permanent())
 #endregion
 
 
@@ -526,6 +533,9 @@ func apply_recovery_effect(param: String, percent: float, flat: int) -> void:
 	var heal_amount = int((max_val * (percent / 100.0)) + flat)
 	
 	if param == "HP":
+		if is_dead():
+			params.hp = 0
+			return
 		params.hp = clamp(params.hp + heal_amount, 0, max_val)
 	elif param == "MP":
 		params.mp = clamp(params.mp + heal_amount, 0, max_val)

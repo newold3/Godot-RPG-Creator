@@ -178,10 +178,10 @@ enum JumpTarget {
 @export var open_offset: Vector2 = Vector2.ZERO
 
 @export_category("Fake 3D Volume (Pages)")
-## Minimum number of layers to generate for the page stack (visual thickness floor).
-@export_range(1, 20) var min_layers: int = 3
-## Maximum number of layers to generate for the page stack (visual thickness ceiling).
-@export_range(1, 100) var max_layers: int = 15
+## Minimum number of layers to generate for the page stack (visual thickness floor). If 0, thickness depends solely on added pages.
+@export_range(0, 50, 1, "prefer_slider") var min_layers: int = 1: set = _set_min_layers
+## Maximum number of layers to generate for the page stack (visual thickness ceiling). If 0, grows infinitely. Cannot be lower than min_layers (unless 0).
+@export_range(0, 100, 1, "prefer_slider") var max_layers: int = 15: set = _set_max_layers
 ## If true, the stack grows upwards (negative Y). If false, downwards (positive Y).
 @export var invert_stack_direction: bool = false
 ## Offset between layers when the book is closed (max compression).
@@ -732,6 +732,10 @@ func _ready():
 
 	await get_tree().process_frame
 	
+	if _slot_1 and static_left:
+		static_left.texture = _slot_1.get_texture()
+	if _slot_2 and static_right:
+		static_right.texture = _slot_2.get_texture()
 	if _slot_3 and dynamic_poly:
 		dynamic_poly.texture = _slot_3.get_texture()
 	
@@ -864,8 +868,12 @@ func _snap_book_to_exact_state() -> void:
 	
 	_current_expansion_factor = 1.0 if is_closed_now else 0.0
 	_visual_spread_index = float(total_spreads) if is_back_now else (-1.0 if is_closed_now else float(current_spread))
-	_stack_scale_left = 0.0 if current_spread <= 0 else 1.0
-	_stack_scale_right = 0.0 if current_spread >= total_spreads - 1 else 1.0
+	if total_spreads <= 1:
+		_stack_scale_left = 1.0 if (is_book_open or is_back_now) else 0.0
+		_stack_scale_right = 1.0 if (is_book_open or not is_back_now) else 0.0
+	else:
+		_stack_scale_left = 0.0 if current_spread <= 0 else 1.0
+		_stack_scale_right = 0.0 if current_spread >= total_spreads - 1 else 1.0
 	
 	if dynamic_poly and dynamic_poly.has_method("reset_bones_to_rest"):
 		dynamic_poly.reset_bones_to_rest()
@@ -972,6 +980,27 @@ func refresh() -> void:
 		mesh_manager.update_static_visuals_immediate()
 	_set_spine_texture(spine_texture)
 	_set_spine_color(spine_color)
+
+
+func _set_min_layers(val: int) -> void:
+	min_layers = maxi(0, val)
+	if max_layers > 0 and max_layers < min_layers:
+		max_layers = min_layers
+		notify_property_list_changed()
+	if is_inside_tree() and volume_manager:
+		volume_manager.generate_volume_layers()
+		volume_manager.update_volume_visuals()
+
+
+func _set_max_layers(val: int) -> void:
+	var new_val = maxi(0, val)
+	if new_val > 0 and new_val < min_layers:
+		new_val = min_layers
+		notify_property_list_changed()
+	max_layers = new_val
+	if is_inside_tree() and volume_manager:
+		volume_manager.generate_volume_layers()
+		volume_manager.update_volume_visuals()
 
 
 func _generate_volume_layers() -> void:

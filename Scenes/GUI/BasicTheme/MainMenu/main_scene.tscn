@@ -1,0 +1,136 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/main_scene.gd" id="2_main_script"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/MainMenu/scene_contents.tscn" id="3_contents"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/ItemsMenu/ingame_item_list.tscn" id="4_items"]
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/scene_director_manager.gd" id="5_director"]
+
+[sub_resource type="Animation" id="Animation_show_item"]
+resource_name = "Show Item Menu"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IngameItemListContainer/IngameItemList:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IngameItemListContainer/IngameItemList:modulate:a")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_hide_item"]
+resource_name = "Hide Item Menu"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IngameItemListContainer/IngameItemList:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IngameItemListContainer/IngameItemList:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_main"]
+_data = {
+&"Hide Item Menu": SubResource("Animation_hide_item"),
+&"Show Item Menu": SubResource("Animation_show_item")
+}
+
+[node name="MainScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_theme")
+script = ExtResource("2_main_script")
+
+[node name="DimBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="MainMenuScene" parent="." node_paths=PackedStringArray("initial_container") instance=ExtResource("3_contents")]
+unique_name_in_owner = true
+layout_mode = 1
+initial_container = NodePath(".")
+
+[node name="IngameItemListContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="IngameItemList" parent="IngameItemListContainer" instance=ExtResource("4_items")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="ExternalAnimator" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_main")
+
+[node name="SceneDirectorManager" type="Node" parent="." node_paths=PackedStringArray("main_scene", "left_buttons_scene", "party_scene", "items_menu_scene", "animation_player")]
+unique_name_in_owner = true
+script = ExtResource("5_director")
+main_scene = NodePath("../MainMenuScene")
+left_buttons_scene = NodePath("../MainMenuScene/MainMenuItems")
+party_scene = NodePath("../MainMenuScene/PartyMenu")
+items_menu_scene = NodePath("../IngameItemListContainer/IngameItemList")
+animation_player = NodePath("../ExternalAnimator")
+
+[connection signal="visibility_changed" from="." to="SceneDirectorManager" method="_on_parent_visibility_changed"]
+[connection signal="end" from="MainMenuScene" to="SceneDirectorManager" method="destroy"]
+[connection signal="item_menu_requested" from="MainMenuScene" to="SceneDirectorManager" method="show_item_menu"]
+[connection signal="button_hovered" from="MainMenuScene/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_button_hovered"]
+[connection signal="clicked" from="MainMenuScene/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_clicked"]
+[connection signal="finish" from="MainMenuScene/MainMenuItems" to="SceneDirectorManager" method="_on_main_menu_items_finish"]
+[connection signal="cancel" from="MainMenuScene/PartyMenu" to="SceneDirectorManager" method="_on_party_menu_cancel"]
+[connection signal="clicked" from="MainMenuScene/PartyMenu" to="SceneDirectorManager" method="_on_party_menu_clicked"]
+[connection signal="active_item_rotted" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_ingame_item_list_active_item_rotted"]
+[connection signal="close_requested" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="hide_item_menu"]
+[connection signal="item_focused" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_item_list_item_focused"]
+[connection signal="use_item" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_items_menu_use_item"]
+[connection signal="use_skill" from="IngameItemListContainer/IngameItemList" to="SceneDirectorManager" method="_on_items_menu_use_skill"]

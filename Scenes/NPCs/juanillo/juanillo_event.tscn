@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://der67xririmwh" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_part.gd" id="5_wifbm"]
 [ext_resource type="Script" uid="uid://um8ybms51wt1" path="res://addons/RPGData/ModulesRPG/rpg_lpc_equipment_data.gd" id="6_cw21b"]
 [ext_resource type="Script" uid="uid://5xgqhpxuvjtm" path="res://addons/RPGData/ModulesRPG/rpg_lpc_character.gd" id="7_8po0h"]
+[ext_resource type="Texture2D" uid="uid://dqaookt8tko18" path="res://Assets/Images/Other/character_mask1.png" id="8_yuuw0"]
 
 [sub_resource type="Resource" id="Resource_pu5p1"]
 script = ExtResource("2_lv5q8")
@@ -687,6 +688,11 @@ gender = "male"
 equipment_parts = SubResource("Resource_ijdv3")
 body_parts = SubResource("Resource_j0hl2")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6lfr"]
+resource_local_to_scene = true
+atlas = ExtResource("8_yuuw0")
+region = Rect2(0, 0, 64, 64)
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dpd5q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_us8f3"]
@@ -716,7 +722,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("FullBody:scale")
+tracks/1/path = NodePath("Mask/FullBody:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -731,7 +737,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FullBody:scale")
+tracks/0/path = NodePath("Mask/FullBody:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -756,10 +762,16 @@ script = ExtResource("1_ixvxi")
 event_data = SubResource("Resource_67g3r")
 can_move_on_terrains = PackedStringArray("^lava", "^water")
 
-[node name="FullBody" type="Marker2D" parent="." unique_id=234853786]
+[node name="Mask" type="Polygon2D" parent="." unique_id=2068584243]
+clip_children = 1
+texture = SubResource("AtlasTexture_l6lfr")
+polygon = PackedVector2Array(-50, -88, 54, -87, 53, 77, -51, 77)
+uv = PackedVector2Array(-22, -50, 26, -50, 26, 0, -24, 0)
+
+[node name="FullBody" type="Marker2D" parent="Mask" unique_id=234853786]
 unique_name_in_owner = true
 
-[node name="MainTexture" type="Sprite2D" parent="FullBody" unique_id=474970632]
+[node name="MainTexture" type="Sprite2D" parent="Mask/FullBody" unique_id=474970632]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_dpd5q")
 position = Vector2(0, -32)

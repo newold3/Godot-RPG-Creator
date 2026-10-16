@@ -180,7 +180,7 @@ func refresh_tracker() -> void:
 		if QuestManager._is_sub_quest_of_active_parent(active_q.id): continue
 		
 		var db_quest = QuestManager._get_quest_from_database(active_q.id)
-		if not db_quest: continue
+		if not db_quest or QuestManager.is_invalid_escort_quest(db_quest): continue
 		
 		var is_new = not _known_quest_ids.has(active_q.id)
 		current_ids.append(active_q.id)
@@ -324,13 +324,17 @@ func _build_failed_entry(db_quest: RPGQuest) -> void:
 ## Populates the objectives container with individual lines, shifting them based on alignment.
 func _populate_objectives(box: VBoxContainer, active_q: GameQuest, db_quest: RPGQuest) -> void:
 	if db_quest.multi_quests.is_empty():
-		_add_objective_line(box, active_q, db_quest)
+		if not QuestManager.is_invalid_escort_quest(db_quest):
+			_add_objective_line(box, active_q, db_quest)
 	else:
 		if db_quest.type != RPGEnums.QuestMode.TALK_TO_NPC or db_quest.target_event.event_id != -1:
-			_add_objective_line(box, active_q, db_quest)
+			if not QuestManager.is_invalid_escort_quest(db_quest):
+				_add_objective_line(box, active_q, db_quest)
 		for sub_id in db_quest.multi_quests:
-			var sub_active = QuestManager._get_active_quest_by_id(sub_id)
 			var sub_db = QuestManager._get_quest_from_database(sub_id)
+			if QuestManager.is_invalid_escort_quest(sub_db):
+				continue
+			var sub_active = QuestManager._get_active_quest_by_id(sub_id)
 			if sub_active and sub_db:
 				_add_objective_line(box, sub_active, sub_db)
 
@@ -534,7 +538,18 @@ func _get_objective_text_only(db_quest: RPGQuest) -> String:
 		RPGEnums.QuestMode.TALK_TO_NPC: return tr("Talk to %s") % _get_npc_name(db_quest)
 		RPGEnums.QuestMode.GATHER_ITEM: return tr("Get %s") % _get_item_name(db_quest)
 		RPGEnums.QuestMode.BOUNTY_HUNTS: return tr("Defeat %s") % _get_enemy_name(db_quest.enemy_id)
-		RPGEnums.QuestMode.FIND_LOCATION: return tr("Reach %s") % RPGSYSTEM.map_infos.get_map_name_from_id(db_quest.target_event.map_id)
+		RPGEnums.QuestMode.FIND_LOCATION: return tr("Reach %s") % RPGSYSTEM.map_infos.get_map_name_from_id(db_quest.item_id if db_quest.item_id != -1 else db_quest.target_event.map_id)
+		RPGEnums.QuestMode.ESCORT_NPC:
+			var npc_name = _get_npc_name(db_quest)
+			var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(db_quest.item_id)
+			if map_name.is_empty():
+				map_name = tr("Destination")
+			var has_region = "region_id" in db_quest and db_quest.region_id >= 0
+			if has_region:
+				var reg_name = RPGSYSTEM.map_infos.get_event_region_name(db_quest.item_id, db_quest.region_id)
+				if not reg_name.is_empty():
+					return tr("Escort %s to %s (%s)") % [npc_name, map_name, reg_name]
+			return tr("Escort %s to %s") % [npc_name, map_name]
 		RPGEnums.QuestMode.USER_QUEST: return tr(db_quest.description)
 	return ""
 

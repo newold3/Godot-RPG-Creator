@@ -706,7 +706,6 @@ func _enter_tree() -> void:
 	export_map_button.visible = false
 	
 	add_custom_type("RPGMap", "TileMap", preload("res://addons/RPGData/ModulesRPG/rpg_map.gd"), null)
-	get_tree().node_added.connect(_on_node_added)
 	
 	DETACHABLE_WINDOW = load("res://addons/CustomControls/detachable_window.tscn")
 	
@@ -910,7 +909,6 @@ func _tree_exiting() -> void:
 
 
 func _exit_tree() -> void:
-	get_tree().node_added.disconnect(_on_node_added)
 	ProjectSettings.settings_changed.disconnect(_on_settings_changed)
 	
 	var selection = get_editor_interface().get_selection()
@@ -1344,11 +1342,6 @@ func _adjust_scroll_limits(scroll_bar: ScrollBar, new_value: float, viewport_siz
 		scroll_bar.max_value = scroll_bar.min_value + viewport_size
 
 
-func _on_node_added(node) -> void:
-	if node is LineEdit or node is TextEdit:
-		if !node.focus_entered.is_connected(_on_node_type1_focus_entered):
-			node.focus_entered.connect(_on_node_type1_focus_entered.bind(node))
-
 
 func _ready() -> void:
 	get_tree().node_added.connect(_on_new_node_added)
@@ -1453,14 +1446,6 @@ func _delayed_initialization() -> void:
 	if current_object and is_instance_valid(current_object):
 		_sync_initial_edit_mode()
 
-
-func _on_node_type1_focus_entered(node: Node) -> void:
-	if !node.is_editable():
-		node.release_focus()
-		node.deselect()
-		node.set_process_internal(false)
-	else:
-		node.set_process_internal(true)
 
 
 func _on_new_node_added(node: Node) -> void:
@@ -4524,7 +4509,7 @@ func _export_map_to_images(map: RPGMap) -> void:
 		return
 		
 	var tile_size = map.tile_size if "tile_size" in map else Vector2i(32, 32)
-	var max_chunk_size = 1080
+	var max_chunk_size = 4096
 	
 	var viewport = SubViewport.new()
 	

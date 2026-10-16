@@ -22,7 +22,7 @@ https://www.shadertoy.com/view/MsjXzh
 
 shader_type canvas_item;
 
-uniform sampler2D SCREEN_TEXTURE: hint_screen_texture;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear, repeat_disable;
 
 uniform vec2 resolution = vec2(320.0, 180.0);
 
@@ -46,24 +46,23 @@ float random(vec2 uv){
 }
 
 vec3 fetch_pixel(vec2 uv, vec2 off){
-	vec2 pos = floor(uv * resolution + off) / resolution + vec2(0.5) / resolution;
+	vec2 res = max(resolution, vec2(1.0));
+	vec2 pos = floor(uv * res + off) / res + vec2(0.5) / res;
+	pos = clamp(pos, vec2(0.0001), vec2(0.9999));
 
 	float noise = 0.0;
 	if(noise_amount > 0.0){
 		noise = random(pos + fract(TIME)) * noise_amount;
 	}
 
-	if(max(abs(pos.x - 0.5), abs(pos.y - 0.5)) > 0.5){
-		return vec3(0.0, 0.0, 0.0);
-	}
-
-	vec3 clr = texture(SCREEN_TEXTURE , pos, -16.0).rgb + noise;
+	vec3 clr = textureLod(SCREEN_TEXTURE, pos, 0.0).rgb + noise;
 	return clr;
 }
 
 // Distance in emulated pixels to nearest texel.
 vec2 Dist(vec2 pos){
-	pos = pos * resolution;
+	vec2 res = max(resolution, vec2(1.0));
+	pos = pos * res;
 	return - ((pos - floor(pos)) - vec2(0.5));
 }
 
@@ -83,8 +82,11 @@ vec3 Horz3(vec2 pos, float off){
 	float wc = Gaus(dst + 0.0, scale);
 	float wd = Gaus(dst + 1.0, scale);
 
-	// Return filtered sample.
-	return (b * wb + c * wc + d * wd) / (wb + wc + wd);
+	float total_w = wb + wc + wd;
+	if (total_w > 0.0001) {
+		return (b * wb + c * wc + d * wd) / total_w;
+	}
+	return c;
 }
 
 // Return scanline weight.
@@ -124,22 +126,26 @@ vec2 warp(vec2 uv){
 }
 
 float vignette(vec2 uv){
-	uv *= 1.0 - uv.xy;
-	float vignette = uv.x * uv.y * 15.0;
-	return pow(vignette, vignette_intensity * vignette_amount);
+	vec2 v_uv = clamp(uv, 0.0, 1.0);
+	float v = v_uv.x * v_uv.y * (1.0 - v_uv.x) * (1.0 - v_uv.y) * 16.0;
+	return pow(max(v, 0.0001), max(vignette_intensity * vignette_amount, 0.0));
 }
 
 float floating_mod(float a, float b){
+	if (abs(b) < 0.0001) return 0.0;
 	return a - b * floor(a/b);
 }
 
 vec3 grille(vec2 uv){
+	if (grille_size <= 0.0001) {
+		return vec3(1.0);
+	}
 	float unit = PI / 3.0;
-	float scale = 2.0*unit/grille_size;
-	float r = smoothstep(0.5, 0.8, cos(uv.x*scale - unit));
-	float g = smoothstep(0.5, 0.8, cos(uv.x*scale + unit));
-	float b = smoothstep(0.5, 0.8, cos(uv.x*scale + 3.0*unit));
-	return mix(vec3(1.0), vec3(r,g,b), grille_amount);
+	float scale = 2.0 * unit / grille_size;
+	float r = smoothstep(0.5, 0.8, cos(uv.x * scale - unit));
+	float g = smoothstep(0.5, 0.8, cos(uv.x * scale + unit));
+	float b = smoothstep(0.5, 0.8, cos(uv.x * scale + 3.0 * unit));
+	return mix(vec3(1.0), vec3(r, g, b), grille_amount);
 }
 
 float roll_line(vec2 uv){
@@ -152,32 +158,37 @@ float roll_line(vec2 uv){
 void fragment(){
 	vec2 pix = FRAGCOORD.xy;
 	vec2 pos = warp(SCREEN_UV);
+	vec2 res = max(resolution, vec2(1.0));
 
 	float line = 0.0;
 	if(roll_line_amount > 0.0){
 		line = roll_line(pos);
 	}
 
-	vec2 sq_pix = floor(pos * resolution) / resolution + vec2(0.5) / resolution;
+	vec2 sq_pix = floor(pos * res) / res + vec2(0.5) / res;
 	if(interference_amount + roll_line_amount > 0.0){
 		float interference = random(sq_pix.yy + fract(TIME));
-		pos.x += (interference * (interference_amount + line * 6.0)) / resolution.x;
+		pos.x += (interference * (interference_amount + line * 6.0)) / res.x;
 	}
 
 	vec3 clr = Tri(pos);
 	if(aberation_amount > 0.0){
 		float chromatic = aberation_amount + line * 2.0;
-		vec2 chromatic_x = vec2(chromatic,0.0) / resolution.x;
-		vec2 chromatic_y = vec2(0.0, chromatic/2.0) / resolution.y;
+		vec2 chromatic_x = vec2(chromatic, 0.0) / res.x;
+		vec2 chromatic_y = vec2(0.0, chromatic / 2.0) / res.y;
 		float r = Tri(pos - chromatic_x).r;
 		float g = Tri(pos + chromatic_y).g;
 		float b = Tri(pos + chromatic_x).b;
-		clr = vec3(r,g,b);
+		clr = vec3(r, g, b);
 	}
 
-	if(grille_amount > 0.0)clr *= grille(pix);
+	if(grille_amount > 0.0) clr *= grille(pix);
 	clr *= 1.0 + scan_line_amount * 0.6 + line * 3.0 + grille_amount * 2.0;
-	if(vignette_amount > 0.0)clr *= vignette(pos);
+	if(vignette_amount > 0.0) clr *= vignette(pos);
+
+	if (isnan(clr.r) || isnan(clr.g) || isnan(clr.b)) {
+		clr = textureLod(SCREEN_TEXTURE, SCREEN_UV, 0.0).rgb;
+	}
 
 	COLOR.rgb = clr;
 	COLOR.a = final_alpha;

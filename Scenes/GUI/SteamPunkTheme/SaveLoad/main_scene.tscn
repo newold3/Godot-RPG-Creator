@@ -8,9 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://duu13dsov6vp5" path="res://Assets/Images/GUI/main_gui.png" id="5_q5umy"]
 [ext_resource type="PackedScene" uid="uid://dev3wgxtsd4ip" path="res://Scenes/GUI/SteamPunkTheme/CommonScenes/confirm_dialog.tscn" id="6_srrc2"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_w6ka3"]
-viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_cqufr"]
 atlas = ExtResource("4_axmu6")
 region = Rect2(1357, 10, 102, 415)
@@ -82,14 +79,23 @@ scene_title = "Load GAME"
 timer_to_emit_started_signal = 0.15
 timer_to_emit_end_signal = 0.2
 move_in_direction = 3
+move_in_trans_type = 1
+move_in_duration = 0.45
+move_out_direction = 3
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.45
+zoom_in_enabled = false
 zoom_out_enabled = false
+fade_in_enabled = false
 fade_out_enabled = false
 
 [node name="BottomLayer" parent="SceneMainContainer" index="0"]
 pivot_offset = Vector2(576.001, 320)
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
-texture = SubResource("ViewportTexture_w6ka3")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4" unique_id=387319133]
 modulate = Color(0.81, 0.81, 0.81, 1)
@@ -126,22 +132,24 @@ offset_bottom = 574.48047
 texture = SubResource("AtlasTexture_3mn25")
 flip_h = true
 
-[node name="Tabs" type="MarginContainer" parent="SceneMainContainer" index="1" unique_id=683930161]
+[node name="Tabs" type="Control" parent="SceneMainContainer" index="1" unique_id=683930161]
+z_index = 10
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 28.0
+offset_right = 360.0
+offset_bottom = 74.0
 mouse_filter = 2
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = -34
 
 [node name="MenuTabs" type="TabBar" parent="SceneMainContainer/Tabs" index="0" unique_id=1263560887]
 visible = false
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_selected_color = Color(0.9254902, 0.5176471, 0.20784314, 1)

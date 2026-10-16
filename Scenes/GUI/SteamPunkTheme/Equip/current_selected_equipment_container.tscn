@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="1_osdqm"]
 [ext_resource type="Script" uid="uid://cvthv851oh5va" path="res://Scenes/GUI/SteamPunkTheme/Equip/current_selected_equipment_container.gd" id="1_wo3pd"]
-[ext_resource type="Texture2D" uid="uid://bm0yrsmhngopc" path="res://icon.png" id="2_wo3pd"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="3_8ufd5"]
 [ext_resource type="Texture2D" uid="uid://d2mtvqpdf5ddj" path="res://Assets/Images/GUI/progress_bar2_bottom.png" id="4_00fjg"]
 [ext_resource type="Texture2D" uid="uid://d1jr8epauirfx" path="res://Assets/Images/GUI/progress_bar2_top.png" id="5_r5pri"]
@@ -76,7 +75,6 @@ texture = SubResource("AtlasTexture_yturb")
 expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect" unique_id=1297826844]
-show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,8 +88,11 @@ theme_override_constants/margin_bottom = 4
 
 [node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect/MarginContainer" unique_id=1567345509]
 unique_name_in_owner = true
+z_index = 10
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("2_wo3pd")
+size_flags_horizontal = 4
+size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
 
@@ -125,6 +126,22 @@ uppercase = true
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=110085396]
 layout_mode = 2
 theme_override_constants/margin_right = 65
+
+[node name="EmptySlotLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=999888777]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9137255, 0.69411767, 0.4117647, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("3_8ufd5")
+theme_override_font_sizes/font_size = 22
+text = "-"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ProgressBarContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1865936322]
 unique_name_in_owner = true

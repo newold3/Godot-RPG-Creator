@@ -1566,11 +1566,15 @@ func is_action_just_released(action: String, consume: bool = false) -> bool:
 
 ## Check if a confirm action was JUST pressed (no echo, only initial press)
 func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: PackedInt32Array = [], mouse_left_require_focusable: bool = true, consume: bool = false, exclude_keys: PackedInt32Array = []) -> bool:
+	if cache.get("confirm_consumed", false):
+		return false
+
 	var cache_key = "confirm_just_" + str(ignore_mouse_left) + "_" + str(extra_keys) + "_" + str(exclude_keys)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
 		if consume and val:
 			cache[cache_key] = false
+			cache["confirm_consumed"] = true
 		return val
 	
 	if Input.is_key_pressed(KEY_ALT):
@@ -1582,6 +1586,16 @@ func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: Packed
 	# 1. Native check first
 	if Input.is_action_just_pressed("ui_accept"):
 		result = true
+		for key_code in CONFIRM_INPUTS.keys:
+			if key_code in key_states.keys and (key_states.keys[key_code].registered_frame == -1 or key_states.keys[key_code].registered_frame == Engine.get_process_frames()):
+				key_states.keys[key_code].refresh()
+		for button in CONFIRM_INPUTS.joy:
+			if button in key_states.joy_buttons and (key_states.joy_buttons[button].registered_frame == -1 or key_states.joy_buttons[button].registered_frame == Engine.get_process_frames()):
+				key_states.joy_buttons[button].refresh()
+		if not extra_keys.is_empty():
+			for key in extra_keys:
+				if key in key_states.keys and (key_states.keys[key].registered_frame == -1 or key_states.keys[key].registered_frame == Engine.get_process_frames()):
+					key_states.keys[key].refresh()
 	elif not ignore_mouse_left and Input.is_action_just_pressed("Mouse Left"):
 		if not mouse_left_require_focusable or GameManager.is_mouse_over_current_control_focused() or is_mouse_over_focusable_control():
 			result = true
@@ -1625,17 +1639,22 @@ func is_confirm_just_pressed(ignore_mouse_left: bool = false, extra_keys: Packed
 	cache[cache_key] = result
 	if consume and result:
 		cache[cache_key] = false
+		cache["confirm_consumed"] = true
 		
 	return result
 
 
 ## Check if a cancel action was JUST pressed (no echo)
 func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = false, exclude_keys: PackedInt32Array = []) -> bool:
+	if cache.get("cancel_consumed", false):
+		return false
+
 	var cache_key = "cancel_just_" + str(extra_keys) + "_" + str(exclude_keys)
 	if cache.has(cache_key):
 		var val: bool = cache[cache_key]
 		if consume and val:
 			cache[cache_key] = false
+			cache["cancel_consumed"] = true
 		return val
 	
 	var result = false
@@ -1643,6 +1662,16 @@ func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = f
 	# 1. Native check first
 	if Input.is_action_just_pressed("ui_cancel") or Input.is_action_just_pressed("Mouse Right"):
 		result = true
+		for key_code in CANCEL_INPUTS.keys:
+			if key_code in key_states.keys and (key_states.keys[key_code].registered_frame == -1 or key_states.keys[key_code].registered_frame == Engine.get_process_frames()):
+				key_states.keys[key_code].refresh()
+		for button in CANCEL_INPUTS.joy:
+			if button in key_states.joy_buttons and (key_states.joy_buttons[button].registered_frame == -1 or key_states.joy_buttons[button].registered_frame == Engine.get_process_frames()):
+				key_states.joy_buttons[button].refresh()
+		if not extra_keys.is_empty():
+			for key in extra_keys:
+				if key in key_states.keys and (key_states.keys[key].registered_frame == -1 or key_states.keys[key].registered_frame == Engine.get_process_frames()):
+					key_states.keys[key].refresh()
 	
 	# 2. Fallback logic
 	if not result:
@@ -1679,6 +1708,7 @@ func is_cancel_just_pressed(extra_keys: PackedInt32Array = [], consume: bool = f
 	cache[cache_key] = result
 	if consume and result:
 		cache[cache_key] = false
+		cache["cancel_consumed"] = true
 		
 	return result
 

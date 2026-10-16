@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="4_wtkfh"]
 [ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="6_diarv"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xb5wn"]
-viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_cqufr"]
 atlas = ExtResource("4_wtkfh")
 region = Rect2(1357, 10, 102, 415)
@@ -51,7 +48,6 @@ script = ExtResource("3_6f0ng")
 pivot_offset = Vector2(576.001, 320)
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
-texture = SubResource("ViewportTexture_xb5wn")
 
 [node name="ExtraDecoration" type="Control" parent="SceneMainContainer/BottomLayer" index="4"]
 modulate = Color(0.81, 0.81, 0.81, 1)

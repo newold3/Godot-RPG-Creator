@@ -25,7 +25,8 @@ func _run(path: String) -> void:
 		var file = files[i]
 		print("fix file %s / %s (%s)" % [i+1, files.size(), file])
 		var res = load(file)
-		ResourceSaver.save(res)
+		if res:
+			ResourceSaver.save(res, file)
 		await get_tree().process_frame
 	
 	print("all files re-saved in folder: ", path)

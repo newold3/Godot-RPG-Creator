@@ -4,9 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://btukkwgj56o14" path="res://Scenes/OtherScenes/credits.tscn" id="2_kwcvy"]
 [ext_resource type="Shader" uid="uid://byvruuuuqrdn8" path="res://Assets/Shaders/simple_gradient.gdshader" id="3_o6qh8"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pibqg"]
-viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
-
 [sub_resource type="Gradient" id="Gradient_7pgcd"]
 offsets = PackedFloat32Array(0, 0.480132, 1)
 colors = PackedColorArray(0.400572, 0.989488, 0.704254, 1, 0.0856886, 0.234656, 0.163843, 1, 0.125463, 0.303639, 0.184808, 1)
@@ -29,7 +26,6 @@ shader_parameter/brightness = 1.0
 [node name="BaseAnimatableWindow" instance=ExtResource("1_imucp")]
 
 [node name="Background" parent="SceneMainContainer/BottomLayer" index="1"]
-texture = SubResource("ViewportTexture_pibqg")
 
 [node name="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer" index="0"]
 position = Vector2(545, 296)

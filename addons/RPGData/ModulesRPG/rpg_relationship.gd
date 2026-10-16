@@ -10,6 +10,9 @@ func get_class():
 ## levels of this relationship
 @export var levels: Array[RPGRelationshipLevel] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 func _init() -> void:
 	levels.append(RPGRelationshipLevel.new())
 
@@ -18,6 +21,7 @@ func clone(value: bool = true) -> RPGRelationship:
 	var new_relationship = duplicate(value)
 	for i: int in levels.size():
 		new_relationship.levels[i] = new_relationship.levels[i].clone(value)
+	new_relationship.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 		
 	return new_relationship
 

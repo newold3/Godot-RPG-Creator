@@ -13,12 +13,16 @@ func get_class(): return "RPGGearUpgradeLevel"
 @export var user_parameters: PackedFloat32Array = []
 @export var price_increment: float = 0.0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clone(value: bool = true) -> RPGGearUpgradeLevel:
 	var new_weapon_upgrade_level = duplicate(value)
 	for i in new_weapon_upgrade_level.required_materials.size():
 		new_weapon_upgrade_level.required_materials[i] = new_weapon_upgrade_level.required_materials[i].clone(value)
 	
+	new_weapon_upgrade_level.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	return new_weapon_upgrade_level
 
 

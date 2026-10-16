@@ -114,7 +114,16 @@ func setup_events() -> void:
 			if migrated_data[ev._uniq_id].current_map_id != map.internal_id:
 				is_migrated_away = true
 		
-		if not is_migrated_away:
+		var is_escorted = false
+		if QuestManager.has_method("is_event_recruited"):
+			is_escorted = QuestManager.is_event_recruited(ev._uniq_id)
+		elif GameManager.game_state and "escorted_npcs" in GameManager.game_state:
+			for escorted in GameManager.game_state.escorted_npcs:
+				if escorted.get("event_uniq_id", -1) == ev._uniq_id:
+					is_escorted = true
+					break
+		
+		if not is_migrated_away and not is_escorted:
 			events_to_spawn.append(ev)
 			
 	var cached_external_collections: Dictionary = {}

@@ -78,10 +78,16 @@ func _command_0040() -> void:
 	debug_print("Processing command: Change Actor State (code 40)")
 	
 	var actor_type = current_command.parameters.get("actor_type", 0)
-	var actor_id = current_command.parameters.get("actor_id", 0)
+	var raw_actor_id = current_command.parameters.get("actor_id", 0)
 	var operand = current_command.parameters.get("operand", 0)
 	var state_id = current_command.parameters.get("state_id", 0)
 	
+	var actor_id = raw_actor_id
+	if actor_type == 0 and (typeof(raw_actor_id) == TYPE_STRING or (typeof(raw_actor_id) == TYPE_INT and raw_actor_id > 100000)):
+		var conv = RPGSYSTEM.uid_to_id("actors", raw_actor_id)
+		if conv > 0:
+			actor_id = conv
+
 	var actor_ids = []
 	
 	if actor_type == 0:
@@ -94,7 +100,6 @@ func _command_0040() -> void:
 		actor_ids.append(real_actor_id)
 	
 	var real_state = RPGSYSTEM.get_data("states", state_id)
-	var target_uid = real_state._uniq_id if real_state else -1
 	
 	for id: int in actor_ids:
 		if GameManager.game_state.actors.has(id):
@@ -105,8 +110,8 @@ func _command_0040() -> void:
 					if real_state:
 						actor.add_state(real_state)
 				elif operand == 1:
-					if target_uid != -1:
-						actor.remove_state(target_uid)
+					if real_state:
+						actor.remove_state(real_state.id)
 
 
 
@@ -424,9 +429,15 @@ func _command_0050() -> void:
 func _command_0062() -> void:
 	debug_print("Processing command: Add Or Remove Trait (code 62)")
 
-	var actor_id = current_command.parameters.get("actor_id", 0)
+	var raw_actor_id = current_command.parameters.get("actor_id", 0)
+	var actor_id = raw_actor_id
+	if typeof(raw_actor_id) == TYPE_STRING or raw_actor_id > 100000:
+		var conv = RPGSYSTEM.uid_to_id("actors", raw_actor_id)
+		if conv > 0:
+			actor_id = conv
+
 	var type = current_command.parameters.get("type", 0)
-	var tr: RPGTrait = current_command.parameters.get("RPGTrait", null)
+	var tr: RPGTrait = current_command.parameters.get("trait", current_command.parameters.get("RPGTrait", null))
 
 	if tr:
 		if actor_id == 0:

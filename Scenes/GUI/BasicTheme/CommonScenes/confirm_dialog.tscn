@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/CommonScenes/confirm_dialog.gd" id="1_script"]
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="3_panel"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="4_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_msg"]
+font = ExtResource("4_font")
+font_size = 20
+font_color = Color(1, 1, 1, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ConfirmDialog" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+color = Color(0, 0, 0, 0.6)
+script = ExtResource("1_script")
+
+[node name="MainContainer" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowPanel" type="PanelContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(460, 200)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_panel")
+
+[node name="VBox" type="VBoxContainer" parent="MainContainer/WindowPanel"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Title" type="Label" parent="MainContainer/WindowPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "¿Estás seguro?"
+label_settings = SubResource("LabelSettings_msg")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer/WindowPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="OKButton" type="Button" parent="MainContainer/WindowPanel/VBox/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 44)
+layout_mode = 2
+text = "Aceptar"
+
+[node name="CancelButton" type="Button" parent="MainContainer/WindowPanel/VBox/ButtonContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 44)
+layout_mode = 2
+text = "Cancelar"

@@ -1,5 +1,12 @@
 [gd_scene format=3 uid="uid://bqpspx00tbc4p"]
 
+[ext_resource type="Texture2D" uid="uid://dqaookt8tko18" path="res://Assets/Images/Other/character_mask1.png" id="1_us8f3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6lfr"]
+resource_local_to_scene = true
+atlas = ExtResource("1_us8f3")
+region = Rect2(0, 0, 64, 64)
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dpd5q"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_us8f3"]
@@ -29,7 +36,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("FullBody:scale")
+tracks/1/path = NodePath("Mask/FullBody:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -44,7 +51,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("FullBody:scale")
+tracks/0/path = NodePath("Mask/FullBody:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -66,10 +73,16 @@ y_sort_enabled = true
 collision_layer = 4
 collision_mask = 15
 
-[node name="FullBody" type="Marker2D" parent="." unique_id=234853786]
+[node name="Mask" type="Polygon2D" parent="." unique_id=1410507672]
+clip_children = 1
+texture = SubResource("AtlasTexture_l6lfr")
+polygon = PackedVector2Array(-50, -88, 54, -87, 53, 77, -51, 77)
+uv = PackedVector2Array(-22, -50, 26, -50, 26, 0, -24, 0)
+
+[node name="FullBody" type="Marker2D" parent="Mask" unique_id=234853786]
 unique_name_in_owner = true
 
-[node name="MainTexture" type="Sprite2D" parent="FullBody" unique_id=474970632]
+[node name="MainTexture" type="Sprite2D" parent="Mask/FullBody" unique_id=474970632]
 unique_name_in_owner = true
 material = SubResource("CanvasItemMaterial_dpd5q")
 position = Vector2(0, -32)

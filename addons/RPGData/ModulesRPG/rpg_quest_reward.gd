@@ -17,11 +17,18 @@ func get_class(): return "RPGQuestReward"
 ## Items obtained by completing this quest
 @export var items: Array[RPGItemDrop] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clear() -> void:
 	gold =  0
 	experience = 0
 	items.clear()
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 ## Clones the quest and its properties.
 ## @param value bool - Whether to perform a deep clone.
@@ -30,4 +37,5 @@ func clone(value: bool = true) -> RPGQuestReward:
 	var new_reward = duplicate(value)
 	for i in new_reward.items.size():
 		new_reward.items[i] = new_reward.items[i].clone(value)
+	new_reward.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	return new_reward

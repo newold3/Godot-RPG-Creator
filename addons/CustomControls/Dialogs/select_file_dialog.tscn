@@ -166,7 +166,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o8kil")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 15.0
 }]
@@ -279,7 +279,6 @@ size_flags_vertical = 4
 tooltip_text = "Switch between browsing folders or displaying all files without browsing"
 mouse_default_cursor_shape = 2
 toggle_mode = true
-button_pressed = true
 texture_normal = ExtResource("9_56g62")
 texture_pressed = ExtResource("10_umg3t")
 texture_hover = ExtResource("11_of5pj")
@@ -526,7 +525,7 @@ position = Vector2(-1, 0.5)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_wjcc4")
 autoplay = "default"
-frame_progress = 0.22914822
+frame_progress = 0.29326308
 
 [node name="Label" type="Label" parent="MarginContainer/Loading/Control" unique_id=2123952533]
 layout_mode = 1

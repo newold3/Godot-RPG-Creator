@@ -11,12 +11,19 @@ func get_class(): return "RPGPerishable"
 @export var action: int = 0
 @export var conversion_item_id: int = 0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clear() -> void:
 	is_perishable = 0
 	duration = 0
 	action = 0
 	conversion_item_id = 0
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func is_enabled() -> bool:
@@ -24,4 +31,6 @@ func is_enabled() -> bool:
 
 
 func clone(value: bool = true) -> RPGPerishable:
-	return(duplicate(value))
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

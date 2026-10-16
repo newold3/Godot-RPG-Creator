@@ -14,6 +14,9 @@ func get_class(): return "RPGInvocation"
 @export var animation: int = 0
 @export var sequence: Array[RPGInvocationSequence] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clear() -> void:
 	speed = 0
@@ -23,11 +26,16 @@ func clear() -> void:
 	hit_type = 0
 	animation = 0
 	sequence.clear()
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clone(value: bool = true) -> RPGInvocation:
 	var new_rpg_invocation: RPGInvocation = duplicate(value)
 	for i in new_rpg_invocation.sequence.size():
 		new_rpg_invocation.sequence[i] = new_rpg_invocation.sequence[i].clone()
+	new_rpg_invocation.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_rpg_invocation

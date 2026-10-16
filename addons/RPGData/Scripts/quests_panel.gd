@@ -15,8 +15,11 @@ var quest_cache: Dictionary = {
 	"enemy_quantity": 1,
 	"map_id": -1,
 	"region_id": -1,
-	"global_event": -1
+	"global_event": -1,
+	"arrival_page_id": -1
 }
+
+@onready var escort_warning_label: Label = %EscortWarningLabel
 
 func get_custom_class() -> String:
 	return "RPGQuest"
@@ -38,7 +41,7 @@ func _ready() -> void:
 	_fill_item_type_options()
 	_fill_available_categories()
 	
-	%TypeOptions.item_selected.emit(0)
+	_update_objective_ui(0)
 
 
 func _fill_type_options() -> void:
@@ -118,6 +121,7 @@ func clear_cache() -> void:
 	quest_cache.map_id = -1
 	quest_cache.global_event = -1
 	quest_cache.region_id = -1
+	quest_cache.arrival_page_id = -1
 
 
 func _update_data_fields() -> void:
@@ -154,7 +158,9 @@ func _update_data_fields() -> void:
 		elif current_data.type == RPGEnums.QuestMode.ESCORT_NPC:
 			quest_cache.npc_id = current_data.target_event.clone(true)
 			quest_cache.map_id = current_data.item_id
+			quest_cache.region_id = current_data.region_id
 			quest_cache.global_event = current_data.global_event
+			quest_cache.arrival_page_id = current_data.arrival_event_page_id
 		
 		%NameLineEdit.text = current_data.name
 		%CategoryLineEdit.text = current_data.category
@@ -163,7 +169,7 @@ func _update_data_fields() -> void:
 		%MinLevelSpinBox.value = current_data.min_level
 		%TimeLimit.value = current_data.time_limit
 		%TypeOptions.select(current_data.type)
-		%TypeOptions.item_selected.emit(current_data.type)
+		_update_objective_ui(current_data.type)
 		%Gold.value = current_data.reward.gold
 		%Experience.value = current_data.reward.experience
 		
@@ -173,6 +179,10 @@ func _update_data_fields() -> void:
 		%MissionProgress.set_icon(current_data.icon_progress.path, current_data.icon_progress.region)
 		%MissionCompleted.set_icon(current_data.icon_completed.path, current_data.icon_completed.region)
 		%MissionFailed.set_icon(current_data.icon_failed.path, current_data.icon_failed.region)
+		if "icon_escort" in current_data and current_data.icon_escort:
+			%MissionEscort.set_icon(current_data.icon_escort.path, current_data.icon_escort.region)
+		else:
+			%MissionEscort.clear()
 		
 		if current_data.prerequisites:
 			set_button_text(%Prerequisites, current_data.prerequisites)
@@ -192,58 +202,106 @@ func _update_data_fields() -> void:
 			%QuestUnlocked.text = tr("Select Quests")
 		
 		set_global_event_name()
+		set_arrival_page_name()
 		
 		%Notes.text = str(current_data.notes)
 		
 		_fill_reward_list()
+		_check_escort_quest_warning()
 
 	else:
 		disable_all(true)
 		%NameLineEdit.text = ""
+		if escort_warning_label:
+			escort_warning_label.visible = false
 	
 	busy = false
 
 
 func _on_category_line_edit_text_changed(new_text: String) -> void:
+	if busy: return
 	get_data().category = new_text
 	_fill_available_categories()
 
 
 func _on_start_unlocked_toggled(toggled_on: bool) -> void:
+	if busy: return
 	get_data().default_unlocked = toggled_on
 
 
 func _on_is_repeatable_toggled(toggled_on: bool) -> void:
+	if busy: return
 	get_data().is_repeatable = toggled_on
 
 
 func _on_max_level_spin_box_value_changed(value: float) -> void:
+	if busy: return
 	if not get_data(): return
 	get_data().min_level = value
 
 
+func _update_objective_ui(index: int) -> void:
+	var nodes = [%ParametersLabel, %ObjetiveParam1, %ObjetiveParam2, %ObjetiveParam3, %ObjetiveParam4, %ObjetiveParam5, %ObjetiveParam6, %ObjetiveParam7]
+	for node in nodes:
+		node.visible = false
+	if escort_warning_label:
+		escort_warning_label.visible = false
+	if %ArrivalPageContainer:
+		%ArrivalPageContainer.visible = false
+
+	var current_data = get_data()
+
+	match index:
+		0:
+			%ObjetiveParam5.visible = true
+			set_npc_name()
+		1, 6, 7:
+			%ObjetiveParam1.visible = true
+			%ObjetiveParam3.visible = true
+			if current_data:
+				set_item_name(current_data.item_type, current_data.item_id)
+				%ItemTypeOptions.select(current_data.item_type)
+				%Quantity.value = current_data.quantity
+				%Preserve.set_pressed(current_data.keep_materials)
+		2:
+			%ObjetiveParam2.visible = true
+			if current_data:
+				%EnemyQuantity.value = current_data.quantity
+			set_enemy_name()
+		3:
+			%ObjetiveParam6.visible = true
+			%ObjetiveParam7.visible = true
+			set_map_name()
+			set_global_event_name()
+		5:
+			%ObjetiveParam5.visible = true
+			%ObjetiveParam6.visible = true
+			%ObjetiveParam7.visible = true
+			if %ArrivalPageContainer:
+				%ArrivalPageContainer.visible = true
+			set_npc_name()
+			set_area_map_name()
+			set_global_event_name()
+			set_arrival_page_name()
+	
+	if index != 4:
+		%ParametersLabel.visible = true
+	_check_escort_quest_warning()
+
+
 func _on_type_options_item_selected(index: int) -> void:
+	if busy: return
 	var current_data = get_data()
 	if not current_data: return
 	
 	current_data.clear_objetive()
 	current_data.type = index
-	var nodes = [%ParametersLabel, %ObjetiveParam1, %ObjetiveParam2, %ObjetiveParam3, %ObjetiveParam4, %ObjetiveParam5, %ObjetiveParam6, %ObjetiveParam7]
-	for node in nodes:
-		node.visible = false
 
 	match index:
 		0:
-			%ObjetiveParam5.visible = true
-			
 			current_data.target_event = quest_cache.npc_id.clone(true)
 			current_data.quantity = quest_cache.enemy_quantity
-			
-			set_npc_name()
 		1, 6, 7:
-			%ObjetiveParam1.visible = true
-			%ObjetiveParam3.visible = true
-			
 			current_data.item_type = quest_cache.item_type
 			match quest_cache.item_type:
 				0: current_data.item_id = quest_cache.item_id
@@ -252,54 +310,34 @@ func _on_type_options_item_selected(index: int) -> void:
 				3: current_data.item_id = quest_cache.set_id
 			current_data.quantity = quest_cache.item_quantity
 			current_data.keep_materials = quest_cache.item_preserve
-			
-			set_item_name(quest_cache.item_type, quest_cache.item_id)
-			%Quantity.value = quest_cache.item_quantity
-			%Preserve.set_pressed(quest_cache.item_preserve)
 		2:
-			%ObjetiveParam2.visible = true
-			
 			current_data.enemy_id = quest_cache.enemy_id
 			current_data.quantity = quest_cache.enemy_quantity
-			
-			%EnemyQuantity.value = quest_cache.enemy_quantity
-			set_enemy_name()
 		3:
-			%ObjetiveParam6.visible = true
-			%ObjetiveParam7.visible = true
-			
 			current_data.item_id = quest_cache.map_id
 			current_data.global_event = quest_cache.global_event
-			
-			set_map_name()
-			set_global_event_name()
 		5:
-			%ObjetiveParam5.visible = true
-			%ObjetiveParam6.visible = true
-			%ObjetiveParam7.visible = true
-			
 			current_data.target_event = quest_cache.npc_id.clone(true)
 			current_data.item_id = quest_cache.map_id
 			current_data.region_id = quest_cache.region_id
 			current_data.global_event = quest_cache.global_event
-			
-			set_npc_name()
-			set_area_map_name()
-			set_global_event_name()
-	
-	if index != 4:
-		%ParametersLabel.visible = true
+			current_data.arrival_event_page_id = quest_cache.arrival_page_id
+
+	_update_objective_ui(index)
 
 
 func _on_gold_value_changed(value: float) -> void:
+	if busy: return
 	get_data().reward.gold = value
 
 
 func _on_experience_value_changed(value: float) -> void:
+	if busy: return
 	get_data().reward.experience = value
 
 
 func _on_description_text_changed() -> void:
+	if busy: return
 	get_data().description = %Description.text
 
 
@@ -366,6 +404,7 @@ func _on_mission_completed_remove_requested() -> void:
 
 
 func _on_time_limit_value_changed(value: float) -> void:
+	if busy: return
 	get_data().time_limit = value
 
 
@@ -497,11 +536,15 @@ func _on_quest_unlocked_pressed() -> void:
 
 
 func set_npc_name() -> void:
+	var node = %TargetEvent
+	var current_data = get_data()
+	if not current_data:
+		node.text = tr("Select Event")
+		return
 	var event_name: String = ""
 	var map_name: String = ""
 	var page_name: String = ""
-	var node = %TargetEvent
-	var ev = get_data().target_event
+	var ev = current_data.target_event
 	if ev and ev.map_id != -1 and ev.event_id != -1:
 		map_name = RPGSYSTEM.map_infos.get_map_name_from_id(ev.map_id)
 		map_name = (map_name if not map_name.is_empty() else str(ev.map_id))
@@ -513,6 +556,31 @@ func set_npc_name() -> void:
 		node.text = "Map < %s > event %s - %s" % [map_name, event_name, page_name]
 	else:
 		node.text = tr("Select Event")
+	set_arrival_page_name()
+	_check_escort_quest_warning()
+
+
+func set_arrival_page_name() -> void:
+	if not %ArrivalPage:
+		return
+	var current_data = get_data()
+	if not current_data:
+		%ArrivalPage.text = tr("Arrival Page: None")
+		return
+		
+	var page_id = current_data.arrival_event_page_id
+	var ev = current_data.target_event
+	var has_valid_npc = ev and ev.map_id != -1 and ev.event_id != -1
+	
+	%ArrivalPage.disabled = not has_valid_npc
+	
+	if not has_valid_npc or page_id == -1:
+		%ArrivalPage.text = tr("Arrival Page: None")
+	else:
+		var page_name = RPGSYSTEM.map_infos.get_event_page_name(ev.map_id, ev.event_id, page_id)
+		if page_name.is_empty():
+			page_name = "#" + str(page_id)
+		%ArrivalPage.text = tr("Arrival Page: ") + page_name
 
 
 func set_item_name(type: int, id: int) -> void:
@@ -531,9 +599,13 @@ func set_item_name(type: int, id: int) -> void:
 
 func set_enemy_name() -> void:
 	var node = %EnemyID
+	var current_data = get_data()
+	if not current_data:
+		node.text = tr("Select Enemy")
+		return
 	var enemy_name: String
 	
-	var enemy_id = get_data().enemy_id
+	var enemy_id = current_data.enemy_id
 	if enemy_id > 0 and RPGSYSTEM.database.enemies.size() > enemy_id:
 		enemy_name = "%s: %s" % [enemy_id, RPGSYSTEM.database.enemies[enemy_id].name]
 	
@@ -541,13 +613,16 @@ func set_enemy_name() -> void:
 		node.text = enemy_name
 	else:
 		node.text = tr("Select Enemy")
-		
 
 
 func set_map_name() -> void:
 	var node = %TargetMap
+	var current_data = get_data()
+	if not current_data:
+		node.text = tr("Select Map")
+		return
 	
-	var map_id = get_data().item_id
+	var map_id = current_data.item_id
 	var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
 	
 	if map_name or RPGSYSTEM.map_infos.get_map_by_id(map_id):
@@ -558,8 +633,12 @@ func set_map_name() -> void:
 
 func set_area_map_name() -> void:
 	var node = %TargetMap
+	var current_data = get_data()
+	if not current_data:
+		node.text = tr("Select Map")
+		return
 	
-	var map_id = get_data().item_id
+	var map_id = current_data.item_id
 	var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
 	var text: String = ""
 	
@@ -568,7 +647,7 @@ func set_area_map_name() -> void:
 	else:
 		text = tr("Select Map")
 	
-	var region_id = get_data().region_id
+	var region_id = current_data.region_id
 	var region_name: String = ""
 	
 	if region_id >= 0:
@@ -579,6 +658,7 @@ func set_area_map_name() -> void:
 	else:
 		region_name = tr("No region needed")
 		%TargetMap.text = text + " (" + region_name + ")"
+	_check_escort_quest_warning()
 
 
 func set_global_event_name() -> void:
@@ -598,13 +678,13 @@ func set_global_event_name() -> void:
 
 
 func _on_item_type_options_item_selected(index: int) -> void:
-	if not busy: quest_cache.item_type = index
+	if busy: return
+	quest_cache.item_type = index
 	get_data().item_type = index
 	get_data().item_id = quest_cache.item_id if index == 0 \
 		else quest_cache.weapon_id if index == 1 \
 		else quest_cache.armor_id if index == 2 \
 		else quest_cache.set_id
-	
 	
 	set_item_name(index, get_data().item_id)
 
@@ -654,13 +734,15 @@ func _on_item_id_pressed() -> void:
 
 
 func _on_quantity_value_changed(value: float) -> void:
+	if busy: return
 	if not get_data(): return
-	if not busy: quest_cache.item_quantity = value
+	quest_cache.item_quantity = value
 	get_data().quantity = value
 
 
 func _on_preserve_toggled(toggled_on: bool) -> void:
-	if not busy: quest_cache.item_preserve
+	if busy: return
+	quest_cache.item_preserve = toggled_on
 	get_data().keep_materials = toggled_on
 
 
@@ -669,8 +751,9 @@ func _on_enemy_id_pressed() -> void:
 
 
 func _on_enemy_quantity_value_changed(value: float) -> void:
+	if busy: return
 	if not get_data(): return
-	if not busy: quest_cache.enemy_quantity = value
+	quest_cache.enemy_quantity = value
 	get_data().quantity = value
 
 
@@ -689,6 +772,7 @@ func _on_target_map_pressed() -> void:
 				get_data().item_id = map_id
 				get_data().region_id = region_id
 				set_area_map_name()
+				_check_escort_quest_warning()
 		)
 	else:
 		dialog.set_selected(get_data().item_id)
@@ -698,6 +782,7 @@ func _on_target_map_pressed() -> void:
 				quest_cache.map_id = index
 				get_data().item_id = index
 				set_map_name()
+				_check_escort_quest_warning()
 		)
 
 
@@ -710,11 +795,49 @@ func _on_target_event_pressed() -> void:
 	
 	dialog.event_selected.connect(
 		func(map_id: int, event_id: int, page_id: int):
+			var old_map = get_data().target_event.map_id
+			var old_ev = get_data().target_event.event_id
 			var ev = RPGMapEventID.new(map_id, event_id, page_id)
 			get_data().target_event = ev
 			if not busy: quest_cache.npc_id = ev.clone(true)
+			if old_map != map_id or old_ev != event_id:
+				get_data().arrival_event_page_id = -1
+				if not busy: quest_cache.arrival_page_id = -1
 			set_npc_name()
+			set_arrival_page_name()
+			_check_escort_quest_warning()
 	)
+
+
+func _on_arrival_page_pressed() -> void:
+	var ev = get_data().target_event
+	if not ev or ev.map_id == -1 or ev.event_id == -1:
+		return
+		
+	var path = "res://addons/CustomControls/Dialogs/select_event_dialog.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+	
+	dialog.setup_single_event_mode(ev.map_id, ev.event_id, true, true, true)
+	dialog.set_selection(ev.map_id, ev.event_id, get_data().arrival_event_page_id)
+	
+	dialog.event_selected.connect(
+		func(_map_id: int, _event_id: int, page_id: int):
+			get_data().arrival_event_page_id = page_id
+			if not busy: quest_cache.arrival_page_id = page_id
+			set_arrival_page_name()
+	)
+
+
+func _on_arrival_page_middle_click_pressed() -> void:
+	get_data().arrival_event_page_id = -1
+	if not busy: quest_cache.arrival_page_id = -1
+	set_arrival_page_name()
+
+
+func _on_arrival_page_right_click_pressed() -> void:
+	get_data().arrival_event_page_id = -1
+	if not busy: quest_cache.arrival_page_id = -1
+	set_arrival_page_name()
 
 
 func _on_reward_list_copy_requested(indexes: PackedInt32Array) -> void:
@@ -863,6 +986,7 @@ func _on_reward_updated(_reward: RPGItemDrop, index: int) -> void:
 
 
 func _on_notes_text_changed() -> void:
+	if busy: return
 	get_data().notes = %Notes.text
 
 
@@ -877,9 +1001,13 @@ func _on_config_data_tabs_tab_changed(index: int) -> void:
 
 func _fill_available_categories() -> void:
 	var node = %SelectCategory
+	if not node: return
 	node.clear()
 	node.add_item("Select Category")
 	var categories = []
+	if not RPGSYSTEM or not RPGSYSTEM.database or not RPGSYSTEM.database.quests:
+		node.select(0)
+		return
 	for quest in RPGSYSTEM.database.quests:
 		if not quest: continue
 		if not quest.category.is_empty() and not quest.category.to_lower() in categories:
@@ -927,6 +1055,32 @@ func _on_mission_failed_remove_requested() -> void:
 	%MissionFailed.clear()
 
 
+func _on_mission_escort_clicked() -> void:
+	if not get_data(): return
+	if not get_data().icon_escort:
+		get_data().icon_escort = RPGIcon.new("res://Scenes/QuestMarkers/quest_escort.tscn")
+	_open_icon_dialog(%MissionEscort, "icon_escort")
+
+
+func _on_mission_escort_paste_requested(icon: String, region: Rect2) -> void:
+	if not get_data(): return
+	if not get_data().icon_escort:
+		get_data().icon_escort = RPGIcon.new("res://Scenes/QuestMarkers/quest_escort.tscn")
+	var data_icon = get_data().icon_escort
+	data_icon.path = icon
+	data_icon.region = region
+	%MissionEscort.set_icon(data_icon.path, data_icon.region)
+
+
+func _on_mission_escort_remove_requested() -> void:
+	if not get_data(): return
+	if get_data().icon_escort:
+		get_data().icon_escort.clear()
+	else:
+		get_data().icon_escort = RPGIcon.new()
+	%MissionEscort.clear()
+
+
 func _on_visibility_changed() -> void:
 	super()
 	if visible:
@@ -935,4 +1089,27 @@ func _on_visibility_changed() -> void:
 			_fill_reward_list()
 		else:
 			%RewardList.clear()
-		busy = true
+		busy = false
+
+
+
+func _check_escort_quest_warning() -> void:
+	if not escort_warning_label:
+		return
+	var current_data = get_data()
+	if not current_data or current_data.type != RPGEnums.QuestMode.ESCORT_NPC:
+		escort_warning_label.visible = false
+		return
+		
+	var ev = current_data.target_event
+	var target_map_id = current_data.item_id
+	var region_id = current_data.region_id
+	
+	var is_invalid = false
+	if ev and ev.map_id != -1 and ev.event_id != -1:
+		if target_map_id != -1 and ev.map_id == target_map_id and region_id < 0:
+			is_invalid = true
+			
+	escort_warning_label.visible = is_invalid
+	if is_invalid:
+		escort_warning_label.text = tr("⚠ Escort to the same map requires a target region, or select a different destination map.")

@@ -25,6 +25,9 @@ func get_class(): return "RPGTroop"
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -52,6 +55,10 @@ func clear() -> void:
 	pages = [RPGTroopPage.new()]
 	notes = ""
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func fix_pages_ids() -> void:
@@ -66,5 +73,7 @@ func clone(value: bool = true) -> RPGTroop:
 		new_troop.members[i] = new_troop.members[i].clone(value)
 	for i in new_troop.pages.size():
 		new_troop.pages[i] = new_troop.pages[i].clone(value)
+	
+	new_troop.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_troop

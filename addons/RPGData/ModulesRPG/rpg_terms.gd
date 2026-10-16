@@ -8,6 +8,9 @@ func get_class(): return "RPGTerms"
 
 @export var messages: Array[RPGTerm]
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func _init() -> void:
 	if not messages or messages.is_empty():
@@ -74,7 +77,7 @@ func search_message(id: String) -> String:
 		if message.id == id:
 			return tr(message.text)
 	
-	return ""
+	return tr(id)
 
 
 func remove_message_at(id: int) -> void:
@@ -87,5 +90,7 @@ func clone(value: bool = true) -> RPGTerms:
 	
 	for i in new_terms.messages.size():
 		new_terms.messages[i] = new_terms.messages[i].clone(value)
+	
+	new_terms.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_terms

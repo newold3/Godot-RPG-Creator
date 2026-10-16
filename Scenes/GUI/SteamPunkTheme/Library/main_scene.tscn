@@ -10,11 +10,14 @@ theme = ExtResource("2_d6mpg")
 scene_title = "Library"
 timer_to_emit_end_signal = 0.12
 move_in_direction = 3
-move_in_duration = 0.5
+move_in_trans_type = 1
+move_in_duration = 0.45
 move_out_ease_type = 2
 move_out_trans_type = 1
-move_out_duration = 0.35
+move_out_duration = 0.45
+zoom_in_enabled = false
 zoom_out_enabled = false
+fade_in_enabled = false
 fade_out_enabled = false
 ready_to_process_delay = 0.18
 
@@ -29,7 +32,7 @@ title_scene = NodePath("../SceneMainContainer/MainContainer/Title/TitleContainer
 process_mode = 4
 render_target_clear_mode = 1
 
-[node name="Background" parent="SceneMainContainer/BottomLayer/SubViewport" index="0" unique_id=1830413573]
+[node name="StaticBackground" parent="SceneMainContainer/BottomLayer/SubViewport" index="0" unique_id=1830413573]
 visible = false
 
 [node name="VideoBackground" parent="SceneMainContainer/BottomLayer/SubViewport" index="1" unique_id=409251738]

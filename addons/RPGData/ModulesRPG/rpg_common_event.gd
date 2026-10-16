@@ -36,6 +36,9 @@ func get_class():
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -54,6 +57,10 @@ func clear() -> void:
 	var command = RPGEventCommand.new()
 	list.append(command)
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 ## Clones the common event and its properties.
 ## @param value bool - Whether to perform a deep clone.
@@ -63,5 +70,7 @@ func clone(value: bool = true) -> RPGCommonEvent:
 
 	for i in new_common_event.list.size():
 		new_common_event.list[i] = new_common_event.list[i].clone(value)
+
+	new_common_event.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_common_event

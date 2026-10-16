@@ -274,12 +274,16 @@ size_flags_vertical = 3
 focus_neighbor_left = NodePath("../../VBoxContainer3/LevelSpinBox")
 focus_neighbor_right = NodePath("../../VBoxContainer3/MinValueSpinBox")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1536473324]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2" unique_id=1455712462]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer" unique_id=1536473324]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="Presets" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=1523638001]
+[node name="Presets" type="OptionButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=1523638001]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -326,7 +330,7 @@ popup/item_12/icon = SubResource("AtlasTexture_vvko8")
 popup/item_12/id = 12
 script = ExtResource("3_hoo5m")
 
-[node name="SavePresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=1584859694]
+[node name="SavePresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=1584859694]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -336,7 +340,7 @@ texture_normal = SubResource("AtlasTexture_qil8i")
 texture_hover = SubResource("AtlasTexture_1stdy")
 metadata/last_tooltip = "Saves the current curve as a user preset"
 
-[node name="LoadPresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=121884987]
+[node name="LoadPresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=121884987]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -348,7 +352,7 @@ texture_hover = SubResource("AtlasTexture_iuvf5")
 metadata/last_tooltip = "Use a user preset to create the curve
 (presets are Curve resources)"
 
-[node name="FixCurveButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=1797228694]
+[node name="FixCurveButton" type="TextureButton" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3" unique_id=1797228694]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -361,6 +365,23 @@ texture_hover = SubResource("AtlasTexture_io3lh")
 metadata/last_tooltip = "Adjusts the curve to ensure that each subsequent level has
 a value equal to or higher than the previous level for an ascending curve,
 or a value equal to or lower than the previous level for a descending curve"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer" unique_id=39405121]
+layout_mode = 2
+
+[node name="ThreeControlPoints" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("3_0mmnt")]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Create the curve using a dialog box that displays three segments of the curve (early game, mid game, and end game) and allows you to choose a growth factor for the curve in that segment."
+text = "Fine 3-C Points"
+
+[node name="UseFormula" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer" unique_id=1650052964 instance=ExtResource("3_0mmnt")]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Enter a formula directly to create the curve"
+text = "Use formula"
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer" unique_id=459672038]
 layout_mode = 2
@@ -402,10 +423,12 @@ text = "Cancel"
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer3/LevelSpinBox" to="." method="_on_level_spin_box_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5/MaxValueSpinBox" to="." method="_on_max_value_spin_box_value_changed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer5/CurrentValueSpinBox" to="." method="_on_current_value_spin_box_value_changed"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/Presets" to="." method="_on_presets_item_selected"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/SavePresetButton" to="." method="_on_save_preset_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/LoadPresetButton" to="." method="_on_load_preset_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/HBoxContainer3/FixCurveButton" to="." method="_on_fix_curve_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3/Presets" to="." method="_on_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3/SavePresetButton" to="." method="_on_save_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3/LoadPresetButton" to="." method="_on_load_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer3/FixCurveButton" to="." method="_on_fix_curve_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer/ThreeControlPoints" to="." method="_on_three_control_points_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/VBoxContainer2/VBoxContainer/HBoxContainer/UseFormula" to="." method="_on_use_formula_pressed"]
 [connection signal="value_changed" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/StatEditor" to="." method="_on_stat_editor_value_changed"]
 [connection signal="value_clicked" from="MarginContainer/VBoxContainer/Panel/MarginContainer/VBoxContainer/StatEditor" to="." method="_on_stat_editor_value_clicked"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]

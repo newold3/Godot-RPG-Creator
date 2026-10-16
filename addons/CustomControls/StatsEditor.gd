@@ -432,6 +432,12 @@ func _on_copy_curve_pressed() -> void:
 		resource_curve.add_point(point)
 	
 	StaticEditorVars.CLIPBOARD["stat_curve_preset"] = resource_curve
+	
+	# copy into main clipboard as text
+	DisplayServer.clipboard_set(str(data))
+	
+	
+	
 	%PasteCurve.set_disabled(false)
 
 

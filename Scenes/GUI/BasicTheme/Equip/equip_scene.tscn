@@ -1,0 +1,502 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/Equip/equip_scene.gd" id="1_jbong"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/select_heroe_vertical_menu.tscn" id="1_xhc3l"]
+[ext_resource type="Texture2D" uid="uid://bfgr2ewrp6i0u" path="res://Assets/Images/GUI/party_menu.png" id="2_jbong"]
+[ext_resource type="PackedScene" uid="uid://csroyvefl3r0e" path="res://Scenes/EquipScene/main_actor_container.tscn" id="3_qgjgh"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/stats_container.tscn" id="4_ueivf"]
+[ext_resource type="Texture2D" uid="uid://clcx3f1jai82k" path="res://Assets/Images/Other/light_beam.png" id="5_qgjgh"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/equipment_container.tscn" id="5_v1rh4"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="7_r2o83"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/OtherScenes/particle_bubbles.tscn" id="8_0kaj4"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/current_selected_equipment_container.tscn" id="9_x4so8"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/items_menu.tscn" id="15_ueivf"]
+
+[sub_resource type="GDScript" id="GDScript_0kaj4"]
+script/source = "extends Node
+
+enum MenuZone { ACTORS, COSTUME, EQUIPMENT }
+
+@export var main_node: Node
+@export var actors_menu: Node
+
+var current_zone: MenuZone = MenuZone.ACTORS
+
+var busy: bool = false
+
+
+func _process(delta: float) -> void:
+	if current_zone != MenuZone.COSTUME: return
+	
+	if ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
+		destroy()
+		return
+	
+	if actors_menu:
+		if ControllerManager.is_action_pressed(\"Button L1\"):
+			_change_actor(-1)
+			
+		elif ControllerManager.is_action_pressed(\"Button R1\"):
+			_change_actor(1)
+		
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"right\":
+		%EquipmentContainer.select_last_slot()
+		current_zone = MenuZone.EQUIPMENT
+	elif direction == \"left\":
+		%ButtonsVerticalMenu.select_last_button()
+		current_zone = MenuZone.ACTORS
+	if direction == \"right\" or direction == \"left\":
+		busy = true
+		set_deferred(\"busy\", false)
+
+
+func _change_actor(direction: int) -> void:
+	actors_menu.set_process(false)
+	actors_menu.set_process.call_deferred(true)
+	actors_menu.navigate_button(direction)
+	actors_menu.change_hero_by_hotkey.emit()
+	_select_costume.call_deferred()
+
+
+func _select_costume() -> void:
+	await get_tree().process_frame
+	%CostumeButton.grab_focus()
+	current_zone = MenuZone.COSTUME
+
+
+func _on_buttons_vertical_menu_change_focus_requested() -> void:
+	if current_zone != MenuZone.ACTORS or busy: return
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"right\":
+		%CostumeButton.grab_focus()
+		current_zone = MenuZone.COSTUME
+	elif direction == \"left\":
+		%EquipmentContainer.select_last_slot()
+		current_zone = MenuZone.EQUIPMENT
+
+	busy = true
+	set_deferred(\"busy\", false)
+
+
+func _on_equipment_container_change_focus_requested() -> void:
+	if current_zone != MenuZone.EQUIPMENT or busy: return
+	var direction = ControllerManager.get_pressed_direction()
+	if direction == \"left\":
+		%CostumeButton.grab_focus()
+		current_zone = MenuZone.COSTUME
+	elif direction == \"right\":
+		%ButtonsVerticalMenu.select_last_button()
+		current_zone = MenuZone.ACTORS
+	
+	busy = true
+	set_deferred(\"busy\", false)
+
+
+func _on_buttons_vertical_menu_change_hero_by_hotkey() -> void:
+	%EquipmentContainer.select_last_slot()
+
+
+func _on_buttons_vertical_menu_button_selected(index: int) -> void:
+	current_zone = MenuZone.ACTORS
+
+
+func _on_equipment_container_slot_selected(slot_id: int) -> void:
+	current_zone = MenuZone.EQUIPMENT
+
+
+func _on_costume_button_focus_entered() -> void:
+	current_zone = MenuZone.COSTUME
+	var manipulator = str(GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU_2)
+	GameManager.set_cursor_manipulator(manipulator)
+	GameManager.set_confin_area(Rect2(), manipulator)
+	GameManager.set_hand_position(MainHandCursor.HandPosition.LEFT, manipulator)
+	GameManager.set_cursor_offset(Vector2(8, 0), manipulator)
+	GameManager.force_show_cursor()
+
+
+func _on_costume_button_pressed() -> void:
+	current_zone = MenuZone.COSTUME
+	main_node._process_start_change_costume()
+
+
+func _on_buttons_vertical_menu_ok_pressed(index: int) -> void:
+	GameManager.play_fx(\"ok\")
+	%EquipmentContainer.select_last_slot()
+	current_zone = MenuZone.EQUIPMENT
+
+
+func destroy() -> void:
+	if current_zone == MenuZone.EQUIPMENT or current_zone == MenuZone.COSTUME:
+		GameManager.play_fx(\"back\")
+		%ButtonsVerticalMenu.select_last_button.call_deferred()
+		current_zone = MenuZone.ACTORS
+	elif main_node and main_node.has_method(\"destroy\"):
+		main_node.destroy()
+	busy = true
+	set_deferred(\"busy\", false)
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6cilu"]
+atlas = ExtResource("2_jbong")
+region = Rect2(1129, 304, 97, 98)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4so8"]
+atlas = ExtResource("2_jbong")
+region = Rect2(3, 172, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kaj4"]
+atlas = ExtResource("2_jbong")
+region = Rect2(3, 306, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhc3l"]
+atlas = ExtResource("2_jbong")
+region = Rect2(2, 238, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbong"]
+atlas = ExtResource("2_jbong")
+region = Rect2(117, 285, 56, 49)
+
+[node name="EquipScene" type="MarginContainer" unique_id=832737575]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_bottom = 40
+script = ExtResource("1_jbong")
+menu_items_end_position = Vector2(420, 0)
+
+[node name="Manager" type="Node" parent="." unique_id=294024291 node_paths=PackedStringArray("main_node", "actors_menu")]
+unique_name_in_owner = true
+script = SubResource("GDScript_0kaj4")
+main_node = NodePath("..")
+actors_menu = NodePath("../HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu")
+
+[node name="HelpTop" type="MarginContainer" parent="." unique_id=571185067]
+z_index = 100
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 116
+theme_override_constants/margin_top = -8
+theme_override_constants/margin_right = 506
+theme_override_constants/margin_bottom = -45
+
+[node name="HelpLabel" type="Label" parent="HelpTop" unique_id=62440018]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.83137256, 0.5764706, 0.3137255, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("7_r2o83")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1812720711]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainSelectHeroPanel" type="Control" parent="HBoxContainer" unique_id=1301235699]
+custom_minimum_size = Vector2(96, 202)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ButtonsVerticalMenu" parent="HBoxContainer/MainSelectHeroPanel" unique_id=489933934 instance=ExtResource("1_xhc3l")]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Contents" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" index="2"]
+theme_override_constants/margin_top = 44
+
+[node name="SmoothScrollContainer" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu/Contents" index="0"]
+custom_vscroll_size = Vector2(12, 366)
+custom_vscroll_offset = Vector2(70, -3)
+custom_scene_for_vertical_bar = ExtResource("8_0kaj4")
+
+[node name="BackgroundTop" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" index="3"]
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" unique_id=2094222028]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -20
+theme_override_constants/margin_top = 9
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Decoration" type="TextureRect" parent="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu/MarginContainer" unique_id=334289585]
+z_index = 1
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+texture = SubResource("AtlasTexture_6cilu")
+expand_mode = 1
+
+[node name="ActorPanel" type="Control" parent="HBoxContainer" unique_id=1384699660]
+custom_minimum_size = Vector2(148, 415)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BeamLight" type="TextureRect" parent="HBoxContainer/ActorPanel" unique_id=1410405367]
+modulate = Color(1, 0.79607844, 0.5411765, 0.23137255)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -152.0
+offset_right = 232.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_qgjgh")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="MainActorPanel" type="Control" parent="HBoxContainer/ActorPanel" unique_id=2117547437]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ActorContainer" type="MarginContainer" parent="HBoxContainer/ActorPanel/MainActorPanel" unique_id=1471429896]
+z_index = 1
+custom_minimum_size = Vector2(148, 415)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_bottom = -39
+
+[node name="MainActorContainer" parent="HBoxContainer/ActorPanel/MainActorPanel/ActorContainer" unique_id=1735410174 instance=ExtResource("3_qgjgh")]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="CostumeButtonContainer" type="MarginContainer" parent="HBoxContainer/ActorPanel" unique_id=521975477]
+unique_name_in_owner = true
+z_index = 100
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = -39
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ActorPanel/CostumeButtonContainer" unique_id=681968850]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer" unique_id=1057566546]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94509804, 0.64705884, 0.30588236, 1)
+text = "Costume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CostumeButton" type="TextureButton" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer" unique_id=1292414437]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+focus_mode = 1
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x4so8")
+texture_hover = SubResource("AtlasTexture_0kaj4")
+texture_disabled = SubResource("AtlasTexture_xhc3l")
+texture_focused = SubResource("AtlasTexture_x4so8")
+stretch_mode = 0
+
+[node name="ClipTexture" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" unique_id=1871861694]
+show_behind_parent = true
+clip_children = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 6.0
+offset_right = -3.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_jbong")
+
+[node name="SetIcon" type="TextureRect" parent="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton/ClipTexture" unique_id=1022207665]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+
+[node name="MainStatsContainer" type="Control" parent="HBoxContainer" unique_id=1634081193]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Stats" type="MarginContainer" parent="HBoxContainer/MainStatsContainer" unique_id=619794000]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_bottom = -41
+
+[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats" unique_id=125808626 instance=ExtResource("4_ueivf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+
+[node name="Gear1" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" parent_id_path=PackedInt32Array(125808626, 280123703) index="0" unique_id=959750090]
+offset_left = 15.999998
+offset_top = 11.999998
+offset_right = 15.999998
+offset_bottom = 11.999998
+
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear1" index="0" unique_id=215621296]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Gear2" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear" parent_id_path=PackedInt32Array(125808626, 280123703) index="1" unique_id=1209752613]
+offset_left = -17.0
+offset_top = 11.999998
+offset_right = -17.0
+offset_bottom = 11.999998
+
+[node name="Part" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/Gear/Gear2" index="0" unique_id=722889579]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -234.5
+offset_top = -229.5
+offset_right = 234.5
+offset_bottom = 229.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer" parent_id_path=PackedInt32Array(125808626, 521561027) index="0" unique_id=835639728]
+custom_vscroll_size = Vector2(12, 346)
+custom_vscroll_offset = Vector2(347, -2)
+custom_scene_for_vertical_bar = ExtResource("8_0kaj4")
+
+[node name="StatsContainer" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" index="0" unique_id=1948749115]
+custom_minimum_size = Vector2(0, 0)
+
+[node name="BackgroundTop" parent="HBoxContainer/MainStatsContainer/Stats/StatsContainer" index="3" unique_id=733133411]
+metadata/_edit_lock_ = true
+
+[node name="EquipmentContainer" type="Control" parent="HBoxContainer" unique_id=1546642492]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipment" type="MarginContainer" parent="HBoxContainer/EquipmentContainer" unique_id=264232323]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = -15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/EquipmentContainer/Equipment" unique_id=1649970735]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="EquipmentContainer" parent="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer" unique_id=436929249 instance=ExtResource("5_v1rh4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CurrentSelectedEquipmentContainer" parent="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer" unique_id=509536046 instance=ExtResource("9_x4so8")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SecondaryMenu" type="Control" parent="." unique_id=1878586789]
+z_index = 40
+custom_minimum_size = Vector2(416, 390)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+
+[node name="MenuItems" parent="SecondaryMenu" unique_id=889513046 instance=ExtResource("15_ueivf")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(416, 555)
+layout_mode = 0
+offset_left = 419.0
+offset_right = 934.0
+offset_bottom = 555.0
+mouse_filter = 0
+
+[connection signal="back_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="destroy"]
+[connection signal="button_clicked" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_change_actor"]
+[connection signal="button_selected" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="." method="_on_actors_menu_button_selected"]
+[connection signal="button_selected" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_button_selected"]
+[connection signal="change_focus_requested" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_change_focus_requested"]
+[connection signal="change_hero_by_hotkey" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_change_hero_by_hotkey"]
+[connection signal="ok_pressed" from="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu" to="Manager" method="_on_buttons_vertical_menu_ok_pressed"]
+[connection signal="focus_entered" from="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" to="Manager" method="_on_costume_button_focus_entered"]
+[connection signal="pressed" from="HBoxContainer/ActorPanel/CostumeButtonContainer/VBoxContainer/CostumeButton" to="Manager" method="_on_costume_button_pressed"]
+[connection signal="back_pressed" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="destroy"]
+[connection signal="change_focus_requested" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="_on_equipment_container_change_focus_requested"]
+[connection signal="slot_clicked" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_container_slot_clicked"]
+[connection signal="slot_selected" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="." method="_on_equipment_slot_selected"]
+[connection signal="slot_selected" from="HBoxContainer/EquipmentContainer/Equipment/VBoxContainer/EquipmentContainer" to="Manager" method="_on_equipment_container_slot_selected"]
+[connection signal="back_pressed" from="SecondaryMenu/MenuItems" to="." method="_hide_menu"]
+[connection signal="cancel" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_cancel"]
+[connection signal="item_clicked" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_clicked"]
+[connection signal="item_hovered" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_hovered"]
+[connection signal="item_selected" from="SecondaryMenu/MenuItems" to="." method="_on_menu_items_item_selected"]
+
+[editable path="HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu"]
+[editable path="HBoxContainer/MainStatsContainer/Stats/StatsContainer"]

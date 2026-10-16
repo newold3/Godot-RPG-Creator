@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dgnyxlxv2ap2w"]
+[gd_scene format=3 uid="uid://dgnyxlxv2ap2w"]
 
 [ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_e3g48"]
 [ext_resource type="Script" uid="uid://d02oxtrli3ubh" path="res://addons/CustomControls/Dialogs/CommandEvents/jump_to_label_dialog.gd" id="2_xgmse"]
@@ -26,17 +26,19 @@ region = Rect2(72, 24, 24, 24)
 atlas = ExtResource("4_plrrm")
 region = Rect2(72, 0, 24, 24)
 
-[node name="JumpToLabelDialog" type="Window"]
+[node name="JumpToLabelDialog" type="Window" unique_id=1998251268]
+oversampling_override = 1.0
 title = "Jump To Label"
 position = Vector2i(0, 36)
-size = Vector2i(400, 95)
+size = Vector2i(400, 110)
+wrap_controls = true
 transient = true
 exclusive = true
 unresizable = true
 theme = ExtResource("1_e3g48")
 script = ExtResource("2_xgmse")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1547340704]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -44,7 +46,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_ourej")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=478286840]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -55,18 +57,18 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=557989156]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2085823811]
 layout_mode = 2
 
-[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("3_ukgym")]
+[node name="Filename" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=632577631 instance=ExtResource("3_ukgym")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExpandList" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ExpandList" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=711558945]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
@@ -78,16 +80,16 @@ texture_normal = SubResource("AtlasTexture_h1jni")
 texture_hover = SubResource("AtlasTexture_4t3ft")
 texture_disabled = SubResource("AtlasTexture_qeqme")
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=396827588]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=374227391]
 layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_at4vy")]
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1235885651 instance=ExtResource("6_at4vy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -96,7 +98,7 @@ tooltip_text = "[title]Ok[/title]
 Saves all changes and closes the windows."
 text = "OK"
 
-[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("6_at4vy")]
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=893552647 instance=ExtResource("6_at4vy")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
@@ -105,9 +107,9 @@ tooltip_text = "[title]Cancel[/title]
 Closes this window without saving any changes."
 text = "CANCEL"
 
-[node name="FileSelector" type="PopupMenu" parent="."]
+[node name="FileSelector" type="PopupMenu" parent="." unique_id=2012064612]
 unique_name_in_owner = true
-size = Vector2i(28, 8)
+size = Vector2i(32, 8)
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/ExpandList" to="." method="_on_expand_list_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/OKButton" to="." method="_on_ok_button_pressed"]

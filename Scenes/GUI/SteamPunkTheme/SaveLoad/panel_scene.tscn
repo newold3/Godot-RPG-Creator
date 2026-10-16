@@ -209,6 +209,8 @@ mouse_filter = 2
 label_text = "Title"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 0
+min_font_size = 8
+max_font_size = 15
 
 [node name="Separator2" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer/VBoxContainer2" unique_id=1078390495]
 custom_minimum_size = Vector2(0, 28)
@@ -237,6 +239,8 @@ mouse_filter = 2
 label_text = "00H:00M:00S"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 0
+min_font_size = 8
+max_font_size = 14
 
 [node name="Separator" type="Control" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column2/HBoxContainer" unique_id=61999052]
 custom_minimum_size = Vector2(12, 0)
@@ -372,6 +376,8 @@ mouse_filter = 2
 label_text = "0"
 text_gradient = ExtResource("5_x3our")
 horizontal_align = 2
+min_font_size = 8
+max_font_size = 14
 
 [node name="ClockIcon" type="TextureRect" parent="ContentsContainer/MarginContainer2/HBoxContainer/Column4/HBoxContainer/VBoxContainer2/TimerContainer" unique_id=1668721947]
 custom_minimum_size = Vector2(24, 24)
@@ -462,10 +468,10 @@ offset_right = 84.0
 offset_bottom = 46.0
 texture = ExtResource("1_b6kvl")
 region_rect = Rect2(866, 562, 44, 54)
-patch_margin_left = 35
+patch_margin_left = 12
 patch_margin_top = 10
-patch_margin_right = 36
-patch_margin_bottom = 9
+patch_margin_right = 12
+patch_margin_bottom = 10
 
 [node name="MarginContainer" type="MarginContainer" parent="Slot" unique_id=1240190951]
 layout_mode = 1
@@ -475,45 +481,57 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 7
-theme_override_constants/margin_top = 11
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 11
+theme_override_constants/margin_bottom = 8
 
-[node name="MarginContainer2" type="MarginContainer" parent="Slot/MarginContainer" unique_id=1864804082]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 11
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 11
-theme_override_constants/margin_bottom = 13
-
-[node name="SlotName" parent="Slot/MarginContainer/MarginContainer2" unique_id=211635022 instance=ExtResource("3_tj3jl")]
+[node name="SlotName" parent="Slot/MarginContainer" unique_id=211635022 instance=ExtResource("3_tj3jl")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(69, 25)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 label_text = "AUTO SAVE"
 text_gradient = ExtResource("5_x3our")
+horizontal_align = 1
+vertical_align = 1
+min_font_size = 8
+max_font_size = 14
 
-[node name="ButtonName" parent="Slot/MarginContainer/MarginContainer2/SlotName" index="0"]
+[node name="ButtonName" parent="Slot/MarginContainer/SlotName" index="0"]
 material = SubResource("ShaderMaterial_x3our")
-custom_minimum_size = Vector2(69, 25)
-offset_right = 69.0
-offset_bottom = 25.0
-pivot_offset = Vector2(34.5, 12.5)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 theme_override_font_sizes/font_size = 14
 text = "AUTO SAVE"
-min_font_size = 1
+min_font_size = 8
+max_font_size = 14
 
-[node name="Outline" parent="Slot/MarginContainer/MarginContainer2/SlotName/ButtonName" index="0"]
-offset_right = 69.0
-offset_bottom = 25.0
-pivot_offset = Vector2(34.5, 12.5)
+[node name="Outline" parent="Slot/MarginContainer/SlotName/ButtonName" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 theme_override_font_sizes/font_size = 14
 text = "AUTO SAVE"
 label_settings = SubResource("LabelSettings_kta0e")
+min_font_size = 8
+max_font_size = 14
 
 [node name="Cursor" type="NinePatchRect" parent="." unique_id=1041175162]
 unique_name_in_owner = true
@@ -531,4 +549,5 @@ patch_margin_top = 18
 patch_margin_right = 17
 patch_margin_bottom = 20
 
-[editable path="Slot/MarginContainer/MarginContainer2/SlotName"]
+[editable path="Slot/MarginContainer/SlotName"]
+

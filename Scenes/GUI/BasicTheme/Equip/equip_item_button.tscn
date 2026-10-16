@@ -1,0 +1,107 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://jy6emd7033tr" path="res://Scenes/EquipScene/equip_item_button.gd" id="1_n1g3m"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="2_uwfu2"]
+[ext_resource type="Script" uid="uid://df4jn4o07t6ws" path="res://Scenes/EquipScene/equip_item_button_group.gd" id="3_v0fel"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a24yf"]
+bg_color = Color(0.08, 0.16, 0.35, 0.8)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.88, 0.95, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj4md"]
+bg_color = Color(0.18, 0.32, 0.65, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.2, 0.5, 1, 0.4)
+shadow_size = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uy22k"]
+bg_color = Color(0.12, 0.22, 0.48, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.9, 0.9, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hkw4k"]
+bg_color = Color(0.18, 0.32, 0.65, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymmmj"]
+bg_color = Color(0.3478, 0.37, 0.35261, 0.541176)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.47882843, 0.51081604, 0.49477214, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Gradient" id="Gradient_wdadd"]
+offsets = PackedFloat32Array(0, 0.981818)
+colors = PackedColorArray(0.623529, 0.388235, 0.117647, 1, 0.0431373, 0.0313726, 0.027451, 0.419608)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wdadd"]
+gradient = SubResource("Gradient_wdadd")
+fill_from = Vector2(0.478632, 1)
+fill_to = Vector2(0.508547, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uy22k"]
+texture = SubResource("GradientTexture2D_wdadd")
+
+[sub_resource type="Resource" id="Resource_avyla"]
+script = ExtResource("3_v0fel")
+metadata/_custom_type_script = "uid://df4jn4o07t6ws"
+
+[node name="EquipItemButton" type="Control" unique_id=960703007]
+custom_minimum_size = Vector2(260, 24)
+layout_mode = 3
+anchors_preset = 0
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("1_n1g3m")
+font_size = 20
+normal_stylebox = SubResource("StyleBoxFlat_a24yf")
+hover_stylebox = SubResource("StyleBoxFlat_lj4md")
+selected_stylebox = SubResource("StyleBoxFlat_uy22k")
+disabled_stylebox = SubResource("StyleBoxFlat_hkw4k")
+hover_disabled_stylebox = SubResource("StyleBoxFlat_ymmmj")
+expand_background = 2
+background_margin_left = 4
+background_margin_right = 8
+line_stylebox = SubResource("StyleBoxTexture_uy22k")
+line_height = 3
+custom_font = ExtResource("2_uwfu2")
+is_toggle_button = true
+is_untoggleable = false
+button_group = SubResource("Resource_avyla")

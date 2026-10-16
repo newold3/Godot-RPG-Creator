@@ -247,16 +247,14 @@ layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_bc124")
 
-[node name="Colum1" type="Control" parent="VBoxContainer/Separator4/SeparatorSounds" unique_id=1563260340]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/Separator4/SeparatorSounds" unique_id=1563260340]
 custom_minimum_size = Vector2(200, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="GeneralSeparator" parent="VBoxContainer/Separator4/SeparatorSounds/Colum1" unique_id=254008283 instance=ExtResource("1_lyesw")]
 unique_name_in_owner = true
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "GENERAL"
 
 [node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator4/SeparatorSounds" unique_id=1198919042]
@@ -322,7 +320,7 @@ toggle_mode = true
 content_justification = 1
 min_texture_size_no_pressed = Vector2(56, 56)
 min_texture_size_pressed = Vector2(72, 72)
-manage_mouse_click = false
+manage_mouse_click = true
 on_select_animation = 11
 on_hover_animation = 11
 
@@ -361,7 +359,7 @@ toggle_mode = true
 content_justification = 1
 min_texture_size_no_pressed = Vector2(56, 56)
 min_texture_size_pressed = Vector2(72, 72)
-manage_mouse_click = false
+manage_mouse_click = true
 on_select_animation = 11
 on_hover_animation = 11
 on_pressed_animation = 11
@@ -373,15 +371,13 @@ layout_mode = 2
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=689381099]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer2" unique_id=1878058027]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer2" unique_id=1878058027]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer2/Colum1" unique_id=225714057 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "MAX FPS:"
 horizontal_align = 0
 
@@ -412,15 +408,13 @@ layout_mode = 2
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=2091900220]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer3" unique_id=632075792]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer3" unique_id=632075792]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer3/Colum1" unique_id=1648943838 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "BRIGHTNESS:"
 horizontal_align = 0
 
@@ -446,15 +440,13 @@ vertical_alignment = 1
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer" unique_id=1546909775]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer4" unique_id=548042735]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer4" unique_id=548042735]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer4/Colum1" unique_id=472769632 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "TEXT SPEED:"
 horizontal_align = 0
 
@@ -503,16 +495,14 @@ layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_bc124")
 
-[node name="Colum1" type="Control" parent="VBoxContainer/Separator2/SeparatorSounds" unique_id=378243281]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/Separator2/SeparatorSounds" unique_id=378243281]
 custom_minimum_size = Vector2(200, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="SoundsSeparator" parent="VBoxContainer/Separator2/SeparatorSounds/Colum1" unique_id=793274124 instance=ExtResource("1_lyesw")]
 unique_name_in_owner = true
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "SOUNDS"
 
 [node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator2/SeparatorSounds" unique_id=1529784266]
@@ -536,15 +526,13 @@ expand_mode = 1
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer" unique_id=1715692354]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer5" unique_id=1057311766]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer5" unique_id=1057311766]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer5/Colum1" unique_id=1721195108 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "MASTER VOLUME:"
 horizontal_align = 0
 
@@ -568,15 +556,13 @@ horizontal_alignment = 2
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer" unique_id=763292928]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer6" unique_id=642183386]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer6" unique_id=642183386]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer6/Colum1" unique_id=731180159 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "MUSIC VOLUME:"
 horizontal_align = 0
 
@@ -600,15 +586,13 @@ horizontal_alignment = 2
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer" unique_id=2086617843]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer7" unique_id=667015513]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer7" unique_id=667015513]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer7/Colum1" unique_id=947391880 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "FX VOLUME:"
 horizontal_align = 0
 
@@ -632,15 +616,13 @@ horizontal_alignment = 2
 [node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer" unique_id=509990470]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer8" unique_id=774947506]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer8" unique_id=774947506]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer8/Colum1" unique_id=1258911766 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "AMBIENT VOLUME:"
 horizontal_align = 0
 
@@ -687,16 +669,14 @@ layout_mode = 2
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_bc124")
 
-[node name="Colum1" type="Control" parent="VBoxContainer/Separator3/SeparatorLanguage" unique_id=437901686]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/Separator3/SeparatorLanguage" unique_id=437901686]
 custom_minimum_size = Vector2(200, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="LanguageSeparator" parent="VBoxContainer/Separator3/SeparatorLanguage/Colum1" unique_id=1663419846 instance=ExtResource("1_lyesw")]
 unique_name_in_owner = true
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "LANGUAGE"
 
 [node name="SepPoint3" type="TextureRect" parent="VBoxContainer/Separator3/SeparatorLanguage" unique_id=711428580]
@@ -720,15 +700,13 @@ expand_mode = 1
 [node name="HBoxContainer10" type="HBoxContainer" parent="VBoxContainer" unique_id=1835477445]
 layout_mode = 2
 
-[node name="Colum1" type="Control" parent="VBoxContainer/HBoxContainer10" unique_id=1590249226]
+[node name="Colum1" type="MarginContainer" parent="VBoxContainer/HBoxContainer10" unique_id=1590249226]
 custom_minimum_size = Vector2(280, 32)
 layout_mode = 2
 size_flags_vertical = 4
 
 [node name="ColumName" parent="VBoxContainer/HBoxContainer10/Colum1" unique_id=238516738 instance=ExtResource("1_lyesw")]
-layout_mode = 1
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 2
 label_text = "select LANGUAGE:"
 horizontal_align = 0
 

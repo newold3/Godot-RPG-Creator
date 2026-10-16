@@ -135,7 +135,9 @@ func _process(delta: float) -> void:
 				0: prioritize_vertical_look()
 				1: prioritize_horizontal_look()
 				2: maintain_current_look()
-			current_direction = last_direction
+			if current_direction != last_direction:
+				current_direction = last_direction
+				run_animation(true)
 			
 	if Vector2(movement_vector) != Vector2.ZERO:
 		current_animation = "walk"
@@ -268,8 +270,22 @@ func _reset(force_reset: bool = false) -> void:
 	if movement_tween and not _processing_command_route:
 		movement_tween.kill()
 	if force_reset: current_animation = "idle"
-	#is_moving = false
-	movement_vector = Vector2.ZERO
+	
+	var input_vector = Vector2(Input.get_axis("ui_left", "ui_right"), Input.get_axis("ui_up", "ui_down"))
+	if _auto_target_tile == Vector2i(-1, -1) and _auto_target_event == null and input_vector != Vector2.ZERO and movement_current_mode == MOVEMENTMODE.GRID and not force_reset:
+		movement_vector = input_vector
+		if not character_options.fixed_direction:
+			var diagonal_movement_direction_mode = RPGSYSTEM.database.system.options.get("movement_mode", 0)
+			match diagonal_movement_direction_mode:
+				0: prioritize_vertical_look()
+				1: prioritize_horizontal_look()
+				2: maintain_current_look()
+			if current_direction != last_direction:
+				current_direction = last_direction
+				run_animation(true)
+	else:
+		movement_vector = Vector2.ZERO
+
 	if is_on_vehicle and current_vehicle:
 		current_vehicle._reset(true)
 

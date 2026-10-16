@@ -50,7 +50,7 @@ static func remove_menu_item(item: Control) -> void:
 		item.tree_exiting.disconnect(_on_item_tree_exiting)
 		
 	if is_instance_valid(_vbox) and item.get_parent() == _vbox:
-		_vbox.remove_child(item)
+		_vbox.remove_child.call_deferred(item)
 	elif _queued_items.has(item):
 		_queued_items.erase(item)
 

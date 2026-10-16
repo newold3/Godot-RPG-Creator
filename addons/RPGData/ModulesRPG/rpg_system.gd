@@ -42,6 +42,9 @@ extends Resource
 ## (legacy mode) or via a fade out/fade in when this parameter is enabled.
 @export var fade_page_swap_enabled: bool = false
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func get_class(): return "RPGSystem"
 
@@ -62,5 +65,7 @@ func clone(value: bool = true) -> RPGSystem:
 		new_system.day_night_config = day_night_config.clone(value)
 	else:
 		new_system.day_night_config = GameDayNight.new()
+	
+	new_system.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_system

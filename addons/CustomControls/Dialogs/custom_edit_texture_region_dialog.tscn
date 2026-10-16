@@ -167,7 +167,7 @@ texture_margin_bottom = 6.0
 oversampling_override = 1.0
 title = "Edit Texture Region"
 position = Vector2i(0, 36)
-size = Vector2i(1400, 680)
+size = Vector2i(1422, 680)
 wrap_controls = true
 exclusive = true
 min_size = Vector2i(1400, 0)
@@ -211,7 +211,7 @@ tooltip_text = "[ul] \"SNAP_NONE\": Drawing is completely free without any restr
  \"SNAP_GRID\": Drawing is constrained to a custom grid.
  \"ROWS & COLUMNS\": Specifies the columns and rows to split the current image
  \"AUTO CROP\": Snaps to the opaque pixels within the drawn area[/ul]"
-selected = 4
+selected = 2
 item_count = 5
 popup/item_0/text = "None"
 popup/item_0/id = 0
@@ -249,10 +249,10 @@ max_value = 50.0
 step = 0.1
 value = 2.0
 rounded = false
+_custom_value = 2.0
 
 [node name="GridContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1497109001]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=668933561]
@@ -277,7 +277,6 @@ suffix = " px"
 
 [node name="StepContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1236757830]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" unique_id=811817941]
@@ -293,7 +292,7 @@ min_value = 1.0
 value = 1.0
 allow_greater = true
 suffix = " px"
-_custom_value = 22.0
+_custom_value = 1.0
 
 [node name="StepY" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/StepContainer" unique_id=2016631905 instance=ExtResource("3_k6wgg")]
 unique_name_in_owner = true
@@ -304,10 +303,11 @@ min_value = 1.0
 value = 1.0
 allow_greater = true
 suffix = " px"
-_custom_value = 39.0
+_custom_value = 1.0
 
 [node name="ColumnAndRowContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer" unique_id=1719009803]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/GridContainer/ColumnAndRowContainer" unique_id=598479106]

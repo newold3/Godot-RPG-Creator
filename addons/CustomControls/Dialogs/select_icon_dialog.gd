@@ -24,12 +24,39 @@ func _ready() -> void:
 	data = RPGIcon.new()
 
 
+func _get_texture_from_path(p_path: String) -> Texture2D:
+	if not p_path or not ResourceLoader.exists(p_path):
+		return null
+	var res = load(p_path)
+	if res is Texture2D:
+		return res
+	elif res is PackedScene:
+		var ins = res.instantiate()
+		var found_tex: Texture2D = null
+		if ins is Sprite2D or ins is TextureRect:
+			found_tex = ins.texture
+		else:
+			var spr = ins.find_child("*", true, false)
+			if spr is Sprite2D or spr is TextureRect:
+				found_tex = spr.texture
+		ins.queue_free()
+		if found_tex:
+			return found_tex
+		var preview_path = p_path.get_basename() + "_preview.png"
+		if ResourceLoader.exists(preview_path):
+			var p_res = load(preview_path)
+			if p_res is Texture2D:
+				return p_res
+	return null
+
+
 func set_data(_data: RPGIcon) -> void:
 	real_data = _data
 	data = _data.clone(true)
-	if ResourceLoader.exists(data.path):
+	var tex = _get_texture_from_path(data.path)
+	if tex:
 		main_texture.region = data.region
-		main_texture.atlas = load(data.path)
+		main_texture.atlas = tex
 	draw_icon()
 	fill_region()
 
@@ -65,13 +92,13 @@ func _on_icon_picker_clicked() -> void:
 		dialog.fill_mix_files(files)
 
 
-
 func update_icon(path: String) -> void:
 	data.path = path
-	%ImageRegion.set_disabled(false)
 	draw_icon()
 	fill_region()
-	main_texture.atlas = %IconPicker.get_main_texture()
+	var tex = _get_texture_from_path(data.path)
+	if tex:
+		main_texture.atlas = tex
 
 
 func draw_icon() -> void:
@@ -79,17 +106,22 @@ func draw_icon() -> void:
 
 
 func fill_region() -> void:
-	if data.path.get_extension() == "tscn":
+	var tex = _get_texture_from_path(data.path)
+	if tex != null:
+		%ImageRegion.set_disabled(false)
+		if data.region.has_area():
+			%ImageRegion.text = "Region: " + str(data.region)
+		else:
+			%ImageRegion.text = "Region: None"
+	else:
 		%ImageRegion.set_disabled(true)
 		%ImageRegion.text = "-"
-	else:
-		%ImageRegion.set_disabled(false)
-		%ImageRegion.text = "Region: " + str(data.region)
-	
 
 
 func _on_icon_picker_remove_requested() -> void:
 	data.path = ""
+	data.region = Rect2()
+	main_texture.region = Rect2()
 	%ImageRegion.set_disabled(true)
 	%IconPicker.set_icon("")
 	fill_region()
@@ -99,11 +131,12 @@ func _on_image_region_middle_click_pressed() -> void:
 	data.region = Rect2()
 	main_texture.region = Rect2()
 	fill_region()
+	draw_icon()
 
 
 func _on_image_region_pressed() -> void:
-	if data.path and ResourceLoader.exists(data.path):
-		var tex = load(data.path)
+	var tex = _get_texture_from_path(data.path)
+	if tex:
 		var region = data.region
 		var path = "res://addons/CustomControls/Dialogs/custom_edit_texture_region_dialog.tscn"
 		var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)

@@ -39,6 +39,9 @@ func get_class(): return "RPGState"
 @export var traits: Array[RPGTrait] = []
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -64,6 +67,10 @@ func clear() -> void:
 	max_turns = 1
 	icon.clear()
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clone(value: bool = true) -> RPGState:
@@ -75,6 +82,7 @@ func clone(value: bool = true) -> RPGState:
 		new_state.traits[i] = new_state.traits[i].clone(value)
 	
 	new_state.icon = icon.clone(value)
+	new_state.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_state
 

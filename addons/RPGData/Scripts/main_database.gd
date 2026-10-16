@@ -34,7 +34,7 @@ func _ready() -> void:
 	clear_panels()
 	notify_property_list_changed()
 	setup_button_groups()
-	var node = Engine.get_main_loop().root.get_node_or_null("RPGSYSTEM")
+	var node = RPGSYSTEM
 	if node:
 		while !node.is_node_ready():
 			await get_tree().process_frame
@@ -72,7 +72,7 @@ func clear_panels() -> void:
 
 
 func _on_parent_visibility_changed() -> void:
-	if !Engine.get_main_loop().root.get_node_or_null("RPGSYSTEM"):
+	if !RPGSYSTEM:
 		printerr("RPGSYSTEM is not set as autoload")
 		get_parent().queue_free()
 		return
@@ -82,7 +82,9 @@ func _on_parent_visibility_changed() -> void:
 			while !node.is_node_ready():
 				await get_tree().process_frame
 			real_data = node.database
+			DatabaseLoader.sanitize_database_custom_data(real_data)
 			data = real_data.clone()
+			DatabaseLoader.sanitize_database_custom_data(data)
 			#node.database = data
 			node.active_editor_database = data
 			if current_panel:
@@ -484,6 +486,7 @@ func _load_database(path: String) -> void:
 	if ResourceLoader.exists(path):
 		new_data = ResourceLoader.load(path)
 		if new_data is RPGDATA:
+			DatabaseLoader.sanitize_database_custom_data(new_data)
 			_replace_data_with(new_data)
 		else:
 			printerr("The file '%s' is not valid database" % path)

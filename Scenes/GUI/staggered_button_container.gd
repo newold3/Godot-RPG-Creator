@@ -40,6 +40,8 @@ var target_positions: Array[Vector2] = []
 var initial_positions: Array[Vector2] = []
 ## Flag to prevent overlapping animations
 var is_animating: bool = false
+## Flag indicating if menu buttons are opened
+var is_opened: bool = false
 
 ## Tween used to animation
 var main_tween: Tween
@@ -57,10 +59,20 @@ func _init():
 
 ## Setup initial button positions when container is ready
 func _ready():
+	set_process(false)
 	if horizontal_curve: horizontal_curve.setup_local_to_scene()
 	_update_buttons_list()
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
+	if Engine.is_editor_hint():
+		is_opened = true
+		_update_layout()
+	else:
+		_set_buttons_to_initial_positions()
+
+
+func _process(_delta: float) -> void:
+	if is_animating:
+		queue_redraw()
 
 
 ## Called when a child is added to the container
@@ -68,8 +80,7 @@ func _on_child_added(child: Node):
 	if child is Control:
 		_update_buttons_list()
 		_calculate_positions()
-		_set_buttons_to_initial_positions()
-		queue_redraw()
+		_update_layout()
 
 
 ## Called when a child is removed from the container
@@ -77,8 +88,7 @@ func _on_child_removed(child: Node):
 	if child is Control:
 		_update_buttons_list()
 		_calculate_positions()
-		_set_buttons_to_initial_positions()
-		queue_redraw()
+		_update_layout()
 
 
 ## Update the list of visible button controls
@@ -93,32 +103,28 @@ func _update_buttons_list():
 func set_margin_left(value: float) -> void:
 	margin_left = value
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set vertical separation and recalculate positions
 func set_vertical_separation(value: float):
 	vertical_separation = value
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set stagger direction and recalculate positions
 func set_stagger_direction(value: StaggerDirection) -> void:
 	stagger_direction = value
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set stagger pattern and recalculate positions
 func set_stagger_pattern(value: StaggerPattern) -> void:
 	stagger_pattern = value
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set horizontal curve and recalculate positions
@@ -127,23 +133,20 @@ func set_horizontal_curve(value: Curve):
 	if horizontal_curve and not horizontal_curve.changed.is_connected(_on_curve_changed):
 		horizontal_curve.changed.connect(_on_curve_changed)
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Called when the curve is modified
 func _on_curve_changed():
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set horizontal offset fallback and recalculate positions
 func set_horizontal_offset_fallback(value: int) -> void:
 	horizontal_offset_fallback = value
 	_calculate_positions()
-	_set_buttons_to_initial_positions()
-	queue_redraw()
+	_update_layout()
 
 
 ## Set stylebox height and redraw
@@ -255,38 +258,83 @@ func _calculate_positions():
 		button.size = button_size
 
 
-## Set buttons to their initial positions (x=0, correct y)
+## Updates the buttons' layout and handles offset_transform properties
+func _update_layout():
+	for i in range(buttons.size()):
+		if i < target_positions.size():
+			var button = buttons[i]
+			var target_pos = target_positions[i]
+			
+			button.size = button.get_combined_minimum_size()
+			var extra_x = 0.0
+			if "is_selected" in button and button.is_selected:
+				extra_x = 10.0
+			button.position = Vector2(target_pos.x + extra_x, target_pos.y)
+			button.set_meta("original_position", target_pos)
+			button.offset_transform_enabled = true
+			button.offset_transform_visual_only = false
+			
+			if not is_animating:
+				if is_opened or Engine.is_editor_hint():
+					button.offset_transform_position = Vector2.ZERO
+				else:
+					button.offset_transform_position = Vector2(-target_pos.x, 0)
+	queue_redraw()
+
+
+## Set buttons to their initial positions (visual x=0, correct y)
 func _set_buttons_to_initial_positions():
 	for i in range(buttons.size()):
-		buttons[i].position = initial_positions[i]
+		if i < target_positions.size():
+			var button = buttons[i]
+			var target_pos = target_positions[i]
+			button.position = target_pos
+			button.size = button.get_combined_minimum_size()
+			button.set_meta("original_position", target_pos)
+			button.offset_transform_enabled = true
+			button.offset_transform_visual_only = false
+			button.offset_transform_position = Vector2(-target_pos.x, 0)
+	queue_redraw()
 
 
 ## Set buttons to their target positions (staggered formation)
 func _set_buttons_to_target_positions():
 	for i in range(buttons.size()):
 		if i < target_positions.size():
-			buttons[i].position = target_positions[i]
+			var button = buttons[i]
+			var target_pos = target_positions[i]
+			button.position = target_pos
+			button.size = button.get_combined_minimum_size()
+			button.set_meta("original_position", target_pos)
+			button.offset_transform_enabled = true
+			button.offset_transform_visual_only = false
+			button.offset_transform_position = Vector2.ZERO
+	queue_redraw()
 
 
 ## Restart the animation sequence
 func restart() -> void:
+	if main_tween and main_tween.is_valid():
+		main_tween.kill()
 	is_animating = false
 	_set_buttons_to_initial_positions()
 	start()
 
 
-## Animate buttons to their target positions
+## Animate buttons to their target positions using offset_transform
 func start():
-	if is_animating or buttons.is_empty():
+	if buttons.is_empty():
 		return
 		
 	is_animating = true
+	is_opened = true
+	set_process(true)
 	
 	var animation_order = range(buttons.size())
 	if invert_animation:
 		animation_order.reverse()
 	
-	if main_tween:
+	if main_tween and main_tween.is_valid():
 		main_tween.kill()
 	
 	main_tween = create_tween()
@@ -299,8 +347,13 @@ func start():
 		var delay_index = animation_order.find(i)
 		var delay = delay_index * animation_delay
 		
+		button.position = target_pos
+		button.size = button.get_combined_minimum_size()
 		button.set_meta("original_position", target_pos)
-		main_tween.tween_property(button, "position", target_pos, animation_duration).set_delay(delay)
+		button.offset_transform_enabled = true
+		button.offset_transform_visual_only = false
+		
+		main_tween.tween_property(button, "offset_transform_position", Vector2.ZERO, animation_duration).set_delay(delay)
 		
 		if i == animation_order[-1]:
 			main_tween.tween_interval(0.00001)
@@ -308,35 +361,58 @@ func start():
 			main_tween.tween_callback(_on_animation_finished.bind("start"))
 
 
-## Animate buttons back to their initial positions
+## Animate buttons back to their initial positions using offset_transform
 func end():
-	if is_animating or buttons.is_empty():
+	if buttons.is_empty():
 		return
 		
 	is_animating = true
+	is_opened = false
+	set_process(true)
 	
 	var animation_order = range(buttons.size())
 	if invert_animation:
 		animation_order.reverse()
 	
+	if main_tween and main_tween.is_valid():
+		main_tween.kill()
+	
+	main_tween = create_tween()
+	main_tween.set_speed_scale(1.5)
+	main_tween.set_parallel(true)
+	
 	for i in animation_order:
 		var button = buttons[i]
-		var initial_pos = initial_positions[i]
+		var target_pos = target_positions[i]
 		var delay_index = animation_order.find(i)
 		var delay = delay_index * animation_delay
+		var hidden_offset = Vector2(-target_pos.x, 0)
 		
-		var tween = create_tween()
-		tween.tween_interval(delay)
-		tween.tween_property(button, "position", initial_pos, animation_duration)
+		button.offset_transform_enabled = true
+		button.offset_transform_visual_only = false
+		main_tween.tween_property(button, "offset_transform_position", hidden_offset, animation_duration).set_delay(delay)
 		
-		# Solo el último botón en terminar su animación emite la señal
 		if delay_index == animation_order.size() - 1:
-			tween.tween_callback(_on_animation_finished.bind("end"))
+			main_tween.tween_interval(0.00001)
+			main_tween.set_parallel(false)
+			main_tween.tween_callback(_on_animation_finished.bind("end"))
 
 
 ## Called when the animation finishes completely
 func _on_animation_finished(animation_type: String):
 	is_animating = false
+	set_process(false)
+	if animation_type == "start":
+		is_opened = true
+		for i in range(buttons.size()):
+			if i < target_positions.size():
+				buttons[i].offset_transform_position = Vector2.ZERO
+	elif animation_type == "end":
+		is_opened = false
+		for i in range(buttons.size()):
+			if i < target_positions.size():
+				buttons[i].offset_transform_position = Vector2(-target_positions[i].x, 0)
+	queue_redraw()
 	animation_completed.emit(animation_type)
 
 
@@ -398,11 +474,11 @@ func _notification(what: int):
 	match what:
 		NOTIFICATION_RESIZED:
 			_calculate_positions()
-			_set_buttons_to_initial_positions()
+			_update_layout()
 		NOTIFICATION_SORT_CHILDREN:
 			_update_buttons_list()
 			_calculate_positions()
-			_set_buttons_to_initial_positions()
+			_update_layout()
 		NOTIFICATION_DRAW:
 			_draw_styleboxes()
 
@@ -426,7 +502,11 @@ func _draw_styleboxes():
 		
 		var stylebox_y = content_center_y - stylebox_height * 0.5
 		
-		var stylebox_width = button.position.x + button_size.x * 0.5
+		var current_btn_x = button.position.x
+		if "offset_transform_enabled" in button and button.offset_transform_enabled:
+			current_btn_x += button.offset_transform_position.x
+		
+		var stylebox_width = current_btn_x + button_size.x * 0.5
 		
 		# Stylebox desde la posición actual del botón hasta el centro del botón
 		var stylebox_rect = Rect2(
@@ -439,11 +519,11 @@ func _draw_styleboxes():
 		background_stylebox.draw(get_canvas_item(), stylebox_rect)
 		
 		var viewport_size = get_viewport_rect().size
-		var extended_stylebox_width = viewport_size.x - (button.position.x + button_size.x * 0.5)
+		var extended_stylebox_width = viewport_size.x - stylebox_width
 		
 		# Stylebox desde la parte derecha del control hasta el lado derecho de la pantalla
 		var extended_stylebox_rect = Rect2(
-			button.position.x + button_size.x * 0.5,
+			stylebox_width,
 			stylebox_y,
 			extended_stylebox_width,
 			stylebox_height

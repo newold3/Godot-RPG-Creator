@@ -7,6 +7,9 @@ extends  Resource
 @export var unselectable: bool = false
 @export var is_user_message: bool = false
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 
 func _init(_id: String = "", _text: String = "", _unselectable: bool = false, is_user_message: bool = false) -> void:
@@ -17,7 +20,9 @@ func _init(_id: String = "", _text: String = "", _unselectable: bool = false, is
 
 
 func clone(value: bool = true) -> RPGTerm:
-	return duplicate(value)
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy
 
 
 func _to_string() -> String:

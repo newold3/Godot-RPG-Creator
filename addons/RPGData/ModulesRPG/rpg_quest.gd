@@ -38,16 +38,49 @@ const ItemType = RPGEnums.QuestItemType
 @export var description: String = ""
 
 ## Icon that will be displayed on the npc when this quest is available
-@export var icon_available: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_available.tscn")
+@export var icon_available: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_available.tscn"):
+	get():
+		if not icon_available:
+			icon_available = RPGIcon.new("res://Scenes/QuestMarkers/quest_available.tscn")
+		return icon_available
+	set(val):
+		icon_available = val
 
 ## Icon that will be displayed on the npc when this quest is in progress but not yet completed.
-@export var icon_progress: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_in_progress.tscn")
+@export var icon_progress: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_in_progress.tscn"):
+	get():
+		if not icon_progress:
+			icon_progress = RPGIcon.new("res://Scenes/QuestMarkers/quest_in_progress.tscn")
+		return icon_progress
+	set(val):
+		icon_progress = val
 
 ## Icon that will be displayed on the npc when this quest is ready to be delivered.
-@export var icon_completed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_completed.tscn")
+@export var icon_completed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_completed.tscn"):
+	get():
+		if not icon_completed:
+			icon_completed = RPGIcon.new("res://Scenes/QuestMarkers/quest_completed.tscn")
+		return icon_completed
+	set(val):
+		icon_completed = val
 
 ## Icon that will be displayed on the npc when this quest is failed.
-@export var icon_failed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_failed.tscn")
+@export var icon_failed: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_failed.tscn"):
+	get():
+		if not icon_failed:
+			icon_failed = RPGIcon.new("res://Scenes/QuestMarkers/quest_failed.tscn")
+		return icon_failed
+	set(val):
+		icon_failed = val
+
+## Icon that will be displayed on the npc when waiting to be escorted.
+@export var icon_escort: RPGIcon = RPGIcon.new("res://Scenes/QuestMarkers/quest_escort.tscn"):
+	get():
+		if not icon_escort:
+			icon_escort = RPGIcon.new("res://Scenes/QuestMarkers/quest_escort.tscn")
+		return icon_escort
+	set(val):
+		icon_escort = val
 
 ## Minimum party level required to start this quest
 @export var min_level: int = 0
@@ -91,6 +124,9 @@ const ItemType = RPGEnums.QuestItemType
 ## ID used to identify the required area when the mission type is set to Escort.
 @export var region_id: int = -1
 
+## Event page ID to execute on arrival at destination for Escort missions (-1 for None).
+@export var arrival_event_page_id: int = -1
+
 ## ID of the selected enemy.
 @export var enemy_id: int = -1
 
@@ -115,6 +151,9 @@ const ItemType = RPGEnums.QuestItemType
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -125,14 +164,15 @@ func clear():
 	vars = ["min_level", "time_limit", "quantity", "progress"]
 	for v in vars:
 		set(v, 0)
-	vars = ["chain_quest", "item_id", "enemy_id"]
+	vars = ["chain_quest", "item_id", "enemy_id", "region_id", "global_event", "arrival_event_page_id"]
 	for v in vars:
 		set(v, -1)
 	vars = ["is_repeatable", "default_unlocked", "keep_materials"]
 	for v in vars:
 		set(v, false)
-	for v in [icon_available, icon_progress, icon_completed, icon_failed, prerequisites, quests_unlocked, reward, multi_quests, target_event]:
-		v.clear()
+	for v in [icon_available, icon_progress, icon_completed, icon_failed, icon_escort, prerequisites, quests_unlocked, reward, multi_quests, target_event]:
+		if v:
+			v.clear()
 	type = QuestMode.TALK_TO_NPC
 	item_type = ItemType.ITEM
 	
@@ -140,13 +180,21 @@ func clear():
 	icon_progress.path = "res://Scenes/QuestMarkers/quest_in_progress.tscn"
 	icon_completed.path = "res://Scenes/QuestMarkers/quest_completed.tscn"
 	icon_failed.path = "res://Scenes/QuestMarkers/quest_failed.tscn"
+	icon_escort.path = "res://Scenes/QuestMarkers/quest_escort.tscn"
 	
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clear_objetive() -> void:
 	item_type = ItemType.ITEM
 	item_id = -1
+	region_id = -1
+	global_event = -1
+	arrival_event_page_id = -1
 	enemy_id = -1
 	quantity = 0
 	keep_materials = false
@@ -161,7 +209,14 @@ func clone(value: bool = true) -> RPGQuest:
 	var new_quest = duplicate(value)
 	if new_quest.reward:
 		new_quest.reward = new_quest.reward.clone(value)
-	new_quest.target_event = new_quest.target_event.clone(value)
-	for v in ["icon_available", "icon_progress", "icon_completed", "icon_failed"]:
-		new_quest[v] = get(v).clone(value)
+	if new_quest.target_event:
+		new_quest.target_event = new_quest.target_event.clone(value)
+	for v in ["icon_available", "icon_progress", "icon_completed", "icon_failed", "icon_escort"]:
+		var ic = get(v)
+		if ic:
+			new_quest[v] = ic.clone(value)
+		else:
+			var def_p = "res://Scenes/QuestMarkers/quest_escort.tscn" if v == "icon_escort" else "res://Scenes/QuestMarkers/quest_available.tscn"
+			new_quest[v] = RPGIcon.new(def_p)
+	new_quest.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	return new_quest

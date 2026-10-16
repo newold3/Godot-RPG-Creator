@@ -26,6 +26,9 @@ func get_class(): return "RPGSpeaker"
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -41,6 +44,10 @@ func clear() -> void:
 	text_bold = false
 	text_italic = false
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clone(value: bool = true) -> RPGSpeaker:
@@ -48,4 +55,5 @@ func clone(value: bool = true) -> RPGSpeaker:
 	new_speaker.text_fx = new_speaker.text_fx.clone(true)
 	if "path" in face and face.path is RPGIcon:
 		face.path = face.path.clone(value)
+	new_speaker.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	return new_speaker

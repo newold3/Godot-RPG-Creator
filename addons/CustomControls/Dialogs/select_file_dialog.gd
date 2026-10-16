@@ -114,9 +114,20 @@ func _ready() -> void:
 		icon_size_slider.value_changed.connect(_on_icon_size_changed)
 		icon_size_slider.value = current_icon_size
 
+var _last_scroll_v: float = -1.0
+
 
 ## Processes frame updates for timers and pagination.
 func _process(delta: float) -> void:
+	var current_v_scroll = scroll_container.get_v_scroll_bar().value
+	var is_anim = false
+	if scroll_container is SmoothScrollContainer:
+		is_anim = scroll_container.get("is_animating")
+		
+	if is_anim or current_v_scroll != _last_scroll_v:
+		_last_scroll_v = current_v_scroll
+		_check_all_nodes_visibility()
+
 	if filter_delay_timer > 0:
 		filter_delay_timer -= delta
 		if filter_delay_timer <= 0:
@@ -220,13 +231,22 @@ func fill_files(file_id: String, update_directory: bool = true, filter_text: Str
 	if not all_button_enabled or dialog_mode == 1:
 		if update_directory:
 			if not current_directory.is_empty(): base_dir = current_directory
+			elif not current_file_selected.is_empty() and current_file_selected != "res://":
+				base_dir = _clean_path(current_file_selected.get_base_dir())
 			elif not last_folder_visited.is_empty(): base_dir = last_folder_visited
 			else: base_dir = "res://"
 			
+			if _is_file_path(base_dir):
+				base_dir = _clean_path(base_dir.get_base_dir())
+				
 			current_directory = _clean_path(base_dir)
 			%CurrentPath.text = current_directory
 		else:
 			base_dir = current_directory
+			if _is_file_path(base_dir):
+				base_dir = _clean_path(base_dir.get_base_dir())
+				current_directory = base_dir
+				%CurrentPath.text = current_directory
 		_append_folders(base_dir)
 	
 	if dialog_mode == 1:
@@ -265,7 +285,18 @@ func fill_mix_files(file_ids: PackedStringArray, update_directory: bool = true, 
 	var current_token = _load_token
 	var base_dir = ""
 	if not all_button_enabled or dialog_mode == 1:
-		base_dir = current_directory if not update_directory else (last_folder_visited if not last_folder_visited.is_empty() else "res://")
+		if not current_directory.is_empty():
+			base_dir = current_directory
+		elif not current_file_selected.is_empty() and current_file_selected != "res://":
+			base_dir = _clean_path(current_file_selected.get_base_dir())
+		elif update_directory and not last_folder_visited.is_empty():
+			base_dir = last_folder_visited
+		else:
+			base_dir = "res://"
+		if _is_file_path(base_dir):
+			base_dir = _clean_path(base_dir.get_base_dir())
+		current_directory = _clean_path(base_dir)
+		%CurrentPath.text = current_directory
 		_append_folders(base_dir)
 	
 	if dialog_mode == 1:
@@ -307,6 +338,20 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 	_clear_current_files()
 	_update_ui_controls()
 	
+	path = _clean_path(path)
+	var file_to_select = ""
+	if _is_file_path(path):
+		file_to_select = path
+		path = _clean_path(path.get_base_dir())
+		current_file_selected = file_to_select
+		current_files_selected = [file_to_select]
+		current_path = file_to_select
+		_update_label_path_selected()
+	elif (path.is_empty() or path == "res://") and not current_file_selected.is_empty() and current_file_selected != "res://":
+		path = _clean_path(current_file_selected.get_base_dir())
+	elif path.is_empty() and not current_directory.is_empty():
+		path = current_directory
+	
 	var base_dir = path if !all_button_enabled else "res://"
 	if !all_button_enabled or dialog_mode == 1:
 		_append_folders(base_dir)
@@ -317,7 +362,7 @@ func fill_files_by_extension(path: String = "res://", extensions: Array = [], up
 		
 	var files = _get_files_recursive(base_dir, extensions)
 	for file in files:
-		if all_button_enabled or file.get_base_dir() == base_dir:
+		if all_button_enabled or _clean_path(file.get_base_dir()) == _clean_path(base_dir):
 			if not filter_text.is_empty() and not filter_text.to_lower() in file.get_file().to_lower():
 				continue
 			
@@ -341,7 +386,20 @@ func fill_files_by_regex(path: String, regex_pattern: String, cache_ids: PackedS
 	
 	_clear_current_files()
 	_update_ui_controls()
+	path = _clean_path(path)
+	var file_to_select = ""
+	if _is_file_path(path):
+		file_to_select = path
+		path = _clean_path(path.get_base_dir())
+		current_file_selected = file_to_select
+		current_files_selected = [file_to_select]
+		current_path = file_to_select
+		_update_label_path_selected()
+	elif (path.is_empty() or path == "res://") and not current_file_selected.is_empty() and current_file_selected != "res://":
+		path = _clean_path(current_file_selected.get_base_dir())
 	var base_dir = path if not all_button_enabled else "res://"
+	if not all_button_enabled or dialog_mode == 1:
+		_append_folders(base_dir)
 	var current_token = _load_token
 	if regex_pattern != last_regex_pattern:
 		last_regex_pattern = regex_pattern
@@ -464,6 +522,9 @@ func _get_folders(dir_path: String) -> PackedStringArray:
 
 ## Populates virtual and physical directories internally targeting the path string.
 func _append_folders(dir_path: String) -> void:
+	dir_path = _clean_path(dir_path)
+	if _is_file_path(dir_path):
+		dir_path = _clean_path(dir_path.get_base_dir())
 	var folders = _get_folders(dir_path)
 	current_directory_count = folders.size()
 	for folder in folders:
@@ -550,8 +611,18 @@ func _is_directory_empty(path: String) -> bool:
 ## Modifies current directory and resets visual contexts for exploration.
 func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
 	path = _clean_path(path)
+	var file_to_select = ""
+	if _is_file_path(path):
+		file_to_select = path
+		path = _clean_path(path.get_base_dir())
 	
 	if path == current_directory:
+		if not file_to_select.is_empty():
+			current_file_selected = file_to_select
+			current_files_selected = [file_to_select]
+			current_path = file_to_select
+			_update_label_path_selected()
+			_refresh_view()
 		return
 
 	if add_to_history:
@@ -564,8 +635,14 @@ func navigate_to_directory(path: String, add_to_history: bool = true) -> void:
 	
 	%FilterLineEdit.text = ""
 	
-	current_file_selected = ""
-	current_directory_selected = ""
+	if not file_to_select.is_empty():
+		current_file_selected = file_to_select
+		current_files_selected = [file_to_select]
+		current_path = file_to_select
+		current_directory_selected = ""
+	else:
+		current_file_selected = ""
+		current_directory_selected = ""
 	%CurrentPath.text = current_directory
 	_update_label_path_selected()
 	_update_history_buttons()
@@ -610,9 +687,28 @@ func apply_filter(filter_text: String) -> void:
 func _clean_path(path: String) -> String:
 	if path.is_empty(): return "res://"
 	path = path.replace("\\", "/")
+	if path.begins_with("res:/") and not path.begins_with("res://"):
+		path = "res://" + path.trim_prefix("res:/")
+	elif path.begins_with("user:/") and not path.begins_with("user://"):
+		path = "user://" + path.trim_prefix("user:/")
 	if path.length() > 6 and path.ends_with("/"):
 		path = path.left(-1)
 	return path
+
+
+## Determines if a path represents a file (has an extension or is an existing file, and is not an existing directory).
+func _is_file_path(path: String) -> bool:
+	if path.is_empty() or path == "res://" or path == "user://":
+		return false
+	var clean = _clean_path(path)
+	if DirAccess.dir_exists_absolute(clean):
+		return false
+	if FileAccess.file_exists(clean) or ResourceLoader.exists(clean):
+		return true
+	if ZipMediaLoader._initialized and ZipMediaLoader._files_index.has(clean.replace("res://", "")):
+		return true
+	var ext = clean.get_extension()
+	return not ext.is_empty()
 
 
 #endregion
@@ -723,8 +819,10 @@ func _setup_file_node(node: Control, path: String) -> void:
 	node.show_favorite_button()
 	if path in current_files_selected:
 		node.select()
-	elif path.to_lower() == current_file_selected.to_lower():
+		last_selected_node = node
+	elif not current_file_selected.is_empty() and (path.to_lower() == current_file_selected.to_lower() or _clean_path(path) == _clean_path(current_file_selected)):
 		node.select()
+		last_selected_node = node
 
 
 ## Registers delay frame layout to prevent visibility glitches when setting timers.
@@ -750,15 +848,31 @@ func hide_directory_extra_controls2() -> void:
 
 ## Sets a specific file as visually and logically selected.
 func set_file_selected(path: String) -> void:
-	current_path = path
-	current_file_selected = path
-	current_files_selected = [path]
-	_update_label_path_selected()
-	%CurrentPath.text = path
-	if dialog_mode == 1:
-		var absolute_path = ProjectSettings.globalize_path(current_path)
-		if !DirAccess.dir_exists_absolute(absolute_path):
-			DirAccess.make_dir_recursive_absolute(absolute_path)
+	path = _clean_path(path)
+	if _is_file_path(path):
+		current_path = path
+		current_file_selected = path
+		current_files_selected = [path]
+		current_directory = _clean_path(path.get_base_dir())
+		current_directory_selected = ""
+		%CurrentPath.text = current_directory
+		_update_label_path_selected()
+		if dialog_mode == 1:
+			var absolute_path = ProjectSettings.globalize_path(current_directory)
+			if !DirAccess.dir_exists_absolute(absolute_path):
+				DirAccess.make_dir_recursive_absolute(absolute_path)
+	else:
+		current_path = path
+		current_file_selected = ""
+		current_files_selected = []
+		current_directory = path
+		current_directory_selected = path
+		%CurrentPath.text = current_directory
+		_update_label_path_selected()
+		if dialog_mode == 1:
+			var absolute_path = ProjectSettings.globalize_path(current_path)
+			if !DirAccess.dir_exists_absolute(absolute_path):
+				DirAccess.make_dir_recursive_absolute(absolute_path)
 
 
 ## Sets a default context directly over a specific directory string layout.
@@ -846,7 +960,7 @@ func _prioritize_recent_files() -> void:
 		recent_dict[recent_list[i]] = i
 		
 	for file in filtered_files_pool:
-		if file.path == current_file_selected:
+		if file.path.to_lower() == current_file_selected.to_lower() or _clean_path(file.path) == _clean_path(current_file_selected):
 			selected_items.append(file)
 		elif file.path in recent_dict:
 			recent_items.append(file)

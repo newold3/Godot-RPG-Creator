@@ -77,6 +77,9 @@ func get_class():
 ## Icons for different types.
 @export var icons: RPGTypeIcons = RPGTypeIcons.new()
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func _init() -> void:
 	pass
@@ -121,5 +124,6 @@ func clone(value: bool = true) -> RPGTypes:
 		new_type.user_parameters[i] = new_type.user_parameters[i].clone(value)
 
 	new_type.icons = new_type.icons.clone(value)
+	new_type.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_type

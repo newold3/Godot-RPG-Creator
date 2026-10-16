@@ -13,13 +13,21 @@ func _init(book_node: Node2D) -> void:
 ## Generates the simulated 3D volume layers under the book.
 func generate_volume_layers() -> void:
 	if book._volume_root and is_instance_valid(book._volume_root):
+		if book._volume_root.get_parent():
+			book._volume_root.get_parent().remove_child(book._volume_root)
 		book._volume_root.queue_free()
 		
-	var final_layer_count = 0
+	var count = book.total_spreads
 	
-	if book.total_spreads > 0:
-		final_layer_count = clampi(book.total_spreads, book.min_layers, book.max_layers)
+	if book.min_layers > 0:
+		count = maxi(count, book.min_layers)
 		
+	if book.max_layers > 0:
+		var effective_max = maxi(book.max_layers, book.min_layers)
+		count = mini(count, effective_max)
+		
+	var final_layer_count = count
+	
 	if final_layer_count <= 0:
 		return
 		
@@ -134,7 +142,12 @@ func generate_volume_layers() -> void:
 ## Calculates floating-point fractional layer count for smooth spine tweening.
 func get_layer_count_for_spread_float(spread_idx: float, total_layers: int) -> float:
 	if book.total_spreads <= 1:
-		return 0.0
+		if spread_idx < 0.0:
+			return 0.0
+		elif spread_idx >= 1.0:
+			return float(total_layers)
+		else:
+			return float(total_layers) * 0.5
 		
 	var ratio = clampf(spread_idx / float(book.total_spreads - 1), 0.0, 1.0)
 	
@@ -181,19 +194,15 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 	var count_right = 0
 	
 	if book.is_animating:
-		var layers_at_start = 0
-		var layers_at_target = 0
-		
-		if book.total_spreads > 1:
-			layers_at_start = int(round(get_layer_count_for_spread_float(float(book.current_spread), total_layers)))
-			layers_at_target = int(round(get_layer_count_for_spread_float(float(book._pending_target_spread_idx), total_layers)))
+		var layers_at_start = int(round(get_layer_count_for_spread_float(float(book.current_spread), total_layers)))
+		var layers_at_target = int(round(get_layer_count_for_spread_float(float(book._pending_target_spread_idx), total_layers)))
 			
 		if book.going_forward:
 			count_left = layers_at_start
-			count_right = (total_layers - layers_at_target) if book.total_spreads > 1 else 0
+			count_right = total_layers - layers_at_target
 		else:
 			count_left = layers_at_target
-			count_right = (total_layers - layers_at_start) if book.total_spreads > 1 else 0
+			count_right = total_layers - layers_at_start
 			
 		var L_start_is_thin = (layers_at_start == 0)
 		var L_target_is_thin = (layers_at_target == 0)
@@ -204,8 +213,8 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 			else:
 				count_left = max(layers_at_start, layers_at_target)
 				
-		var R_start_vol = (total_layers - layers_at_start) if book.total_spreads > 1 else 0
-		var R_target_vol = (total_layers - layers_at_target) if book.total_spreads > 1 else 0
+		var R_start_vol = total_layers - layers_at_start
+		var R_target_vol = total_layers - layers_at_target
 		var R_start_is_thin = (R_start_vol == 0)
 		var R_target_is_thin = (R_target_vol == 0)
 		
@@ -215,12 +224,8 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 			else:
 				count_right = max(R_start_vol, R_target_vol)
 	else:
-		if book.total_spreads > 1:
-			count_left = int(round(get_layer_count_for_spread_float(visual_spread, total_layers)))
-			count_right = total_layers - count_left
-		else:
-			count_left = 0
-			count_right = 0
+		count_left = int(round(get_layer_count_for_spread_float(visual_spread, total_layers)))
+		count_right = total_layers - count_left
 			
 	var force_hide_left = false
 	var force_hide_right = false
@@ -247,12 +252,8 @@ func update_stack_direct(expansion_factor: float, visual_spread: float) -> void:
 	var vol_spine = book._volume_root.get_node_or_null("VolumeSpine")
 	var target_w = book.page_width * active_s_x
 	
-	var left_depth_float = 0.0
-	var right_depth_float = 0.0
-	
-	if book.total_spreads > 1:
-		left_depth_float = get_layer_count_for_spread_float(book._visual_spread_index, total_layers)
-		right_depth_float = float(total_layers) - left_depth_float
+	var left_depth_float = get_layer_count_for_spread_float(book._visual_spread_index, total_layers)
+	var right_depth_float = float(total_layers) - left_depth_float
 		
 	var current_curve_factor = book._get_curve_factor_for_spread(visual_spread)
 	var current_offset_y = book.inner_page_vertical_offset * current_curve_factor

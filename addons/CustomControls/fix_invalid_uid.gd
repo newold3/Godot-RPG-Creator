@@ -14,10 +14,10 @@ func _run(path: String) -> void:
 	files = []
 	
 	add_files(path)
-	
 	for file in files:
 		var res = load(file)
-		ResourceSaver.save(res)
+		if res:
+			ResourceSaver.save(res, file)
 	
 	print("all files re-saved in folder: ", path)
 

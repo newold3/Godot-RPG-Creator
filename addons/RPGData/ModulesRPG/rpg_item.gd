@@ -35,6 +35,9 @@ func get_class(): return "RPGItem"
 ## Cost of disassembling the armor.
 @export var disassemble_cost: int = 0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -65,6 +68,10 @@ func clear():
 	max_quantity = 0
 	icon.clear()
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func _to_string() -> String:
@@ -94,5 +101,6 @@ func clone(value: bool = true) -> RPGItem:
 	new_item.perishable = new_item.perishable.clone(value)
 	
 	new_item.icon = icon.clone(value)
+	new_item.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_item

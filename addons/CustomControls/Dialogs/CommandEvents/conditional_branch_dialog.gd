@@ -171,10 +171,14 @@ func _get_condition_checkboxes() -> Array:
 #region UIUtilities
 ## Prepares the collapse buttons and restores their saved states
 func _setup_collapse_buttons() -> void:
+	if has_node("%ToggleAllButton"):
+		%ToggleAllButton.focus_mode = Control.FOCUS_NONE
+		%ToggleAllButton.shortcut = null
 	var nodes = get_tree().get_nodes_in_group("collapse_button")
 	
 	for btn in nodes:
 		if is_ancestor_of(btn):
+			btn.focus_mode = Control.FOCUS_NONE
 			btn.toggle_mode = true 
 			var category_id = "condition_" + btn.get_parent().name
 			_collapse_buttons_map[btn] = category_id

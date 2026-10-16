@@ -13,14 +13,13 @@ var kernings: Dictionary = {}
 
 
 signal char_changed(index: int, char: String)
-signal click(panel: PanelContainer)
+signal click(panel: PanelContainer, shift_pressed: bool, ctrl_pressed: bool)
 signal kerning_dialog_request(character: String, letter_node: PanelContainer)
 
 
 
-## Inicializa el nodo y conecta la señal de click
+## Inicializa el nodo
 func _ready() -> void:
-	click.connect(select.unbind(1), CONNECT_DEFERRED)
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
 
 
@@ -39,6 +38,8 @@ func set_selected(state: bool) -> void:
 	is_selected = state
 	var panel = get_theme_stylebox("panel")
 	panel.bg_color = Color("#b579cd") if is_selected else Color("959595")
+	if is_selected and select_char:
+		select_char.grab_focus.call_deferred()
 
 
 
@@ -72,8 +73,7 @@ func _gui_input(event: InputEvent) -> void:
 			if not current_character.is_empty():
 				kerning_dialog_request.emit(current_character, self)
 		else:
-			is_selected = !is_selected
-			click.emit(self)
+			click.emit(self, event.shift_pressed, event.ctrl_pressed)
 
 
 

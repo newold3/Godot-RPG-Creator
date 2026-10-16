@@ -177,13 +177,19 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 		match effect.code:
 			EffectCode.RECOVER_HP:
 				if clone.has_method("apply_recovery_effect"):
+					var prev_hp = clone.params.hp if "params" in clone else 0
 					clone.apply_recovery_effect("hp", effect.value1, effect.value2)
-					result_data["callables"].append(target.apply_recovery_effect.bind("hp", effect.value1, effect.value2))
+					var new_hp = clone.params.hp if "params" in clone else 0
+					if new_hp != prev_hp:
+						result_data["callables"].append(target.apply_recovery_effect.bind("hp", effect.value1, effect.value2))
 					
 			EffectCode.RECOVER_MP:
 				if clone.has_method("apply_recovery_effect"):
+					var prev_mp = clone.params.mp if "params" in clone else 0
 					clone.apply_recovery_effect("mp", effect.value1, effect.value2)
-					result_data["callables"].append(target.apply_recovery_effect.bind("mp", effect.value1, effect.value2))
+					var new_mp = clone.params.mp if "params" in clone else 0
+					if new_mp != prev_mp:
+						result_data["callables"].append(target.apply_recovery_effect.bind("mp", effect.value1, effect.value2))
 					
 			EffectCode.GAIN_TP:
 				var tp_val = effect.value1 if effect.value1 != 0 else effect.value2
@@ -193,14 +199,14 @@ func _simulate_generic(user: Variant, target: GameActor, data: Variant) -> Dicti
 					result_data["callables"].append(target.set_parameter.bind("TP", abs(tp_val), op))
 					
 			EffectCode.ADD_STATE:
-				var state_id = effect.data_id
+				var state_id = RPGSYSTEM.uid_to_id("states", effect.data_id) if effect.data_id >= 1_000_000_000_000_000 else effect.data_id
 				if clone.has_method("apply_state_effect"):
 					if clone.apply_state_effect(state_id, effect.value2):
-						var state_res = RPGSYSTEM.database.states[state_id]
+						var state_res = RPGSYSTEM.get_data("states", state_id)
 						result_data["callables"].append(target.add_state.bind(state_res))
 						
 			EffectCode.REMOVE_STATE:
-				var state_id = effect.data_id
+				var state_id = RPGSYSTEM.uid_to_id("states", effect.data_id) if effect.data_id >= 1_000_000_000_000_000 else effect.data_id
 				if clone.has_method("remove_state_effect"):
 					if clone.remove_state_effect(state_id, effect.value2):
 						result_data["callables"].append(target.execute_state_removal.bind(state_id))

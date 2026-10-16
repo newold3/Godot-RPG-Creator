@@ -271,7 +271,8 @@ func _sync_custom_bars() -> void:
 		var scroll_range = range_val - page_val
 		var offset_ratio = 0.0
 		if scroll_range > 0:
-			offset_ratio = (vscroll.value - min_val) / scroll_range
+			var current_val = -child.position.y if (is_animating and child) else vscroll.value
+			offset_ratio = clamp((current_val - min_val) / scroll_range, 0.0, 1.0)
 		var grabber_offset = offset_ratio * (area - grabber_height)
 		var bg_top_margin = bg_style.get_margin(SIDE_TOP) if bg_style else 0.0
 		var effective_grabber_size = Vector2(custom_vscroll_size.x + grabber_m.left + grabber_m.right, grabber_height + grabber_m.top + grabber_m.bottom)
@@ -311,7 +312,8 @@ func _sync_custom_bars() -> void:
 		var scroll_range = range_val - page_val
 		var offset_ratio = 0.0
 		if scroll_range > 0:
-			offset_ratio = (hscroll.value - min_val) / scroll_range
+			var current_val = -child.position.x if (is_animating and child) else hscroll.value
+			offset_ratio = clamp((current_val - min_val) / scroll_range, 0.0, 1.0)
 		var grabber_offset = offset_ratio * (area - grabber_width)
 		var bg_left_margin = bg_style.get_margin(SIDE_LEFT) if bg_style else 0.0
 		var effective_grabber_size = Vector2(grabber_width + grabber_m.left + grabber_m.right, custom_hscroll_size.y + grabber_m.top + grabber_m.bottom)
@@ -589,9 +591,9 @@ func _on_focus_changed(control: Control) -> void:
 		return
 	if single_target_focus and is_instance_valid(single_target_focus):
 		if control == single_target_focus:
-			bring_focus_target_into_view(false)
+			bring_focus_target_into_view(true, true)
 	else:
-		_bring_control_into_view(control, false)
+		_bring_control_into_view(control, true, true)
 
 
 ## Validates if the given control is a child of this container
@@ -627,23 +629,26 @@ func _bring_control_into_view(target: Control, instant: bool = true, instant_smo
 	var new_h_scroll = scroll_horizontal
 	var new_v_scroll = scroll_vertical
 	if h and h.visible:
-		if canvas_pos.x < new_h_scroll + focus_scroll_offset.x:
+		if canvas_pos.x < new_h_scroll:
 			new_h_scroll = canvas_pos.x - focus_scroll_offset.x
-		elif canvas_end.x > new_h_scroll + container_rect.size.x - focus_scroll_offset.x:
+		elif canvas_end.x > new_h_scroll + container_rect.size.x:
 			new_h_scroll = canvas_end.x - container_rect.size.x + focus_scroll_offset.x
 		new_h_scroll = clamp(new_h_scroll, h.min_value, h.max_value - h.page)
 	if v and v.visible:
-		if canvas_pos.y < new_v_scroll + focus_scroll_offset.y:
+		if canvas_pos.y < new_v_scroll:
 			new_v_scroll = canvas_pos.y - focus_scroll_offset.y
-		elif canvas_end.y > new_v_scroll + container_rect.size.y - focus_scroll_offset.y:
+		elif canvas_end.y > new_v_scroll + container_rect.size.y:
 			new_v_scroll = canvas_end.y - container_rect.size.y + focus_scroll_offset.y
 		new_v_scroll = clamp(new_v_scroll, v.min_value, v.max_value - v.page)
-	if new_h_scroll != scroll_horizontal or new_v_scroll != scroll_vertical:
+	var desired_pos = Vector2(-new_h_scroll if h and h.visible else 0, -new_v_scroll if v and v.visible else 0)
+	if new_h_scroll != scroll_horizontal or new_v_scroll != scroll_vertical or target_position != desired_pos or child.position != desired_pos:
 		if instant and instant_smooth:
 			var original_duration = scroll_duration
 			scroll_duration = instant_scroll_duration
 			current_position = child.position
-			target_position = Vector2(-new_h_scroll if h and h.visible else 0, -new_v_scroll if v and v.visible else 0)
+			target_position = desired_pos
+			if h and h.visible: h.set_value_no_signal(new_h_scroll)
+			if v and v.visible: v.set_value_no_signal(new_v_scroll)
 			_start_animation()
 			scroll_duration = original_duration
 		elif instant:
@@ -697,11 +702,25 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN or event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				if get_global_rect().has_point(get_global_mouse_position()):
 					var v = get_v_scroll_bar()
+					var h = get_h_scroll_bar()
 					if v and v.visible:
 						var scroll_delta = wheel_scroll_speed
 						scroll_delta *= 1 if event.button_index == MOUSE_BUTTON_WHEEL_DOWN else -1
-						var new_value = clamp(v.value + scroll_delta, v.min_value, v.max_value - v.page)
-						v.value = new_value
+						var base_val = -child.position.y if (is_animating and child) else v.value
+						var new_value = clamp(base_val + scroll_delta, v.min_value, v.max_value - v.page)
+						if new_value != v.value:
+							v.value = new_value
+						elif is_animating and target_position.y != -new_value:
+							target_position.y = -new_value
+					elif h and h.visible:
+						var scroll_delta = wheel_scroll_speed
+						scroll_delta *= 1 if event.button_index == MOUSE_BUTTON_WHEEL_DOWN else -1
+						var base_val = -child.position.x if (is_animating and child) else h.value
+						var new_value = clamp(base_val + scroll_delta, h.min_value, h.max_value - h.page)
+						if new_value != h.value:
+							h.value = new_value
+						elif is_animating and target_position.x != -new_value:
+							target_position.x = -new_value
 					get_viewport().set_input_as_handled()
 		elif not event.is_pressed():
 			if event.button_index == MOUSE_BUTTON_MIDDLE:

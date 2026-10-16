@@ -13,8 +13,12 @@ func get_class(): return "RPGItemDrop"
 @export var min_level: int = 1 # level of the item (only applicable to weapons and armor)
 @export var max_level: int = 1 # level of the item (only applicable to weapons and armor)
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 func clone(value: bool = true) -> RPGItemDrop:
 	var new_drop_item = duplicate(value)
 	new_drop_item.item = new_drop_item.item.clone(value)
+	new_drop_item.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return(new_drop_item)

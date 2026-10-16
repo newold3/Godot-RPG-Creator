@@ -10,6 +10,7 @@ var _single_event_mode: bool = false
 var _disable_non_quest_events: bool = false
 var _target_map_id: int = -1
 var _target_event_id: int = -1
+var _allow_none_page: bool = false
 
 var _ok_disabled: bool = false
 
@@ -101,6 +102,10 @@ func _on_page_list_gui_input(event: InputEvent) -> void:
 		var idx = %PageList.get_item_at_position(event.position, true)
 		
 		if idx != -1:
+			if %PageList.get_item_metadata(idx) == -1:
+				_hide_preview()
+				return
+				
 			if idx == _last_hovered_idx and _is_hovering_page and preview_window.visible:
 				return
 				
@@ -137,23 +142,38 @@ func _extract_and_show_preview() -> void:
 			target_event = ev
 			break
 			
-	if target_event and _hovered_page_index < target_event.pages.size():
-		var page_data = target_event.pages[_hovered_page_index]
-		
-		var ev_name = target_event.name if not target_event.name.is_empty() else "EV%03d" % target_event.id
-		var pg_name = "Page %s" % (_hovered_page_index + 1)
-		if not page_data.name.is_empty(): pg_name += " (%s)" % page_data.name
-		
-		preview_window.title = ev_name + " - " + pg_name
-		
-		var target_pos: Vector2i
-		if preview_window.visible:
-			target_pos = preview_window.position
-		else:
-			target_pos = position + Vector2i(size.x + 10, 0)
-		
-		var theme = RPGSYSTEM.color_theme if "color_theme" in RPGSYSTEM else {}
-		preview_window.show_preview(page_data.list, target_pos, {"color_theme": theme})
+	if target_event and _last_hovered_idx >= 0 and _last_hovered_idx < %PageList.get_item_count():
+		var target_page_uid = %PageList.get_item_metadata(_last_hovered_idx)
+		if target_page_uid == -1:
+			_hide_preview()
+			return
+		var page_data = null
+		var real_page_idx = -1
+		for i in target_event.pages.size():
+			var p = target_event.pages[i]
+			if p._uniq_id == target_page_uid or ("uid" in p and p.uid == target_page_uid):
+				page_data = p
+				real_page_idx = i
+				break
+		if not page_data and _hovered_page_index < target_event.pages.size():
+			page_data = target_event.pages[_hovered_page_index]
+			real_page_idx = _hovered_page_index
+			
+		if page_data and real_page_idx >= 0:
+			var ev_name = target_event.name if not target_event.name.is_empty() else "EV%03d" % target_event.id
+			var pg_name = "Page %s" % (real_page_idx + 1)
+			if not page_data.name.is_empty(): pg_name += " (%s)" % page_data.name
+			
+			preview_window.title = ev_name + " - " + pg_name
+			
+			var target_pos: Vector2i
+			if preview_window.visible:
+				target_pos = preview_window.position
+			else:
+				target_pos = position + Vector2i(size.x + 10, 0)
+			
+			var theme = RPGSYSTEM.color_theme if "color_theme" in RPGSYSTEM else {}
+			preview_window.show_preview(page_data.list, target_pos, {"color_theme": theme})
 
 
 
@@ -172,7 +192,8 @@ func setup_quest_mode(value: bool, fill: bool = true) -> void:
 
 
 
-func setup_single_event_mode(map_id: int, event_id: int, quest_mode: bool = false, fill: bool = true) -> void:
+func setup_single_event_mode(map_id: int, event_id: int, quest_mode: bool = false, fill: bool = true, allow_none: bool = false) -> void:
+	_allow_none_page = allow_none
 	if quest_mode: setup_quest_mode(true, false)
 	_single_event_mode = true
 	_target_map_id = map_id
@@ -336,6 +357,9 @@ func fill_events(events: Array) -> void:
 func fill_pages(page_selected: int = 0) -> void:
 	var node = %PageList
 	node.clear()
+	if _allow_none_page:
+		node.add_item(tr("None"))
+		node.set_item_metadata(-1, -1)
 	if %MapList.is_anything_selected() and %EventList.is_anything_selected():
 		var id = %MapList.get_selected_items()[0]
 		var map_id = %MapList.get_item_metadata(id)
@@ -348,9 +372,10 @@ func fill_pages(page_selected: int = 0) -> void:
 					var pg_name = "Page %s" % (i + 1) + (" (" + ev.pages[i].name + ")" if not ev.pages[i].name.is_empty() else "")
 					node.add_item(pg_name)
 					node.set_item_metadata(-1, ev.pages[i].uid)
-					if i in ev.quest_pages: node.set_item_icon(-1, QUEST_ICON)
-					if i in ev.quest_pages: node.set_item_disabled(i, not _quest_mode)
-					elif _quest_mode: node.set_item_disabled(i, true)
+					var item_idx = node.get_item_count() - 1
+					if i in ev.quest_pages: node.set_item_icon(item_idx, QUEST_ICON)
+					if i in ev.quest_pages: node.set_item_disabled(item_idx, not _quest_mode)
+					elif _quest_mode: node.set_item_disabled(item_idx, true)
 				break
 	node = %PageList
 	var items = node.get_item_count()

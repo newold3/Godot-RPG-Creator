@@ -43,6 +43,22 @@ func load_data() -> void:
 		if database.has_method("initialize"):
 			database.initialize()
 	
+	DatabaseLoader.sanitize_database_custom_data(database)
+	
+	if database and database.quests:
+		for quest in database.quests:
+			if quest:
+				if not quest.icon_available:
+					quest.icon_available = RPGIcon.new("res://Scenes/QuestMarkers/quest_available.tscn")
+				if not quest.icon_progress:
+					quest.icon_progress = RPGIcon.new("res://Scenes/QuestMarkers/quest_in_progress.tscn")
+				if not quest.icon_completed:
+					quest.icon_completed = RPGIcon.new("res://Scenes/QuestMarkers/quest_completed.tscn")
+				if not quest.icon_failed:
+					quest.icon_failed = RPGIcon.new("res://Scenes/QuestMarkers/quest_failed.tscn")
+				if not quest.icon_escort:
+					quest.icon_escort = RPGIcon.new("res://Scenes/QuestMarkers/quest_escort.tscn")
+	
 	if not DatabaseLoader.is_develop_build:
 		_inject_extra_data()
 

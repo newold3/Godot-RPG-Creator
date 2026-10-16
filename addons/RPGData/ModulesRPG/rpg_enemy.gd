@@ -33,6 +33,9 @@ func get_class(): return "RPGEnemy"
 @export var notes: String = ""
 @export var battle_actions: Array[RPGActorBattleAction] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -53,6 +56,10 @@ func clear() -> void:
 	rarity_type = 0
 	icon.clear()
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 	
 	var database = RPGSYSTEM.database
 	if database:
@@ -104,6 +111,7 @@ func clone(value: bool = true) -> RPGEnemy:
 		new_enemy.battle_actions[i] = new_enemy.battle_actions[i].clone(value)
 	
 	new_enemy.icon = icon.clone(value)
+	new_enemy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_enemy
 

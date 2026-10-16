@@ -16,6 +16,9 @@ func get_class(): return "RPGTroopMember"
 ## Member is hide
 @export var hide: bool = false
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func _init(p_type: int = 1, p_id: int = 0, p_direction: int = 1, p_position: Vector2 = Vector2.ZERO, p_hide: bool = false) -> void:
 	type = p_type
@@ -26,4 +29,6 @@ func _init(p_type: int = 1, p_id: int = 0, p_direction: int = 1, p_position: Vec
 
 
 func clone(value: bool = true) -> RPGTroopMember:
-	return(duplicate(value))
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/base_window_for_scenes.tscn" id="1_igh7c"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Library/library.tscn" id="2_bqpa8"]
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/Library/manager.gd" id="3_mgr"]
+
+[node name="MainScene" unique_id=1740912168 instance=ExtResource("1_igh7c")]
+theme = ExtResource("2_theme")
+scene_title = "Library"
+timer_to_emit_end_signal = 0.12
+move_in_direction = 3
+move_in_duration = 0.5
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.35
+zoom_out_enabled = false
+fade_out_enabled = false
+ready_to_process_delay = 0.18
+
+[node name="Manager" type="Node" parent="." index="0" unique_id=162685583 node_paths=PackedStringArray("scene_parent", "back_button", "main_scene", "title_scene")]
+script = ExtResource("3_mgr")
+scene_parent = NodePath("..")
+back_button = NodePath("../SceneMainContainer/BackButton")
+main_scene = NodePath("../SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia")
+title_scene = NodePath("../SceneMainContainer/MainContainer/Title/TitleContainer")
+
+[node name="MainContainer" parent="SceneMainContainer" index="1" unique_id=1863900863]
+theme_override_constants/margin_bottom = 20
+
+[node name="ContentsContainer" parent="SceneMainContainer/MainContainer" index="0" unique_id=109990462]
+theme_override_constants/margin_left = -33
+theme_override_constants/margin_top = -67
+theme_override_constants/margin_right = -31
+theme_override_constants/margin_bottom = -23
+
+[node name="Encyclopedia" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" unique_id=525754061 instance=ExtResource("2_bqpa8")]
+layout_mode = 2
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0" unique_id=2079863752]
+title = "Library"
+
+[node name="BackButton" parent="SceneMainContainer" index="2" unique_id=1109773286]
+offset_left = -140.0
+offset_top = -62.0
+offset_right = -40.0
+offset_bottom = -20.0
+
+[connection signal="end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia" method="end"]
+[connection signal="button_pressed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/Encyclopedia" to="Manager" method="_on_encyclopedia_button_pressed"]
+[connection signal="pressed" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_pressed"]
+[connection signal="selected" from="SceneMainContainer/BackButton" to="Manager" method="_on_back_button_selected"]

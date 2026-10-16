@@ -267,6 +267,21 @@ func select(idx: int, single: bool = true) -> void:
 		ensure_current_is_visible()
 
 
+func set_item_metadata(idx: int, metadata: Variant) -> void:
+	if idx < 0:
+		idx = get_item_count() + idx
+	if idx >= 0 and idx < get_item_count():
+		super.set_item_metadata(idx, metadata)
+
+
+func get_item_metadata(idx: int) -> Variant:
+	if idx < 0:
+		idx = get_item_count() + idx
+	if idx >= 0 and idx < get_item_count():
+		return super.get_item_metadata(idx)
+	return null
+
+
 
 ## Appends an item configuring its default tooltip behavior
 func add_item_custom(text: String, icon: Texture2D = null, selectable: bool = true) -> int:

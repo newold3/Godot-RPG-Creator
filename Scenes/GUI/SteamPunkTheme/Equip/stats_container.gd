@@ -1,47 +1,95 @@
-extends Control
+extends GuiCoreStatsContainer
 
-# Menu configuration properties
-@export var show_comparison: bool = true: set = set_show_comparison
-@export var margin_left: int = 10
-@export var margin_right: int = 10
-@export var margin_vertical: int = 5
-@export var spacing: int = 5
-@export var section_spacing: int = 10
-@export var custom_font: Font
+#region NodeReferences
+@onready var stats_panel: Control = %StatsContainer if has_node("%StatsContainer") else null
+@onready var upgrade_icon: TextureRect = %UpgradeIcon if has_node("%UpgradeIcon") else null
+@onready var bottom_container: Node = %BottomContainer if has_node("%BottomContainer") else null
+@onready var stats_name_label: Label = %StatsName if has_node("%StatsName") else null
+@onready var gear1: Control = %Gear1 if has_node("%Gear1") else null
+@onready var gear2: Control = %Gear2 if has_node("%Gear2") else null
 
-# UI component references
-@onready var stats_container: Control = %StatsContainer
-@onready var upgrade_icon: TextureRect = %UpgradeIcon
-@onready var smooth_scroll_node: Node = %BottomContainer
-
-# Actor data and comparison
-var current_actor: GameActor
-var comparison_item: Dictionary = {}
-
-var comparison_result: int = 0:
-	set(value):
-		if comparison_result != value:
-			comparison_result = value
-			if is_inside_tree():
-				_set_animation_for_upgrade_icon()
-
-var started: bool = false
 var icon_tween: Tween
+var gear_tween: Tween
+#endregion
 
-
+#region Lifecycle
 func _ready() -> void:
-	if Engine.is_editor_hint(): return
-	set_show_comparison(false)
-	%StatsName.text = RPGSYSTEM.database.terms.search_message("Equip Stats")
+	super._ready()
+	if stats_name_label:
+		stats_name_label.text = RPGSYSTEM.database.terms.search_message("Equip Stats")
 	_set_animation_for_upgrade_icon()
+#endregion
+
+#region HookOverrides
+func get_stats_draw_panel() -> Control:
+	if not stats_panel and has_node("%StatsContainer"):
+		stats_panel = %StatsContainer
+	if not stats_panel:
+		stats_panel = get_node_or_null("MarginContainer/VBoxContainer/MarginContainer/BottomContainer/StatsContainer")
+	return stats_panel
 
 
-func scroll_to(direction: int, strength: float) -> void:
-	var scroll_delta = strength * direction
-	smooth_scroll_node.smooth_scroll_by_delta(scroll_delta, 0)
+func get_bottom_scroll_container() -> Node:
+	if not bottom_container and has_node("%BottomContainer"):
+		bottom_container = %BottomContainer
+	if not bottom_container:
+		bottom_container = get_node_or_null("MarginContainer/VBoxContainer/MarginContainer/BottomContainer")
+	return bottom_container
 
 
+func get_gears() -> Array:
+	var gears = []
+	if gear1: gears.append(gear1)
+	if gear2: gears.append(gear2)
+	return gears
+
+
+func _animate_start(on_complete: Callable = Callable()) -> void:
+	started = false
+	if gear_tween:
+		gear_tween.kill()
+
+	if gear1 and gear2:
+		gear1.rotation = 0
+		gear2.rotation = 0
+		var a = PI / 2.0
+		gear_tween = create_tween()
+		gear_tween.set_parallel(true)
+		gear_tween.tween_property(gear1, "rotation", a, 0.7).set_trans(Tween.TRANS_SINE)
+		gear_tween.tween_property(gear2, "rotation", -a, 0.7).set_trans(Tween.TRANS_SINE)
+		gear_tween.tween_interval(0.01)
+		gear_tween.set_parallel(false)
+		gear_tween.tween_callback(func():
+			started = true
+			if on_complete:
+				on_complete.call()
+		)
+	else:
+		started = true
+		if on_complete:
+			on_complete.call()
+
+
+func _animate_end(on_complete: Callable = Callable()) -> void:
+	if gear_tween:
+		gear_tween.kill()
+	if on_complete:
+		on_complete.call()
+
+
+func _on_comparison_result_changed(_value: int) -> void:
+	if is_inside_tree():
+		_set_animation_for_upgrade_icon()
+
+
+func _on_show_comparison_changed(show: bool) -> void:
+	if upgrade_icon and not show:
+		upgrade_icon.visible = false
+#endregion
+
+#region VisualAnimations
 func _set_animation_for_upgrade_icon() -> void:
+	if not upgrade_icon: return
 	upgrade_icon.visible = false
 	upgrade_icon.pivot_offset = upgrade_icon.size * 0.5
 	var original_position = upgrade_icon.position
@@ -58,79 +106,4 @@ func _set_animation_for_upgrade_icon() -> void:
 	var direction_multiplier = -1 if comparison_result == 1 else 1
 	icon_tween.tween_property(upgrade_icon, "position:y", original_position.y + 3 * direction_multiplier, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	icon_tween.tween_property(upgrade_icon, "position:y", original_position.y - 3 * direction_multiplier, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_delay(0.25)
-
-
-func start() -> void:
-	started = false
-	%Gear1.rotation = 0
-	%Gear2.rotation = 0
-	var a = PI / 2.0
-	
-	var t = create_tween()
-	t.set_parallel(true)
-	t.tween_property(%Gear1, "rotation", a, 0.7).set_trans(Tween.TRANS_SINE)
-	t.tween_property(%Gear2, "rotation", -a, 0.7).set_trans(Tween.TRANS_SINE)
-	t.tween_interval(0.01)
-	t.set_parallel(false)
-	t.tween_callback(set.bind("started", [true]))
-
-
-func end() -> void:
-	started = false
-
-
-func get_gears() -> Array:
-	return [%Gear1, %Gear2]
-
-
-func _process(_delta: float) -> void:
-	if not started: return
-	
-	var manipulator = GameManager.get_cursor_manipulator()
-	if manipulator in [GameManager.MANIPULATOR_MODES.EQUIP_MENU, GameManager.MANIPULATOR_MODES.EQUIP_MENU_SUB_MENU, GameManager.MANIPULATOR_MODES.EQUIP_ACTORS_MENU]:
-		if ControllerManager.current_controller == ControllerManager.CONTROLLER_TYPE.Joypad:
-			var direction = ControllerManager.get_right_stick_direction()
-			if direction in ["up", "down"]:
-				var scroll = -1 if direction == "up" else 1
-				var strength = remap(abs(ControllerManager.get_right_stick_vector().y), 0.0, 1.0, 10, 250)
-				scroll_to(scroll, strength)
-
-
-func set_actor(actor: GameActor) -> void:
-	if not actor:
-		return
-	
-	current_actor = actor
-	
-	# Delegate data to StatsContainer
-	stats_container.set_actor(actor, comparison_item)
-
-
-func set_equipment_compararison(slot_id: int, item: Variant) -> void:
-	if current_actor:
-		var level = item.current_level if item and "current_level" in item else 1
-		comparison_item = {
-			"slot_id": slot_id,
-			"id": item.id if item else -1,
-			"level": level,
-		}
-		set_actor(current_actor)
-
-
-func set_show_comparison(_show_comparison: bool) -> void:
-	var last_show_comparison = show_comparison
-	show_comparison = _show_comparison
-	if not is_inside_tree(): return
-	if show_comparison != last_show_comparison:
-		# Notify container to update
-		stats_container.set_show_comparison(show_comparison)
-		upgrade_icon.visible = false
-
-
-func get_minimum_size() -> Vector2:
-	return stats_container.get_minimum_size()
-
-
-# Getter to access container data if necessary
-func get_current_stats() -> Dictionary:
-	return stats_container.get_current_stats()
+#endregion

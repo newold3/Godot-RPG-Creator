@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/left_buttons.gd" id="1_script"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="2_panel"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/MainMenu/basic_menu_button.tscn" id="3_btn"]
+
+[node name="MainMenuItems" type="PanelContainer"]
+custom_minimum_size = Vector2(240, 360)
+offset_right = 240.0
+offset_bottom = 360.0
+theme_override_styles/panel = ExtResource("2_panel")
+script = ExtResource("1_script")
+
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Button1" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Items"
+is_toggle_button = true
+
+[node name="Button2" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Skills"
+is_toggle_button = true
+
+[node name="Button3" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Equipment"
+is_toggle_button = true
+
+[node name="Button4" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Status"
+is_toggle_button = true
+
+[node name="Button5" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Formation"
+is_toggle_button = true
+
+[node name="Button6" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Quests"
+is_toggle_button = true
+
+[node name="Button7" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Encyclopedia"
+is_toggle_button = true
+
+[node name="Button8" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Options"
+is_toggle_button = true
+
+[node name="Button9" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Save"
+is_toggle_button = true
+
+[node name="Button10" parent="ButtonContainer" instance=ExtResource("3_btn")]
+layout_mode = 2
+button_text = "Game End"
+is_toggle_button = true

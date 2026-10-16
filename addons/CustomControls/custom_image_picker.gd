@@ -37,7 +37,7 @@ func set_blend_color(color: Color) -> void:
 func set_icon(path: String, rect: Rect2 = Rect2()) -> void:
 	var preview_path = path.get_basename() + "_preview.png"
 	var preview_found = false
-	if ResourceLoader.exists(preview_path):
+	if not rect.has_area() and ResourceLoader.exists(preview_path):
 		var res = ResourceLoader.load(preview_path)
 		if res is Texture:
 			set_main_texture(res, rect)
@@ -47,8 +47,24 @@ func set_icon(path: String, rect: Rect2 = Rect2()) -> void:
 		var res = ResourceLoader.load(path)
 		if res is PackedScene:
 			var ins = res.instantiate()
+			var spr_tex: Texture2D = null
+			var default_rect = Rect2()
 			if ins is TextureRect:
-				set_main_texture(ins.texture, rect)
+				spr_tex = ins.texture
+			elif ins is Sprite2D:
+				spr_tex = ins.texture
+				if ins.region_enabled:
+					default_rect = ins.region_rect
+			else:
+				var spr = ins.find_child("*", true, false)
+				if spr is Sprite2D or spr is TextureRect:
+					spr_tex = spr.texture
+					if spr is Sprite2D and spr.region_enabled:
+						default_rect = spr.region_rect
+			
+			if spr_tex:
+				var final_rect = rect if rect.has_area() else default_rect
+				set_main_texture(spr_tex, final_rect)
 			else:
 				%MainImage.texture = null
 			ins.queue_free()

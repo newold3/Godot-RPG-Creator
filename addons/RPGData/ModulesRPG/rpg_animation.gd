@@ -60,6 +60,9 @@ func get_class():
 ## Additional notes about this common event.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -77,6 +80,10 @@ func clear() -> void:
 	rotation = Vector3.ZERO
 	offset = Vector2.ZERO
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 ## Clones the animation and its properties.
 ## @param value bool - Whether to perform a deep clone.
@@ -88,5 +95,7 @@ func clone(value: bool = true) -> RPGAnimation:
 		new_animation.sounds[i] = new_animation.sounds[i].clone(value)
 	for i in new_animation.flashes.size():
 		new_animation.flashes[i] = new_animation.flashes[i].clone(value)
+
+	new_animation.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_animation

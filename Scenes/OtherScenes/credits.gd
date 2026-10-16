@@ -622,6 +622,8 @@ func _config_hand_in_back_button() -> void:
 
 
 func start() -> void:
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.hide_hand_when_mouse_over_focused = false
 	GameManager.set_fx_busy(true)
 	if not _credits_array.is_empty():
 		create_next_message()
@@ -638,6 +640,8 @@ func start() -> void:
 
 
 func finish() -> void:
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.hide_hand_when_mouse_over_focused = true
 	_is_enabled = false
 	if %BackButton.has_focus():
 		%BackButton.release_focus()
@@ -648,10 +652,20 @@ func finish() -> void:
 func _add_back_button(button: Control) -> void:
 	back_button = button
 	button.pressed.connect(_on_back_button_pressed)
+	if button.has_signal("selected"):
+		button.selected.connect(_config_hand_in_back_button)
+	if button.has_signal("mouse_entered"):
+		button.mouse_entered.connect(func():
+			if not button.has_focus() and button.has_method("grab_focus"):
+				button.grab_focus()
+			_config_hand_in_back_button()
+		)
 
 
 func _on_back_button_pressed() -> void:
 	busy = true
+	if GameManager.cursor_manager and GameManager.cursor_manager.hand_cursor:
+		GameManager.cursor_manager.hand_cursor.hide_hand_when_mouse_over_focused = true
 	starting_end.emit()
 
 	GameManager.play_fx("cancel")

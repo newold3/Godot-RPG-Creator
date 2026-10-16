@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/CommonScenes/menu_title_container.gd" id="1_script"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="2_panel"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("3_font")
+font_size = 24
+font_color = Color(1, 1, 1, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_offset = Vector2(1, 2)
+
+[node name="TitleContainer" type="MarginContainer"]
+offset_right = 320.0
+offset_bottom = 60.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+script = ExtResource("1_script")
+title = "MENU"
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(260, 50)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_panel")
+
+[node name="TitleLabel" type="Label" parent="Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "MENU"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+vertical_alignment = 1

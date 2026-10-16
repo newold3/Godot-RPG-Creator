@@ -68,6 +68,11 @@ func get_class(): return "RPGEventPQuest"
 ## WARNING: Do not include quest-altering commands within this Common Event to avoid conflicts with the Quest Manager.
 @export var on_fail_common_event: int = -1
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clone(value: bool = true) -> RPGEventPQuest:
-	return duplicate(value)
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

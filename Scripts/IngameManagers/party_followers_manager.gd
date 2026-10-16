@@ -254,12 +254,15 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 	_refresh_follower_nodes(instant)
 	await update_party_visuals(instant)
 	
-	if game_state.current_party.size() <= 1:
+	var escort_count = game_state.escorted_npcs.size() if ("escorted_npcs" in game_state and game_state.escorted_npcs is Array) else 0
+	if game_state.current_party.size() <= 1 and escort_count == 0:
 		return
 		
 	if game_state.followers_tracking_enabled:
 		if force_regroup:
 			for f in followers:
+				if f.get("is_joining_queue"):
+					continue
 				f.global_position = player.global_position
 				f.current_direction = player.current_direction
 				if f.has_method("run_animation"):
@@ -268,6 +271,8 @@ func show_followers(instant: bool = false, force_regroup: bool = true) -> void:
 					
 	var is_tracking = game_state.followers_tracking_enabled
 	for f in followers:
+		if f.get("is_joining_queue"):
+			continue
 		f.is_sync_active = is_tracking
 		if f.has_method("_initialize_queue") and is_tracking:
 			f._initialize_queue()
@@ -427,10 +432,16 @@ func update_party_visuals(instant: bool = false) -> void:
 	var old_size = followers.size()
 	_refresh_follower_nodes(instant)
 	
-	for i in range(1, party.size()):
+	var max_active = RPGSYSTEM.database.system.party_active_members
+	var party_needed = min(party.size() - 1, max_active - 1) if party.size() > 1 else 0
+	
+	for i in range(1, party_needed + 1):
 		var f_idx = i - 1
 		if f_idx < followers.size():
 			var follower = followers[f_idx]
+			if follower.get_meta("is_escort", false):
+				continue
+				
 			var target_actor_id = party[i]
 			
 			if target_actor_id > 0 and target_actor_id < 1000000:
@@ -440,10 +451,13 @@ func update_party_visuals(instant: bool = false) -> void:
 			if follower.get_meta("actor_id", -1) != target_actor_id or follower.get_meta("requires_init", false):
 				follower.visible = false
 				
-	for i in range(1, party.size()):
+	for i in range(1, party_needed + 1):
 		var f_idx = i - 1
 		if f_idx < followers.size():
 			var follower = followers[f_idx]
+			if follower.get_meta("is_escort", false):
+				continue
+				
 			var target_actor_id = party[i]
 			
 			var body = follower.get_node_or_null("%Body")
@@ -458,6 +472,16 @@ func update_party_visuals(instant: bool = false) -> void:
 				follower.set_meta("requires_init", false)
 				
 			follower.visible = true
+
+	# Ensure escort followers are visible and initialized
+	for f_idx in range(party_needed, followers.size()):
+		var follower = followers[f_idx]
+		if is_instance_valid(follower) and follower.get_meta("is_escort", false):
+			follower.visible = true
+			follower.modulate.a = 1.0
+			follower.is_fading_transition = false
+			if not follower.get("is_joining_queue") and follower.has_method("_initialize_queue") and game_state.followers_tracking_enabled:
+				follower._initialize_queue()
 
 
 
@@ -524,6 +548,9 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 					var oldest_snap = current_player.movement_history[0]
 					spawn_pos = oldest_snap.get("pos", spawn_pos)
 					spawn_dir = oldest_snap.get("direction", spawn_dir)
+				elif f_idx > 0 and is_instance_valid(followers[f_idx - 1]):
+					spawn_pos = followers[f_idx - 1].global_position
+					spawn_dir = followers[f_idx - 1].current_direction
 					
 				f.global_position = spawn_pos
 				f.current_direction = spawn_dir
@@ -534,6 +561,16 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 			followers.append(f)
 			f.set_meta("requires_init", true)
 			
+	# Trim excess followers before configuring nodes so followers.size() matches needed
+	while followers.size() > needed:
+		var f = followers.pop_back()
+		if is_instance_valid(f):
+			f.process_mode = Node.PROCESS_MODE_DISABLED
+			f.visible = false
+			if f.is_in_group("follower"):
+				f.remove_from_group("follower")
+			_follower_cache.append(f)
+
 	# Configure all followers (both party and escort)
 	for f_idx in range(followers.size()):
 		var f = followers[f_idx]
@@ -549,34 +586,42 @@ func _refresh_follower_nodes(instant: bool = false, save_data_list: Array = []) 
 		var is_escort = (f_idx >= party_needed)
 		if is_escort:
 			var escort_idx = f_idx - party_needed
-			var npc = escorted_list[escort_idx]
-			f.set_meta("actor_id", 0)
-			f.set_meta("is_escort", true)
-			
-			var r = npc.character_region
-			var rect = Rect2(r[0], r[1], r[2], r[3])
-			f.setup_custom_graphics(npc.character_type, npc.character_path, rect)
-			f.set_meta("requires_init", false)
+			if escort_idx < escorted_list.size():
+				var npc = escorted_list[escort_idx]
+				f.set_meta("actor_id", 0)
+				f.set_meta("is_escort", true)
+				f.set_meta("quest_id", npc.get("quest_id", -1))
+				f.set_meta("event_uniq_id", npc.get("event_uniq_id", -1))
+				
+				var r = npc.get("character_region", [0, 0, 0, 0])
+				var rect = Rect2(r[0], r[1], r[2], r[3])
+				f.setup_custom_graphics(npc.get("character_type", 0), npc.get("character_path", ""), rect)
+				f.set_meta("requires_init", false)
+				f.visible = true
+				f.modulate.a = 1.0
+				f.is_fading_transition = false
+				
+				if npc.get("walk_to_queue", false) and npc.has("spawn_pos"):
+					var spos = Vector2(npc.spawn_pos[0], npc.spawn_pos[1])
+					var sdir = npc.get("spawn_dir", current_player.current_direction)
+					npc.erase("walk_to_queue")
+					if f.has_method("start_joining_queue"):
+						f.start_joining_queue(spos, sdir)
+				else:
+					if f.has_method("_initialize_queue") and game_state.followers_tracking_enabled:
+						f._initialize_queue()
 		else:
 			f.set_meta("is_escort", false)
-			var f_actor_id = game_state.current_party[f_idx + 1]
-			if f_actor_id > 0 and f_actor_id < 1000000:
-				f_actor_id = RPGSYSTEM.id_to_uid("actors", f_actor_id)
-				game_state.current_party[f_idx + 1] = f_actor_id
-			f.set_meta("actor_id", f_actor_id)
+			if f_idx + 1 < game_state.current_party.size():
+				var f_actor_id = game_state.current_party[f_idx + 1]
+				if f_actor_id > 0 and f_actor_id < 1000000:
+					f_actor_id = RPGSYSTEM.id_to_uid("actors", f_actor_id)
+					game_state.current_party[f_idx + 1] = f_actor_id
+				f.set_meta("actor_id", f_actor_id)
 			# Standard party graphics will be initialized by update_party_visuals() cascade.
 			
 		if f.has_method("run_animation"):
 			f.run_animation()
-
-	while followers.size() > needed:
-		var f = followers.pop_back()
-		if is_instance_valid(f):
-			f.process_mode = Node.PROCESS_MODE_DISABLED
-			f.visible = false
-			if f.is_in_group("follower"):
-				f.remove_from_group("follower")
-			_follower_cache.append(f)
 #endregion
 
 
@@ -744,6 +789,7 @@ func change_leader_to(direction: String) -> void:
 	
 	var overlay_rect = TextureRect.new()
 	overlay_rect.texture = static_tex
+	overlay_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	overlay_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay_canvas.add_child(overlay_rect)
 	get_tree().root.add_child(overlay_canvas)

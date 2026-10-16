@@ -16,6 +16,9 @@ func get_class(): return "RPGRecipe"
 ## List of materials needed to create this item
 @export var materials: Array[RPGGearUpgradeComponent] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func get_materials() -> Array[Dictionary]:
 	var material_list: Array[Dictionary] = []
@@ -30,6 +33,8 @@ func clone(value: bool = true) -> RPGRecipe:
 	var new_recipie = duplicate(value)
 	for i in new_recipie.materials.size():
 		new_recipie.materials[i] = new_recipie.materials[i].clone(value)
+	
+	new_recipie.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return(new_recipie)
 

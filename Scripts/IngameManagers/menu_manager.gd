@@ -81,4 +81,3 @@ func _update_map_visuals() -> void:
 			if follower and is_instance_valid(follower):
 				follower.set_meta("requires_init", true)
 		party_manager.update_party_visuals(true)
-

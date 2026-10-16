@@ -68,6 +68,9 @@ func get_class():
 ## List of quests.
 @export var quests: Array[RPGQuest] = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 ## Initializes the RPG data.
 func initialize() -> void:
@@ -308,6 +311,7 @@ func clone(value: bool = true) -> RPGDATA:
 	new_data.types = types.clone(true)
 	new_data.terms = terms.clone(true)
 	new_data._id_version = _id_version
+	new_data.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_data
 
@@ -317,7 +321,7 @@ func update_with_other_db(other: RPGDATA) -> void:
 	var arrs = [
 		"actors", "classes", "professions", "skills", "items", "weapons", "armors",
 		"costumes", "enemies", "troops", "states", "animations", "common_events",
-		"system", "types", "terms", "speakers", "quests", "_id_version"
+		"system", "types", "terms", "speakers", "quests", "custom_data", "_id_version"
 	]
 
 	for id in arrs:

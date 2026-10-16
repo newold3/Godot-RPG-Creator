@@ -17,9 +17,6 @@
 shader = ExtResource("5_n21jk")
 shader_parameter/blur_strength = 1.2710000603725
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_kyksk"]
-viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
-
 [sub_resource type="Curve" id="Curve_6i4xk"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.354244, 0.206815), 0.0, 0.0, 0, 0, Vector2(0.516605, 1), 0.0, 0.0, 0, 0, Vector2(0.734317, 0.732171), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
@@ -123,18 +120,16 @@ pivot_offset = Vector2(576, 320)
 mouse_filter = 2
 script = ExtResource("1_rsa1n")
 move_in_direction = 2
-move_in_trans_type = 5
-move_in_duration = 0.35
+move_in_trans_type = 1
+move_in_duration = 0.45
 move_out_direction = 3
-move_out_ease_type = 0
-move_out_trans_type = 5
-move_out_duration = 0.25
-zoom_in_start = 1.2
-zoom_in_trans_type = 5
-zoom_in_duration = 0.2
-zoom_out_end = 0.91
-zoom_out_ease_type = 0
-zoom_out_trans_type = 5
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.45
+zoom_in_enabled = false
+zoom_out_enabled = false
+fade_in_enabled = false
+fade_out_enabled = false
 shake_in_frequency = 100.0
 shake_in_duration = 1.0
 auto_play_on_start = true
@@ -175,8 +170,9 @@ metadata/_edit_group_ = true
 
 [node name="SubViewport" type="SubViewport" parent="SceneMainContainer/BottomLayer" unique_id=1611430864]
 size = Vector2i(1152, 640)
+render_target_update_mode = 4
 
-[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=1830413573]
+[node name="StaticBackground" type="TextureRect" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=1830413573]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -188,9 +184,15 @@ expand_mode = 1
 
 [node name="VideoBackground" type="VideoStreamPlayer" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=409251738]
 modulate = Color(0.24, 0.07800001, 0.024000006, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -40.0
-offset_right = 1192.0
-offset_bottom = 655.0
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 stream = ExtResource("3_n21jk")
 autoplay = true
@@ -200,10 +202,15 @@ script = ExtResource("4_ljgjw")
 
 [node name="BackgroundEffect" type="ColorRect" parent="SceneMainContainer/BottomLayer/SubViewport" unique_id=1808476383]
 material = SubResource("ShaderMaterial_01fnq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 1148.0
-offset_bottom = 636.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 
@@ -215,7 +222,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = SubResource("ViewportTexture_kyksk")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="ParticleContainer" type="Control" parent="SceneMainContainer/BottomLayer" unique_id=823818857]
 clip_contents = true
@@ -378,10 +386,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -96.0
-offset_top = -116.0
-offset_right = -32.0
-offset_bottom = -52.0
+offset_left = -80.0
+offset_top = -84.0
+offset_right = -16.0
+offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(32, 32)
@@ -402,7 +410,7 @@ pressed_hover_texture = SubResource("AtlasTexture_f05g1")
 content_justification = 1
 min_texture_size_no_pressed = Vector2(86, 86)
 min_texture_size_pressed = Vector2(86, 86)
-manage_mouse_click = false
+manage_mouse_click = true
 on_hover_animation = 4
 on_pressed_animation = 11
 preview_animation = 11

@@ -26,6 +26,9 @@ func get_class():
 ## Whether the damage is critical.
 @export var critical: bool = false
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 ## Clears all the properties of the damage.
 func clear() -> void:
 	type = 0
@@ -33,9 +36,15 @@ func clear() -> void:
 	formula = ""
 	variance = 0
 	critical = false
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 ## Clones the damage.
 ## @param value bool - Whether to perform a deep clone.
 ## @return RPGDamage - The cloned damage.
 func clone(value: bool = true) -> RPGDamage:
-	return duplicate(value)
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

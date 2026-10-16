@@ -28,6 +28,8 @@ extends Resource
 @export var drop_table: Array[RPGItemDrop] = []
 ## Sound played on loop while this item is being extracted
 @export var extraction_fx: RPGSound = RPGSound.new()
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
 ## Location X of the tile where this item will be positioned on the map
 @export var x : int = 0
 ## Location Y of the tile where this item will be positioned on the map
@@ -159,6 +161,7 @@ func clone(value: bool) -> RPGExtractionItem:
 		new_item.drop_table[i] = new_item.drop_table[i].duplicate(value)
 	
 	new_item.extraction_fx = new_item.extraction_fx.clone(value)
+	new_item.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_item
 

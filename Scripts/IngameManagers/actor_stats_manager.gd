@@ -74,12 +74,20 @@ func get_skills_for_actor(actor: GameActor, _sort_mode: int = 0) -> Array:
 	if not actor: 
 		return items
 		
-	var raw_skills = actor.get_skills()
+	var raw_skills = actor.get_skills(false)
 	for skill_id in raw_skills:
 		var skill_info = raw_skills[skill_id]
 		var real_skill: RPGSkill = actor.get_real_skill(skill_id)
 		
 		if not real_skill:
+			continue
+			
+		var slot_id = real_skill.id if real_skill.id > 0 else (RPGSYSTEM.uid_to_id("skills", real_skill._uniq_id) if RPGSYSTEM else -1)
+		if slot_id in [1, 2, 3] or skill_id in [1, 2, 3]:
+			continue
+			
+		var skill_name = real_skill.name.strip_edges().to_lower()
+		if skill_name in ["attack", "guard", "escape", "ataque", "defensa", "huida", "defender"]:
 			continue
 			
 		var mp_cost = real_skill.mp_cost if "mp_cost" in real_skill else 0

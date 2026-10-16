@@ -366,7 +366,7 @@ func _on_enemy_spawn_canvas_draw() -> void:
 			var align = HORIZONTAL_ALIGNMENT_LEFT
 			var text = region.name
 			if text.is_empty():
-				text = "Spawn Region #%s" % (i + 1)
+				text = "Spawn Region #%s" % region.id
 			while text_size > 8 and font.get_string_size(text, align, -1, text_size).x > real_rect.size.x - 22:
 				text_size -= 1
 			
@@ -431,7 +431,7 @@ func _on_event_region_canvas_draw() -> void:
 			var align = HORIZONTAL_ALIGNMENT_LEFT
 			var text = region.name
 			if text.is_empty():
-				text = "Event Region #%s" % (i + 1)
+				text = "Event Region #%s" % region.id
 			while text_size > 8 and font.get_string_size(text, align, -1, text_size).x > real_rect.size.x - 22:
 				text_size -= 1
 				

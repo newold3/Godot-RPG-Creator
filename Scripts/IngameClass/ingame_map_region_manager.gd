@@ -58,7 +58,7 @@ func setup_event_monitor() -> Area2D:
 	var area: Area2D = Area2D.new()
 	area.name = "EventMonitor"
 	area.collision_layer = int(pow(2, 5))
-	area.collision_mask = int(pow(2, 0)) | int(pow(2, 2))
+	area.collision_mask = int(pow(2, 0)) | int(pow(2, 2)) | int(pow(2, 6))
 	area.body_shape_entered.connect(_on_event_monitor_body_entered.bind(area))
 	area.body_shape_exited.connect(_on_event_monitor_body_exited.bind(area))
 	map.add_child(area)

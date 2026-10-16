@@ -180,6 +180,25 @@ func add_player(passenger: LPCCharacter) -> void:
 		var t = create_tween()
 		passenger.modulate.a = 0.8
 		t.tween_property(passenger, "modulate:a", 1.0, 0.15)
+		
+		var mask_node = passenger.get_node_or_null("Mask")
+		if not mask_node:
+			mask_node = passenger.get_node_or_null("Polygon2D")
+		if mask_node:
+			if "texture" in mask_node and mask_node.texture:
+				passenger.set_meta("mask_texture_backup", mask_node.texture)
+				mask_node.texture = null
+			mask_node.self_modulate = Color(1, 1, 1, 0)
+			passenger.set_meta("mask_z_index_backup", mask_node.z_index)
+			passenger.set_meta("mask_z_relative_backup", mask_node.z_as_relative)
+			mask_node.z_index = -1
+			mask_node.z_as_relative = false
+			
+		var full_body = passenger.get_node_or_null("%FullBody")
+		if full_body:
+			passenger.set_meta("fb_z_relative_backup", full_body.z_as_relative)
+			full_body.z_as_relative = false
+			
 		board_passenger(passenger)
 
 
@@ -268,6 +287,27 @@ func remove_player_when_reload() -> void:
 			player.clear_movement_history()
 		player.set_process(true)
 		player.set_process_input(true)
+		
+		var mask_node = player.get_node_or_null("Mask")
+		if not mask_node:
+			mask_node = player.get_node_or_null("Polygon2D")
+		if mask_node:
+			if player.has_meta("mask_texture_backup"):
+				mask_node.texture = player.get_meta("mask_texture_backup")
+				player.remove_meta("mask_texture_backup")
+			mask_node.self_modulate = Color(1, 1, 1, 1)
+			if player.has_meta("mask_z_index_backup"):
+				mask_node.z_index = player.get_meta("mask_z_index_backup")
+				player.remove_meta("mask_z_index_backup")
+			if player.has_meta("mask_z_relative_backup"):
+				mask_node.z_as_relative = player.get_meta("mask_z_relative_backup")
+				player.remove_meta("mask_z_relative_backup")
+			
+		var full_body = player.get_node_or_null("%FullBody")
+		if full_body and player.has_meta("fb_z_relative_backup"):
+			full_body.z_as_relative = player.get_meta("fb_z_relative_backup")
+			player.remove_meta("fb_z_relative_backup")
+			
 		player = null
 		
 
@@ -330,6 +370,27 @@ func remove_player() -> void:
 			player.clear_movement_history()
 		player.set_process(true)
 		player.set_process_input(true)
+		
+		var mask_node = player.get_node_or_null("Mask")
+		if not mask_node:
+			mask_node = player.get_node_or_null("Polygon2D")
+		if mask_node:
+			if player.has_meta("mask_texture_backup"):
+				mask_node.texture = player.get_meta("mask_texture_backup")
+				player.remove_meta("mask_texture_backup")
+			mask_node.self_modulate = Color(1, 1, 1, 1)
+			if player.has_meta("mask_z_index_backup"):
+				mask_node.z_index = player.get_meta("mask_z_index_backup")
+				player.remove_meta("mask_z_index_backup")
+			if player.has_meta("mask_z_relative_backup"):
+				mask_node.z_as_relative = player.get_meta("mask_z_relative_backup")
+				player.remove_meta("mask_z_relative_backup")
+			
+		var full_body = player.get_node_or_null("%FullBody")
+		if full_body and player.has_meta("fb_z_relative_backup"):
+			full_body.z_as_relative = player.get_meta("fb_z_relative_backup")
+			player.remove_meta("fb_z_relative_backup")
+			
 		player = null
 	disembark_passenger()
 	GameManager.appear_followers()

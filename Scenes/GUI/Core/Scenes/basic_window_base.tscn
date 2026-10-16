@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://dwxocn8tyrhan"]
+
+[ext_resource type="Script" uid="uid://cjmmhbp1b5312" path="res://addons/StyleboxFancy/StyleBorder.gd" id="1_bf7k5"]
+[ext_resource type="Script" uid="uid://bkl6g25jwb47h" path="res://addons/StyleboxFancy/StyleBoxFancy.gd" id="2_w5jyw"]
+[ext_resource type="Script" uid="uid://b2e2j3bhqdbes" path="res://addons/StyleboxFancy/StyleTexture.gd" id="3_xcb3d"]
+[ext_resource type="Texture2D" uid="uid://mc2nh6em6ogh" path="res://Scenes/GUI/Core/Assets/scanline.png" id="4_w5jyw"]
+
+[sub_resource type="Resource" id="Resource_yf5fn"]
+script = ExtResource("1_bf7k5")
+color = Color(0, 0, 0, 1)
+anti_aliasing = false
+width_left = 1
+width_top = 1
+width_right = 1
+width_bottom = 1
+metadata/_custom_type_script = "uid://cjmmhbp1b5312"
+
+[sub_resource type="Gradient" id="Gradient_xc5wp"]
+offsets = PackedFloat32Array(0, 0.5704961, 1)
+colors = PackedColorArray(0.28191885, 0.28191927, 0.281919, 1, 0.9823883, 0.9823883, 0.9823883, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d0u6y"]
+gradient = SubResource("Gradient_xc5wp")
+
+[sub_resource type="Resource" id="Resource_57qmd"]
+script = ExtResource("1_bf7k5")
+texture = SubResource("GradientTexture1D_d0u6y")
+texture_mode = 1
+texture_reverse = true
+anti_aliasing = false
+width_left = 8
+width_top = 8
+width_right = 8
+width_bottom = 8
+metadata/_custom_type_script = "uid://cjmmhbp1b5312"
+
+[sub_resource type="Resource" id="Resource_3gngh"]
+script = ExtResource("3_xcb3d")
+texture = ExtResource("4_w5jyw")
+stretch_mode = 1
+repeat = 2
+metadata/_custom_type_script = "uid://b2e2j3bhqdbes"
+
+[sub_resource type="Gradient" id="Gradient_a6py1"]
+offsets = PackedFloat32Array(0, 0.43472585, 1)
+colors = PackedColorArray(0.023529412, 0.023529412, 0.7490196, 0.98039216, 0.32941177, 0.5019608, 0.9764706, 0.7058824, 0.4392157, 0.6156863, 0.99607843, 0.7058824)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wgxnn"]
+gradient = SubResource("Gradient_a6py1")
+fill_from = Vector2(0.48976108, 1)
+fill_to = Vector2(0.50341296, 0)
+
+[sub_resource type="Resource" id="Resource_5s0fj"]
+script = ExtResource("3_xcb3d")
+texture = SubResource("GradientTexture2D_wgxnn")
+modulate = Color(3.85046e-07, 0.2634731, 0.70644504, 1)
+metadata/_custom_type_script = "uid://b2e2j3bhqdbes"
+
+[sub_resource type="StyleBox" id="StyleBox_g4v7s"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("2_w5jyw")
+borders = Array[ExtResource("1_bf7k5")]([SubResource("Resource_yf5fn"), SubResource("Resource_57qmd"), SubResource("Resource_yf5fn")])
+textures = Array[ExtResource("3_xcb3d")]([SubResource("Resource_3gngh"), SubResource("Resource_5s0fj")])
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+metadata/_custom_type_script = "uid://bkl6g25jwb47h"
+
+[node name="BasicWindowBase" type="PanelContainer" unique_id=313222131]
+texture_filter = 2
+texture_repeat = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_g4v7s")

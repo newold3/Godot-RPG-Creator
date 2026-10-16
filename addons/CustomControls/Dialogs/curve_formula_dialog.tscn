@@ -1,0 +1,516 @@
+[gd_scene format=3 uid="uid://be7tk4p8d8tlw"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_xwruf"]
+[ext_resource type="Script" uid="uid://br567owt7pdp2" path="res://addons/CustomControls/Dialogs/curve_formula_dialog.gd" id="2_7b10u"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="3_jgjdh"]
+[ext_resource type="Script" uid="uid://d0kowhkcjb7kv" path="res://addons/CustomControls/custom_option_button.gd" id="4_2dv2r"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="4_d5frl"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="5_7b10u"]
+[ext_resource type="Texture2D" uid="uid://btjtps7r83y2t" path="res://addons/CustomControls/Images/buttons.png" id="5_whde1"]
+[ext_resource type="PackedScene" uid="uid://barmev3c3hfbu" path="res://addons/CustomControls/custom_text_edit.tscn" id="6_7b10u"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_go53x"]
+[ext_resource type="PackedScene" uid="uid://1uibymv4bb3j" path="res://addons/CustomControls/custom_line_edit.tscn" id="6_tpa2d"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="7_2dv2r"]
+[ext_resource type="Script" uid="uid://c35k8u26fj63s" path="res://addons/CustomControls/Dialogs/curve_preview.gd" id="8_whde1"]
+
+[sub_resource type="Gradient" id="Gradient_goivl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_68rx3"]
+gradient = SubResource("Gradient_goivl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8nkd"]
+atlas = ExtResource("5_whde1")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3sx32"]
+atlas = ExtResource("5_whde1")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqd2n"]
+atlas = ExtResource("5_whde1")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3b7f"]
+atlas = ExtResource("5_whde1")
+region = Rect2(96, 72, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4qx8"]
+atlas = ExtResource("5_whde1")
+region = Rect2(96, 96, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brw25"]
+texture = ExtResource("4_d5frl")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wobpg"]
+texture = ExtResource("5_7b10u")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62ti0"]
+texture = ExtResource("6_go53x")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dbcns"]
+texture = ExtResource("7_2dv2r")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="CurveFormulaDialog" type="Window" unique_id=377725629]
+oversampling_override = 1.0
+title = "Curve Formula"
+position = Vector2i(0, 36)
+size = Vector2i(900, 580)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_xwruf")
+script = ExtResource("2_7b10u")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1298697350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_68rx3")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1386298350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1091243191]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=168535511]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1700489413]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Presets:"
+
+[node name="Presets" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=966245143]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+text_overrun_behavior = 4
+script = ExtResource("4_2dv2r")
+
+[node name="RemovePresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=66805444]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Remove the user preset selected"
+mouse_default_cursor_shape = 2
+disabled = true
+texture_normal = SubResource("AtlasTexture_t8nkd")
+texture_hover = SubResource("AtlasTexture_3sx32")
+texture_disabled = SubResource("AtlasTexture_gqd2n")
+metadata/last_tooltip = "Use a user preset to create the curve
+(presets are Curve resources)"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=389077275]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=23946902]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Save Preset:"
+
+[node name="UserPresetName" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=2096568530 instance=ExtResource("6_tpa2d")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Preset"
+max_length = 16
+
+[node name="SavePresetButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer4" unique_id=1620518659]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "Saves the current formula as a user preset"
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("AtlasTexture_x3b7f")
+texture_hover = SubResource("AtlasTexture_s4qx8")
+metadata/last_tooltip = "Saves the current curve as a user preset"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=102212753]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=295391439]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=631371629]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Formula:"
+
+[node name="HBoxContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1978504677]
+layout_mode = 2
+alignment = 1
+
+[node name="B1" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=225668214 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]POW[/title]
+Calculates the base raised to the power of an exponent [pow(base, exp)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "POW"
+
+[node name="B2" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1082039957 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]SQRT[/title]
+Calculates the square root of a value [sqrt(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "SQRT"
+
+[node name="B6" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1372957145 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]LOG[/title]
+Calculates the natural logarithm of a value [log(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "LOG"
+
+[node name="B7" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1981067761 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]EXP[/title]
+Calculates Euler's number \"e\" raised to the power of \"x\" [exp(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "EXP"
+
+[node name="B3" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=701980095 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]SIN[/title]
+Calculates the sine of an angle in radians [sin(angle)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "SIN"
+
+[node name="B4" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1964779186 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]COS[/title]
+Calculates the cosine of an angle in radians [cos(angle)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "COS"
+
+[node name="B5" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1269315734 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]TAN[/title]
+Calculates the tangent of an angle in radians [tan(angle)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "TAN"
+
+[node name="B8" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1591436117 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]ABS[/title]
+Returns the absolute (positive) value of a number [abs(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "ABS"
+
+[node name="B9" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=21023101 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]FLOOR[/title]
+Rounds a number down to the nearest integer [floor(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "FLOOR"
+
+[node name="B10" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=72037132 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]CEIL[/title]
+Rounds a number up to the nearest integer [ceil(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "CEIL"
+
+[node name="B11" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=276245279 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]ROUND[/title]
+Rounds a number to the nearest integer [round(x)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "ROUND"
+
+[node name="B12" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1146549431 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]CLAMP[/title]
+Restricts a value within a specified minimum and maximum range [clamp(value, min, max)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "CLAMP"
+
+[node name="B13" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=896829346 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]LERP[/title]
+Linearly interpolates between two values based on a weight from 0.0 to 1.0 [lerp(from, to, weight)]."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "LERP"
+
+[node name="B14" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1630353874 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]LEVEL[/title]
+Inserts the current level variable [level] for the calculation step."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "LEVEL"
+
+[node name="B15" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1111043471 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]MAX LEVEL[/title]
+Inserts the maximum level variable [max_level] defined for the curve."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "MAX LEVEL"
+
+[node name="B16" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=34841786 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]MIN VALUE[/title]
+Inserts the minimum value variable [min_val] allowed in the curve progression."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "MIN VALUE"
+
+[node name="B17" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=458015049 instance=ExtResource("3_jgjdh")]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "[title]MAX VALUE[/title]
+Inserts the maximum value variable [max_val] allowed in the curve progression."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "MAX VALUE"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=365017230]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" unique_id=739798142]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer" unique_id=53537479]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Formula" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer4" unique_id=1206729051 instance=ExtResource("6_7b10u")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+editable = true
+wrap_mode = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2" unique_id=1016763399]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="HelpLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer2" unique_id=1499659782]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Available Symbols and Variables:
+---------------------------------
+• level (or i)      		: Current processed level (from 0 to max_level)
+• max_level (or n)  		: Maximum available level (total_elements - 1)
+• min_val          			: Minimum elevation value (e.g., 1)
+• max_val         		 	: Maximum elevation value (e.g., 25000)
+
+Available Mathematical Functions:
+---------------------------------
+• pow(base, exp)   		: Power (e.g., pow(level, 2))
+• sqrt(x)         		: Square root
+• log(x)           		: Natural logarithm
+• exp(x)           		: Exponential e^x
+• sin(x), cos(x)   		: Trigonometric functions
+• abs(x)          		: Absolute value
+• clamp(x, min, max)	: Restricts x to the range between min and max
+• lerp(a, b, t)    		: Linear interpolation between a and b using t (0 to 1)"
+mouse_filter = 1
+mouse_default_cursor_shape = 16
+text = "❔Help"
+horizontal_alignment = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer2" unique_id=875511039]
+custom_minimum_size = Vector2(260, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_g4v7s")
+
+[node name="CurvePreview" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer2/PanelContainer" unique_id=1741021682]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+script = ExtResource("8_whde1")
+
+[node name="InvalidData" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer2/PanelContainer/CurvePreview" unique_id=1346329098]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -11.5
+offset_right = 66.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9882353, 0.07058824, 0.19607843, 1)
+text = "INVALID DATA"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1902491721]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1010601385]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1263642595 instance=ExtResource("3_jgjdh")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1719174724 instance=ExtResource("3_jgjdh")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "Cancel"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer2/Presets" to="." method="_on_presets_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/RemovePresetButton" to="." method="_on_remove_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer4/SavePresetButton" to="." method="_on_save_preset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B1" to="." method="_on_symbol_button_pressed" binds= ["pow"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B2" to="." method="_on_symbol_button_pressed" binds= ["sqrt"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B6" to="." method="_on_symbol_button_pressed" binds= ["log"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B7" to="." method="_on_symbol_button_pressed" binds= ["exp"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B3" to="." method="_on_symbol_button_pressed" binds= ["sin"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B4" to="." method="_on_symbol_button_pressed" binds= ["cos"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B5" to="." method="_on_symbol_button_pressed" binds= ["tan"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B8" to="." method="_on_symbol_button_pressed" binds= ["abs"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B9" to="." method="_on_symbol_button_pressed" binds= ["floor"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B10" to="." method="_on_symbol_button_pressed" binds= ["ceil"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B11" to="." method="_on_symbol_button_pressed" binds= ["round"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B12" to="." method="_on_symbol_button_pressed" binds= ["clamp"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B13" to="." method="_on_symbol_button_pressed" binds= ["lerp"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B14" to="." method="_on_symbol_button_pressed" binds= ["level"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B15" to="." method="_on_symbol_button_pressed" binds= ["max level"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B16" to="." method="_on_symbol_button_pressed" binds= ["min value"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer/B17" to="." method="_on_symbol_button_pressed" binds= ["max value"]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

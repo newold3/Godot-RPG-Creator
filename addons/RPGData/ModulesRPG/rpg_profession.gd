@@ -62,6 +62,9 @@ func get_class():
 ## Additional notes about the Profession.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -136,6 +139,7 @@ func clone(value: bool = true) -> RPGProfession:
 	new_profession.icon = icon.clone(value)
 	for i in new_profession.levels.size():
 		new_profession.levels[i] = new_profession.levels[i].clone(value)
+	new_profession.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_profession
 

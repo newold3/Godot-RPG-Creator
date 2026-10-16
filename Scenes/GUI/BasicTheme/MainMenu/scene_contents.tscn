@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/scene_contents.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/MainMenu/left_buttons.tscn" id="2_buttons"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/MainMenu/party_menu.tscn" id="3_party"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/MainMenu/bottom_panel.tscn" id="4_bottom"]
+
+[node name="MainMenuScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="MainMenuItems" parent="." instance=ExtResource("2_buttons")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 480)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 282.0
+offset_bottom = 504.0
+
+[node name="BottomMainMenu" parent="." instance=ExtResource("4_bottom")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 96)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 520.0
+offset_right = 282.0
+offset_bottom = 616.0
+
+[node name="PartyMenu" parent="." instance=ExtResource("3_party")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(820, 592)
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 300.0
+offset_top = 24.0
+offset_right = 1120.0
+offset_bottom = 616.0
+grow_horizontal = 1
+grow_vertical = 1

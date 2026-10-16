@@ -13,12 +13,21 @@ func get_class():
 ## Restricts its use to characters whose gender matches the specified gender (or 0 to allow any gender).
 @export var gender_restriction: int = 0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clear() -> void:
 	level_restriction = 0
 	class_restriction = 0
 	gender_restriction = 0
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clone(value: bool = true) -> RPGEquipRestrictions:
-	return duplicate(value)
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

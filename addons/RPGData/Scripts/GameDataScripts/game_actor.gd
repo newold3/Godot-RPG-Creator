@@ -31,6 +31,15 @@ extends GameBattler
 ## Actor’s current facing direction.
 @export var current_direction: LPCCharacter.DIRECTIONS = LPCCharacter.DIRECTIONS.DOWN
 
+## Traits added dynamically by event commands.
+@export var added_traits: Array[RPGTrait] = []
+
+## Filters for base actor traits removed dynamically by event commands.
+@export var removed_actor_traits: Array = []
+
+## Filters for current class traits removed dynamically by event commands.
+@export var removed_class_traits: Array = []
+
 var is_comparation_enabled: bool = false
 #endregion
 
@@ -82,10 +91,7 @@ func refresh_actor_data() -> void:
 		for i in range(old_size, db_params_size):
 			user_params[i] = RPGSYSTEM.database.types.user_parameters[i].default_value
 
-	trait_list.clear()
-	
-	for tr: RPGTrait in actor_data.traits:
-		trait_list.append(tr.clone(true))
+	recalculate_actor_traits()
 
 	current_states = current_states.filter(func(state): return state and not state.is_permanent())
 	
@@ -132,13 +138,9 @@ func _get_base_parameter(search_param: String) -> float:
 	return value
 
 
-## Internal: Implementation of extra traits from gear and class.
+## Internal: Implementation of extra traits from gear.
 func _get_extra_traits() -> Array:
 	var extra = []
-	var class_data = get_real_class()
-	
-	if class_data:
-		extra.append_array(class_data.traits)
 		
 	for gear in current_gear:
 		if gear:
@@ -154,36 +156,34 @@ func _get_extra_traits() -> Array:
 	return extra
 
 
-## Re-evaluates and applies all permanent states from gear and class.
+## Re-evaluates and applies all permanent states from gear and recalculated actor traits.
 func restore_permanent_states_after_battle() -> void:
 	var states_to_erase = current_states.filter(func(s: GameState): return s != null and s.is_permanent())
 	
 	for state in states_to_erase:
 		current_states.erase(state)
 	
-	var actor_data = get_real_actor()
-	var class_data = get_real_class()
-	
-	if actor_data:
-		for t in actor_data.traits:
-			if t.code == TraitCode.ADD_STATE: add_trait_state(t)
-			
-	if class_data:
-		for t in class_data.traits:
-			if t.code == TraitCode.ADD_STATE: add_trait_state(t)
+	for t in trait_list:
+		if t and t.code == TraitCode.ADD_STATE:
+			add_trait_state(t)
 			
 	for gear in current_gear:
 		if gear:
 			var real_data = gear.get_real_data()
 			if real_data:
 				for t in real_data.traits:
-					if t.code == TraitCode.ADD_STATE: add_trait_state(t)
+					if t and t.code == TraitCode.ADD_STATE:
+						add_trait_state(t)
 					
 	if current_set:
 		var real_data = current_set.get_real_data()
 		if real_data:
 			for t in real_data.traits:
-				if t.code == TraitCode.ADD_STATE: add_trait_state(t)
+				if t and t.code == TraitCode.ADD_STATE:
+					add_trait_state(t)
+	
+	if not is_dead() and params.hp <= 0:
+		params.hp = 1
 	
 	parameter_changed.emit()
 	emit_changed()
@@ -201,14 +201,16 @@ func _change_class(class_id: int, keep_level: bool = false, clear_traits: bool =
 		return
 	
 	if clear_traits:
-		trait_list.clear()
-		for tr: RPGTrait in actor_data.traits:
-			trait_list.append(tr.clone(true))
-			
-	var class_data: RPGClass = RPGSYSTEM.get_data("classes", class_id)
+		added_traits.clear()
+		removed_actor_traits.clear()
+		
+	# Changing class resets class-specific removed traits, as the new class brings its own fresh traits
+	removed_class_traits.clear()
+	current_class = class_id
+	recalculate_actor_traits()
 	
+	var class_data: RPGClass = RPGSYSTEM.get_data("classes", class_id)
 	if class_data:
-		current_class = class_id
 		
 		if not keep_level:
 			current_level = max(1, min(actor_data.initial_level, class_data.max_level))
@@ -298,6 +300,9 @@ func _set_equip(equipment_type_id: int, item_id: int, item_level: int) -> void:
 		else:
 			current_set = null
 	else:
+		if current_gear.size() <= equipment_type_id:
+			var equip_types_size = RPGSYSTEM.database.types.equipment_types.size() if RPGSYSTEM.database and RPGSYSTEM.database.types else 5
+			current_gear.resize(max(equipment_type_id + 1, equip_types_size))
 		if item_id != -1:
 			var is_weapon = equipment_type_id == 0
 			var new_equipment = _create_new_equipment(equipment_type_id, item_id, item_level, is_weapon)
@@ -316,7 +321,9 @@ func change_equipment(equipment_type_id: int, item_id: int, item_level: int, is_
 	
 	var is_weapon = equipment_type_id == 0
 	var database_key = "weapons" if is_weapon else "armors"
-	var game_state_items = GameManager.game_state.weapons if is_weapon else GameManager.game_state.armors
+	var game_state_items = null
+	if GameManager.game_state:
+		game_state_items = GameManager.game_state.weapons if is_weapon else GameManager.game_state.armors
 	var real_item = RPGSYSTEM.get_data(database_key, item_id)
 	
 	if item_id <= 0 or not real_item:
@@ -729,8 +736,11 @@ func is_skill_sealed(skill_id: int) -> bool:
 	return false
 
 
+## Reserved skill slot IDs for basic combat commands (1: Attack, 2: Guard, 3: Escape)
+const BASIC_SKILL_SLOTS: Array[int] = [1, 2, 3]
+
 ## Returns a dictionary of all available skills for this actor, indicating if they are sealed.
-func get_skills() -> Dictionary:
+func get_skills(include_basic_actions: bool = false) -> Dictionary:
 	var skill_traits = _get_trait_list()
 	var skill_add_traits = skill_traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_SKILL)
 	var current_skill_types = skill_traits.filter(func(t: RPGTrait): return t.code == TraitCode.ADD_SKILL_TYPE)
@@ -757,6 +767,10 @@ func get_skills() -> Dictionary:
 		var skill = get_real_skill(skill_id)
 		
 		if skill:
+			var slot_id = skill.id if skill.id > 0 else (RPGSYSTEM.uid_to_id("skills", skill._uniq_id) if RPGSYSTEM else -1)
+			if not include_basic_actions and (slot_id in BASIC_SKILL_SLOTS or skill_id in BASIC_SKILL_SLOTS):
+				continue
+				
 			if skill.skill_type == 0 or skill.skill_type in current_types_added:
 				var is_sealed = (
 					(skill.skill_type != 0 and skill.skill_type in current_types_sealed) or
@@ -874,6 +888,123 @@ func compare_stats_to(other_actor: GameActor) -> int:
 
 
 #region Utility
+## Recalculates the active traits list from actor database + current class database + added_traits - removed traits.
+func recalculate_actor_traits() -> void:
+	trait_list.clear()
+	
+	# 1. Base traits from Actor in DB (filtered by removed_actor_traits)
+	var actor_data: RPGActor = get_real_actor()
+	if actor_data:
+		for tr: RPGTrait in actor_data.traits:
+			if tr and not _is_in_filter_list(tr, removed_actor_traits):
+				trait_list.append(tr.clone(true))
+	
+	# 2. Dynamic extra traits added to actor (filtered by removed_actor_traits)
+	for tr: RPGTrait in added_traits:
+		if tr and not _is_in_filter_list(tr, removed_actor_traits):
+			trait_list.append(tr.clone(true))
+			
+	# 3. Base traits from current Class in DB (filtered by removed_class_traits)
+	var class_data: RPGClass = get_real_class()
+	if class_data:
+		for tr: RPGTrait in class_data.traits:
+			if tr and not _is_in_filter_list(tr, removed_class_traits):
+				trait_list.append(tr.clone(true))
+				
+	restore_permanent_states_after_battle()
+
+
+func _is_in_filter_list(tr: RPGTrait, filter_list: Array) -> bool:
+	for r in filter_list:
+		if r.get("code", -1) == tr.code and r.get("data_id", -1) == tr.data_id:
+			return true
+	return false
+
+
+## Adds a trait to the actor (unblocks from removed_actor_traits/removed_class_traits if present, or appends to added_traits).
+func add_trait(tr: RPGTrait) -> void:
+	if !tr: return
+	
+	var unblocked = false
+	for i in range(removed_actor_traits.size() - 1, -1, -1):
+		var r = removed_actor_traits[i]
+		if r.get("code", -1) == tr.code and r.get("data_id", -1) == tr.data_id:
+			removed_actor_traits.remove_at(i)
+			unblocked = true
+			
+	for i in range(removed_class_traits.size() - 1, -1, -1):
+		var r = removed_class_traits[i]
+		if r.get("code", -1) == tr.code and r.get("data_id", -1) == tr.data_id:
+			removed_class_traits.remove_at(i)
+			unblocked = true
+			
+	if not unblocked:
+		var already_exists = added_traits.any(func(t: RPGTrait): return t and t.code == tr.code and t.data_id == tr.data_id)
+		if not already_exists:
+			added_traits.append(tr.clone(true))
+			
+	recalculate_actor_traits()
+	restore_permanent_states_after_battle()
+	parameter_changed.emit()
+
+
+## Removes a trait from the actor or its class. Traits from gear cannot be removed via event command.
+func remove_trait(tr: RPGTrait) -> void:
+	if !tr: return
+	
+	# If in added_traits, remove it
+	for i in range(added_traits.size() - 1, -1, -1):
+		var a = added_traits[i]
+		if a and a.code == tr.code and a.data_id == tr.data_id:
+			added_traits.remove_at(i)
+			
+	# Check whether it originates from Actor or Class
+	var actor_data = get_real_actor()
+	var comes_from_actor = false
+	if actor_data:
+		comes_from_actor = actor_data.traits.any(func(t: RPGTrait): return t and t.code == tr.code and t.data_id == tr.data_id)
+		
+	var class_data = get_real_class()
+	var comes_from_class = false
+	if class_data:
+		comes_from_class = class_data.traits.any(func(t: RPGTrait): return t and t.code == tr.code and t.data_id == tr.data_id)
+		
+	if comes_from_actor and not _is_in_filter_list(tr, removed_actor_traits):
+		removed_actor_traits.append({"code": tr.code, "data_id": tr.data_id})
+		
+	if comes_from_class and not _is_in_filter_list(tr, removed_class_traits):
+		removed_class_traits.append({"code": tr.code, "data_id": tr.data_id})
+		
+	# Fallback: if not found in base DB actor or class, block at actor level
+	if not comes_from_actor and not comes_from_class and not _is_in_filter_list(tr, removed_actor_traits):
+		removed_actor_traits.append({"code": tr.code, "data_id": tr.data_id})
+		
+	recalculate_actor_traits()
+	restore_permanent_states_after_battle()
+
+	if not is_dead() and params.hp <= 0:
+		params.hp = 1
+		
+	parameter_changed.emit()
+
+
+## Creates a deep clone of the actor for simulation purposes.
+func clone() -> GameBattler:
+	var new_actor = super.clone() as GameActor
+	if new_actor:
+		new_actor.added_traits.clear()
+		for t in added_traits:
+			if t:
+				new_actor.added_traits.append(t.clone(true))
+		new_actor.removed_actor_traits = removed_actor_traits.duplicate(true)
+		new_actor.removed_class_traits = removed_class_traits.duplicate(true)
+		new_actor.trait_list.clear()
+		for t in trait_list:
+			if t:
+				new_actor.trait_list.append(t.clone(true))
+	return new_actor
+
+
 ## Returns the string representation of the object.
 func _to_string() -> String:
 	return "<GameActor name=%s id=%s>" % [current_name, id]

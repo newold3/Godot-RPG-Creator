@@ -39,6 +39,20 @@ func _ready() -> void:
 				queue_free()
 	)
 	preview_line_edit.text_changed.connect(_on_preview_text_changed)
+	
+	var parent := preview_label.get_parent()
+	var wrapper := Control.new()
+	wrapper.name = "PreviewWrapper"
+	wrapper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	wrapper.size_flags_vertical = preview_label.size_flags_vertical
+	wrapper.custom_minimum_size = Vector2(0, 100)
+	
+	var idx := preview_label.get_index()
+	parent.remove_child(preview_label)
+	wrapper.add_child(preview_label)
+	parent.add_child(wrapper)
+	parent.move_child(wrapper, idx)
+	
 	_on_preview_text_changed(tr("Preview Text"))
 	%CommandConrtainer.propagate_call("set_disabled", [true])
 	_setup_toolbar()
@@ -262,12 +276,11 @@ func _import_bitmap_font(fnt_path: String) -> void:
 			float(data.get("yoffset", 0)) - base + rect.size.y
 		)
 		
-		letter_instance.glyph_advance = float(
-			data.get("xadvance", rect.size.x)
-		)
+		letter_instance.glyph_advance = float(rect.size.x + 1)
 		
 		letter_instance.char_changed.connect(_on_letter_char_changed)
 		letter_instance.kerning_dialog_request.connect(_on_kerning_dialog_request)
+		letter_instance.click.connect(_on_letter_clicked)
 		
 		char_map[char_id] = letter_instance
 		
@@ -290,7 +303,7 @@ func _import_bitmap_font(fnt_path: String) -> void:
 	_update_auto_fill_button_state()
 	
 	if main_container.get_child_count() > 0:
-		main_container.get_child(0).select.call_deferred()
+		_on_letter_clicked.call_deferred(main_container.get_child(0), false, false)
 
 
 func _parse_bmfont_line(line: String) -> Dictionary:
@@ -360,6 +373,7 @@ func _on_selection_option_selected(index: int) -> void:
 				child.set_selected(false)
 				
 	selection_option.select(0)
+	_update_spinboxes_from_selection()
 
 
 func _on_align_x_changed(value: float) -> void:
@@ -490,6 +504,7 @@ func _process_image(path: String) -> void:
 			
 		letter_instance.char_changed.connect(_on_letter_char_changed)
 		letter_instance.kerning_dialog_request.connect(_on_kerning_dialog_request)
+		letter_instance.click.connect(_on_letter_clicked)
 		
 	var default_space: float = max(4.0, max_h * 0.35)
 	space_width_spinbox.set_value_no_signal(default_space)
@@ -501,7 +516,7 @@ func _process_image(path: String) -> void:
 	_update_auto_fill_button_state()
 	
 	if main_container.get_child_count() > 0:
-		main_container.get_child(0).select.call_deferred()
+		_on_letter_clicked.call_deferred(main_container.get_child(0), false, false)
 
 
 func _sort_spatially(a: Dictionary, b: Dictionary) -> bool:
@@ -537,8 +552,8 @@ func _on_letter_char_changed(index: int, char: String) -> void:
 	if next_index < main_container.get_child_count():
 		var next_letter = main_container.get_child(next_index)
 		
-		if next_letter.has_method("select"):
-			next_letter.select()
+		if next_letter.has_method("set_selected"):
+			_on_letter_clicked(next_letter, false, false)
 
 
 func _update_auto_fill_button_state() -> void:
@@ -555,6 +570,7 @@ func _update_auto_fill_button_state() -> void:
 
 func _on_preview_text_changed(new_text: String) -> void:
 	preview_label.text = new_text
+	_update_preview_scale()
 
 
 func _update_preview_font() -> void:
@@ -600,7 +616,7 @@ func _update_preview_font() -> void:
 		var offset_y = -rect.size.y + child.glyph_offset.y
 		font.set_glyph_offset(0, cache_v, char_id, Vector2(child.glyph_offset.x, offset_y))
 		
-		var advance_x: float = child.glyph_advance if child.glyph_advance > 0.0 else rect.size.x + 1.0
+		var advance_x: float = rect.size.x + 1.0
 		font.set_glyph_advance(0, cache_i, char_id, Vector2(advance_x, 0))
 		
 	if not has_space:
@@ -624,11 +640,37 @@ func _update_preview_font() -> void:
 	preview_label.texture_filter = Control.TEXTURE_FILTER_NEAREST
 	preview_label.add_theme_font_size_override("font_size", display_size)
 	preview_label.add_theme_font_override("font", current_preview_font)
+	preview_label.clip_text = false
 	
 	var force_update_text := preview_label.text
 	preview_label.text = ""
 	preview_label.text = force_update_text
+	
+	_update_preview_scale()
 
+
+func _update_preview_scale() -> void:
+	if not current_preview_font or preview_label.text.is_empty():
+		preview_label.scale = Vector2.ONE
+		return
+		
+	var display_size: int = custom_font_size if custom_font_size > 0 else 1
+	if display_size <= 1:
+		display_size = current_preview_font.fixed_size if current_preview_font.fixed_size > 0 else 48
+		
+	var text_size := current_preview_font.get_string_size(preview_label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, display_size)
+	var available_width = %CommandConrtainer.size.x - 24 # margin
+	
+	if text_size.x > available_width and available_width > 0:
+		var scale_factor = available_width / float(text_size.x)
+		preview_label.scale = Vector2(scale_factor, scale_factor)
+	else:
+		preview_label.scale = Vector2.ONE
+		
+	var wrapper := preview_label.get_parent()
+	if wrapper is Control and wrapper.name == "PreviewWrapper":
+		var scaled_height = text_size.y * preview_label.scale.y
+		wrapper.custom_minimum_size.y = max(100.0, scaled_height)
 
 func _on_kerning_dialog_request(character: String, letter_node: PanelContainer) -> void:
 	var path = "res://addons/BitmapFontCreator/kerning_dialog.tscn"
@@ -808,6 +850,39 @@ func _save_font_to_disk(fnt_path: String, img_path: String) -> void:
 		push_error("BitmapFontCreator: Failed to save font to " + fnt_path)
 
 
+func _on_letter_clicked(panel: PanelContainer, shift_pressed: bool, ctrl_pressed: bool) -> void:
+	if shift_pressed or ctrl_pressed:
+		panel.set_selected(not panel.is_selected)
+	else:
+		for child in main_container.get_children():
+			if child != panel:
+				if child.has_method("set_selected") and child.is_selected:
+					child.set_selected(false)
+		panel.set_selected(true)
+		
+	_update_spinboxes_from_selection()
+
+
+func _update_spinboxes_from_selection() -> void:
+	var selected_letters: Array = []
+	for child in main_container.get_children():
+		if child.get("is_selected"):
+			selected_letters.append(child)
+			
+	if selected_letters.size() == 0:
+		return
+		
+	var min_x = selected_letters[0].glyph_offset.x
+	var min_y = selected_letters[0].glyph_offset.y
+	
+	for i in range(1, selected_letters.size()):
+		min_x = min(min_x, selected_letters[i].glyph_offset.x)
+		min_y = min(min_y, selected_letters[i].glyph_offset.y)
+		
+	align_x_spinbox.set_value_no_signal(min_x)
+	align_y_spinbox.set_value_no_signal(min_y)
+
+
 func _on_visual_editor_button_pressed() -> void:
 	if current_base_texture == null:
 		return
@@ -824,6 +899,9 @@ func _on_visual_editor_button_pressed() -> void:
 			
 		if not node.kerning_dialog_request.is_connected(_on_kerning_dialog_request):
 			node.kerning_dialog_request.connect(_on_kerning_dialog_request)
+			
+		if not node.click.is_connected(_on_letter_clicked):
+			node.click.connect(_on_letter_clicked)
 	)
 	
 	editor_window.popup_centered(Vector2i(1000, 700))

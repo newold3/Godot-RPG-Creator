@@ -42,6 +42,7 @@ func _ready() -> void:
 	
 	GameManager.starting_menu = self
 	GameManager.current_save_slot = -1
+	GameManager.set_fx_busy(false)
 	
 	tree_exiting.connect(GameManager.set.bind("starting_menu", null))
 	
@@ -51,6 +52,10 @@ func _ready() -> void:
 	
 	set_game_title()
 	set_buttons()
+	
+	if GameManager.current_game_options:
+		if not GameManager.current_game_options.changed.is_connected(set_buttons):
+			GameManager.current_game_options.changed.connect(set_buttons)
 	
 	paths = %Path2D.get_children()
 	paths.append_array(%Path2D2.get_children())
@@ -111,11 +116,16 @@ func set_game_title() -> void:
 
 func set_buttons() -> void:
 	var buttons = [credits_button, button_1, button_2, button_3, button_4]
-	var texts = ["Credits", "New Game", "Load Game", "Options", "Game End"]
+	var texts = ["Credits", "New Game", "Load Game", "Options", "Quit Game"]
 	for i in buttons.size():
-		buttons[i].button_name = RPGSYSTEM.database.terms.search_message(texts[i])
-		buttons[i].set_label_material(rich_gradient_shader.duplicate())
-		buttons[i].get_label_material().set_shader_parameter("size", buttons[i].size)
+		if not is_instance_valid(buttons[i]): continue
+		var btn_name = RPGSYSTEM.database.terms.search_message(texts[i]) if (RPGSYSTEM.database and RPGSYSTEM.database.terms) else ""
+		if btn_name.is_empty() or btn_name == texts[i]:
+			btn_name = tr(texts[i])
+		buttons[i].button_name = btn_name
+		if rich_gradient_shader:
+			buttons[i].set_label_material(rich_gradient_shader.duplicate())
+			buttons[i].get_label_material().set_shader_parameter("size", buttons[i].size)
 
 
 
@@ -244,12 +254,16 @@ func _update_button_selection() -> void:
 	var buttons = menu_buttons.get_children()
 	for button in buttons:
 		button.deselect(true)
-	if current_button_list == 0:
-		buttons[current_item].call_deferred("select")
-	else:
-		credits_button.call_deferred("select")
 	credits_button.deselect(true)
-	buttons[current_item].select()
+	if current_button_list == 0:
+		if current_item >= 0 and current_item < buttons.size():
+			buttons[current_item].select()
+			_config_hand_in_other_button()
+	else:
+		credits_button.select()
+		_config_hand_in_credit_button()
+	GameManager.force_hand_position_over_node(scene_manipulator)
+	GameManager.play_fx("cursor")
 
 
 func _set_button_selected(button: Control, new_item: int, new_list: int) -> void:
@@ -334,12 +348,16 @@ func _on_credits_button_begin_click() -> void:
 	sub_scene_opened = true
 	var scn = scene_credits.instantiate()
 	add_child(scn)
+	var on_done: Array[bool] = [false]
+	var safe_enable = func():
+		if on_done[0]: return
+		on_done[0] = true
+		_enable_scene()
+	scn.tree_exited.connect(safe_enable, CONNECT_ONE_SHOT)
 	if scn.has_signal("early_tree_exited"):
-		scn.early_tree_exited.connect(_enable_scene)
-	elif scn.has_signal("end"):
-		scn.end.connect(_enable_scene)
-	else:
-		scn.tree_exited.connect(_enable_scene)
+		scn.early_tree_exited.connect(safe_enable, CONNECT_ONE_SHOT)
+	if scn.has_signal("end"):
+		scn.end.connect(safe_enable, CONNECT_ONE_SHOT)
 
 
 func _on_button_1_click() -> void:
@@ -380,16 +398,21 @@ func _on_button_3_begin_click() -> void:
 	sub_scene_opened = true
 	var scn = options_scene.instantiate()
 	add_child(scn)
+	var on_done: Array[bool] = [false]
+	var safe_enable = func():
+		if on_done[0]: return
+		on_done[0] = true
+		_enable_scene()
+	scn.tree_exited.connect(safe_enable, CONNECT_ONE_SHOT)
 	if scn.has_signal("early_tree_exited"):
-		scn.early_tree_exited.connect(_enable_scene)
-	elif scn.has_signal("end"):
-		scn.end.connect(_enable_scene)
-	else:
-		scn.tree_exited.connect(_enable_scene)
+		scn.early_tree_exited.connect(safe_enable, CONNECT_ONE_SHOT)
+	if scn.has_signal("end"):
+		scn.end.connect(safe_enable, CONNECT_ONE_SHOT)
 
 
 func _enable_scene() -> void:
 	sub_scene_opened = false
+	set_buttons()
 	reset_busy()
 
 

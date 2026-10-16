@@ -53,6 +53,9 @@ func get_class():
 ## Additional notes about the class.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 ## ID of the class to upgrade to.
@@ -191,5 +194,6 @@ func clone(value: bool = true) -> RPGClass:
 
 	new_class.experience = experience.clone(value)
 	new_class.icon = icon.clone(value)
+	new_class.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_class

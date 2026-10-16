@@ -199,12 +199,6 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if GameInterpreter.is_busy(): return
-	
-	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
-		if is_dual_animation:
-			disable_dual_animation()
-		else:
-			enable_dual_animation("start_lift", "lift")
 
 
 
@@ -311,6 +305,25 @@ func _physics_process(delta: float):
 				
 	if movement_current_mode == MOVEMENTMODE.EVENT and GameManager.current_map:
 		GameManager.current_map.moving_event = false
+	
+	if is_moving:
+		var node = get_node_or_null("Mask")
+		
+		if node and "texture" in node:
+			var tile = get_current_tile()
+			var seed1 = abs(int(tile.x * 73856) ^ int(tile.y * 19349))
+			
+			if node.texture is AtlasTexture:
+				var w: int = node.texture.region.size.x
+				var h: int = node.texture.region.size.y
+				var cols: int = max(1, int(node.texture.atlas.get_width() / w))
+				var rows: int = max(1, int(node.texture.atlas.get_height() / h))
+				var x = w * (seed1 % cols)
+				var y = h * ((seed1 / cols) % rows)
+				node.texture.region = Rect2(x, y, w, h)
+			if "texture_offset" in node:
+				var seed2 = abs(int(tile.x * 12345) ^ int(tile.y * 67890))
+				node.texture_offset.x = seed2 % max(1, int(node.texture.atlas.get_width()))
 
 
 

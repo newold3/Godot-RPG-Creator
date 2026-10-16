@@ -50,6 +50,14 @@ var _last_player_head_pos: Vector2 = Vector2.ZERO
 
 var is_fading_transition: bool = false
 
+signal arrived_at_destination
+var is_walking_to_drop: bool = false
+var drop_target_pos: Vector2 = Vector2.ZERO
+var custom_drop_speed: float = 120.0
+
+signal joined_queue
+var is_joining_queue: bool = false
+
 var is_custom_follower: bool = false
 var custom_character_type: int = 0
 var custom_character_path: String = ""
@@ -98,7 +106,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_custom_follower and custom_character_type == 2 and instanced_scene and instanced_scene.has_method("process_event_state"):
 		var state = {
-			"is_moving": current_animation == "walk" and is_sync_active,
+			"is_moving": current_animation == "walk" and (is_sync_active or is_walking_to_drop or is_joining_queue),
 			"direction": current_direction,
 			"delta": delta
 		}
@@ -109,6 +117,14 @@ func _process(delta: float) -> void:
 	
 	if GameManager.current_player and GameManager.current_player.is_on_vehicle:
 		modulate.a -= (5 + follower_id) * delta
+
+	if is_walking_to_drop:
+		_process_walk_to_drop(delta)
+		return
+
+	if is_joining_queue:
+		_process_joining_queue(delta)
+		return
 		
 	if not is_sync_active:
 		current_animation = "idle"
@@ -175,7 +191,10 @@ func _process(delta: float) -> void:
 		var snapshot = GameManager.current_player.get_history_step(my_step_offset)
 		
 		if not snapshot.is_empty():
-			_last_valid_snapshot = snapshot
+			if snapshot != _last_valid_snapshot:
+				_last_valid_snapshot = snapshot
+				
+				
 			if snapshot.get("event") == "start_jump":
 				var launch_pad = snapshot.get("jump_start_pos", global_position)
 				var orig = snapshot.get("followers_position")[follower_id]
@@ -255,6 +274,113 @@ func _approach_launch_pad(target_pos: Vector2, delta: float) -> void:
 
 
 
+## Orders the follower to leave the follow queue and walk directly to a target coordinate.
+func walk_to_point(target_pos: Vector2, walk_speed: float = 120.0) -> void:
+	is_sync_active = false
+	drop_target_pos = target_pos
+	custom_drop_speed = walk_speed
+	
+	if global_position.distance_to(target_pos) < 3.0:
+		global_position = target_pos
+		is_walking_to_drop = false
+		current_animation = "idle"
+		run_animation()
+		arrived_at_destination.emit()
+		return
+		
+	is_walking_to_drop = true
+	current_animation = "walk"
+	run_animation()
+
+
+
+## Updates movement and animation frame while walking autonomously to drop destination.
+func _process_walk_to_drop(delta: float) -> void:
+	var dir_vec = drop_target_pos - global_position
+	var dist_step = custom_drop_speed * delta
+	
+	if dir_vec.length() <= dist_step or dir_vec.length() < 3.0:
+		global_position = drop_target_pos
+		is_walking_to_drop = false
+		current_animation = "idle"
+		run_animation()
+		arrived_at_destination.emit()
+	else:
+		global_position += dir_vec.normalized() * dist_step
+		current_animation = "walk"
+		if abs(dir_vec.x) > abs(dir_vec.y):
+			current_direction = CharacterBase.DIRECTIONS.RIGHT if dir_vec.x > 0 else CharacterBase.DIRECTIONS.LEFT
+		else:
+			current_direction = CharacterBase.DIRECTIONS.DOWN if dir_vec.y > 0 else CharacterBase.DIRECTIONS.UP
+		_process_next_frame(delta)
+
+
+## Starts the autonomous catch-up movement towards the follower queue position.
+func start_joining_queue(initial_pos: Vector2, initial_dir: int = -1, walk_speed: float = 145.0) -> void:
+	global_position = initial_pos
+	if initial_dir != -1:
+		current_direction = initial_dir
+	custom_drop_speed = walk_speed
+	is_sync_active = false
+	is_walking_to_drop = false
+	is_joining_queue = true
+	visible = true
+	modulate.a = 1.0
+	current_animation = "walk"
+	run_animation()
+
+
+## Returns the ideal world position for this follower in the party line.
+func get_target_queue_position() -> Vector2:
+	if not GameManager.current_player:
+		return global_position
+		
+	var map_tile_size = GameManager.get_map_tile_size().x if GameManager.current_map else 64.0
+	var dist_per_follower = float(map_tile_size)
+	var total_needed_dist = follower_id * dist_per_follower
+	var dynamic_spacing_steps = _get_index_at_distance(total_needed_dist)
+	var snapshot = GameManager.current_player.get_history_step(dynamic_spacing_steps)
+	
+	if not snapshot.is_empty() and snapshot.has("pos"):
+		return snapshot.pos
+	elif target_node and is_instance_valid(target_node):
+		return target_node.global_position
+	else:
+		return GameManager.current_player.global_position
+
+
+## Moves the follower dynamically towards the tail of the train until it catches up.
+func _process_joining_queue(delta: float) -> void:
+	var target_pos = get_target_queue_position()
+	var to_target = target_pos - global_position
+	var dist = to_target.length()
+	
+	var move_speed = custom_drop_speed
+	if GameManager.current_player:
+		var p_speed = GameManager.current_player.get("movement_speed")
+		if p_speed:
+			move_speed = max(move_speed, float(p_speed) * 1.45)
+			
+	var step = move_speed * delta
+	
+	if dist <= step or dist < 4.0 or dist > 800.0:
+		global_position = target_pos
+		is_joining_queue = false
+		is_sync_active = true
+		current_animation = "idle"
+		run_animation()
+		joined_queue.emit()
+	else:
+		global_position += to_target.normalized() * step
+		current_animation = "walk"
+		if abs(to_target.x) > abs(to_target.y):
+			current_direction = CharacterBase.DIRECTIONS.RIGHT if to_target.x > 0 else CharacterBase.DIRECTIONS.LEFT
+		else:
+			current_direction = CharacterBase.DIRECTIONS.DOWN if to_target.y > 0 else CharacterBase.DIRECTIONS.UP
+		_process_next_frame(delta)
+
+
+
 ## Executes a local jump animation imitating the leader's recorded jump
 func _trigger_local_jump(snap: Dictionary) -> void:
 	if is_jumping_locally: return
@@ -319,7 +445,7 @@ func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 		_idle_timer = walk_persist_time
 		current_animation = "walk"
 		
-		if snap.get("is_dual", false):
+		if is_custom_follower or snap.get("is_dual", false):
 			current_frame = snap.get("frame", current_frame)
 			run_animation()
 		else:
@@ -331,14 +457,14 @@ func _process_follower_logic(snap: Dictionary, delta: float) -> void:
 		if _idle_timer <= 0.0:
 			current_animation = "idle"
 			
-			if snap.get("is_dual", false):
+			if is_custom_follower or snap.get("is_dual", false):
 				current_frame = snap.get("frame", current_frame)
 				run_animation()
 			else:
 				_process_next_frame(delta)
 				
 		else:
-			if snap.get("is_dual", false):
+			if is_custom_follower or snap.get("is_dual", false):
 				current_frame = snap.get("frame", current_frame)
 				run_animation()
 			else:
@@ -380,6 +506,10 @@ func _apply_snapshot_transform(snap: Dictionary) -> void:
 
 ## Maps sprites rendering from the player's history directly
 func _apply_snapshot_visuals(snap: Dictionary) -> void:
+	if is_custom_follower:
+		run_animation()
+		return
+		
 	var rect = snap.region_rect
 	var flip = snap.flip_h
 	
@@ -397,6 +527,27 @@ func _apply_snapshot_visuals(snap: Dictionary) -> void:
 	if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
 		offhand_front.region_rect = rect
 		offhand_front.flip_h = flip
+		
+	var mask_node = get_node_or_null("Mask")
+	if not mask_node:
+		mask_node = get_node_or_null("Polygon2D")
+		
+	if mask_node and snap.has("mask_texture_path"):
+		var target_path = snap.mask_texture_path
+		var current_path = mask_node.texture.resource_path if mask_node.texture else ""
+		
+		if current_path != target_path:
+			if target_path == "":
+				mask_node.texture = null
+			else:
+				if ResourceLoader.exists(target_path):
+					mask_node.texture = load(target_path)
+					
+		if snap.has("mask_region") and snap.has("mask_offset"):
+			if "texture" in mask_node and mask_node.texture is AtlasTexture and snap.mask_region != Rect2():
+				mask_node.texture.region = snap.mask_region
+			if "texture_offset" in mask_node:
+				mask_node.texture_offset = snap.mask_offset
 #endregion
 
 
@@ -791,10 +942,14 @@ func setup_custom_graphics(char_type: int, char_path: String, region: Rect2 = Re
 		instanced_scene.queue_free()
 		instanced_scene = null
 		
+	var norm_path = char_path
+	if not norm_path.is_empty() and not norm_path.begins_with("res://") and not norm_path.begins_with("user://"):
+		norm_path = "res://" + norm_path
+
 	if char_type == 2: # Scene
 		body.visible = false
-		if ResourceLoader.exists(char_path):
-			var scn = load(char_path)
+		if ResourceLoader.exists(norm_path):
+			var scn = load(norm_path)
 			if scn:
 				instanced_scene = scn.instantiate()
 				add_child(instanced_scene)
@@ -802,28 +957,45 @@ func setup_custom_graphics(char_type: int, char_path: String, region: Rect2 = Re
 		body.visible = true
 		if char_type == 0: # LPC
 			var texture_path = ""
-			if char_path.ends_with(".tres"):
-				if ResourceLoader.exists(char_path):
-					var res = load(char_path)
-					if res and "scene_path" in res:
-						var scene_path: String = res.scene_path
+			if norm_path.ends_with(".tres"):
+				if ResourceLoader.exists(norm_path):
+					var res = load(norm_path)
+					if res and "scene_path" in res and not str(res.scene_path).is_empty():
+						var s_path: String = res.scene_path
+						if not s_path.begins_with("res://") and not s_path.begins_with("user://"):
+							s_path = "res://" + s_path
 						var regex = RegEx.new()
 						regex.compile("_event\\.tscn$")
-						var base_name = regex.sub(scene_path.get_file(), "", true)
-						texture_path = scene_path.get_base_dir() + "/" + base_name + "_character_minimalist.png"
+						var base_name = regex.sub(s_path.get_file(), "", true)
+						var cand = s_path.get_base_dir() + "/" + base_name + "_character_minimalist.png"
+						if ResourceLoader.exists(cand):
+							texture_path = cand
+					
+					if texture_path.is_empty():
+						var base_dir = norm_path.get_base_dir()
+						var file_name = norm_path.get_file().get_basename()
+						var clean_name = file_name.replace("_data", "").replace("_event", "")
+						for suffix in ["_character_minimalist.png", "_character.png", "_event.png", ".png"]:
+							var cand = base_dir + "/" + clean_name + suffix
+							if ResourceLoader.exists(cand):
+								texture_path = cand
+								break
 			else:
-				texture_path = char_path
+				texture_path = norm_path
 				
-			if not ResourceLoader.exists(texture_path) and ResourceLoader.exists(char_path) and char_path.ends_with(".png"):
-				texture_path = char_path
+			if not ResourceLoader.exists(texture_path):
+				if ResourceLoader.exists(norm_path) and norm_path.ends_with(".png"):
+					texture_path = norm_path
 				
 			if ResourceLoader.exists(texture_path):
 				body.texture = load(texture_path)
 				body.region_enabled = true
 				body.region_rect = Rect2(0, 192, 192, 192)
+				body.centered = true
+				body.offset = Vector2.ZERO
 		else: # Image
-			if ResourceLoader.exists(char_path):
-				var tex = load(char_path)
+			if ResourceLoader.exists(norm_path):
+				var tex = load(norm_path)
 				body.texture = tex
 				if region.has_area():
 					body.region_enabled = true

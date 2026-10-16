@@ -1,0 +1,242 @@
+[gd_scene format=3 uid="uid://bvbt01basewin"]
+
+[ext_resource type="Script" uid="uid://c70281lpw3v0q" path="res://Scenes/GUI/base_animatable_window.gd" id="1_anim"]
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="3_panel"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_scroll"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/CommonScenes/menu_title_container.tscn" id="5_title"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="6_font"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_dark.tres" id="7_dark_panel"]
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/CommonScenes/basic_back_button.gd" id="8_back_script"]
+
+[sub_resource type="Gradient" id="Gradient_bg"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.04, 0.08, 0.22, 0.95, 0.02, 0.05, 0.15, 0.9, 0.01, 0.02, 0.08, 0.95)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
+gradient = SubResource("Gradient_bg")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tooltip"]
+font = ExtResource("6_font")
+font_size = 20
+font_color = Color(1, 1, 1, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="BaseAnimatableWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 320)
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_anim")
+move_in_direction = 2
+move_in_trans_type = 5
+move_in_duration = 0.35
+move_out_direction = 3
+move_out_trans_type = 5
+move_out_duration = 0.25
+zoom_in_start = 1.1
+zoom_in_duration = 0.2
+zoom_out_end = 0.95
+auto_play_on_start = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="SceneMainContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BottomLayer" type="Control" parent="SceneMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="SceneMainContainer/BottomLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_bg")
+expand_mode = 1
+
+[node name="ParticleContainer" type="Control" parent="SceneMainContainer/BottomLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="SceneMainContainer/BottomLayer/ParticleContainer"]
+position = Vector2(576, 320)
+emitting = false
+
+[node name="BackgroundDecorationContainer" type="MarginContainer" parent="SceneMainContainer/BottomLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MainContainer" type="MarginContainer" parent="SceneMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 64
+
+[node name="TopFrame" type="Panel" parent="SceneMainContainer/MainContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_panel")
+
+[node name="ContentsContainer" type="MarginContainer" parent="SceneMainContainer/MainContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MainSceneContainer" type="ScrollContainer" parent="SceneMainContainer/MainContainer/ContentsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+script = ExtResource("4_scroll")
+
+[node name="Title" type="Control" parent="SceneMainContainer/MainContainer"]
+z_index = 5
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" instance=ExtResource("5_title")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -25.0
+offset_right = 160.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+title = "MENU"
+
+[node name="BackButton" type="Button" parent="SceneMainContainer"]
+unique_name_in_owner = true
+z_index = 50
+custom_minimum_size = Vector2(100, 42)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -62.0
+offset_right = -40.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_mode = 1
+mouse_default_cursor_shape = 2
+script = ExtResource("8_back_script")
+text = "Atrás"
+
+[node name="ToolTipLayers" type="Control" parent="SceneMainContainer"]
+z_index = 20
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_styles/normal = ExtResource("7_dark_panel")
+label_settings = SubResource("LabelSettings_tooltip")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomTooltipLabel" type="Label" parent="SceneMainContainer/ToolTipLayers"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -56.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = ExtResource("7_dark_panel")
+label_settings = SubResource("LabelSettings_tooltip")
+horizontal_alignment = 1
+vertical_alignment = 1

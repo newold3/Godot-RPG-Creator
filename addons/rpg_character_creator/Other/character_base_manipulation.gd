@@ -48,6 +48,24 @@ func pick_up_event(event_node: Node2D) -> void:
 	current_entity.carried_event = event_node
 	current_entity.carried_event.process_mode = Node.PROCESS_MODE_DISABLED
 	current_entity.carried_event.y_sort_enabled = false
+	
+	var mask_node = event_node.get_node_or_null("Mask")
+	if not mask_node:
+		mask_node = event_node.get_node_or_null("Polygon2D")
+	if mask_node:
+		if "texture" in mask_node and mask_node.texture:
+			event_node.set_meta("mask_texture_backup", mask_node.texture)
+			mask_node.texture = null
+		mask_node.self_modulate = Color(1, 1, 1, 0)
+		event_node.set_meta("mask_z_index_backup", mask_node.z_index)
+		event_node.set_meta("mask_z_relative_backup", mask_node.z_as_relative)
+		mask_node.z_index = -1
+		mask_node.z_as_relative = false
+		
+	var full_body = event_node.get_node_or_null("%FullBody")
+	if full_body:
+		event_node.set_meta("fb_z_relative_backup", full_body.z_as_relative)
+		full_body.z_as_relative = false
 
 	if current_entity.carried_event.has_meta("name_label"):
 		var label = current_entity.carried_event.get_meta("name_label")
@@ -401,6 +419,26 @@ func throw_event() -> void:
 			
 		if event_to_throw.has_meta("backup_data"):
 			event_to_throw.remove_meta("backup_data")
+			
+		var mask_node = event_to_throw.get_node_or_null("Mask")
+		if not mask_node:
+			mask_node = event_to_throw.get_node_or_null("Polygon2D")
+		if mask_node:
+			if event_to_throw.has_meta("mask_texture_backup"):
+				mask_node.texture = event_to_throw.get_meta("mask_texture_backup")
+				event_to_throw.remove_meta("mask_texture_backup")
+			mask_node.self_modulate = Color(1, 1, 1, 1)
+			if event_to_throw.has_meta("mask_z_index_backup"):
+				mask_node.z_index = event_to_throw.get_meta("mask_z_index_backup")
+				event_to_throw.remove_meta("mask_z_index_backup")
+			if event_to_throw.has_meta("mask_z_relative_backup"):
+				mask_node.z_as_relative = event_to_throw.get_meta("mask_z_relative_backup")
+				event_to_throw.remove_meta("mask_z_relative_backup")
+			
+		var full_body = event_to_throw.get_node_or_null("%FullBody")
+		if full_body and event_to_throw.has_meta("fb_z_relative_backup"):
+			full_body.z_as_relative = event_to_throw.get_meta("fb_z_relative_backup")
+			event_to_throw.remove_meta("fb_z_relative_backup")
 			
 		map.update_event_position_in_layout(event_to_throw)
 		

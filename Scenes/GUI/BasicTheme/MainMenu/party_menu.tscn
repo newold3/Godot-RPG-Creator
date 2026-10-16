@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/party_menu.gd" id="1_script"]
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="3_panel"]
+[ext_resource type="Script" uid="uid://cs6g8remlafby" path="res://addons/CustomControls/smooth_scroll_container.gd" id="4_scroll"]
+
+[node name="PartyMenu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+theme_override_styles/panel = ExtResource("3_panel")
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="MainContainer" type="ScrollContainer" parent="Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+script = ExtResource("4_scroll")
+
+[node name="HeroPanelContainer" type="VBoxContainer" parent="Margin/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 8

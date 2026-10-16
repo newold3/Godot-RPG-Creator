@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/basic_menu_button.gd" id="1_script"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_selection_rect.tres" id="2_cursor"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="3_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_btn"]
+font = ExtResource("3_font")
+font_size = 20
+font_color = Color(1, 1, 1, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 0.9)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(1, 1)
+
+[node name="BasicMenuButton" type="Control"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+script = ExtResource("1_script")
+
+[node name="CursorSelected" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_cursor")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="ButtonLabel" type="Label" parent="Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Command"
+label_settings = SubResource("LabelSettings_btn")
+vertical_alignment = 1

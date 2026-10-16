@@ -474,9 +474,9 @@ func _process(delta: float) -> void:
 
 func _on_node_type1_focus_entered(node: Node) -> void:
 	if !node.is_editable():
-		node.release_focus()
-		node.deselect()
-		node.set_process_internal(false)
+		node.release_focus.call_deferred()
+		node.deselect.call_deferred()
+		node.set_process_internal.call_deferred(false)
 	else:
 		node.set_process_internal(true)
 

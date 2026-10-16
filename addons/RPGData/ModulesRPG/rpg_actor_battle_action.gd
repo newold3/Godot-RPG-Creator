@@ -28,10 +28,14 @@ func get_class():
 ## ID of the skill.
 @export var skill_id: int = 1
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 ## Clones the battle action.
 ## @param value bool - Whether to perform a deep clone.
 ## @return RPGActorBattleAction - The cloned battle action.
 func clone(value: bool = true) -> RPGActorBattleAction:
 	var new_actor_battle_action = duplicate(value)
 	new_actor_battle_action.fx = new_actor_battle_action.fx.clone()
+	new_actor_battle_action.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	return new_actor_battle_action

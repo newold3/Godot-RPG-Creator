@@ -41,15 +41,34 @@ func get_texture() -> Texture:
 	var tex = null
 	if ResourceLoader.exists(path):
 		var t = ResourceLoader.load(path)
+		var base_tex: Texture = null
+		if t is Texture:
+			base_tex = t
+		elif t is PackedScene:
+			var ins = t.instantiate()
+			if ins is Sprite2D or ins is TextureRect:
+				base_tex = ins.texture
+			else:
+				var spr = ins.find_child("*", true, false)
+				if spr is Sprite2D or spr is TextureRect:
+					base_tex = spr.texture
+			ins.queue_free()
+			if not base_tex:
+				var preview_path = path.get_basename() + "_preview.png"
+				if ResourceLoader.exists(preview_path):
+					var p = ResourceLoader.load(preview_path)
+					if p is Texture:
+						base_tex = p
 		
-		if region:
-			if _cached_texture:
-				return _cached_texture
-			
-			tex = ImageTexture.create_from_image(t.get_image().get_region(region))
-			_cached_texture = tex
-		else:
-			tex = t
+		if base_tex:
+			if region.has_area():
+				if _cached_texture:
+					return _cached_texture
+				
+				tex = ImageTexture.create_from_image(base_tex.get_image().get_region(region))
+				_cached_texture = tex
+			else:
+				tex = base_tex
 	
 	return tex
 

@@ -1,0 +1,228 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scenes/GUI/BasicTheme/MainMenu/hero_panel.gd" id="1_script"]
+[ext_resource type="Theme" path="res://Scenes/GUI/BasicTheme/Resources/basic_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_selection_rect.tres" id="3_select"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_hp_fill.tres" id="4_hp_fill"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_mp_fill.tres" id="5_mp_fill"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_bar_bg.tres" id="6_bar_bg"]
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="7_font"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_base"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_face_frame"]
+bg_color = Color(0.04, 0.08, 0.18, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.3)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_name"]
+font = ExtResource("7_font")
+font_size = 20
+font_color = Color(1, 1, 1, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sub"]
+font = ExtResource("7_font")
+font_size = 16
+font_color = Color(0.9, 0.93, 1, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_class"]
+font = ExtResource("7_font")
+font_size = 18
+font_color = Color(0.95, 0.95, 1, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HeroPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 126)
+offset_right = 800.0
+offset_bottom = 126.0
+size_flags_horizontal = 3
+focus_mode = 2
+theme = ExtResource("2_theme")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_base")
+script = ExtResource("1_script")
+
+[node name="CursorNormal" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_select")
+
+[node name="CursorHover" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_select")
+
+[node name="CursorForceSelected" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_select")
+
+[node name="MainMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="MainMargin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="FaceFrame" type="PanelContainer" parent="MainMargin/HBox"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_face_frame")
+
+[node name="HeroFace" type="TextureRect" parent="MainMargin/HBox/FaceFrame"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(92, 92)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MiddleColumn" type="VBoxContainer" parent="MainMargin/HBox"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Name" type="Label" parent="MainMargin/HBox/MiddleColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Héroe"
+label_settings = SubResource("LabelSettings_name")
+
+[node name="LevelRow" type="HBoxContainer" parent="MainMargin/HBox/MiddleColumn"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="LevelLabel" type="Label" parent="MainMargin/HBox/MiddleColumn/LevelRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Lv"
+label_settings = SubResource("LabelSettings_sub")
+
+[node name="LevelAmountLabel" type="Label" parent="MainMargin/HBox/MiddleColumn/LevelRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10"
+label_settings = SubResource("LabelSettings_sub")
+
+[node name="StatsContainer" type="HBoxContainer" parent="MainMargin/HBox/MiddleColumn"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="RightColumn" type="VBoxContainer" parent="MainMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Class" type="Label" parent="MainMargin/HBox/RightColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Soldier"
+label_settings = SubResource("LabelSettings_class")
+
+[node name="HPContainer" type="Control" parent="MainMargin/HBox/RightColumn"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HPBar" type="ProgressBar" parent="MainMargin/HBox/RightColumn/HPContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = ExtResource("6_bar_bg")
+theme_override_styles/fill = ExtResource("4_hp_fill")
+value = 100.0
+show_percentage = false
+
+[node name="HPLabel" type="RichTextLabel" parent="MainMargin/HBox/RightColumn/HPContainer/HPBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_right = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = " [b]HP[/b] 1183 / 1183"
+
+[node name="MPContainer" type="Control" parent="MainMargin/HBox/RightColumn"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MPBar" type="ProgressBar" parent="MainMargin/HBox/RightColumn/MPContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = ExtResource("6_bar_bg")
+theme_override_styles/fill = ExtResource("5_mp_fill")
+value = 100.0
+show_percentage = false
+
+[node name="MPLabel" type="RichTextLabel" parent="MainMargin/HBox/RightColumn/MPContainer/MPBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_right = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = " [b]MP[/b]  115 / 115"
+
+[node name="PartyIndicator" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2

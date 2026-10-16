@@ -48,6 +48,8 @@ var rect_start_pos: Vector2
 var mouse_start_pos: Vector2
 var auto_crop_rects: Array[Rect2] = []
 var just_warped: bool = false
+var merge_close_rects: bool = true
+var epsilon_value: float = 2.0
 
 @onready var texture_preview: Control = %EditedTexture
 @onready var grid: Control = %Grid
@@ -62,14 +64,18 @@ signal region_changed(region: Rect2)
 
 ## Initializes the dialog and connects signals.
 func _ready():
-	close_requested.connect(queue_free)
+	close_requested.connect(_on_close_requested)
 	
 	grid.gui_input.connect(_on_grid_gui_input)
 	hscroll.value_changed.connect(_scroll_changed)
 	vscroll.value_changed.connect(_scroll_changed)
 	texture_preview.draw.connect(_on_texture_preview_draw)
 	grid.draw.connect(_on_grid_draw)
-	texture_preview.resized.connect(update_cursor)
+	texture_preview.resized.connect(
+		func():
+			force_change_draw_offset(Vector2.ZERO)
+			update_cursor()
+	)
 	updated.connect(
 		func():
 			update_cursor()
@@ -79,69 +85,78 @@ func _ready():
 	set_default_values()
 
 
+func _on_close_requested() -> void:
+	_save_config()
+	queue_free()
+
+
 ## Sets default values for the region editor based on the FileCache.
 func set_default_values() -> void:
-	var options = FileCache.options.get("region_dialog_options", {})
-	snap_mode = options.get("snap_mode", SnapMode.SNAP_GRID)
-	draw_zoom = options.get("draw_zoom", 1.0)
-	snap_offset = options.get("snap_offset", Vector2i.ZERO)
-	snap_separation = options.get("snap_separation", Vector2i.ZERO)
-	snap_step = options.get("snap_step", Vector2i(32, 32))
-	column_and_rows = options.get("column_and_rows", Vector2i.ONE)
-	var merge_close_rects = options.get("merge_close_rects", true)
-	var epsilon_val = options.get("epsilon_value", 2.0)
-	
 	if not FileCache.options.has("region_dialog_options"):
-		FileCache.options.region_dialog_options = {
-			"snap_mode": snap_mode,
-			"draw_zoom": draw_zoom,
-			"snap_offset": snap_offset,
-			"snap_separation": snap_separation,
-			"snap_step": snap_step,
-			"column_and_rows": column_and_rows,
-			"merge_close_rects": merge_close_rects,
-			"epsilon_value": epsilon_val,
-		}
+		FileCache.options.region_dialog_options = {}
+		
+	var opts: Dictionary = FileCache.options.region_dialog_options
 	
+	if opts.has("snap_mode"):
+		snap_mode = opts.snap_mode
+	if opts.has("draw_zoom"):
+		draw_zoom = opts.draw_zoom
+	if opts.has("snap_offset"):
+		snap_offset = opts.snap_offset
+	if opts.has("snap_separation"):
+		snap_separation = opts.snap_separation
+	if opts.has("snap_step"):
+		snap_step = opts.snap_step
+	if opts.has("column_and_rows"):
+		column_and_rows = opts.column_and_rows
+	if opts.has("window_size") and opts.window_size != Vector2i.ZERO:
+		size = opts.window_size
+		
 	backup_snap_options.snap_step = snap_step
 	backup_snap_options.snap_offset = snap_offset
 	backup_snap_options.snap_separation = snap_separation
 	
-	var current_mode_index = snap_mode
-	updated.emit()
+	merge_close_rects = opts.get("merge_close_rects", true)
+	epsilon_value = opts.get("epsilon_value", 2.0)
 	
 	busy = true
-	%Columns.value = column_and_rows.x
-	%Rows.value = column_and_rows.y
-	%OffsetX.value = snap_offset.x
-	%OffsetY.value = snap_offset.y
-	%StepX.value = snap_step.x
-	%StepY.value = snap_step.y
-	%SeparationX.value = snap_separation.x
-	%SeparationY.value = snap_separation.y
-	%AdjustmentMode.select(current_mode_index)
-	%MergeCloseCheckBox.button_pressed = merge_close_rects
-	%MergeCloseCheckBox.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
-	%EpsilonSpinBox.value = epsilon_val
-	%EpsilonLabel.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
-	%EpsilonSpinBox.visible = (snap_mode == SnapMode.SNAP_AUTO_CROP)
+	%Columns.set_value_no_signal(column_and_rows.x)
+	%Rows.set_value_no_signal(column_and_rows.y)
+	%OffsetX.set_value_no_signal(snap_offset.x)
+	%OffsetY.set_value_no_signal(snap_offset.y)
+	%StepX.set_value_no_signal(snap_step.x)
+	%StepY.set_value_no_signal(snap_step.y)
+	%SeparationX.set_value_no_signal(snap_separation.x)
+	%SeparationY.set_value_no_signal(snap_separation.y)
+	%AdjustmentMode.select(snap_mode)
+	if has_node("%MergeCloseCheckBox"):
+		%MergeCloseCheckBox.button_pressed = merge_close_rects
+	if has_node("%EpsilonSpinBox"):
+		%EpsilonSpinBox.set_value_no_signal(epsilon_value)
 	busy = false
 
-	%AdjustmentMode.item_selected.emit.call_deferred(current_mode_index)
+	_on_adjustment_mode_item_selected(snap_mode)
+	updated.emit()
 
 
 ## Saves the current configuration to FileCache before closing.
 func _save_config() -> void:
-	FileCache.options.region_dialog_options = {
-		"snap_mode": snap_mode,
-		"draw_zoom": draw_zoom,
-		"snap_offset": snap_offset,
-		"snap_separation": snap_separation,
-		"snap_step": snap_step,
-		"column_and_rows": column_and_rows,
-		"merge_close_rects": %MergeCloseCheckBox.button_pressed,
-		"epsilon_value": %EpsilonSpinBox.value,
-	}
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+		
+	FileCache.options.region_dialog_options["snap_mode"] = snap_mode
+	FileCache.options.region_dialog_options["draw_zoom"] = draw_zoom
+	FileCache.options.region_dialog_options["snap_offset"] = snap_offset
+	FileCache.options.region_dialog_options["snap_separation"] = snap_separation
+	FileCache.options.region_dialog_options["snap_step"] = snap_step
+	FileCache.options.region_dialog_options["column_and_rows"] = column_and_rows
+	if has_node("%MergeCloseCheckBox") and is_instance_valid(%MergeCloseCheckBox):
+		merge_close_rects = %MergeCloseCheckBox.button_pressed
+	FileCache.options.region_dialog_options["merge_close_rects"] = merge_close_rects
+	if has_node("%EpsilonSpinBox") and is_instance_valid(%EpsilonSpinBox):
+		epsilon_value = %EpsilonSpinBox.value
+	FileCache.options.region_dialog_options["epsilon_value"] = epsilon_value
+	FileCache.options.region_dialog_options["window_size"] = size
 
 
 #endregion
@@ -154,55 +169,36 @@ func edit(object: Object, region: Rect2):
 	edited_object = object
 	if region.has_area():
 		rect = region
-		var texture = _get_texture()
-		if texture and rect.has_area():
-			var texture_size = texture.get_size()
-			
-			var columns = texture_size.x / rect.size.x
-			var rows = texture_size.y / rect.size.y
-			
-			var is_divisible_x = abs(columns - round(columns)) < 0.001
-			var is_divisible_y = abs(rows - round(rows)) < 0.001
-			
-			if is_divisible_x and is_divisible_y and columns >= 1 and rows >= 1:
-				var int_columns = int(round(columns))
-				var int_rows = int(round(rows))
-				
-				# Update internal variables directly to ensure synchronization
-				column_and_rows = Vector2i(int_columns, int_rows)
-				snap_step = Vector2i(max(1, int(rect.size.x)), max(1, int(rect.size.y)))
-				snap_offset = Vector2i.ZERO
-				snap_separation = Vector2i.ZERO
-				
-				FileCache.options.region_dialog_options.column_and_rows = column_and_rows
-				FileCache.options.region_dialog_options.snap_step = snap_step
-				FileCache.options.region_dialog_options.snap_offset = snap_offset
-				FileCache.options.region_dialog_options.snap_separation = snap_separation
-				
-				%OffsetX.set_deferred("value", 0)
-				%OffsetY.set_deferred("value", 0)
-				%StepX.set_deferred("value", rect.size.x)
-				%StepY.set_deferred("value", rect.size.y)
-				%Columns.set_deferred("value", int_columns)
-				%Rows.set_deferred("value", int_rows)
-				
-				_on_adjustment_mode_item_selected(3)
-			else:
-				_on_adjustment_mode_item_selected(1)
-
-			if rect:
-				var region_center = rect.position + rect.size / 2
-				region_center.x = snappedi(region_center.x, snap_step.x)
-				region_center.y = snappedi(region_center.y, snap_step.y)
-				draw_ofs = region_center - texture_size / 2
-				
-				if is_instance_valid(self):
-					call_deferred("force_change_draw_offset", Vector2.ZERO)
-		else:
-			_on_adjustment_mode_item_selected(1)
+	else:
+		rect = Rect2()
 		
-	updated.emit()
-	center_and_fit_texture()
+	if rect.has_area():
+		snap_mode = SnapMode.SNAP_GRID
+		snap_step = Vector2i(max(1, int(rect.size.x)), max(1, int(rect.size.y)))
+		backup_snap_options.snap_step = snap_step
+		%AdjustmentMode.select(snap_mode)
+		_on_adjustment_mode_item_selected(snap_mode)
+		%StepX.set_value_no_signal(snap_step.x)
+		%StepY.set_value_no_signal(snap_step.y)
+		_adjust_columns_and_rows()
+		%Columns.set_value_no_signal(column_and_rows.x)
+		%Rows.set_value_no_signal(column_and_rows.y)
+		if not FileCache.options.has("region_dialog_options"):
+			FileCache.options.region_dialog_options = {}
+		FileCache.options.region_dialog_options.snap_mode = snap_mode
+		FileCache.options.region_dialog_options.snap_step = snap_step
+		FileCache.options.region_dialog_options.column_and_rows = column_and_rows
+	
+	if snap_mode == SnapMode.SNAP_AUTO_CROP:
+		_calculate_auto_crop_rects()
+	elif snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS and not rect.has_area():
+		_recalculate_step_from_grid()
+		
+	var has_saved_zoom = FileCache.options.has("region_dialog_options") and FileCache.options.region_dialog_options.has("draw_zoom")
+	if not has_saved_zoom:
+		center_and_fit_texture(true)
+	else:
+		auto_center_view()
 
 
 #endregion
@@ -684,7 +680,7 @@ func _calculate_auto_crop_rects() -> void:
 	bitmap.create_from_image_alpha(img)
 	
 	var rect_full = Rect2(0, 0, img.get_width(), img.get_height())
-	var epsilon = %EpsilonSpinBox.value if has_node("%EpsilonSpinBox") else 2.0
+	var epsilon = epsilon_value
 	var polygons = bitmap.opaque_to_polygons(rect_full, epsilon)
 	
 	for poly in polygons:
@@ -711,7 +707,7 @@ func _calculate_auto_crop_rects() -> void:
 			if not is_duplicate:
 				auto_crop_rects.append(r)
 
-	if %MergeCloseCheckBox.button_pressed:
+	if merge_close_rects:
 		# Merge close rectangles (islands of pixels within 5 pixels of each other) using an optimized O(N^2) pass
 		var temp_rects = auto_crop_rects.duplicate()
 		var final_rects: Array[Rect2] = []
@@ -791,36 +787,28 @@ func _on_adjustment_mode_item_selected(index: int) -> void:
 
 	snap_mode = SnapMode[SnapMode.keys()[index]]
 	
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
 	FileCache.options.region_dialog_options.snap_mode = snap_mode
-	var bak_step = FileCache.options.region_dialog_options.snap_step
-	var bak_offset = FileCache.options.region_dialog_options.snap_offset
-	var bak_separation = FileCache.options.region_dialog_options.snap_separation
+	
 	%Columns.suffix = " px"
 	%Rows.suffix = " px"
 	
+	busy = true
 	match snap_mode:
 		SnapMode.SNAP_NONE, SnapMode.SNAP_PIXEL, SnapMode.SNAP_AUTO_CROP:
 			%GridContainer.visible = false
-			%StepX.set_value_no_signal(1)
-			%StepY.set_value_no_signal(1)
-			%OffsetX.set_value_no_signal(0)
-			%OffsetY.set_value_no_signal(0)
-			%SeparationX.set_value_no_signal(0)
-			%SeparationY.set_value_no_signal(0)
 			
 		SnapMode.SNAP_GRID:
 			%GridContainer.visible = true
 			%StepContainer.visible = true
 			%ColumnAndRowContainer.visible = false
-			%StepX.value = FileCache.options.region_dialog_options.snap_step.x
-			%StepY.value = FileCache.options.region_dialog_options.snap_step.y
-			%OffsetX.value = snap_offset.x
-			%OffsetY.value = snap_offset.y
-			%SeparationX.value = FileCache.options.region_dialog_options.snap_separation.x
-			%SeparationY.value = FileCache.options.region_dialog_options.snap_separation.y
-			
-			%StepX.apply()
-			%StepY.apply()
+			%StepX.set_value_no_signal(snap_step.x)
+			%StepY.set_value_no_signal(snap_step.y)
+			%OffsetX.set_value_no_signal(snap_offset.x)
+			%OffsetY.set_value_no_signal(snap_offset.y)
+			%SeparationX.set_value_no_signal(snap_separation.x)
+			%SeparationY.set_value_no_signal(snap_separation.y)
 			
 		SnapMode.SNAP_COLUMNS_AND_ROWS:
 			%GridContainer.visible = true
@@ -829,30 +817,20 @@ func _on_adjustment_mode_item_selected(index: int) -> void:
 			%Columns.suffix = ""
 			%Rows.suffix = ""
 			
-			var c = FileCache.options.region_dialog_options.column_and_rows.x
-			var r = FileCache.options.region_dialog_options.column_and_rows.y
-			if c <= 0: c = 1
-			if r <= 0: r = 1
+			var c = max(1, column_and_rows.x)
+			var r = max(1, column_and_rows.y)
 			
 			%Columns.set_value_no_signal(c)
 			%Rows.set_value_no_signal(r)
 			%OffsetX.set_value_no_signal(snap_offset.x)
 			%OffsetY.set_value_no_signal(snap_offset.y)
-			%SeparationX.set_value_no_signal(0)
-			%SeparationY.set_value_no_signal(0)
-	
-			%Columns.apply()
-			%Rows.apply()
+			%SeparationX.set_value_no_signal(snap_separation.x)
+			%SeparationY.set_value_no_signal(snap_separation.y)
 			
 			_recalculate_step_from_grid()
+	busy = false
 	
 	grid.queue_redraw()
-	
-	if snap_mode != SnapMode.SNAP_COLUMNS_AND_ROWS:
-		FileCache.options.region_dialog_options.snap_step = bak_step
-		FileCache.options.region_dialog_options.snap_offset = bak_offset
-		FileCache.options.region_dialog_options.snap_separation = bak_separation
-
 	size.x = 0
 	
 	var is_auto_crop = (snap_mode == SnapMode.SNAP_AUTO_CROP)
@@ -867,12 +845,22 @@ func _on_adjustment_mode_item_selected(index: int) -> void:
 
 
 func _on_merge_close_check_box_toggled(button_pressed: bool) -> void:
+	merge_close_rects = button_pressed
+	if busy: return
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.merge_close_rects = button_pressed
 	if snap_mode == SnapMode.SNAP_AUTO_CROP:
 		_calculate_auto_crop_rects()
 		updated.emit()
 
 
 func _on_epsilon_spin_box_value_changed(value: float) -> void:
+	epsilon_value = value
+	if busy: return
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.epsilon_value = value
 	if snap_mode == SnapMode.SNAP_AUTO_CROP:
 		_calculate_auto_crop_rects()
 		updated.emit()
@@ -886,18 +874,26 @@ func _recalculate_step_from_grid() -> void:
 		
 	snap_step.x = max(1, int(texture.get_width() / column_and_rows.x))
 	snap_step.y = max(1, int(texture.get_height() / column_and_rows.y))
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
 	FileCache.options.region_dialog_options.snap_step = snap_step
 
 
 func _on_offset_x_value_changed(value: float) -> void:
-	snap_offset.x = value
-	FileCache.options.region_dialog_options.snap_offset.x = snap_offset.x
+	if busy: return
+	snap_offset.x = int(value)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_offset = snap_offset
 	updated.emit()
 
 
 func _on_offset_y_value_changed(value: float) -> void:
-	snap_offset.y = value
-	FileCache.options.region_dialog_options.snap_offset.y = snap_offset.y
+	if busy: return
+	snap_offset.y = int(value)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_offset = snap_offset
 	updated.emit()
 
 
@@ -914,32 +910,46 @@ func _adjust_columns_and_rows() -> void:
 	var rows = int((height + snap_separation.y) / (snap_step.y + snap_separation.y + 0.00000000000000001))
 	
 	column_and_rows = Vector2i(columns, rows)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
 	FileCache.options.region_dialog_options.column_and_rows = column_and_rows
 
 
 func _on_step_x_value_changed(value: float) -> void:
-	snap_step.x = value
-	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
+	if busy: return
+	snap_step.x = max(1, int(value))
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_step = snap_step
 	_adjust_columns_and_rows()
 	updated.emit()
 
 
 func _on_step_y_value_changed(value: float) -> void:
-	snap_step.y = value
-	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
+	if busy: return
+	snap_step.y = max(1, int(value))
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_step = snap_step
 	_adjust_columns_and_rows()
 	updated.emit()
 
 
 func _on_separation_x_value_changed(value: float) -> void:
-	snap_separation.x = value
-	FileCache.options.region_dialog_options.snap_separation.x = snap_separation.x
+	if busy: return
+	snap_separation.x = int(value)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_separation = snap_separation
 	updated.emit()
 
 
 func _on_separation_y_value_changed(value: float) -> void:
-	snap_separation.y = value
-	FileCache.options.region_dialog_options.snap_separation.y = snap_separation.y
+	if busy: return
+	snap_separation.y = int(value)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.snap_separation = snap_separation
 	updated.emit()
 
 
@@ -956,38 +966,28 @@ func _adjust_snap() -> void:
 	var snap_y = height / column_and_rows.y
 	
 	snap_separation = Vector2i(snap_x, snap_y)
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
 	FileCache.options.region_dialog_options.snap_separation = snap_separation
 
 
 func _on_columns_value_changed(value: float) -> void:
-	if value <= 0:
-		value = 1
-	column_and_rows.x = value
-	FileCache.options.region_dialog_options.column_and_rows.x = column_and_rows.x
-	
-	var texture = _get_texture()
-	if not texture:
-		return
-	
-	snap_step.x = max(1, int(texture.get_width() / value))
-	FileCache.options.region_dialog_options.snap_step.x = snap_step.x
-	
+	if busy: return
+	column_and_rows.x = max(1, int(value))
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.column_and_rows = column_and_rows
+	_recalculate_step_from_grid()
 	updated.emit()
 
 
 func _on_rows_value_changed(value: float) -> void:
-	if value <= 0:
-		value = 1
-	column_and_rows.y = value
-	FileCache.options.region_dialog_options.column_and_rows.y = column_and_rows.y
-	
-	var texture = _get_texture()
-	if not texture:
-		return
-	
-	snap_step.y = max(1, int(texture.get_height() / value))
-	FileCache.options.region_dialog_options.snap_step.y = snap_step.y
-	
+	if busy: return
+	column_and_rows.y = max(1, int(value))
+	if not FileCache.options.has("region_dialog_options"):
+		FileCache.options.region_dialog_options = {}
+	FileCache.options.region_dialog_options.column_and_rows = column_and_rows
+	_recalculate_step_from_grid()
 	updated.emit()
 
 
@@ -1035,30 +1035,56 @@ func _pos_to_cell(tex_pos: Vector2) -> Vector2i:
 	return Vector2i(cx, cy)
 
 
-## Calculates zoom and offset to fit the texture entirely centered within the preview canvas.
-func center_and_fit_texture() -> void:
+## Automatically pans the view:
+## If editing a defined rect, it centers the rect taking into account the zoom and window size.
+## If no rect is defined, it centers the entire texture while preserving the zoom.
+func auto_center_view() -> void:
 	var texture = _get_texture()
-	if not texture: return
-	var tex_size = texture.get_size()
+	if not texture:
+		return
 	var canvas_size = texture_preview.size
 	if canvas_size.x <= 0 or canvas_size.y <= 0:
-		# If canvas is not yet laid out, defer calculation
-		call_deferred("center_and_fit_texture")
+		call_deferred("auto_center_view")
+		return
+
+	var tex_size = texture.get_size()
+	if rect.has_area():
+		draw_ofs = (rect.position + rect.size / 2.0) - tex_size / 2.0
+	else:
+		draw_ofs = Vector2.ZERO
+
+	force_change_draw_offset(Vector2.ZERO)
+	update_cursor()
+	updated.emit()
+
+
+## Calculates zoom and offset to fit the texture entirely centered within the preview canvas.
+func center_and_fit_texture(force: bool = false) -> void:
+	var texture = _get_texture()
+	if not texture:
+		return
+	var canvas_size = texture_preview.size
+	if canvas_size.x <= 0 or canvas_size.y <= 0:
+		call_deferred("center_and_fit_texture", force)
+		return
+	
+	var has_saved_zoom = FileCache.options.has("region_dialog_options") and FileCache.options.region_dialog_options.has("draw_zoom")
+	if not force and has_saved_zoom:
+		auto_center_view()
 		return
 	
 	# Calculate optimal zoom to fit with some margin (e.g. 24 pixels margin)
 	var margin = 24.0
 	var available_w = max(10.0, canvas_size.x - margin * 2.0)
 	var available_h = max(10.0, canvas_size.y - margin * 2.0)
+	var tex_size = texture.get_size()
 	
 	var zoom_x = available_w / tex_size.x
 	var zoom_y = available_h / tex_size.y
 	var optimal_zoom = min(zoom_x, zoom_y)
 	
 	draw_zoom = clamp(optimal_zoom, 0.1, 10.0)
-	draw_ofs = Vector2.ZERO
-	
-	updated.emit()
+	auto_center_view()
 
 
 #endregion

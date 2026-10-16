@@ -1,0 +1,221 @@
+[gd_scene format=3 uid="uid://oo22fe0x10a5"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_t3dno"]
+[ext_resource type="Script" uid="uid://coitjbo0cjbkj" path="res://addons/CustomControls/Dialogs/three_control_points_dialog.gd" id="2_7oklm"]
+[ext_resource type="PackedScene" uid="uid://bnx7omk3joxly" path="res://addons/CustomControls/custom_button.tscn" id="4_olqh8"]
+[ext_resource type="Texture2D" uid="uid://xl88b63otgpi" path="res://addons/CustomControls/Images/button1_background.png" id="5_1gxkk"]
+[ext_resource type="Texture2D" uid="uid://dqnnp323vr1vo" path="res://addons/CustomControls/Images/button1_background_hover.png" id="6_36w4b"]
+[ext_resource type="Texture2D" uid="uid://beg6i1p118qd" path="res://addons/CustomControls/Images/button1_background_selected.png" id="7_i0x27"]
+[ext_resource type="Script" uid="uid://c35k8u26fj63s" path="res://addons/CustomControls/Dialogs/curve_preview.gd" id="8_7oklm"]
+[ext_resource type="Texture2D" uid="uid://bkfn4ru5noaaa" path="res://addons/CustomControls/Images/button1_background_disabled.png" id="8_to04l"]
+
+[sub_resource type="Gradient" id="Gradient_goivl"]
+colors = PackedColorArray(0.184314, 0.2, 0.207843, 1, 0.278431, 0.294118, 0.301961, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_68rx3"]
+gradient = SubResource("Gradient_goivl")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_brw25"]
+texture = ExtResource("5_1gxkk")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wobpg"]
+texture = ExtResource("7_i0x27")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62ti0"]
+texture = ExtResource("6_36w4b")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dbcns"]
+texture = ExtResource("8_to04l")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ThreeControlPointsDialog" type="Window" unique_id=377725629]
+oversampling_override = 1.0
+title = "Three Controls Curve Creator"
+position = Vector2i(0, 36)
+size = Vector2i(612, 183)
+wrap_controls = true
+transient = true
+exclusive = true
+unresizable = true
+theme = ExtResource("1_t3dno")
+script = ExtResource("2_7oklm")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1298697350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_68rx3")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1386298350]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1661121183]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=739798142]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1288583187]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1776736618]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "State"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=601372368]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Grow Factor"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1259585746]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=168535511]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1700489413]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Early Game:"
+
+[node name="EarlySlider" type="HSlider" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1604362293]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.05
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=882471709]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" unique_id=631371629]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mid Game:"
+
+[node name="MidSlider" type="HSlider" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4" unique_id=447330331]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.25
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1005483636]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5" unique_id=377406799]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "End Game:"
+
+[node name="EndSlider" type="HSlider" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5" unique_id=1167707470]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 0.6
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1902491721]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1010601385]
+layout_mode = 2
+
+[node name="OKButton" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1263642595 instance=ExtResource("4_olqh8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Ok[/title]
+Saves all changes and closes the windows."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "OK"
+
+[node name="CancelButton" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1719174724 instance=ExtResource("4_olqh8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "[title]Cancel[/title]
+Closes this window without saving any changes."
+theme_override_styles/normal = SubResource("StyleBoxTexture_brw25")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wobpg")
+theme_override_styles/hover = SubResource("StyleBoxTexture_62ti0")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dbcns")
+text = "Cancel"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=875511039]
+custom_minimum_size = Vector2(260, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_g4v7s")
+
+[node name="CurvePreview" type="Control" parent="MarginContainer/HBoxContainer/PanelContainer" unique_id=1741021682]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("8_7oklm")
+
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/EarlySlider" to="." method="_on_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer4/MidSlider" to="." method="_on_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer5/EndSlider" to="." method="_on_slider_value_changed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer3/CancelButton" to="." method="_on_cancel_button_pressed"]

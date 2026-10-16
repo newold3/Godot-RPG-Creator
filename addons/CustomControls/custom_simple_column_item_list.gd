@@ -1139,8 +1139,11 @@ func _on_itemlist_draw() -> void:
 		
 		if rect.position.y + rect.size.y + v_separation < size.y:
 			var last_id = node.item_count
+			var step_y = v_separation + rect.size.y
+			if step_y <= 0: step_y = 20 # Fallback step to prevent infinite loop
+			
 			while rect.position.y - rect.size.y - v_separation < size.y:
-				rect.position.y += v_separation + rect.size.y
+				rect.position.y += step_y
 				if last_id % 2 == 0:
 					node.draw_rect(rect, event_line_color)
 				else:
@@ -1151,6 +1154,9 @@ func _on_itemlist_draw() -> void:
 		var i = 1
 		rect.position = Vector2.ZERO
 		rect.size = Vector2(size.x, sy)
+		var step_y = v_separation + sy
+		if step_y <= 0: step_y = 20 # Fallback step to prevent infinite loop
+		
 		while rect.position.y < size.y + v_separation:
 			if i % 2 == 0:
 				node.draw_rect(rect, event_line_color)
@@ -1166,7 +1172,7 @@ func _on_itemlist_draw() -> void:
 					font_size,
 					Color("#96969668")
 				)
-			rect.position.y += v_separation + sy
+			rect.position.y += step_y
 			i += 1
 			
 	busy = false

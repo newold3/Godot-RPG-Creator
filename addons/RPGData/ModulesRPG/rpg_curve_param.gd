@@ -26,8 +26,13 @@ func get_class():
 ## Data points of the curve parameters.
 @export var data: PackedInt32Array = []
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 ## Clones the curve parameters.
 ## @param value bool - Whether to perform a deep clone.
 ## @return RPGCurveParams - The cloned curve parameters.
 func clone(value: bool = true) -> RPGCurveParams:
-	return duplicate(value)
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

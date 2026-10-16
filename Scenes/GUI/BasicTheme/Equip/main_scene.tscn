@@ -1,0 +1,118 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/base_window_for_scenes.tscn" id="1_3fq4p"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_yhcol"]
+[ext_resource type="PackedScene" path="res://Scenes/GUI/BasicTheme/Equip/equip_scene.tscn" id="3_fr7ih"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_pcybh"]
+[ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="5_1q44n"]
+[ext_resource type="Script" uid="uid://lf5jsy1h3ico" path="res://Scripts/ScriptsBase/stats_comparison.gd" id="6_7sd7a"]
+
+[sub_resource type="Resource" id="Resource_l6lfr"]
+script = ExtResource("6_7sd7a")
+metadata/_custom_type_script = "uid://lf5jsy1h3ico"
+
+[node name="MainEquipScene" unique_id=1019145880 instance=ExtResource("1_3fq4p")]
+theme = ExtResource("2_yhcol")
+save_preset = null
+apply_preset = null
+delete_preset = null
+scene_title = "Equipment"
+timer_to_emit_end_signal = 0.12
+move_in_direction = 3
+move_in_duration = 0.5
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.35
+zoom_out_enabled = false
+fade_out_enabled = false
+ready_to_process_delay = 0.18
+
+[node name="BottomLayer" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="0" unique_id=507352788]
+new_preset_name = null
+save_preset = null
+selected_preset = null
+apply_preset = null
+confirm_delete = null
+delete_preset = null
+
+[node name="Background" parent="SceneMainContainer/BottomLayer" index="1" unique_id=814727480]
+metadata/_edit_lock_ = true
+
+[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" index="2" unique_id=823818857]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" index="3" unique_id=433102845]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="MainSceneContainer" parent="SceneMainContainer/MainContainer/ContentsContainer" parent_id_path=PackedInt32Array(109990462) index="0" unique_id=2086978186]
+vertical_scroll_mode = 0
+
+[node name="EquipScene" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0" unique_id=664947676 instance=ExtResource("3_fr7ih")]
+layout_mode = 2
+menu_items_start_position = Vector2(420, 0)
+menu_items_end_position = Vector2(-48, 0)
+
+[node name="HelpLabel" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HelpTop" parent_id_path=PackedInt32Array(664947676, 571185067) index="0" unique_id=62440018]
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+
+[node name="ButtonsVerticalMenu" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainSelectHeroPanel" parent_id_path=PackedInt32Array(664947676, 1301235699) index="0" unique_id=489933934]
+z_index = 3
+
+[node name="ActorName" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/ActorPanel/MainActorPanel/ActorContainer/MainActorContainer" parent_id_path=PackedInt32Array(664947676, 1735410174) index="1"]
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5764706)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_pcybh")
+
+[node name="Stats" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer" parent_id_path=PackedInt32Array(664947676, 1634081193) index="0" unique_id=619794000]
+theme_override_constants/margin_bottom = -42
+
+[node name="StatsContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer/Stats/StatsContainer/MarginContainer/VBoxContainer/MarginContainer/BottomContainer" parent_id_path=PackedInt32Array(664947676, 125808626, 835639728) index="0" unique_id=1948749115]
+script = ExtResource("5_1q44n")
+comparison_module = SubResource("Resource_l6lfr")
+show_comparison = true
+use_abbreviations = false
+outline_sizes = Array[int]([2])
+outline_colors = Array[Color]([Color(0, 0, 0, 1)])
+outline_offsets = Array[Vector2i]([Vector2i(0, 0)])
+text_color = Color(1, 1, 1, 1)
+item_separator = 10
+title_separator = 6
+title_separator_style = null
+
+[node name="MenuItems" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu" parent_id_path=PackedInt32Array(664947676, 1878586789) index="0" unique_id=889513046]
+custom_minimum_size = Vector2(416, 400)
+clip_contents = true
+offset_bottom = 400.0
+
+[node name="TopContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems" index="2" unique_id=647517514]
+theme_override_constants/margin_left = 58
+theme_override_constants/margin_right = 62
+
+[node name="Contents" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems" index="3" unique_id=809069691]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_right = 53
+
+[node name="TopFrame" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="1" unique_id=637314501]
+z_index = 20
+
+[node name="Title" parent="SceneMainContainer/MainContainer" parent_id_path=PackedInt32Array(1863900863) index="2" unique_id=973961125]
+z_index = 100
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0" unique_id=2079863752]
+title = "Equipment"
+
+[connection signal="animation_in_finished" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="_setup_initial_selection"]
+[connection signal="starting_end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="end"]
+[connection signal="back_pressed" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" to="." method="destroy"]
+[connection signal="update_description" from="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" to="SceneMainContainer/ToolTipLayers/BottomTooltipLabel" method="set_text"]
+
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainSelectHeroPanel/ButtonsVerticalMenu"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/ActorPanel/MainActorPanel/ActorContainer/MainActorContainer"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/HBoxContainer/MainStatsContainer/Stats/StatsContainer"]
+[editable path="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene/SecondaryMenu/MenuItems"]

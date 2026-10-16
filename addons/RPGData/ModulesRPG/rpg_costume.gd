@@ -58,6 +58,9 @@ func get_class() -> String:
 ## Additional notes about the costume/set.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -104,6 +107,10 @@ func clear() -> void:
 	craft_cost = 0
 	disassemble_cost = 0
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 	
 	var database = RPGSYSTEM.database
 	if database:
@@ -159,6 +166,8 @@ func clone(value: bool = true) -> RPGCostume:
 		new_costume.equipment_restriction = equipment_restriction.clone(value)
 	else:
 		new_costume.equipment_restriction = RPGEquipRestrictions.new()
+
+	new_costume.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 
 	return new_costume
 

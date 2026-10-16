@@ -186,15 +186,18 @@ func adjust_text_fit(loops: int = 0) -> void:
 			min_size = mid_size + 1
 			font_size = mid_size
 	
-	var final_font_size = font_size + 1
+	var final_font_size = font_size
 	var current_font_size = get("theme_override_font_sizes/font_size")
-	if current_font_size != final_font_size:
+	var font_changed = (current_font_size != final_font_size)
+	if font_changed:
 		set("theme_override_font_sizes/font_size", final_font_size)
 		
 	if label_settings and label_settings.font_size != final_font_size:
 		label_settings.font_size = final_font_size
+		font_changed = true
 		
-	font_size_changed.emit(final_font_size)
+	if font_changed:
+		font_size_changed.emit(final_font_size)
 	
 	var final_text_size = font.get_string_size(text + " ", HORIZONTAL_ALIGNMENT_LEFT, -1, final_font_size)
 	if custom_minimum_size != final_text_size:
@@ -209,6 +212,6 @@ func adjust_text_fit(loops: int = 0) -> void:
 		if pivot_offset != current_pivot:
 			pivot_offset = current_pivot
 		busy = false
-		if loops > 0:
+		if loops > 0 and font_changed:
 			adjust_text_fit(loops - 1)
 #endregion

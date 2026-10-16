@@ -29,6 +29,9 @@ func get_class(): return "RPGSkill"
 @export var effects: Array[RPGEffect] = []
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 @export var separator: RPGSeparator = null
 
 
@@ -48,6 +51,10 @@ func clear() -> void:
 	occasion = 0
 	icon.clear()
 	separator = null
+	if custom_data != null:
+		custom_data.clear()
+	else:
+		custom_data = {}
 
 
 func clone(value: bool = true) -> RPGSkill:
@@ -65,5 +72,6 @@ func clone(value: bool = true) -> RPGSkill:
 	new_skill.invocation = new_skill.invocation.clone(value)
 	
 	new_skill.icon = icon.clone(value)
+	new_skill.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_skill

@@ -12,6 +12,11 @@ func get_class(): return "RPGEffect"
 @export var value2: int = 0
 @export var value3: int = 0
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clone(value: bool = true) -> RPGEffect:
-	return(duplicate(value))
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

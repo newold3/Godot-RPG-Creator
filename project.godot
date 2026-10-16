@@ -24,12 +24,12 @@ config/windows_native_icon="res://icon.ico"
 
 [audio]
 
-buses/default_bus_layout="uid://codo86bwyo1d8"
+buses/default_bus_layout="uid://bmvsrpkhbnwo"
 
 [autoload]
 
-AssetManager="*uid://cmue1ho67colg"
-PluginManager="uid://c6gvpqframnmi"
+AssetManager="*res://addons/0ZipAssetLoader/AssetManager/asset_manager.gd"
+PluginManager="*res://addons/PluginManager/plugin_manager.gd"
 RPGSYSTEM="*res://addons/RPGMap/Scripts/system.gd"
 StartupWarning="*res://addons/RPGData/Scripts/startup_warning.gd"
 CheckVersionManager="*res://addons/RPGData/Scripts/check_version_manager.gd"
@@ -59,8 +59,8 @@ window/size/viewport_height=640
 window/size/resizable=false
 window/size/always_on_top=true
 window/subwindows/embed_subwindows=false
-window/stretch/mode="viewport"
-window/stretch/aspect="ignore"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 window/per_pixel_transparency/allowed=true
 window/vsync/vsync_mode=0
 
@@ -70,7 +70,7 @@ movie_writer/movie_file="C:/Users/nopap/Desktop/Pelis/preview.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/0ZipAssetLoader/plugin.cfg", "res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/BitmapFontCreator/plugin.cfg", "res://addons/CreateTranslationFiles/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGCreatorCore/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGDialogManager/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/RPGMapGenerator/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/TilesetAddon/plugin.cfg", "res://addons/TilesetConversor/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/fxcanvas/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/0ZipAssetLoader/plugin.cfg", "res://addons/AutoCallbackCreator/plugin.cfg", "res://addons/BitmapFontCreator/plugin.cfg", "res://addons/CreateTranslationFiles/plugin.cfg", "res://addons/FileCache/plugin.cfg", "res://addons/RPGCreatorCore/plugin.cfg", "res://addons/RPGData/plugin.cfg", "res://addons/RPGDialogManager/plugin.cfg", "res://addons/RPGMap/plugin.cfg", "res://addons/RPGMapGenerator/plugin.cfg", "res://addons/ScenePreview/plugin.cfg", "res://addons/SimpleTODO/plugin.cfg", "res://addons/StyleboxFancy/plugin.cfg", "res://addons/TilesetAddon/plugin.cfg", "res://addons/TilesetConversor/plugin.cfg", "res://addons/effekseer/plugin.cfg", "res://addons/fxcanvas/plugin.cfg", "res://addons/rpg_character_creator/plugin.cfg", "res://addons/rpg_database_export/plugin.cfg", "res://addons/rpg_scene_manager/plugin.cfg")
 
 [file_customization]
 

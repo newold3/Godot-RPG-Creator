@@ -1,0 +1,60 @@
+[gd_resource type="Theme" format=3 uid="uid://bu38ap6v05oom"]
+
+[ext_resource type="FontFile" uid="uid://2okej4ay4kdb" path="res://addons/CustomControls/Resources/Fonts/unifont-13.0.01.ttf" id="1_font"]
+[ext_resource type="StyleBox" uid="uid://tcjm2ytitlfp" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_panel_window.tres" id="2_panel"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_button_normal.tres" id="3_btn_normal"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_button_hover.tres" id="4_btn_hover"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_button_pressed.tres" id="5_btn_pressed"]
+[ext_resource type="StyleBox" path="res://Scenes/GUI/BasicTheme/Resources/stylebox_button_disabled.tres" id="6_btn_disabled"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.04, 0.08, 0.18, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.85, 0.95, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.15, 0.65, 0.35, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vscroll_grabber"]
+bg_color = Color(0.85, 0.9, 1, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vscroll_bg"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(0.04, 0.08, 0.18, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 18
+Button/styles/disabled = ExtResource("6_btn_disabled")
+Button/styles/focus = ExtResource("4_btn_hover")
+Button/styles/hover = ExtResource("4_btn_hover")
+Button/styles/normal = ExtResource("3_btn_normal")
+Button/styles/pressed = ExtResource("5_btn_pressed")
+Panel/styles/panel = ExtResource("2_panel")
+PanelContainer/styles/panel = ExtResource("2_panel")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_progress_bg")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_progress_fill")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_vscroll_grabber")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_vscroll_grabber")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_vscroll_grabber")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_vscroll_bg")

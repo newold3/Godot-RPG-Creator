@@ -1,84 +1,58 @@
-extends Control
+extends GuiCoreBottomPanel
 
-
-var game_play_colon_visible: bool = true
-var game_play_colon_timer: float = 0.0
-var game_play_colon_delay: float = 0.5
-
+#region Variables
 var main_tween: Tween
+#endregion
 
-
+#region Lifecycle
 func _ready() -> void:
-	restart()
+	gold_updated.connect(_on_gold_updated)
+	time_updated.connect(_on_time_updated)
+	map_name_updated.connect(_on_map_name_updated)
+	chapter_name_updated.connect(_on_chapter_name_updated)
+	super._ready()
+#endregion
+
+#region SignalHandlers
+func _on_gold_updated(gold_number: String, currency_name: String, icon_path: String) -> void:
+	if has_node("%GoldIcon"):
+		if icon_path != "" and AssetManager.exists(icon_path):
+			%GoldIcon.texture = load(icon_path)
+		else:
+			%GoldIcon.texture = null
+	if has_node("%GoldLabel"):
+		%GoldLabel.text = currency_name
+	if has_node("%GoldNumber"):
+		%GoldNumber.text = gold_number
 
 
-func restart() -> void:
-	_set_gold()
-	_set_time()
-	_set_map_name()
-	_set_chapter_name()
-	#%MapNameAutoScrollContainer.enable_autoscroll()
-	#%ChapterNameAutoScrollContainer.enable_autoscroll()
-	start()
+func _on_time_updated(formatted_time: String) -> void:
+	if has_node("%GameTimeValue"):
+		%GameTimeValue.text = formatted_time
 
 
-func _set_gold() -> void:
-	if not RPGSYSTEM.database: return
-	
-	var icon_path: String = RPGSYSTEM.database.system.currency_info.get("icon", "")
-	var icon_name: String = RPGSYSTEM.database.system.currency_info.get("name", "")
-	if AssetManager.exists(icon_path):
-		%GoldIcon.texture = load(icon_path)
-	else:
-		%GoldIcon.texture = null
-	%GoldLabel.text = icon_name
-	if GameManager.game_state:
-		%GoldNumber.text = GameManager.get_number_formatted(GameManager.game_state.current_gold, 2)
-	else:
-		%GoldNumber.text = "0"
+func _on_map_name_updated(map_name: String) -> void:
+	if has_node("%MapName"):
+		%MapName.text = map_name
 
 
-func _set_time() -> void:
-	if GameManager.game_state:
-		var time = GameManager.format_game_time(GameManager.game_state.stats.play_time, game_play_colon_visible)
-		%GameTimeValue.text = time
-	else:
-		%GameTimeValue.text = "0H : 0M : 0S"
+func _on_chapter_name_updated(chapter_name: String) -> void:
+	if has_node("%ChapterName"):
+		%ChapterName.text = chapter_name
+#endregion
 
-
-func _set_map_name() -> void:
-	if GameManager.current_map:
-		%MapName.text = _camel_case_to_spaced(RPGMapsInfo.get_map_name_from_id(GameManager.current_map.internal_id))
-	else:
-		%MapName.text = ""
-
-
-func _set_chapter_name() -> void:
-	if GameManager.game_state:
-		%ChapterName.text = GameManager.game_state.game_chapter_name
-	else:
-		%ChapterName.text = ""
-
-
-func _camel_case_to_spaced(text: String) -> String:
-	var regex = RegEx.new()
-	regex.compile("([a-z])([A-Z])")
-	return regex.sub(text, "$1 $2", true)
-
-
-func _process(delta: float) -> void:
-	game_play_colon_timer += delta
-	if game_play_colon_timer >= game_play_colon_delay:
-		game_play_colon_timer = 0.0
-		game_play_colon_visible = !game_play_colon_visible
-	_set_time()
-
-
+#region VisualAnimations
 func start() -> void:
+	animate_start()
+
+
+func animate_start() -> void:
 	if main_tween:
 		main_tween.kill()
 	
-	%MainContainer.position.y = -56
-	
-	main_tween = create_tween()
-	main_tween.tween_property(%MainContainer, "position:y", 5, 0.45).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT).set_delay(0.4)
+	if has_node("%MainContainer"):
+		var container = %MainContainer
+		container.position.y = 80
+		main_tween = create_tween()
+		main_tween.tween_property(container, "position:y", 0, 0.45).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+#endregion

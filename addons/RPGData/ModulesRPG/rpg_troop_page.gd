@@ -12,6 +12,9 @@ func get_class(): return "RPGTroopPage"
 ## By default, after evaluating the pages, only the leftmost page whose conditions are met will be processed. When this option is enabled, this page will always be processed if its conditions are met, respecting the priority order. This allows multiple pages to be processed simultaneously if their conditions are fulfilled.
 @export var is_non_exclusive: bool = false
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func _init(_id: int = 0) -> void:
 	id = _id
@@ -28,5 +31,6 @@ func clone(value: bool = true) -> RPGTroopPage:
 	for i in new_troop_page.list.size():
 		new_troop_page.list[i] = new_troop_page.list[i].clone(value)
 	new_troop_page.condition = condition.clone(value)
+	new_troop_page.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_troop_page

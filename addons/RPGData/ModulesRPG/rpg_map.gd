@@ -1227,6 +1227,11 @@ func update_event_position_in_layout(event: Node) -> void:
 
 
 
+func remove_event_position_in_layout(event: Node) -> void:
+	if map_layout: map_layout.remove_event_from_layout(event)
+
+
+
 func get_events_near_position(pos: Vector2) -> Array:
 	return map_layout.get_events_near_position(pos) if map_layout else []
 

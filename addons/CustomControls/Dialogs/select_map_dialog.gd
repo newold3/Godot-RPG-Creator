@@ -34,7 +34,7 @@ func fill_maps() -> void:
 		var map_id = RPGSYSTEM.map_infos.get_map_id(map)
 		var map_name = RPGSYSTEM.map_infos.get_map_name_from_id(map_id)
 		node.add_item("Map: %s" % map_name)
-		node.set_item_metadata(-1, map_id)
+		node.set_item_metadata(node.get_item_count() - 1, map_id)
 	
 	if node.get_item_count() > 0:
 		node.select(0)
@@ -50,7 +50,7 @@ func fill_areas(map_index: int) -> void:
 	var regions = RPGMapsInfo.get_event_regions(map_id)
 	
 	area_list.add_item(tr("None"))
-	area_list.set_item_metadata(-1, -1)
+	area_list.set_item_metadata(area_list.get_item_count() - 1, -1)
 	
 	for region in regions:
 		var region_id = region.get("id", 0)
@@ -62,7 +62,7 @@ func fill_areas(map_index: int) -> void:
 			item_text = "%s: %s" % [region_id, region_name]
 		
 		area_list.add_item(item_text)
-		area_list.set_item_metadata(-1, region_id)
+		area_list.set_item_metadata(area_list.get_item_count() - 1, region_id)
 		
 	if area_list.get_item_count() > 0:
 		area_list.select(0)

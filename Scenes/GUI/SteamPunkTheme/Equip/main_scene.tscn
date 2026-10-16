@@ -7,46 +7,34 @@
 [ext_resource type="Script" uid="uid://dwdb1gqa4ry3o" path="res://Scripts/ScriptsBase/stats_display.gd" id="5_1q44n"]
 [ext_resource type="Script" uid="uid://lf5jsy1h3ico" path="res://Scripts/ScriptsBase/stats_comparison.gd" id="6_7sd7a"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_1q44n"]
-viewport_path = NodePath("SceneMainContainer/BottomLayer/SubViewport")
-
 [sub_resource type="Resource" id="Resource_l6lfr"]
 script = ExtResource("6_7sd7a")
 metadata/_custom_type_script = "uid://lf5jsy1h3ico"
 
 [node name="MainEquipScene" unique_id=1019145880 instance=ExtResource("1_3fq4p")]
 theme = ExtResource("2_yhcol")
-save_preset = null
-apply_preset = null
-delete_preset = null
 scene_title = "Equipment"
 timer_to_emit_end_signal = 0.12
 move_in_direction = 3
-move_in_duration = 0.5
+move_in_trans_type = 1
+move_in_duration = 0.45
 move_out_ease_type = 2
 move_out_trans_type = 1
-move_out_duration = 0.35
+move_out_duration = 0.45
+zoom_in_enabled = false
 zoom_out_enabled = false
+fade_in_enabled = false
 fade_out_enabled = false
 ready_to_process_delay = 0.18
 
-[node name="BottomLayer" parent="SceneMainContainer" parent_id_path=PackedInt32Array(808530636) index="0" unique_id=507352788]
-new_preset_name = null
-save_preset = null
-selected_preset = null
-apply_preset = null
-confirm_delete = null
-delete_preset = null
-
-[node name="Background" parent="SceneMainContainer/BottomLayer" index="1" unique_id=814727480]
-texture = SubResource("ViewportTexture_1q44n")
+[node name="Background" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="1" unique_id=814727480]
 metadata/_edit_lock_ = true
 
-[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" index="2" unique_id=823818857]
+[node name="ParticleContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="2" unique_id=823818857]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
-[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" index="3" unique_id=433102845]
+[node name="BackgroundDecorationContainer" parent="SceneMainContainer/BottomLayer" parent_id_path=PackedInt32Array(507352788) index="3" unique_id=433102845]
 metadata/_edit_lock_ = true
 metadata/_edit_group_ = true
 
@@ -109,6 +97,17 @@ z_index = 100
 
 [node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0" unique_id=2079863752]
 title = "Equipment"
+animation_time = 0.7
+
+[node name="TopTooltipLabel" parent="SceneMainContainer/ToolTipLayers" parent_id_path=PackedInt32Array(415181966) index="0" unique_id=739064200]
+theme_override_font_sizes/font_size = 19
+autowrap_mode = 3
+
+[node name="BottomTooltipLabel" parent="SceneMainContainer/ToolTipLayers" parent_id_path=PackedInt32Array(415181966) index="1" unique_id=1992967253]
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 8)
+theme_override_font_sizes/font_size = 19
+autowrap_mode = 3
 
 [connection signal="animation_in_finished" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="_setup_initial_selection"]
 [connection signal="starting_end" from="." to="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/EquipScene" method="end"]

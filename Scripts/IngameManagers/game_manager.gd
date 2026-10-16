@@ -21,6 +21,7 @@ const MANIPULATOR_MODES = {
 	"PARTY_MENU": "party menu",
 	"EQUIP_ACTORS_MENU": "equip actors menu",
 	"EQUIP_MENU": "equip menu",
+	"EQUIPMENT": "equipment",
 	"EQUIP_MENU_SUB_MENU": "equip menu sub menu",
 	"EQUIP_MENU_SUB_MENU_2": "equip menu sub menu 2",
 	"SAVELOAD": "main menu save/load",
@@ -33,7 +34,7 @@ const MANIPULATOR_MODES = {
 	"PAGINATOR1": "select paginator 1",
 	"PAGINATOR2": "select paginator 2",
 	"PAGINATOR3": "select paginator 3",
-	"PAGINATOR4": "select paginator 4"
+	"PAGINATOR4": "select paginator 4",
 }
 
 var game_started: bool = false
@@ -428,26 +429,14 @@ func restart() -> void:
 	force_hide_cursor()
 		
 	busy = true
-	var viewport_img = get_viewport().get_texture().get_image()
-	var static_tex = ImageTexture.create_from_image(viewport_img)
 	
 	var overlay_canvas = CanvasLayer.new()
 	overlay_canvas.layer = 128
-	
-	var bg_rect = ColorRect.new()
-	bg_rect.color = Color.BLACK
-	bg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
-	
-	var overlay_rect = TextureRect.new()
-	overlay_rect.texture = static_tex
-	overlay_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	
 	var fade_rect = ColorRect.new()
 	fade_rect.color = Color(0, 0, 0, 0)
 	fade_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	
-	overlay_canvas.add_child(bg_rect)
-	overlay_canvas.add_child(overlay_rect)
 	overlay_canvas.add_child(fade_rect)
 	get_tree().root.add_child(overlay_canvas)
 	
@@ -458,8 +447,6 @@ func restart() -> void:
 		if main_scene.has_method("stop_bgs"): main_scene.stop_bgs(0.3)
 		if main_scene.has_method("stop_se"): main_scene.stop_se()
 	await fade_out_tween.finished
-	
-	overlay_rect.visible = false
 	
 	game_started = false
 	GameInterpreter.clear()
@@ -482,6 +469,10 @@ func restart() -> void:
 	
 	for i in range(5):
 		await get_tree().process_frame
+	
+	var fade_in_tween = create_tween()
+	fade_in_tween.tween_property(fade_rect, "color:a", 0.0, 0.3)
+	await fade_in_tween.finished
 		
 	overlay_canvas.queue_free()
 	busy = false

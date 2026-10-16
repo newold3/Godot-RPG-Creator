@@ -14,6 +14,7 @@ shader_parameter/edge_thickness = 0.002000000095
 shader_parameter/shadow_opacity = 0.3150000149625
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ukrvg"]
+resource_local_to_scene = true
 viewport_path = NodePath("MainViewport")
 
 [node name="SimplifiedTrailScene" type="Sprite2D" unique_id=1643510112]
@@ -29,6 +30,7 @@ render_target_clear_mode = 1
 render_target_update_mode = 1
 
 [node name="TrailCanvas" type="Node2D" parent="MainViewport" unique_id=1384464280]
+clip_children = 2
 script = ExtResource("4_ukrvg")
 hole_texture_paths = Array[String](["uid://dwo61qsg7gxr5", "uid://dpn7o50gjc3rj", "uid://bj4vwy7j25so8", "uid://do0ea06qj2bpd", "uid://bm2iara0x6s1f"])
 snow_cover_texture_path = "uid://di65e6xp5sgey"

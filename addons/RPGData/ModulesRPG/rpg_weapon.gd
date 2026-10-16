@@ -85,6 +85,9 @@ func get_class(): return "RPGWeapon"
 ## Additional notes about the weapon.
 @export var notes: String = ""
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 ## Time between each tick (only used if ticks are enabled).
 @export var tick_interval: float = 1.0
 
@@ -195,6 +198,8 @@ func clone(value: bool = true) -> RPGWeapon:
 		new_weapon.equipment_restriction = equipment_restriction.clone(value)
 	else:
 		new_weapon.equipment_restriction = RPGEquipRestrictions.new()
+	
+	new_weapon.custom_data = custom_data.duplicate(true) if custom_data != null else {}
 	
 	return new_weapon
 

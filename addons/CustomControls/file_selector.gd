@@ -69,18 +69,8 @@ func set_path(_path: String, _preview: String = "", _name = "") -> void:
 
 func _request_update_preview(_preview: String) -> void:
 	if is_requesting_preview: return
-	is_requesting_preview = true
-	_wait_for_preview_slot(_preview)
-
-
-func _wait_for_preview_slot(_preview: String) -> void:
-	if not is_instance_valid(self) or not is_inside_tree():
-		return
-		
-	if FileCache.main_scene.preview_counter > FileCache.MAX_SIMULTANEOUS_PREVIEWS:
-		get_tree().process_frame.connect(_wait_for_preview_slot.bind(_preview), CONNECT_ONE_SHOT)
-		return
-		
+	while FileCache.main_scene.preview_counter > FileCache.MAX_SIMULTANEOUS_PREVIEWS:
+		await get_tree().process_frame
 	FileCache.main_scene.preview_counter += 1
 
 	if _preview and ResourceLoader.exists(_preview):
@@ -93,19 +83,11 @@ func _wait_for_preview_slot(_preview: String) -> void:
 			var s = load(preview_path)
 			if s is Texture:
 				_update_image("", s, s, true)
-			else:
-				_update_image("", null, null, true)
 		else:
 			if path.get_extension() == "tscn" and FileCache.cache.images.has(path):
-				var packed_scene = load(path)
-				var img = null
-				if packed_scene is PackedScene:
-					var state = packed_scene.get_state()
-					if state and state.get_node_count() > 0:
-						for i in range(state.get_node_property_count(0)):
-							if state.get_node_property_name(0, i) == "texture":
-								img = state.get_node_property_value(0, i)
-								break
+				var s = load(path).instantiate()
+				var img = s.texture
+				s.queue_free()
 				_update_image("", img, img, true)
 			elif path.get_extension() == "tres" and FileCache.cache.images.has(path):
 				var img = load(path)
@@ -118,46 +100,36 @@ func _wait_for_preview_slot(_preview: String) -> void:
 				if FileAccess.file_exists(res.character_preview):
 					var img = load(res.character_preview)
 					_update_image("", img, img, true)
-				else:
-					_update_image("", null, null, true)
 			else:
 				var main_database = get_tree().get_nodes_in_group("main_database")
 				var event_editor = get_tree().get_nodes_in_group("event_editor")
-				var req_success = false
-				
 				if main_database:
 					main_database = main_database[0]
-					if main_database.get_child_count() > 0:
-						main_database.get_child(0).resource_previewer.queue_resource_preview(path, self, "_update_image", true)
-						req_success = true
+					main_database.get_child(0).resource_previewer.queue_resource_preview(path, self, "_update_image", true)
 				elif event_editor:
-					event_editor = event_editor[0]
-					event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
-					req_success = true
+						event_editor = event_editor[0]
+						event_editor.resource_previewer.queue_resource_preview(path, self, "_update_image", true)
 				elif RPGSYSTEM.editor_interface:
 					var rp = RPGSYSTEM.editor_interface.get_resource_previewer()
 					rp.queue_resource_preview(path, self, "_update_image", true)
-					req_success = true
-					
-				if not req_success:
-					_update_image("", null, null, true)
-
 
 
 func set_directory(_path: String, img: Texture2D) -> void:
 	label.text = "[center]" + _path.get_file() + "[/center]"
 	path = _path
+	cache_image = img
 	_update_image(path, img, null, false)
 
 
-func _update_image(_path: String, preview: Texture, thumbnail_preview, using_counter: bool = false) -> void:
-	is_requesting_preview = false
-	if preview is Texture:
-		icon.texture = preview
-		cache_image = preview
+func _update_image(_path: String, _preview: Texture, thumbnail_preview, using_counter: bool = false) -> void:
+	if _preview is Texture:
+		cache_image = _preview
+		if icon:
+			icon.texture = _preview
 	elif thumbnail_preview:
-		icon.texture = thumbnail_preview
 		cache_image = thumbnail_preview
+		if icon:
+			icon.texture = thumbnail_preview
 	
 	if using_counter:
 		FileCache.main_scene.preview_counter -= 1
@@ -279,18 +251,19 @@ func deselect() -> void:
 
 
 func disable() -> void:
+	if not is_enabled: return
 	is_enabled = false
-	icon.texture = null
-	cache_image = null
+	# Keep cached texture active so icons do not turn null/blank during scrolling
 
 
 func enable() -> void:
+	if is_enabled: return
 	is_enabled = true
 	if not cache_image:
 		_request_update_preview(preview)
 	else:
-		icon.texture = cache_image
-
+		if icon:
+			icon.texture = cache_image
 
 func show_favorite_button() -> void:
 	%FavoriteButton.visible = true

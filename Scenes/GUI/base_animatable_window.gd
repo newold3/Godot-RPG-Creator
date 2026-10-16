@@ -15,6 +15,8 @@ signal end()
 signal early_tree_exited()
 ## Signal emitted when the starting sequence ends
 signal starting_end()
+## Signal emitted when closing/animate_out sequence starts
+signal closing_started()
 
 
 @export_group("Presets Management")
@@ -236,6 +238,7 @@ var running_starting_animation: bool = false
 
 var is_sub_menu = false
 var exit_tree_when_end = false
+var _end_signal_emitted: bool = false
 
 
 #region Lifecycle & Engine
@@ -243,12 +246,42 @@ var exit_tree_when_end = false
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		GameManager.set_text_config(self, true)
+		get_viewport().size_changed.connect(_on_viewport_size_changed)
+		_on_viewport_size_changed()
+		_setup_background_viewport()
+	else:
+		_setup_background_viewport()
 	
 	_original_position = position
 	pivot_offset = size / 2
 	
 	if not Engine.is_editor_hint() and auto_play_on_start:
 		animate_in()
+
+
+func _on_viewport_size_changed() -> void:
+	if not is_inside_tree():
+		return
+	pivot_offset = size / 2
+
+
+func _setup_background_viewport() -> void:
+	var sub_vp: SubViewport = get_node_or_null("SubViewport") as SubViewport
+	if not sub_vp:
+		sub_vp = find_child("SubViewport", true, false) as SubViewport
+	
+	var bg: TextureRect = get_node_or_null("Background") as TextureRect
+	if not bg:
+		for child in get_children():
+			if child is TextureRect and child.name == "Background":
+				bg = child
+				break
+	if not bg:
+		bg = find_child("Background", true, false) as TextureRect
+
+	if bg and sub_vp and sub_vp.process_mode != PROCESS_MODE_DISABLED:
+		bg.texture = sub_vp.get_texture()
+
 
 
 ## Sets the scene title and updates the container if ready
@@ -278,6 +311,7 @@ func start() -> void:
 
 ## Destroys the window by playing the out animation
 func destroy() -> void:
+	closing_started.emit()
 	animate_out()
 #endregion
 
@@ -285,6 +319,9 @@ func destroy() -> void:
 #region Signals
 ## Emits the end signal
 func emit_signal_end() -> void:
+	if _end_signal_emitted:
+		return
+	_end_signal_emitted = true
 	end.emit()
 
 
@@ -565,6 +602,7 @@ func _apply_shake_offset() -> void:
 #region Animations
 ## Plays the initialization animation for the window
 func animate_in() -> void:
+	_end_signal_emitted = false
 	if _tween:
 		_tween.kill()
 	
@@ -640,6 +678,7 @@ func animate_in() -> void:
 
 ## Plays the exiting animation for the window
 func animate_out() -> void:
+	closing_started.emit()
 	if _tween:
 		_tween.kill()
 	
@@ -720,12 +759,11 @@ func animate_out() -> void:
 			_is_shaking = false
 			if not Engine.is_editor_hint():
 				animation_out_finished.emit()
+				emit_signal_end()
 				if not no_destroy_on_hide:
 					queue_free()
 				else:
 					visible = false
-					if timer_to_emit_end_signal <= 0.0:
-						emit_signal_end()
 	)
 	
 	emit_signal_starting_end()

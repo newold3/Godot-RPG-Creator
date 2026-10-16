@@ -13,6 +13,11 @@ func get_class(): return "RPGEnemyAction"
 @export var condition_param3: int = 0
 @export var rating: int = 5
 
+## Custom data dictionary for future expansion and dynamic properties.
+@export var custom_data: Dictionary = {}
+
 
 func clone(value: bool = true) -> RPGEnemyAction:
-	return(duplicate(value))
+	var copy = duplicate(value)
+	copy.custom_data = custom_data.duplicate(true) if custom_data != null else {}
+	return copy

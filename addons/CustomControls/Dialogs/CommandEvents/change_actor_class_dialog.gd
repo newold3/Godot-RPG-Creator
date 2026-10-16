@@ -1,5 +1,5 @@
 @tool
-extends CommandBaseDialog
+extends "command_base_dialog.gd"
 
 #region Lifecycle & Setup
 ## Initializes the Change Class dialog

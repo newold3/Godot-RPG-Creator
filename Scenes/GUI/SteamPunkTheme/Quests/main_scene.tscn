@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cfquestsmain01"]
+
+[ext_resource type="PackedScene" uid="uid://ckrmqq6qvlduj" path="res://Scenes/GUI/SteamPunkTheme/base_window_for_scenes.tscn" id="1_base"]
+[ext_resource type="Theme" uid="uid://ctpmflgnlpkjg" path="res://Assets/Themes/in_game_theme2.tres" id="2_theme"]
+[ext_resource type="Script" path="res://Scenes/GUI/SteamPunkTheme/CommonScenes/base_sub_menu_manager.gd" id="3_manager"]
+[ext_resource type="FontFile" uid="uid://dvh0mi6yu0ywx" path="res://addons/CustomControls/Resources/Fontsunifont-13.0.01.ttf" id="4_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_quests"]
+font = ExtResource("4_font")
+font_size = 20
+font_color = Color(0.85, 0.72, 0.45, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="MainQuestsScene" instance=ExtResource("1_base")]
+theme = ExtResource("2_theme")
+scene_title = "Quests"
+timer_to_emit_end_signal = 0.12
+move_in_direction = 3
+move_in_trans_type = 1
+move_in_duration = 0.45
+move_out_ease_type = 2
+move_out_trans_type = 1
+move_out_duration = 0.45
+zoom_in_enabled = false
+zoom_out_enabled = false
+fade_in_enabled = false
+fade_out_enabled = false
+ready_to_process_delay = 0.18
+
+[node name="Manager" type="Node" parent="." index="0" node_paths=PackedStringArray("scene_parent", "back_button", "title_scene")]
+script = ExtResource("3_manager")
+scene_parent = NodePath("..")
+back_button = NodePath("../SceneMainContainer/BackButton")
+title_scene = NodePath("../SceneMainContainer/MainContainer/Title/TitleContainer")
+
+[node name="QuestsPlaceholderContainer" type="CenterContainer" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="SceneMainContainer/MainContainer/ContentsContainer/MainSceneContainer/QuestsPlaceholderContainer"]
+layout_mode = 2
+text = "Quests Screen (Under Construction)"
+label_settings = SubResource("LabelSettings_quests")
+horizontal_alignment = 1
+
+[node name="TitleContainer" parent="SceneMainContainer/MainContainer/Title" index="0"]
+title = "Quests"
+
+[node name="BackButton" parent="SceneMainContainer" index="3"]
+manage_mouse_click = true

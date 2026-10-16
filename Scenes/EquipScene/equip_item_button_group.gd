@@ -2,9 +2,9 @@
 extends Resource
 class_name EquipItemButtonGroup
 
-var buttons: Array[EquipItemButton] = []
+var buttons: Array[Control] = []
 
-func add_button(button: EquipItemButton):
+func add_button(button: Control):
 	if not buttons.has(button):
 		buttons.append(button)
 		if not button.toggled.is_connected(_on_button_toggled):
@@ -13,11 +13,11 @@ func add_button(button: EquipItemButton):
 			button.tree_exiting.connect(_on_button_tree_exiting.bind(button))
 
 
-func get_buttons() -> Array[EquipItemButton]:
+func get_buttons() -> Array[Control]:
 	return buttons
 
 
-func get_selected_button() -> EquipItemButton:
+func get_selected_button() -> Control:
 	for button in buttons:
 		if button.is_selected:
 			return button
@@ -25,18 +25,18 @@ func get_selected_button() -> EquipItemButton:
 	return null
 
 
-func remove_button(button: EquipItemButton):
+func remove_button(button: Control):
 	if buttons.has(button):
 		buttons.erase(button)
 		button.toggled.disconnect(_on_button_toggled.bind(button))
 
 
-func _on_button_toggled(pressed: bool, toggled_button: EquipItemButton):
+func _on_button_toggled(pressed: bool, toggled_button: Control):
 	if pressed:
 		for button in buttons:
 			if button != toggled_button:
 				button.set_selected(false)
 
 
-func _on_button_tree_exiting(button: EquipItemButton) -> void:
+func _on_button_tree_exiting(button: Control) -> void:
 	buttons.erase(button)
