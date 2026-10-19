@@ -67,6 +67,7 @@ func _ready():
 	close_requested.connect(_on_close_requested)
 	
 	grid.gui_input.connect(_on_grid_gui_input)
+	grid.mouse_exited.connect(_on_grid_mouse_exited)
 	hscroll.value_changed.connect(_scroll_changed)
 	vscroll.value_changed.connect(_scroll_changed)
 	texture_preview.draw.connect(_on_texture_preview_draw)
@@ -306,9 +307,37 @@ func update_cursor() -> void:
 			child.visible = not is_auto_crop
 			
 	var shape = Control.CURSOR_ARROW if is_auto_crop else Control.CURSOR_CROSS
+	if moving_rect:
+		shape = Control.CURSOR_DRAG
+	elif rect.has_area():
+		var mouse_pos = grid.get_local_mouse_position()
+		var tex_pos = _screen_to_texture(mouse_pos)
+		if rect.has_point(tex_pos):
+			shape = Control.CURSOR_DRAG
+
 	texture_preview.mouse_default_cursor_shape = shape
 	grid.mouse_default_cursor_shape = shape
 	%Cursor.mouse_default_cursor_shape = shape
+	DisplayServer.cursor_set_shape(shape as DisplayServer.CursorShape)
+
+
+func _set_drag_cursor(is_drag: bool) -> void:
+	var target_shape: Control.CursorShape
+	if is_drag:
+		target_shape = Control.CURSOR_DRAG
+	else:
+		target_shape = Control.CURSOR_ARROW if snap_mode == SnapMode.SNAP_AUTO_CROP else Control.CURSOR_CROSS
+		
+	if grid.mouse_default_cursor_shape != target_shape:
+		grid.mouse_default_cursor_shape = target_shape
+		texture_preview.mouse_default_cursor_shape = target_shape
+		%Cursor.mouse_default_cursor_shape = target_shape
+		DisplayServer.cursor_set_shape(target_shape as DisplayServer.CursorShape)
+
+
+func _on_grid_mouse_exited() -> void:
+	if not moving_rect and not drawing_rect and not resizing_rect:
+		_set_drag_cursor(false)
 
 
 #endregion
@@ -319,18 +348,20 @@ func update_cursor() -> void:
 ## Main input handler for the grid area.
 func _on_grid_gui_input(event: InputEvent):
 	if event is InputEventMouseButton:
+		var mouse_pos = texture_preview.get_local_mouse_position()
+		var tex_pos = _screen_to_texture(mouse_pos)
+
 		if event.is_pressed():
 			if event.button_index == MOUSE_BUTTON_RIGHT:
-				var p = _screen_to_texture(event.position)
-				if rect.has_point(p):
+				if rect.has_area() and rect.has_point(tex_pos):
 					moving_rect = true
 					rect_start_pos = rect.position
-					mouse_start_pos = p
+					mouse_start_pos = tex_pos
+					_set_drag_cursor(true)
 			else:
 				var previous_zoom = draw_zoom
 				var texture = _get_texture()
-				var tex_size = texture.get_size()
-				var mouse_pos = texture_preview.get_local_mouse_position()
+				var tex_size = texture.get_size() if texture else Vector2.ZERO
 				
 				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 					draw_zoom = max(0.1, draw_zoom - 0.1)
@@ -340,13 +371,16 @@ func _on_grid_gui_input(event: InputEvent):
 					moving = true
 				elif event.button_index == MOUSE_BUTTON_LEFT:
 					if event.double_click:
-						var tex_pos = _screen_to_texture(mouse_pos)
 						if rect.has_area() and rect.has_point(tex_pos):
 							_on_ok_button_pressed()
 							return
 							
-					if snap_mode == SnapMode.SNAP_AUTO_CROP:
-						var tex_pos = _screen_to_texture(mouse_pos)
+					if rect.has_area() and rect.has_point(tex_pos):
+						moving_rect = true
+						rect_start_pos = rect.position
+						mouse_start_pos = tex_pos
+						_set_drag_cursor(true)
+					elif snap_mode == SnapMode.SNAP_AUTO_CROP:
 						for r in auto_crop_rects:
 							if r.has_point(tex_pos):
 								rect = r
@@ -355,7 +389,7 @@ func _on_grid_gui_input(event: InputEvent):
 					else:
 						_start_drag(mouse_pos)
 				
-				if previous_zoom != draw_zoom:
+				if previous_zoom != draw_zoom and texture:
 					var preview_size = texture_preview.size
 					var center_old = (preview_size - tex_size * previous_zoom) / 2
 					var center_new = (preview_size - tex_size * draw_zoom) / 2
@@ -365,37 +399,84 @@ func _on_grid_gui_input(event: InputEvent):
 					force_change_draw_offset(offset_delta)
 					updated.emit()
 		
-		elif not event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
-			moving_rect = false
-
-		elif moving:
-			moving = false
-		
-		elif drawing_rect:
-			_end_drag()
+		elif not event.is_pressed():
+			if event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT:
+				if moving_rect:
+					moving_rect = false
+					_set_drag_cursor(rect.has_area() and rect.has_point(tex_pos))
+				elif drawing_rect and event.button_index == MOUSE_BUTTON_LEFT:
+					_end_drag()
+			if moving and event.button_index == MOUSE_BUTTON_MIDDLE:
+				moving = false
 	
-	elif event is InputEventMouseMotion and moving_rect:
-		var mouse_tex = _screen_to_texture(event.position)
-		var delta = mouse_tex - mouse_start_pos
-		var new_pos = rect_start_pos + delta
+	elif event is InputEventMouseMotion:
+		if moving_rect:
+			_update_moving_rect(event.position)
+		elif moving:
+			if just_warped:
+				just_warped = false
+			else:
+				force_change_draw_offset(event.relative / draw_zoom)
+		elif drawing_rect:
+			_update_drag(event.position)
+		elif not resizing_rect:
+			var mouse_tex = _screen_to_texture(event.position)
+			_set_drag_cursor(rect.has_area() and rect.has_point(mouse_tex))
 
-		if snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS:
-			var cell_total = Vector2i(snap_step.x + snap_separation.x, snap_step.y + snap_separation.y)
-			var tl_cell = _pos_to_cell(new_pos)
-			new_pos = Vector2(snap_offset + tl_cell * cell_total)
 
-		rect.position = new_pos
-		updated.emit()
-		texture_preview.queue_redraw()
+## Moves the selection rectangle respecting the active SnapMode.
+func _update_moving_rect(screen_position: Vector2) -> void:
+	if not moving_rect:
+		return
 
-	elif event is InputEventMouseMotion and moving:
-		if just_warped:
-			just_warped = false
-		else:
-			force_change_draw_offset(event.relative / draw_zoom)
+	var mouse_tex = _screen_to_texture(screen_position)
+	var delta = mouse_tex - mouse_start_pos
+	var new_pos = rect_start_pos + delta
 
-	elif event is InputEventMouseMotion and drawing_rect:
-		_update_drag(event.position)
+	match snap_mode:
+		SnapMode.SNAP_NONE:
+			pass
+
+		SnapMode.SNAP_PIXEL:
+			new_pos = (rect_start_pos + delta).round()
+
+		SnapMode.SNAP_GRID, SnapMode.SNAP_COLUMNS_AND_ROWS:
+			var cell_total = Vector2(
+				float(snap_step.x + snap_separation.x),
+				float(snap_step.y + snap_separation.y)
+			)
+			if cell_total.x <= 0.0: cell_total.x = 1.0
+			if cell_total.y <= 0.0: cell_total.y = 1.0
+
+			var target_cell_x = round((rect_start_pos.x + delta.x - snap_offset.x) / cell_total.x)
+			var target_cell_y = round((rect_start_pos.y + delta.y - snap_offset.y) / cell_total.y)
+
+			var texture = _get_texture()
+			if texture:
+				var max_cx = max(0, int(floor((texture.get_width() - snap_offset.x - rect.size.x + 0.001) / cell_total.x)))
+				var max_cy = max(0, int(floor((texture.get_height() - snap_offset.y - rect.size.y + 0.001) / cell_total.y)))
+				target_cell_x = clamp(target_cell_x, 0, max_cx)
+				target_cell_y = clamp(target_cell_y, 0, max_cy)
+			else:
+				target_cell_x = max(0, target_cell_x)
+				target_cell_y = max(0, target_cell_y)
+
+			new_pos = Vector2(
+				snap_offset.x + target_cell_x * cell_total.x,
+				snap_offset.y + target_cell_y * cell_total.y
+			)
+
+		SnapMode.SNAP_AUTO_CROP:
+			new_pos = (rect_start_pos + delta).round()
+
+	var texture = _get_texture()
+	if texture and snap_mode != SnapMode.SNAP_GRID and snap_mode != SnapMode.SNAP_COLUMNS_AND_ROWS:
+		var tex_size = texture.get_size()
+		new_pos.x = clamp(new_pos.x, 0.0, max(0.0, tex_size.x - rect.size.x))
+		new_pos.y = clamp(new_pos.y, 0.0, max(0.0, tex_size.y - rect.size.y))
+
+	rect.position = new_pos
+	updated.emit()
 
 
 ## Input handler for the drag handles of the selection cursor.
@@ -403,23 +484,23 @@ func _on_cursor_handle_gui_input(event: InputEvent, button_id: String) -> void:
 	if snap_mode == SnapMode.SNAP_AUTO_CROP:
 		return
 		
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.is_pressed():
-			resizing_rect = true
-			current_resize = button_id
-			resize_rect_start = rect
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.is_pressed():
+				resizing_rect = true
+				current_resize = button_id
+				resize_rect_start = rect
 
-			if snap_mode == SnapMode.SNAP_GRID or snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS:
-				resize_start_tl_cell = _pos_to_cell(resize_rect_start.position)
-				resize_start_br_cell = _pos_to_cell(resize_rect_start.position + resize_rect_start.size)
-		else:
-			resizing_rect = false
+				if snap_mode == SnapMode.SNAP_GRID or snap_mode == SnapMode.SNAP_COLUMNS_AND_ROWS:
+					resize_start_tl_cell = _pos_to_cell(resize_rect_start.position)
+					resize_start_br_cell = _pos_to_cell(resize_rect_start.position + resize_rect_start.size)
+			else:
+				resizing_rect = false
+		elif event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN or event.button_index == MOUSE_BUTTON_MIDDLE:
+			_on_grid_gui_input(event)
 
 	elif event is InputEventMouseMotion and resizing_rect:
 		_update_rect_size(texture_preview.get_local_mouse_position())
-	
-	else:
-		_on_grid_gui_input(event)
 
 
 ## Handles scrollbars value changes to pan the view.
