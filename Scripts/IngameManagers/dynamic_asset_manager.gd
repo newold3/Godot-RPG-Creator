@@ -104,8 +104,8 @@ func get_scene_from_cache(cache_path: String, scene_path: String, type_required:
 				ins = scn.instantiate()
 			
 		else:
-			var scn
-			if scene_path in RPGSYSTEM.database.system.preload_scenes:
+			var scn = GameManager.get_preloaded_scene(scene_path)
+			if not scn and scene_path in RPGSYSTEM.database.system.preload_scenes:
 				while ResourceLoader.load_threaded_get_status(scene_path) != ResourceLoader.THREAD_LOAD_LOADED:
 					if is_inside_tree():
 						await get_tree().process_frame

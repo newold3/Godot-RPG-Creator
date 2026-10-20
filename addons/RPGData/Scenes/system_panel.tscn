@@ -393,7 +393,6 @@ layout_mode = 2
 tooltip_text = "Maximum number of active characters in the party. Only the number of characters specified here will participate in battle, while the rest will be assigned to the reserve group"
 min_value = 1.0
 max_value = 8.0
-_custom_value = 0.0
 
 [node name="MoveActorUp" type="TextureButton" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab1/InitialParty/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1494662675]
 unique_name_in_owner = true
@@ -748,7 +747,6 @@ size_flags_horizontal = 3
 tooltip_text = "Total time required for 1 full day of play"
 allow_greater = true
 suffix = "hour/s"
-_custom_value = 0.0
 
 [node name="DayMinutes" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/DayDuration" unique_id=1883841302 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -757,7 +755,6 @@ size_flags_horizontal = 3
 tooltip_text = "Total time required for 1 full day of play"
 max_value = 59.0
 suffix = "minute/s"
-_custom_value = 0.0
 
 [node name="DaySeconds" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/DayDuration" unique_id=895844987 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -766,7 +763,6 @@ size_flags_horizontal = 3
 tooltip_text = "Total time required for 1 full day of play"
 max_value = 59.0
 suffix = "second/s"
-_custom_value = 0.0
 
 [node name="StartingTime" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=131364311]
 layout_mode = 2
@@ -783,7 +779,6 @@ size_flags_horizontal = 3
 tooltip_text = "Start time when the game will begin"
 max_value = 24.0
 suffix = "\"start time for a new game\""
-_custom_value = 0.0
 
 [node name="HSeparator4" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=1915799000]
 layout_mode = 2
@@ -895,7 +890,6 @@ max_value = 1.0
 step = 0.01
 rounded = false
 suffix = "day volume"
-_custom_value = 0.0
 
 [node name="NightVolume" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AudioConfig/HBoxContainer" unique_id=919389156 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -906,7 +900,6 @@ max_value = 1.0
 step = 0.01
 rounded = false
 suffix = "night volume"
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/AudioConfig" unique_id=948381279]
 layout_mode = 2
@@ -924,7 +917,6 @@ step = 0.01
 rounded = false
 allow_greater = true
 suffix = "transition Speed"
-_custom_value = 0.0
 
 [node name="HSeparator6" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=1915265691]
 layout_mode = 2
@@ -948,7 +940,6 @@ tooltip_text = "Maximum angle the sun reaches during its arc (in degrees)"
 min_value = -360.0
 max_value = 360.0
 suffix = "max angle"
-_custom_value = 0.0
 
 [node name="SunRotationSpeed" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer" unique_id=996333000 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -959,7 +950,6 @@ max_value = 120.0
 step = 0.01
 rounded = false
 suffix = "rotation speed"
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun" unique_id=927648190]
 layout_mode = 2
@@ -977,7 +967,6 @@ max_value = 1.0
 step = 0.01
 rounded = false
 suffix = "Day Shadow (max opacity)"
-_custom_value = 0.0
 
 [node name="SunNightShadowStrength" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Sun/HBoxContainer2" unique_id=1793234344 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -988,7 +977,6 @@ max_value = 2.0
 step = 0.01
 rounded = false
 suffix = "Night Shadow (min opacity)"
-_custom_value = 0.0
 
 [node name="HSeparator7" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=351186960]
 layout_mode = 2
@@ -1035,7 +1023,6 @@ max_value = 5.0
 step = 0.01
 rounded = false
 suffix = "X"
-_custom_value = 0.0
 
 [node name="ShadowElongationY" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer" unique_id=1568545328 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -1046,7 +1033,6 @@ max_value = 5.0
 step = 0.01
 rounded = false
 suffix = "Y"
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=917023822]
 layout_mode = 2
@@ -1065,7 +1051,6 @@ max_value = 2.0
 step = 0.01
 rounded = false
 suffix = "skew"
-_custom_value = 0.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=78461902]
 layout_mode = 2
@@ -1085,7 +1070,6 @@ max_value = 5.0
 step = 0.01
 rounded = false
 suffix = "maximun"
-_custom_value = 0.0
 
 [node name="ShadowLengthY" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow/HBoxContainer3" unique_id=531835550 instance=ExtResource("8_bxeuf")]
 unique_name_in_owner = true
@@ -1097,7 +1081,6 @@ max_value = 5.0
 step = 0.01
 rounded = false
 suffix = "minimun"
-_custom_value = 0.0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Shadow" unique_id=1122557313]
 layout_mode = 2
@@ -1115,7 +1098,6 @@ tooltip_text = "Controls how strong the blur effect is. Higher values make the b
 max_value = 5.0
 step = 0.01
 rounded = false
-_custom_value = 0.0
 
 [node name="HSeparator8" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer" unique_id=428100756]
 layout_mode = 2
@@ -1160,7 +1142,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Hour offset when street lights turn on (relative to sunset)"
 max_value = 24.0
-_custom_value = 0.0
 
 [node name="Label2" type="Label" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches/HBoxContainer" unique_id=1093319214]
 custom_minimum_size = Vector2(280, 0)
@@ -1173,7 +1154,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Hour offset when street lights turn off (relative to sunset)"
 max_value = 24.0
-_custom_value = 0.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab4/DayConfiguration/MarginContainer/VBoxContainer/Switches" unique_id=2064447355]
 layout_mode = 2
@@ -1385,6 +1365,17 @@ max_value = 9999.0
 value = 1.0
 _custom_value = 1.0
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items" unique_id=104374154]
+layout_mode = 2
+
+[node name="StackingMode" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items/HBoxContainer4" unique_id=1514440354]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "If this option is selected, all equipment will be stacked in a single slot, and the level and experience will be the same for each piece of that type. If disabled, equipment pieces will have individual levels and experience, and each item will occupy a separate slot."
+mouse_default_cursor_shape = 2
+text = "Stacking Mode Enabled (= All equipment Stacking)"
+
 [node name="MovementMode" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer" unique_id=1762189809]
 layout_mode = 2
 
@@ -1492,7 +1483,6 @@ tooltip_text = "Intensity of screen shaking during battle when performing a \"no
 step = 0.01
 rounded = false
 allow_greater = true
-_custom_value = 0.0
 
 [node name="CriticalAttack" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/NumberFormat" unique_id=1977257190]
 layout_mode = 2
@@ -1526,7 +1516,6 @@ tooltip_text = "Intensity of screen shaking during battle when performing a \"cr
 step = 0.01
 rounded = false
 allow_greater = true
-_custom_value = 0.0
 
 [node name="OverPowerAttack" type="HBoxContainer" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/NumberFormat" unique_id=321319737]
 layout_mode = 2
@@ -1560,7 +1549,6 @@ tooltip_text = "Intensity of screen shaking during battle when performing an \"o
 step = 0.01
 rounded = false
 allow_greater = true
-_custom_value = 0.0
 
 [node name="HSeparator2" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer" unique_id=175063114]
 layout_mode = 2
@@ -1856,6 +1844,7 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="pressed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/DefaultBattleTransition/Other7" to="." method="_on_other_7_pressed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items/HBoxContainer/MaxItemsPerStack" to="." method="_on_max_items_per_stack_value_changed"]
 [connection signal="value_changed" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items/HBoxContainer3/MaxItemsInInventory" to="." method="_on_max_items_in_inventory_value_changed"]
+[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/Items/HBoxContainer4/StackingMode" to="." method="_on_stacking_mode_toggled"]
 [connection signal="item_selected" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/MovementMode/MovementMode" to="." method="_on_movement_mode_item_selected"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/MovementMode2/AutoShowPopups" to="." method="_on_auto_show_popups_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/FollowersEnabled" to="." method="_on_followers_enabled_toggled"]

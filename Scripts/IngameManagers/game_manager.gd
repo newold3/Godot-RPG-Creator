@@ -104,6 +104,19 @@ var is_simulation: bool = false
 
 var hand_cursor_path: String = "res://Scenes/GUI/default_hand_cursor.tscn"
 
+var preloaded_scenes: Dictionary = {}
+
+func cache_preloaded_scene(path: String, res: Resource) -> void:
+	preloaded_scenes[path] = res
+
+func get_preloaded_scene(path: String) -> Resource:
+	return preloaded_scenes.get(path, null)
+
+func is_stacking_mode_enabled() -> bool:
+	if RPGSYSTEM and RPGSYSTEM.database and RPGSYSTEM.database.system and RPGSYSTEM.database.system.options:
+		return RPGSYSTEM.database.system.options.get("stacking_mode_enabled", false)
+	return false
+
 @warning_ignore("unused_private_class_variable")
 var _persistent_weather_pool: Dictionary = {}
 #endregion

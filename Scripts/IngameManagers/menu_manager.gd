@@ -52,7 +52,9 @@ func create_main_menu() -> void:
 	if GameManager.gui_canvas_layer:
 		var scene_path = RPGSYSTEM.database.system.game_scenes["Scene Main Menu"]
 		if AssetManager.exists(scene_path):
-			var scn = load(scene_path)
+			var scn = GameManager.get_preloaded_scene(scene_path)
+			if not scn:
+				scn = load(scene_path)
 			main_menu = scn.instantiate()
 			main_menu.visible = false
 			main_menu.visibility_changed.connect(_on_main_menu_visibility_changed)

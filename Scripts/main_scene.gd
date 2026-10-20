@@ -36,7 +36,6 @@ func _ready() -> void:
 		return
 	
 	get_viewport().transparent_bg = false
-	preload_system_scenes()
 	GameManager.main_scene = self
 	if GameManager.hand_cursor and not GameManager.hand_cursor.is_ancestor_of(self):
 		GameManager.hand_cursor.reparent(self)

@@ -259,17 +259,27 @@ func _init_equipment(actor_data: RPGActor) -> void:
 	var weapon: RPGWeapon = RPGSYSTEM.get_data("weapons", weapon_id)
 	
 	if weapon:
-		var new_weapon = GameWeapon.new(weapon_id, 1, 1)
-		new_weapon.current_level = weapon_level
-		new_weapon.equipped = true
-		new_weapon.total_equipped += 1
-		current_gear[0] = new_weapon
-		
-		if not GameManager.is_simulation:
-			if not GameManager.game_state.weapons.has(weapon_id):
-				GameManager.game_state.weapons[weapon_id] = []
-				
-			GameManager.game_state.weapons[weapon_id].append(new_weapon)
+		var stacking_enabled = GameManager.is_stacking_mode_enabled() if GameManager.has_method("is_stacking_mode_enabled") else false
+		if stacking_enabled and GameManager.game_state.weapons.has(weapon_id) and not GameManager.game_state.weapons[weapon_id].is_empty():
+			var existing_weapon: GameWeapon = GameManager.game_state.weapons[weapon_id][0]
+			existing_weapon.quantity += 1
+			existing_weapon.total_equipped += 1
+			existing_weapon.equipped = true
+			if weapon_level > existing_weapon.current_level:
+				existing_weapon.current_level = weapon_level
+			current_gear[0] = existing_weapon
+		else:
+			var new_weapon = GameWeapon.new(weapon_id, 1, 1)
+			new_weapon.current_level = weapon_level
+			new_weapon.equipped = true
+			new_weapon.total_equipped += 1
+			current_gear[0] = new_weapon
+			
+			if not GameManager.is_simulation:
+				if not GameManager.game_state.weapons.has(weapon_id):
+					GameManager.game_state.weapons[weapon_id] = []
+					
+				GameManager.game_state.weapons[weapon_id].append(new_weapon)
 	
 	for i in range(1, actor_data.equipment.size()):
 		var armor_id = actor_data.equipment[i]
@@ -277,17 +287,27 @@ func _init_equipment(actor_data: RPGActor) -> void:
 		var armor: RPGArmor = RPGSYSTEM.get_data("armors", armor_id)
 		
 		if armor:
-			var new_armor = GameArmor.new(armor_id, 1, 2)
-			new_armor.current_level = armor_level
-			new_armor.equipped = true
-			new_armor.total_equipped += 1
-			current_gear[i] = new_armor
-			
-			if not GameManager.is_simulation:
-				if not GameManager.game_state.armors.has(armor_id):
-					GameManager.game_state.armors[armor_id] = []
-					
-				GameManager.game_state.armors[armor_id].append(new_armor)
+			var stacking_enabled = GameManager.is_stacking_mode_enabled() if GameManager.has_method("is_stacking_mode_enabled") else false
+			if stacking_enabled and GameManager.game_state.armors.has(armor_id) and not GameManager.game_state.armors[armor_id].is_empty():
+				var existing_armor: GameArmor = GameManager.game_state.armors[armor_id][0]
+				existing_armor.quantity += 1
+				existing_armor.total_equipped += 1
+				existing_armor.equipped = true
+				if armor_level > existing_armor.current_level:
+					existing_armor.current_level = armor_level
+				current_gear[i] = existing_armor
+			else:
+				var new_armor = GameArmor.new(armor_id, 1, 2)
+				new_armor.current_level = armor_level
+				new_armor.equipped = true
+				new_armor.total_equipped += 1
+				current_gear[i] = new_armor
+				
+				if not GameManager.is_simulation:
+					if not GameManager.game_state.armors.has(armor_id):
+						GameManager.game_state.armors[armor_id] = []
+						
+					GameManager.game_state.armors[armor_id].append(new_armor)
 
 
 ## Attempts to change an equipment slot to a new item (used to preview equipment, avoid using directly).
@@ -331,11 +351,22 @@ func change_equipment(equipment_type_id: int, item_id: int, item_level: int, is_
 	
 	remove_current_equipment(equipment_type_id)
 	
-	var new_equipment = _create_new_equipment(equipment_type_id, item_id, item_level, is_weapon)
-	current_gear[equipment_type_id] = new_equipment
+	var stacking_enabled = GameManager.is_stacking_mode_enabled() if GameManager.has_method("is_stacking_mode_enabled") else false
+	var new_equipment
+	if stacking_enabled and game_state_items and game_state_items.has(item_id) and not game_state_items[item_id].is_empty():
+		new_equipment = game_state_items[item_id][0]
+		if is_new_item:
+			new_equipment.quantity += 1
+		new_equipment.total_equipped += 1
+		new_equipment.equipped = true
+		if item_level > new_equipment.current_level:
+			new_equipment.current_level = item_level
+	else:
+		new_equipment = _create_new_equipment(equipment_type_id, item_id, item_level, is_weapon)
+		if is_new_item and game_state_items:
+			_add_equipment_to_inventory(item_id, new_equipment, real_item, game_state_items)
 	
-	if is_new_item:
-		_add_equipment_to_inventory(item_id, new_equipment, real_item, game_state_items)
+	current_gear[equipment_type_id] = new_equipment
 	
 	_validate_equipment()
 	restore_permanent_states_after_battle()
@@ -455,10 +486,15 @@ func _add_equipment_to_inventory(item_id: int, new_equipment, real_item, game_st
 	
 	var item_array = game_state_items[item_id]
 	
-	if real_item.upgrades.max_levels > 1 or item_array.is_empty():
+	var stacking_enabled = GameManager.is_stacking_mode_enabled() if GameManager.has_method("is_stacking_mode_enabled") else false
+	if (real_item.upgrades.max_levels > 1 and not stacking_enabled) or item_array.is_empty():
 		item_array.append(new_equipment)
-	elif real_item.upgrades.max_levels == 1:
+	else:
 		item_array[0].quantity += 1
+		if new_equipment.current_level > item_array[0].current_level:
+			item_array[0].current_level = new_equipment.current_level
+		if "current_experience" in new_equipment and new_equipment.current_experience > item_array[0].current_experience:
+			item_array[0].current_experience = new_equipment.current_experience
 
 
 ## Check if there is new equipment in the inventory that can be equipped by this actor.

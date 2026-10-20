@@ -4,12 +4,12 @@ extends GuiCoreMainMenuDirector
 #region ThemeExportsAndNodes
 @export var animation_player: AnimationPlayer
 @export var help_label: Label
-@export var library_scene: PackedScene = preload("uid://dcdwnws1525xh")
-@export var status_scene: PackedScene = preload("uid://cfstatusmain01")
-@export var quests_scene: PackedScene = preload("uid://cfquestsmain01")
-@export var professions_scene: PackedScene = preload("uid://cfprofessions01")
-@export var options_scene: PackedScene = preload("uid://blg3j1imwfeog")
-@export var extra_slot_scene: PackedScene = preload("uid://cfextraslot01")
+@export var library_scene: PackedScene
+@export var status_scene: PackedScene
+@export var quests_scene: PackedScene
+@export var professions_scene: PackedScene
+@export var options_scene: PackedScene
+@export var extra_slot_scene: PackedScene
 #endregion
 
 #region VirtualHooks
@@ -41,26 +41,38 @@ func update_help_text(text: String) -> void:
 
 
 func get_library_scene() -> PackedScene:
+	if not library_scene:
+		library_scene = load("res://Scenes/GUI/SteamPunkTheme/Library/main_scene.tscn")
 	return library_scene
 
 
 func get_status_scene() -> PackedScene:
+	if not status_scene:
+		status_scene = load("res://Scenes/GUI/SteamPunkTheme/Status/main_scene.tscn")
 	return status_scene
 
 
 func get_quests_scene() -> PackedScene:
+	if not quests_scene:
+		quests_scene = load("res://Scenes/GUI/SteamPunkTheme/Quests/main_scene.tscn")
 	return quests_scene
 
 
 func get_professions_scene() -> PackedScene:
+	if not professions_scene:
+		professions_scene = load("res://Scenes/GUI/SteamPunkTheme/Professions/main_scene.tscn")
 	return professions_scene
 
 
 func get_options_scene() -> PackedScene:
+	if not options_scene:
+		options_scene = load("res://Scenes/GUI/SteamPunkTheme/Options/main_scene.tscn")
 	return options_scene
 
 
 func get_extra_slot_scene() -> PackedScene:
+	if not extra_slot_scene:
+		extra_slot_scene = load("res://Scenes/GUI/SteamPunkTheme/ExtraSlot/main_scene.tscn")
 	return extra_slot_scene
 
 

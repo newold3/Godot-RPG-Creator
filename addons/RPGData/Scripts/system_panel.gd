@@ -94,6 +94,8 @@ func _update_data_fields() -> void:
 		%LegacyMode.set_pressed_no_signal(data.legacy_mode == true)
 		%FadePageSwap.set_pressed_no_signal(data.fade_page_swap_enabled == true)
 		
+		%StackingMode.set_pressed_no_signal(options.get("stacking_mode_enabled", true))
+		
 		var movement_mode_index = max(0, min(data.movement_mode, 1))
 		%MovementMode.select(movement_mode_index)
 		
@@ -733,6 +735,11 @@ func _on_pause_in_menu_toggled(value: bool) -> void:
 ## Toggles auto popups for items
 func _on_auto_show_popups_toggled(toggled_on: bool) -> void:
 	data.options.auto_popup_on_pick_up_items = toggled_on
+
+
+## Toggles Stacking Mode
+func _on_stacking_mode_toggled(toggled_on: bool) -> void:
+	data.options.stacking_mode_enabled = toggled_on
 
 
 

@@ -16,11 +16,34 @@ var tween
 func _ready() -> void:
 	get_viewport().transparent_bg = false
 	load_options()
+	_start_preloading_scenes()
 	
 	if show_logo:
 		setup_logo()
 	else:
 		call_deferred("create_main_scene")
+
+
+func _start_preloading_scenes() -> void:
+	if RPGSYSTEM and RPGSYSTEM.database and RPGSYSTEM.database.system:
+		for scene in RPGSYSTEM.database.system.preload_scenes:
+			if AssetManager.exists(scene) and not GameManager.preloaded_scenes.has(scene):
+				ResourceLoader.load_threaded_request(scene)
+
+
+func _finish_preloading_scenes() -> void:
+	if RPGSYSTEM and RPGSYSTEM.database and RPGSYSTEM.database.system:
+		for scene in RPGSYSTEM.database.system.preload_scenes:
+			if not GameManager.preloaded_scenes.has(scene) and AssetManager.exists(scene):
+				var max_wait_frames = 180
+				while ResourceLoader.load_threaded_get_status(scene) == ResourceLoader.THREAD_LOAD_IN_PROGRESS and max_wait_frames > 0:
+					max_wait_frames -= 1
+					await get_tree().process_frame
+				var s = ResourceLoader.load_threaded_get_status(scene)
+				if s == ResourceLoader.THREAD_LOAD_LOADED:
+					var res = ResourceLoader.load_threaded_get(scene)
+					if res:
+						GameManager.cache_preloaded_scene(scene, res)
 
 
 func load_options() -> void:
@@ -35,6 +58,8 @@ func load_options() -> void:
 
 
 func create_main_scene() -> void:
+	await _finish_preloading_scenes()
+	
 	var node = preload("res://Scenes/main_scene.tscn")
 	var ins = node.instantiate()
 	ins.initialize_title_scene = true

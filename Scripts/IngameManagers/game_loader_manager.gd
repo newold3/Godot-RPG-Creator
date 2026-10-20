@@ -8,7 +8,7 @@ var interpreter_id = "_load_interpreter"
 
 func preload_system_scenes() -> void:
 	for scene in RPGSYSTEM.database.system.preload_scenes:
-		if AssetManager.exists(scene):
+		if AssetManager.exists(scene) and not GameManager.preloaded_scenes.has(scene):
 			ResourceLoader.load_threaded_request(scene)
 
 

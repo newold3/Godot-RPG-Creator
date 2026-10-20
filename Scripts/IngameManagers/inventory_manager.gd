@@ -19,6 +19,31 @@ const OVER_FLOW_BAG = preload("uid://bsnxdk683a0qq")
 
 ## Emitted when any perishable item rots completely.
 signal perishable_item_rotted(item: GameItem, conversion_id: int)
+
+func is_stacking_mode_enabled() -> bool:
+	return GameManager.is_stacking_mode_enabled() if GameManager and GameManager.has_method("is_stacking_mode_enabled") else false
+
+func sync_equipment_level_and_exp(item_type: int, id: int, level: int, experience: int) -> void:
+	if not is_stacking_mode_enabled():
+		return
+	var state = GameManager.game_state
+	if not state:
+		return
+	var collection = state.weapons if item_type == 1 else state.armors
+	if collection.has(id):
+		for item in collection[id]:
+			item.current_level = level
+			if "current_experience" in item:
+				item.current_experience = experience
+	
+	if state.actors:
+		for actor in state.actors.values():
+			if "current_gear" in actor and actor.current_gear:
+				for gear in actor.current_gear:
+					if gear and gear.id == id and ((item_type == 1 and gear is GameWeapon) or (item_type == 2 and gear is GameArmor)):
+						gear.current_level = level
+						if "current_experience" in gear:
+							gear.current_experience = experience
 #endregion
 
 
@@ -202,7 +227,11 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 			elif compatible:
 				can_stack_more = true
 		else:
-			compatible = real_item.upgrades.max_levels == 1 and not item.equipped
+			var stacking_enabled = is_stacking_mode_enabled()
+			if stacking_enabled:
+				compatible = true
+			else:
+				compatible = real_item.upgrades.max_levels == 1 and not item.equipped
 			if compatible and max_per_stack > 0:
 				can_stack_more = item.quantity < max_per_stack
 			elif compatible:
@@ -219,6 +248,10 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 			item.newly_added = true
 			if "last_added_date" in item:
 				item.last_added_date = current_time
+			if (item_type == 1 or item_type == 2) and is_stacking_mode_enabled():
+				if level > item.current_level:
+					item.current_level = level
+					sync_equipment_level_and_exp(item_type, id, item.current_level, item.current_experience)
 			
 	if remaining_amount > 0:
 		var current_slots = _get_total_used_slots()
@@ -272,7 +305,8 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 				item_list.append(game_item)
 				added_amount += stack_amount
 			else:
-				if real_item.upgrades.max_levels == 1:
+				var stacking_enabled = is_stacking_mode_enabled()
+				if real_item.upgrades.max_levels == 1 or stacking_enabled:
 					var game_item
 					if item_type == 1:
 						game_item = GameWeapon.new(id, stack_amount, 1)
@@ -284,6 +318,8 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 						game_item.last_added_date = current_time
 					item_list.append(game_item)
 					added_amount += stack_amount
+					if stacking_enabled:
+						sync_equipment_level_and_exp(item_type, id, game_item.current_level, game_item.current_experience)
 				else:
 					var items_to_create = stack_amount
 					if max_inventory > 0:
