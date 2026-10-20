@@ -82,8 +82,8 @@ func _on_comparison_result_changed(_value: int) -> void:
 		_set_animation_for_upgrade_icon()
 
 
-func _on_show_comparison_changed(show: bool) -> void:
-	if upgrade_icon and not show:
+func _on_show_comparison_changed(value: bool) -> void:
+	if upgrade_icon and not value:
 		upgrade_icon.visible = false
 #endregion
 

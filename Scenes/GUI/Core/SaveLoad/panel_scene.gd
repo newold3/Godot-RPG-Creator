@@ -12,7 +12,9 @@ var scroll_container: Node
 #endregion
 
 #region Signals
+@warning_ignore("unused_signal")
 signal slot_selected(slot_id: int)
+@warning_ignore("unused_signal")
 signal slot_clicked(slot_id: int)
 #endregion
 

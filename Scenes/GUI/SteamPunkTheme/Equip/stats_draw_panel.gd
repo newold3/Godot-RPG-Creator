@@ -13,7 +13,7 @@ func _on_equipment_evaluation_result(result: int) -> void:
 		upgrade_icon.texture.region.position.x = 0 if result == 0 else upgrade_icon.texture.region.size.x
 
 
-func _on_show_comparison_changed(show: bool) -> void:
+func _on_show_comparison_changed(value: bool) -> void:
 	if upgrade_icon:
-		upgrade_icon.visible = show
+		upgrade_icon.visible = value
 #endregion

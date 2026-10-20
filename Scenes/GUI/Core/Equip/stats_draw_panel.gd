@@ -154,10 +154,11 @@ func create_stats_data() -> void:
 			"height": 4
 		})
 		
-		var icons = RPGSYSTEM.database.types.icons.main_parameters_icons if section_name == "Main Stats" \
-			else RPGSYSTEM.database.types.icons.user_parameters_icons if section_name == "Secondary Stats" \
-			else RPGSYSTEM.database.types.icons.main_parameters_icons if section_name == "Other Stats" \
-			else null
+		var icons = null
+		if section_name == "Main Stats" or section_name == "Other Stats":
+			icons = RPGSYSTEM.database.types.icons.main_parameters_icons
+		elif section_name == "Secondary Stats":
+			icons = RPGSYSTEM.database.types.icons.user_parameters_icons
 			
 		for stat in stats_structure[section_name]:
 			var is_percent = stat in stats_structure["Other Stats"]

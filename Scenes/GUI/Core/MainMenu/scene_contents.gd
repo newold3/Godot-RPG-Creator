@@ -6,7 +6,9 @@ var current_party_buttons_selected: PackedInt32Array = []
 var busy: bool = false
 
 signal end()
+@warning_ignore("unused_signal")
 signal sub_menu_opened()
+@warning_ignore("unused_signal")
 signal sub_menu_closed()
 signal item_menu_requested(id: String)
 #endregion

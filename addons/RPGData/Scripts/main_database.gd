@@ -8,6 +8,7 @@ const BACKUP_PATH: String = "user://db_backup_recovery.tres"
 var current_tab: int = -1
 var current_panel: Control
 var panels: Dictionary
+var _tab_buttons: Dictionary = {}
 
 var cache_dialog: Dictionary = {}
 
@@ -54,16 +55,12 @@ func _ready() -> void:
 
 
 func disabled_left_column(value: bool) -> void:
-	var buttons = [
-		%DatabaseVersion, %CustomButton1, %CustomButton2, %CustomButton19,
-		%CustomButton3, %CustomButton4, %CustomButton5, %CustomButton7,
-		%CustomButton8, %CustomButton9, %CustomButton10, %CustomButton11,
-		%CustomButton12, %CustomButton13, %CustomButton14, %CustomButton17,
-		%CustomButton18, %CustomButton15, %CustomButton16
-	]
-	for b in buttons:
-		b.mouse_filter = Control.MOUSE_FILTER_IGNORE if value \
-			else Control.MOUSE_FILTER_STOP
+	if has_node("%DatabaseVersion") and %DatabaseVersion:
+		%DatabaseVersion.mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
+	if has_node("%LeftMenu") and %LeftMenu:
+		for child in %LeftMenu.get_children():
+			if child is Control:
+				child.mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
 
 
 func clear_panels() -> void:
@@ -104,7 +101,10 @@ func _on_parent_visibility_changed() -> void:
 				%DatabaseVersion.value = int(real_data._id_version)
 			else:
 				%DeveloperSection.visible = false
-			%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
+			if _tab_buttons.has(current_tab):
+				_tab_buttons[current_tab].set_pressed_no_signal(true)
+			elif current_tab >= 0 and current_tab < %LeftMenu.get_child_count():
+				%LeftMenu.get_child(current_tab).set_pressed_no_signal(true)
 		CustomTooltipManager.replace_all_tooltips_with_custom(self)
 	else:
 		var node = RPGSYSTEM
@@ -125,20 +125,33 @@ func set_tool_connections() -> void:
 
 func setup_button_groups() -> void:
 	var button_group = ButtonGroup.new()
-	var index = 0
+	_tab_buttons.clear()
 	var child_count = %LeftMenu.get_child_count()
+	var fallback_index = 0
 	for child in %LeftMenu.get_children():
 		if "button_group" in child:
 			child.button_group = button_group
-			var real_index = index if child.get_index() < child_count - 2 else \
-				5000 if child.get_index() == child_count - 2 else 6000
+			var real_index = -1
+			if child.has_meta("tab_id"):
+				real_index = int(child.get_meta("tab_id"))
+			elif child.has_meta("id"):
+				real_index = int(child.get_meta("id"))
+			else:
+				real_index = fallback_index if child.get_index() < child_count - 2 else \
+					5000 if child.get_index() == child_count - 2 else 6000
+				fallback_index += 1
 			child.pressed.connect(_on_button_pressed.bind(child, real_index))
-			index += 1
+			if real_index < 5000:
+				_tab_buttons[real_index] = child
 
 
 func start() -> void:
-	%CustomButton1.set_pressed(true) # No auto emit pressed signal
-	%CustomButton1.pressed.emit()
+	if _tab_buttons.has(0):
+		_tab_buttons[0].set_pressed(true)
+		_tab_buttons[0].pressed.emit()
+	else:
+		%CustomButton1.set_pressed(true) # No auto emit pressed signal
+		%CustomButton1.pressed.emit()
 
 
 func _on_button_pressed(_button: CustomSimpleButton, index: int) -> void:

@@ -25,7 +25,7 @@ var current_zone: MenuZone = MenuZone.ACTORS
 var busy: bool = false
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if current_zone != MenuZone.COSTUME: return
 	
 	if ControllerManager.is_cancel_just_pressed([KEY_0, KEY_KP_0]):
@@ -97,11 +97,11 @@ func _on_buttons_vertical_menu_change_hero_by_hotkey() -> void:
 	%EquipmentContainer.select_last_slot()
 
 
-func _on_buttons_vertical_menu_button_selected(index: int) -> void:
+func _on_buttons_vertical_menu_button_selected(_index: int) -> void:
 	current_zone = MenuZone.ACTORS
 
 
-func _on_equipment_container_slot_selected(slot_id: int) -> void:
+func _on_equipment_container_slot_selected(_slot_id: int) -> void:
 	current_zone = MenuZone.EQUIPMENT
 
 
@@ -120,7 +120,7 @@ func _on_costume_button_pressed() -> void:
 	main_node._process_start_change_costume()
 
 
-func _on_buttons_vertical_menu_ok_pressed(index: int) -> void:
+func _on_buttons_vertical_menu_ok_pressed(_index: int) -> void:
 	GameManager.play_fx(\"ok\")
 	%EquipmentContainer.select_last_slot()
 	current_zone = MenuZone.EQUIPMENT

@@ -1784,22 +1784,22 @@ func _drop_off_escort_npc(active_quest: GameQuest, animate_walk: bool = true) ->
 	# 5. Animate follower walking towards drop_pos
 	var final_facing_direction = LPCCharacter.DIRECTIONS.DOWN
 	if escort_follower_node and is_instance_valid(escort_follower_node):
-		final_facing_direction = escort_follower_node.current_direction
+		final_facing_direction = escort_follower_node.current_direction as LPCCharacter.DIRECTIONS
 		if animate_walk and escort_follower_node.has_method("walk_to_point"):
 			escort_follower_node.walk_to_point(drop_pos)
 			var dist = escort_follower_node.global_position.distance_to(drop_pos)
 			var max_wait_sec = (dist / 120.0) + 1.5
 			var timer = get_tree().create_timer(max_wait_sec)
 			
-			var arrived = false
-			var on_arrived = func(): arrived = true
+			var arrived = [false]
+			var on_arrived = func(): arrived[0] = true
 			escort_follower_node.arrived_at_destination.connect(on_arrived, CONNECT_ONE_SHOT)
 			
-			while not arrived and timer.time_left > 0.0 and is_instance_valid(escort_follower_node):
+			while not arrived[0] and timer.time_left > 0.0 and is_instance_valid(escort_follower_node):
 				await get_tree().process_frame
 				
 		if is_instance_valid(escort_follower_node):
-			final_facing_direction = escort_follower_node.current_direction
+			final_facing_direction = escort_follower_node.current_direction as LPCCharacter.DIRECTIONS
 
 	# 6. Save into migrated_events so they persist in this map and this position
 	if GameManager.game_state:

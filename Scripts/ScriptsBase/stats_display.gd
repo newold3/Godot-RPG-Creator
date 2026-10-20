@@ -892,8 +892,8 @@ func _on_stats_draw() -> void:
 		var item_full_height = item_height + item_separator
 		
 		if visible_top > -1e8:
-			var is_visible = not ((current_y + item_full_height) < visible_top or current_y > visible_bottom)
-			if not is_visible:
+			var item_in_view = not ((current_y + item_full_height) < visible_top or current_y > visible_bottom)
+			if not item_in_view:
 				current_y += item_full_height
 				continue
 		
@@ -951,7 +951,7 @@ func _draw_title(font: Font, title_text: String, y_pos: float, height: float) ->
 
 
 ## Draws a single stat line, calculating columns and word-wrapping if necessary.
-func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float, left_col_width: float, right_col_width: float) -> void:
+func _draw_stat(font: Font, data: Dictionary, y_pos: float, height: float, left_col_width: float, _right_col_width: float) -> void:
 	var scrollbar_w = _get_v_scrollbar_width()
 	if stat_separator_style:
 		var separator_rect = Rect2(margin_left, y_pos + height, size.x - scrollbar_w - margin_left - margin_right, 1)
