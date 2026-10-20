@@ -244,6 +244,8 @@ func _process_start_change_equip(slot_id: int) -> void:
 	var equippable_items = []
 	
 	for item_arr: Array in data.values():
+		if item_arr.is_empty():
+			continue
 		var item = item_arr[0]
 		if item is GameArmor:
 			var real_armor = RPGSYSTEM.get_data("armors", item.id)

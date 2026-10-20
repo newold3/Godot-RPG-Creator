@@ -588,8 +588,8 @@ func change_value(target_value: Variant) -> void:
 				if int(target_value) > 0: GameManager.add_armor_amount(real_id, int(target_value))
 				else: GameManager.remove_armor_amount(real_id, abs(int(target_value)), false)
 			"Costume/Set":
-				if int(target_value) > 0: GameManager.add_costumes_amount(real_id, int(target_value))
-				else: GameManager.remove_costumes_amount(real_id, abs(int(target_value)))
+				if int(target_value) > 0: GameManager.add_costume_amount(real_id, int(target_value))
+				else: GameManager.remove_costume_amount(real_id, abs(int(target_value)))
 			"Quest":
 				var quest = RPGSYSTEM.database.quests[real_id]
 				var uid = quest._uniq_id
@@ -837,16 +837,16 @@ func _on_set_all_values_value_changed(value: float) -> void:
 			GameManager.game_state.game_variables[i] = value
 	elif current_tab == "Item":
 		for item in RPGSYSTEM.database.items:
-			if item: GameManager.add_item_amount(item._uniq_id, value)
+			if item and item.id > 0: GameManager.add_item_amount(item.id, int(value))
 	elif current_tab == "Weapon":
 		for item in RPGSYSTEM.database.weapons:
-			if item: GameManager.add_weapon_amount(item._uniq_id, value)
+			if item and item.id > 0: GameManager.add_weapon_amount(item.id, int(value))
 	elif current_tab == "Armor":
 		for item in RPGSYSTEM.database.armors:
-			if item: GameManager.add_armor_amount(item._uniq_id, value)
+			if item and item.id > 0: GameManager.add_armor_amount(item.id, int(value))
 	elif current_tab == "Costume/Set":
 		for item in RPGSYSTEM.database.costumes:
-			if item: GameManager.add_costume_amount(item._uniq_id, value)
+			if item and item.id > 0: GameManager.add_costume_amount(item.id, int(value))
 	
 	_load_data(true, current_tab, true)
 

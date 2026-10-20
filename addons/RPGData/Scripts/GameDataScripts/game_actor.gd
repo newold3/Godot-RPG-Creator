@@ -481,6 +481,8 @@ func _has_new_items_in_slot(slot_id: int) -> bool:
 	var data = GameManager.game_state.weapons if slot_id == 0 else GameManager.game_state.armors
 	
 	for item_arr: Array in data.values():
+		if item_arr.is_empty():
+			continue
 		var item = item_arr[0]
 		
 		if item is GameArmor:

@@ -117,6 +117,8 @@ func _has_equippable_items_in_slot(slot: int) -> bool:
 	var data = GameManager.game_state.weapons if slot == 0 else GameManager.game_state.armors
 	
 	for item_arr: Array in data.values():
+		if item_arr.is_empty():
+			continue
 		var item = item_arr[0]
 		if current_actor.can_equip(slot, item.id):
 			for obj in item_arr:

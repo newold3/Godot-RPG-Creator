@@ -225,6 +225,8 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 		var available_slots = max_inventory - current_slots if max_inventory > 0 else -1
 		
 		if max_inventory > 0 and available_slots <= 0:
+			if item_list.is_empty():
+				collection.erase(id)
 			return added_amount
 			
 		var stacks = _split_into_stacks(remaining_amount, max_per_stack)
@@ -310,6 +312,9 @@ func _add_generic_amount(collection: Dictionary, db_key: String, id: int, amount
 			if recipe.learned_by_default:
 				GameManager.learn_recipe(0, real_item._uniq_id, i)
 	
+	if item_list.is_empty():
+		collection.erase(id)
+	
 	return added_amount
 
 
@@ -374,19 +379,14 @@ func _remove_generic_amount(collection: Dictionary, id: int, amount: int, includ
 			
 			for i in range(item_list.size()):
 				var item = item_list[i]
-				if not item.equipped:
+				var available = item.quantity - (item.total_equipped if "total_equipped" in item else (1 if item.equipped else 0))
+				if available > 0:
 					item_found = true
-					
-					if item.quantity >= remaining_to_remove:
-						item.quantity -= remaining_to_remove
-						remaining_to_remove = 0
-						
-						if item.quantity <= 0:
-							item_list.erase(item)
-					else:
-						remaining_to_remove -= item.quantity
+					var to_remove = min(remaining_to_remove, available)
+					item.quantity -= to_remove
+					remaining_to_remove -= to_remove
+					if item.quantity <= 0:
 						item_list.erase(item)
-					
 					break
 			
 			if not item_found and remaining_to_remove > 0 and include_equipment:
