@@ -96,6 +96,7 @@ var target_port := 4242
 var target_ip := "127.0.0.1"
 
 var DETACHABLE_WINDOW: PackedScene
+var inspector_plugin: EditorInspectorPlugin
 
 var edit_configs = {
 	MODE.EVENT: {
@@ -709,6 +710,11 @@ func _enter_tree() -> void:
 	
 	DETACHABLE_WINDOW = load("res://addons/CustomControls/detachable_window.tscn")
 	
+	var inspector_script = load("res://addons/RPGMap/Scripts/rpg_map_inspector_plugin.gd")
+	if inspector_script:
+		inspector_plugin = inspector_script.new()
+		add_inspector_plugin(inspector_plugin)
+	
 	if selected_nodes.size() > 0:
 		var first_node = selected_nodes[0]
 		
@@ -909,6 +915,10 @@ func _tree_exiting() -> void:
 
 
 func _exit_tree() -> void:
+	if inspector_plugin:
+		remove_inspector_plugin(inspector_plugin)
+		inspector_plugin = null
+		
 	ProjectSettings.settings_changed.disconnect(_on_settings_changed)
 	
 	var selection = get_editor_interface().get_selection()

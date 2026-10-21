@@ -4,9 +4,23 @@ class_name RPGMap
 extends Node2D
 
 #region Exports
+const EDITOR_CONFIG_PATH: String = "res://addons/RPGMap/editor_config.cfg"
+const EDITOR_CONFIG_SECTION: String = "EditorFields"
+
+const DEFAULT_PREVIEW_OVERLAYS: bool = false
+const DEFAULT_TILE_SIZE: Vector2i = Vector2i(32, 32)
+const DEFAULT_GRID_GRADIENT_PATH: String = "res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres"
+const DEFAULT_GRID_COLOR: Color = Color(0.969, 0.718, 0.639, 0.514)
+const DEFAULT_CURSOR_RADIUS: int = 5
+const DEFAULT_CHILDREN_OPACITY: float = 0.21
+const DEFAULT_CANVAS_OPACITY: float = 1.0
+
+var _is_loading_editor_config: bool = false
+var _editor_config_loaded: bool = false
+
 @export_category("Editor Fields")
 ## Toggles the visualization of the map overlays inside the editor.
-@export var preview_overlays: bool = false:
+@export var preview_overlays: bool = DEFAULT_PREVIEW_OVERLAYS:
 	set(value):
 		preview_overlays = value
 		if Engine.is_editor_hint():
@@ -14,40 +28,51 @@ extends Node2D
 				_load_overlays()
 			else:
 				_clear_overlays()
+			_on_editor_field_changed()
 
 ## Changes the size for tiles to all TileMapLayers added to this control.
 ## You can only paint events on the part of the grid that is drawn.
-@export var tile_size: Vector2i = Vector2i(32, 32):
+@export var tile_size: Vector2i = DEFAULT_TILE_SIZE:
 	set(value):
 		tile_size = value.max(Vector2i.ONE)
 		for child in get_children():
 			if child is TileMapLayer and child.tile_set:
 				child.tile_set.tile_size = tile_size
 		queue_redraw()
+		_on_editor_field_changed()
 
 ## Color with which the grid will be drawn in this control.
-@export var grid_gradient: Gradient:
+@export var grid_gradient: Gradient = preload("res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres"):
 	set(gradient):
 		grid_gradient = gradient
 		queue_redraw()
+		_on_editor_field_changed()
 
 ## Color used for the grid lines.
-@export var grid_color: Color = Color(0.969, 0.718, 0.639, 0.514):
+@export var grid_color: Color = DEFAULT_GRID_COLOR:
 	set(color):
 		grid_color = color
 		queue_redraw()
+		_on_editor_field_changed()
 
 ## Radius of the area to draw around the mouse cursor (in tiles).
-@export var cursor_radius: int = 5
+@export var cursor_radius: int = DEFAULT_CURSOR_RADIUS:
+	set(value):
+		cursor_radius = value
+		if editor_canvas and editor_canvas.cursor_canvas:
+			editor_canvas.cursor_canvas.queue_redraw()
+		_on_editor_field_changed()
 
 ## Change the opacity of the children for better visibility of the canvases.
-@export_range(0.0, 1.0, 0.01) var children_opacity: float = 0.21:
+@export_range(0.0, 1.0, 0.01) var children_opacity: float = DEFAULT_CHILDREN_OPACITY:
 	set(value):
 		children_opacity = value
-		if editor_canvas: editor_canvas.set_child_opacity(self, false)
+		if editor_canvas:
+			editor_canvas.set_child_opacity(self, false)
+		_on_editor_field_changed()
 
 ## Change the opacity of the canvases for better visibility of the children
-@export_range(0.0, 1.0, 0.01) var canvas_opacity: float = 1.0:
+@export_range(0.0, 1.0, 0.01) var canvas_opacity: float = DEFAULT_CANVAS_OPACITY:
 	set(value):
 		canvas_opacity = value
 		if editor_canvas:
@@ -59,13 +84,13 @@ extends Node2D
 				editor_canvas.enemy_spawn_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
 			if editor_canvas.event_region_canvas:
 				editor_canvas.event_region_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+		_on_editor_field_changed()
 
-## Copy the map ID to the clipboard
-@export var copy_map_id_into_clipboard: bool = false:
-	set(value):
-		if value:
-			DisplayServer.clipboard_set(str(internal_id))
-			print("Map id %s copy into clipboard" % internal_id)
+## Reset all editor fields to their default values (matching test_map).
+@export_tool_button("Reset to Default", "Reload") var reset_editor_fields = reset_editor_fields_to_defaults
+
+## Copy the map ID to the clipboard.
+@export_tool_button("Copy Map ID", "ActionCopy") var copy_map_id_into_clipboard = _copy_map_id_to_clipboard
 
 @export_category("Map Fields")
 ## Allows you to configure how the map name is displayed when you open it.
@@ -92,7 +117,11 @@ extends Node2D
 		notify_property_list_changed()
 		update_configuration_warnings()
 
-## Makes the map infinitely scrollable vertically (useful for world maps)
+## Makes the map infinitely scrollable vertically (useful for world maps)[br][br]
+## If you place elements with vertical height (trees, buildings, statues, NPCs) right up against the bottom or top edge of the map, you should leave a safety margin on the other edge:[br][br]
+## 1 solid row (impassable) at the top edge: Sufficient if there are no tall objects at the bottom edge or if they are only low elements that are 1 tile high.[br][br]
+## 2 to 3 solid rows at the top edge: Recommended if you place buildings, trees, or tall entities (2+ tiles) at the bottom of the map to prevent visual sprite overlap when crossing the loop.[br][br]
+## Note: If the transition zone contains only flat terrain (water, grass, paths without elevation), it is not necessary to leave any margin.
 @export var infinite_vertical_scroll: bool = false :
 	set(value):
 		infinite_vertical_scroll = value
@@ -212,6 +241,141 @@ const GENERIC_EVENT_SCRIPT_PATH = "res://addons/rpg_character_creator/Other/gene
 signal map_started()
 
 
+#region Editor Fields Config & Global Persistence
+func _load_editor_config(force: bool = false) -> void:
+	if not Engine.is_editor_hint() and not force:
+		return
+		
+	var config := ConfigFile.new()
+	var err = config.load(EDITOR_CONFIG_PATH)
+	if err != OK:
+		reset_editor_fields_to_defaults(force)
+		return
+		
+	_is_loading_editor_config = true
+	
+	preview_overlays = config.get_value(EDITOR_CONFIG_SECTION, "preview_overlays", DEFAULT_PREVIEW_OVERLAYS)
+	tile_size = config.get_value(EDITOR_CONFIG_SECTION, "tile_size", DEFAULT_TILE_SIZE)
+	
+	var grad_path: String = config.get_value(EDITOR_CONFIG_SECTION, "grid_gradient_path", DEFAULT_GRID_GRADIENT_PATH)
+	if not grad_path.is_empty() and ResourceLoader.exists(grad_path):
+		grid_gradient = load(grad_path)
+	elif config.has_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_offsets") and config.has_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_colors"):
+		var grad = Gradient.new()
+		grad.offsets = config.get_value(EDITOR_CONFIG_SECTION, "grid_gradient_offsets")
+		grad.colors = config.get_value(EDITOR_CONFIG_SECTION, "grid_gradient_colors")
+		grid_gradient = grad
+	elif ResourceLoader.exists(DEFAULT_GRID_GRADIENT_PATH):
+		grid_gradient = load(DEFAULT_GRID_GRADIENT_PATH)
+	else:
+		grid_gradient = null
+		
+	grid_color = config.get_value(EDITOR_CONFIG_SECTION, "grid_color", DEFAULT_GRID_COLOR)
+	cursor_radius = config.get_value(EDITOR_CONFIG_SECTION, "cursor_radius", DEFAULT_CURSOR_RADIUS)
+	children_opacity = config.get_value(EDITOR_CONFIG_SECTION, "children_opacity", DEFAULT_CHILDREN_OPACITY)
+	canvas_opacity = config.get_value(EDITOR_CONFIG_SECTION, "canvas_opacity", DEFAULT_CANVAS_OPACITY)
+	
+	_apply_editor_fields_visuals()
+	
+	_is_loading_editor_config = false
+	_editor_config_loaded = true
+
+
+func _save_editor_config(force: bool = false) -> void:
+	if (not Engine.is_editor_hint() and not force) or _is_loading_editor_config:
+		return
+		
+	var config := ConfigFile.new()
+	var _err = config.load(EDITOR_CONFIG_PATH)
+	
+	config.set_value(EDITOR_CONFIG_SECTION, "preview_overlays", preview_overlays)
+	config.set_value(EDITOR_CONFIG_SECTION, "tile_size", tile_size)
+	
+	if grid_gradient:
+		if not grid_gradient.resource_path.is_empty():
+			config.set_value(EDITOR_CONFIG_SECTION, "grid_gradient_path", grid_gradient.resource_path)
+		else:
+			config.set_value(EDITOR_CONFIG_SECTION, "grid_gradient_path", "")
+		config.set_value(EDITOR_CONFIG_SECTION, "grid_gradient_offsets", grid_gradient.offsets)
+		config.set_value(EDITOR_CONFIG_SECTION, "grid_gradient_colors", grid_gradient.colors)
+	else:
+		config.set_value(EDITOR_CONFIG_SECTION, "grid_gradient_path", "")
+		if config.has_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_offsets"):
+			config.erase_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_offsets")
+		if config.has_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_colors"):
+			config.erase_section_key(EDITOR_CONFIG_SECTION, "grid_gradient_colors")
+			
+	config.set_value(EDITOR_CONFIG_SECTION, "grid_color", grid_color)
+	config.set_value(EDITOR_CONFIG_SECTION, "cursor_radius", cursor_radius)
+	config.set_value(EDITOR_CONFIG_SECTION, "children_opacity", children_opacity)
+	config.set_value(EDITOR_CONFIG_SECTION, "canvas_opacity", canvas_opacity)
+	
+	var save_err = config.save(EDITOR_CONFIG_PATH)
+	if save_err != OK:
+		push_warning("RPGMap: Could not save editor config to %s (Error: %d)" % [EDITOR_CONFIG_PATH, save_err])
+
+
+func _on_editor_field_changed(force: bool = false) -> void:
+	if (Engine.is_editor_hint() or force) and _editor_config_loaded and not _is_loading_editor_config:
+		_save_editor_config(force)
+
+
+func _apply_editor_fields_visuals() -> void:
+	if not Engine.is_editor_hint():
+		return
+	if preview_overlays:
+		_load_overlays()
+	else:
+		_clear_overlays()
+	for child in get_children():
+		if child is TileMapLayer and child.tile_set:
+			child.tile_set.tile_size = tile_size
+	if editor_canvas:
+		editor_canvas.set_child_opacity(self, false)
+		if editor_canvas.event_canvas:
+			editor_canvas.event_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+		if editor_canvas.extraction_event_canvas:
+			editor_canvas.extraction_event_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+		if editor_canvas.enemy_spawn_canvas:
+			editor_canvas.enemy_spawn_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+		if editor_canvas.event_region_canvas:
+			editor_canvas.event_region_canvas.modulate = Color(1.0, 1.0, 1.0, canvas_opacity)
+		if editor_canvas.cursor_canvas:
+			editor_canvas.cursor_canvas.queue_redraw()
+	queue_redraw()
+
+
+func reset_editor_fields_to_defaults(force: bool = false) -> void:
+	_is_loading_editor_config = true
+	preview_overlays = DEFAULT_PREVIEW_OVERLAYS
+	tile_size = DEFAULT_TILE_SIZE
+	if ResourceLoader.exists(DEFAULT_GRID_GRADIENT_PATH):
+		grid_gradient = load(DEFAULT_GRID_GRADIENT_PATH)
+	else:
+		grid_gradient = null
+	grid_color = DEFAULT_GRID_COLOR
+	cursor_radius = DEFAULT_CURSOR_RADIUS
+	children_opacity = DEFAULT_CHILDREN_OPACITY
+	canvas_opacity = DEFAULT_CANVAS_OPACITY
+	
+	_apply_editor_fields_visuals()
+	
+	_is_loading_editor_config = false
+	_editor_config_loaded = true
+	_save_editor_config(force)
+	notify_property_list_changed()
+	print("RPGMap: Editor fields reset to defaults.")
+
+
+func _copy_map_id_to_clipboard() -> void:
+	if not internal_id:
+		internal_id = generate_16_digit_id()
+		notify_property_list_changed()
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+		DisplayServer.clipboard_set(str(internal_id))
+	print("Map id %s copied to clipboard" % str(internal_id))
+#endregion
+
 #region Built-in Engine Methods
 func _init() -> void:
 	if Engine.is_editor_hint():
@@ -221,6 +385,7 @@ func _init() -> void:
 
 func _enter_tree() -> void:
 	if Engine.is_editor_hint():
+		_load_editor_config()
 		var layers = ["GroundBase", "GroundDetail", "Environment", "Walls", "Overlay"]
 		var layer_missing_found: bool = false
 		for i in layers.size():
@@ -245,8 +410,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		preview_overlays = false
-		notify_property_list_changed()
+		_load_editor_config()
 	
 	RPGMapsInfo.map_infos.get_map_list()
 	MAP_LAYERS = {
@@ -278,9 +442,13 @@ func _ready() -> void:
 			_start_preview_mode()
 			
 	if editor_canvas:
-		editor_canvas.set_child_opacity(self, true)
+		editor_canvas.set_child_opacity(self, false)
 	else:
 		_restore_original_opacity(self)
+	
+	if Engine.is_editor_hint():
+		_apply_editor_fields_visuals()
+		notify_property_list_changed()
 	
 	update_modulate_color()
 	update_bgm()

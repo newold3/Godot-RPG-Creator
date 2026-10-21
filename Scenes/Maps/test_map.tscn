@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://cluc8yqovtlvf"]
 
 [ext_resource type="Script" uid="uid://cjwvraifvygt2" path="res://Scenes/Maps/test_map.gd" id="1_didij"]
-[ext_resource type="Gradient" uid="uid://bqcge4l0i5fro" path="res://addons/RPGMap/Assets/GridGradient/orange_gradient.tres" id="2_kukki"]
 [ext_resource type="Script" uid="uid://cioqek6v6bgx4" path="res://addons/RPGMap/Scripts/events.gd" id="3_kxphi"]
 [ext_resource type="TileSet" uid="uid://cro7sb3ncrmmi" path="res://Assets/Tilesets/terrains01.tres" id="4_j28jb"]
 [ext_resource type="TileSet" uid="uid://b2lnlxrnubop0" path="res://Assets/Tilesets/test.tres" id="5_xj7ls"]
@@ -16,7 +15,7 @@
 [ext_resource type="Script" uid="uid://xelmmknmjo8n" path="res://addons/RPGMap/Scripts/troop_spawn_data.gd" id="20_6yorc"]
 [ext_resource type="Script" uid="uid://45qsey742juw" path="res://addons/RPGMap/Scripts/floor_auto_shaders.gd" id="23_bvf2a"]
 
-[sub_resource type="Resource" id="Resource_kn7g7"]
+[sub_resource type="Resource" id="Resource_gmu01"]
 script = ExtResource("3_kxphi")
 
 [sub_resource type="Resource" id="Resource_udsps"]
@@ -135,12 +134,11 @@ custom_data_layer_0/type = 24
 [node name="TestMap" type="Node2D" unique_id=264368788]
 y_sort_enabled = true
 script = ExtResource("1_didij")
-grid_gradient = ExtResource("2_kukki")
 enable_minimap = true
 infinite_horizontal_scroll = true
 infinite_vertical_scroll = true
 use_dynamic_day_night = true
-events = SubResource("Resource_kn7g7")
+events = SubResource("Resource_gmu01")
 extraction_events = Array[ExtResource("15_otpcx")]([SubResource("Resource_m0d5v"), SubResource("Resource_fdakd")])
 regions = Array[ExtResource("19_bvf2a")]([SubResource("Resource_upqxx"), SubResource("Resource_f6s5d")])
 event_regions = Array[ExtResource("19_mppu7")]([SubResource("Resource_i3lja"), SubResource("Resource_3o0ny"), SubResource("Resource_o0x6m"), SubResource("Resource_v05bk")])

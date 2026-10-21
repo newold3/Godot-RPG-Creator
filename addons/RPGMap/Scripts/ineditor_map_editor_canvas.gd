@@ -27,6 +27,7 @@ func build_canvases(refresh_events: bool = false) -> void:
 	# Add events canvas
 	event_canvas = Node2D.new()
 	event_canvas.z_index = 100
+	event_canvas.modulate = Color(1.0, 1.0, 1.0, map.canvas_opacity)
 	event_canvas.draw.connect(_on_event_canvas_draw)
 	map.draw.connect(event_canvas.queue_redraw)
 	map.add_child(event_canvas)
@@ -34,6 +35,7 @@ func build_canvases(refresh_events: bool = false) -> void:
 	# Add extraction event canvas
 	extraction_event_canvas = Node2D.new()
 	extraction_event_canvas.z_index = 100
+	extraction_event_canvas.modulate = Color(1.0, 1.0, 1.0, map.canvas_opacity)
 	extraction_event_canvas.draw.connect(_on_extraction_event_canvas_draw)
 	map.draw.connect(extraction_event_canvas.queue_redraw)
 	map.add_child(extraction_event_canvas)
@@ -59,12 +61,14 @@ func build_canvases(refresh_events: bool = false) -> void:
 		# Add enemy spawn canvas
 		enemy_spawn_canvas = Node2D.new()
 		enemy_spawn_canvas.z_index = 100
+		enemy_spawn_canvas.modulate = Color(1.0, 1.0, 1.0, map.canvas_opacity)
 		enemy_spawn_canvas.draw.connect(_on_enemy_spawn_canvas_draw)
 		map.draw.connect(enemy_spawn_canvas.queue_redraw)
 		map.add_child(enemy_spawn_canvas)
 		# Add event region canvas
 		event_region_canvas = Node2D.new()
 		event_region_canvas.z_index = 100
+		event_region_canvas.modulate = Color(1.0, 1.0, 1.0, map.canvas_opacity)
 		event_region_canvas.draw.connect(_on_event_region_canvas_draw)
 		map.draw.connect(event_region_canvas.queue_redraw)
 		map.add_child(event_region_canvas)
