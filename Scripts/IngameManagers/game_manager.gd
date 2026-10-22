@@ -704,12 +704,29 @@ func disable_followers_tracking(time: float = 0.5) -> void:
 		main_scene.process_follower_command("disable_tracking", time)
 
 
+var is_shifting_leader: bool = false
+
+
 func shift_up_follower() -> void:
+	if is_shifting_leader: return
+	if main_scene and main_scene.has_node("%PartyManager"):
+		var pm = main_scene.get_node("%PartyManager")
+		if pm.has_method("can_change_leader") and not pm.can_change_leader():
+			return
+	is_shifting_leader = true
 	if main_scene: await main_scene.process_follower_command("shift_up")
+	is_shifting_leader = false
 
 
 func shift_down_follower() -> void:
+	if is_shifting_leader: return
+	if main_scene and main_scene.has_node("%PartyManager"):
+		var pm = main_scene.get_node("%PartyManager")
+		if pm.has_method("can_change_leader") and not pm.can_change_leader():
+			return
+	is_shifting_leader = true
 	if main_scene: await main_scene.process_follower_command("shift_down")
+	is_shifting_leader = false
 
 
 func destroy_followers() -> void:

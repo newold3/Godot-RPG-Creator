@@ -228,13 +228,14 @@ func _physics_process(delta: float):
 		_click_indicator_cooldown = 0.0
 		
 	if not Engine.is_editor_hint() and is_in_group("player"):
+		var can_shift = not carried_event and not is_lifting and not is_moving and not is_jumping and not busy and not GameManager.is_shifting_leader
 		if Input.is_action_just_pressed("Button L2"):
-			if not carried_event and not is_lifting:
+			if can_shift:
 				if GameManager.current_player: GameManager.current_player.busy2 = true
 				await GameManager.shift_up_follower()
 				if GameManager.current_player: GameManager.current_player.busy2 = false
 		elif Input.is_action_just_pressed("Button R2"):
-			if not carried_event and not is_lifting:
+			if can_shift:
 				if GameManager.current_player: GameManager.current_player.busy2 = true
 				await GameManager.shift_down_follower()
 				if GameManager.current_player: GameManager.current_player.busy2 = false

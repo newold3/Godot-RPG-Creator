@@ -49,6 +49,7 @@ var _last_valid_snapshot: Dictionary = {}
 var _last_player_head_pos: Vector2 = Vector2.ZERO
 
 var is_fading_transition: bool = false
+var always_show_weapon: bool = false
 
 signal arrived_at_destination
 var is_walking_to_drop: bool = false
@@ -57,6 +58,7 @@ var custom_drop_speed: float = 120.0
 
 signal joined_queue
 var is_joining_queue: bool = false
+var is_transition_walking: bool = false
 
 var is_custom_follower: bool = false
 var custom_character_type: int = 0
@@ -106,7 +108,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_custom_follower and custom_character_type == 2 and instanced_scene and instanced_scene.has_method("process_event_state"):
 		var state = {
-			"is_moving": current_animation == "walk" and (is_sync_active or is_walking_to_drop or is_joining_queue),
+			"is_moving": current_animation == "walk" and (is_sync_active or is_walking_to_drop or is_joining_queue or is_transition_walking),
 			"direction": current_direction,
 			"delta": delta
 		}
@@ -126,12 +128,22 @@ func _process(delta: float) -> void:
 		_process_joining_queue(delta)
 		return
 		
+	if is_transition_walking:
+		current_animation = "walk"
+		_process_next_frame(delta)
+		return
+
 	if not is_sync_active:
 		current_animation = "idle"
 		_process_next_frame(delta)
 		return
 
-	if not target_node or is_invalid_event or is_jumping_locally:
+	if not is_instance_valid(target_node):
+		_recalculate_target()
+		if not is_instance_valid(target_node):
+			return
+
+	if is_invalid_event or is_jumping_locally:
 		if is_jumping_locally:
 			_process_next_frame(delta)
 		return
@@ -381,6 +393,37 @@ func _process_joining_queue(delta: float) -> void:
 
 
 
+## Recalculates target_node and follower_id if target was lost or destroyed, and walks to new queue position.
+func _recalculate_target() -> void:
+	if is_invalid_event or is_walking_to_drop:
+		return
+		
+	var pm = null
+	if GameManager.main_scene and GameManager.main_scene.has_node("%PartyManager"):
+		pm = GameManager.main_scene.get_node("%PartyManager")
+		
+	if pm and is_instance_valid(pm) and "followers" in pm:
+		var idx = pm.followers.find(self)
+		if idx != -1:
+			follower_id = idx + 1
+			set_meta("party_id", idx + 1)
+			target_node = GameManager.current_player if idx == 0 else pm.followers[idx - 1]
+			if not is_instance_valid(target_node):
+				target_node = GameManager.current_player
+			
+			var target_pos = get_target_queue_position()
+			if global_position.distance_to(target_pos) > 16.0:
+				start_joining_queue(global_position, current_direction)
+			return
+	
+	if GameManager.current_player and is_instance_valid(GameManager.current_player):
+		target_node = GameManager.current_player
+		var target_pos = get_target_queue_position()
+		if global_position.distance_to(target_pos) > 16.0:
+			start_joining_queue(global_position, current_direction)
+
+
+
 ## Executes a local jump animation imitating the leader's recorded jump
 func _trigger_local_jump(snap: Dictionary) -> void:
 	if is_jumping_locally: return
@@ -518,15 +561,21 @@ func _apply_snapshot_visuals(snap: Dictionary) -> void:
 	wings.region_rect = rect
 	wings.flip_h = flip
 	
-	_update_weapon_textures()
-	
-	if (mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()):
-		mainhand_back.region_rect = rect
-		mainhand_back.flip_h = flip
+	if always_show_weapon:
+		_update_weapon_textures()
 		
-	if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
-		offhand_front.region_rect = rect
-		offhand_front.flip_h = flip
+		if (mainhand_back.texture and mainhand_back.texture.get_size() == body.texture.get_size()):
+			mainhand_back.region_rect = rect
+			mainhand_back.flip_h = flip
+			
+		if (offhand_front.texture and offhand_front.texture.get_size() == body.texture.get_size()):
+			offhand_front.region_rect = rect
+			offhand_front.flip_h = flip
+	else:
+		mainhand_back.visible = false
+		mainhand_front.visible = false
+		offhand_back.visible = false
+		offhand_front.visible = false
 		
 	var mask_node = get_node_or_null("Mask")
 	if not mask_node:
@@ -675,11 +724,7 @@ func update_appearance_cascade(actor_id: Variant, instant: bool = false) -> void
 		instanced_scene.queue_free()
 		instanced_scene = null
 	wings.visible = true
-	offhand_back.visible = true
-	mainhand_back.visible = true
 	body.visible = true
-	offhand_front.visible = true
-	mainhand_front.visible = true
 
 	var actor = RPGSYSTEM.get_data("actors", actor_id)
 	if not actor: return
@@ -687,13 +732,22 @@ func update_appearance_cascade(actor_id: Variant, instant: bool = false) -> void
 	name = "Follower_" + actor.name
 
 	var char_data: RPGLPCCharacter = load(actor.character_data_file)
+	always_show_weapon = char_data.always_show_weapon if (char_data and "always_show_weapon" in char_data) else false
 	
-	if FileAccess.file_exists(char_data.equipment_parts.mainhand.config_path):
-		var f = FileAccess.open(char_data.equipment_parts.mainhand.config_path, FileAccess.READ)
-		current_weapon_data = JSON.parse_string(f.get_as_text())
-		f.close()
-	else:
-		current_weapon_data = {}
+	offhand_back.visible = always_show_weapon
+	mainhand_back.visible = always_show_weapon
+	offhand_front.visible = always_show_weapon
+	mainhand_front.visible = always_show_weapon
+	
+	current_weapon_data = {}
+	if char_data and "equipment_parts" in char_data and char_data.equipment_parts:
+		var mainhand = char_data.equipment_parts.get("mainhand")
+		if mainhand and "config_path" in mainhand and mainhand.config_path != "":
+			if FileAccess.file_exists(mainhand.config_path):
+				var f = FileAccess.open(mainhand.config_path, FileAccess.READ)
+				if f:
+					current_weapon_data = JSON.parse_string(f.get_as_text())
+					f.close()
 	
 	modulate.a = 1.0 if instant else 0.0
 	
@@ -706,10 +760,18 @@ func update_appearance_cascade(actor_id: Variant, instant: bool = false) -> void
 			mainhand_back,
 			body,
 			offhand_front,
-			offhand_front,
+			mainhand_front,
 			actor_id
 		)
-		await baker.character_baked
+		while true:
+			var finished_id = await baker.character_baked
+			if finished_id == bake_id:
+				break
+				
+	offhand_back.visible = always_show_weapon
+	mainhand_back.visible = always_show_weapon
+	offhand_front.visible = always_show_weapon
+	mainhand_front.visible = always_show_weapon
 	
 	if not instant:
 		var tween_in = create_tween()

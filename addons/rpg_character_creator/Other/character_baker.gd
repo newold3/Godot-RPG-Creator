@@ -678,7 +678,7 @@ func _get_weapon_paths_for_animation(part: RPGLPCEquipmentPart, animation_id: St
 
 func _apply_visibility_rules(data: RPGLPCCharacter, force_weapon_visible: bool = false) -> void:
 	if not data.always_show_weapon and not force_weapon_visible:
-		for key in ["mainhand", "ammo"]: _set_nodes_visibility(key, false)
+		for key in ["mainhand", "offhand", "ammo"]: _set_nodes_visibility(key, false)
 	for key in data.hidden_items: _set_nodes_visibility(key, false)
 
 

@@ -799,7 +799,6 @@ script = ExtResource("8_oon1j")
 [sub_resource type="Resource" id="Resource_d1q8m"]
 script = ExtResource("2_7i1fv")
 _uniq_id = 4938602066680818
-id = 0
 list = Array[ExtResource("4_4d10c")]([SubResource("Resource_vlut5"), SubResource("Resource_fuid5"), SubResource("Resource_cqwxl"), SubResource("Resource_my174"), SubResource("Resource_wf8cp")])
 condition = SubResource("Resource_m2ele")
 movement_route = SubResource("Resource_020ca")
@@ -810,22 +809,75 @@ event_signal_list = PackedInt32Array()
 character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
 
 [sub_resource type="Resource" id="Resource_rvihx"]
-script = ExtResource("10_k8bko")
+script = ExtResource("3_pu3ch")
+pressure_targets = PackedInt64Array(0)
+variable_value = 0
 
 [sub_resource type="Resource" id="Resource_fmkon"]
-script = ExtResource("11_8au4t")
-levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_rvihx")])
+script = ExtResource("5_r4f3p")
 
 [sub_resource type="Resource" id="Resource_n6ngd"]
+script = ExtResource("4_4d10c")
+code = 2
+parameters = {
+&"character_name": {
+"type": 0,
+"value": ""
+},
+&"face": SubResource("Resource_fmkon"),
+&"height": 0.0,
+&"is_floating_dialog": false,
+&"position": 0,
+&"width": 0.0
+}
+
+[sub_resource type="Resource" id="Resource_85xkn"]
+script = ExtResource("4_4d10c")
+code = 3
+parameters = {
+"line": "Gracias ya llegamos!"
+}
+
+[sub_resource type="Resource" id="Resource_ju4gx"]
+script = ExtResource("4_4d10c")
+
+[sub_resource type="Resource" id="Resource_fk20e"]
+script = ExtResource("7_nw8pp")
+
+[sub_resource type="Resource" id="Resource_pqej1"]
+script = ExtResource("8_oon1j")
+
+[sub_resource type="Resource" id="Resource_0sp0a"]
+script = ExtResource("2_7i1fv")
+_uniq_id = 7511794390542771
+id = 2
+list = Array[ExtResource("4_4d10c")]([SubResource("Resource_n6ngd"), SubResource("Resource_85xkn"), SubResource("Resource_ju4gx")])
+condition = SubResource("Resource_rvihx")
+movement_route = SubResource("Resource_fk20e")
+options = SubResource("Resource_pqej1")
+event_trigger_list = PackedInt64Array()
+event_tool_list = PackedInt32Array()
+event_signal_list = PackedInt32Array()
+character_path = "res://Scenes/NPCs/juanillo/juanillo_data.tres"
+is_quest_page = true
+
+[sub_resource type="Resource" id="Resource_xppm7"]
+script = ExtResource("10_k8bko")
+
+[sub_resource type="Resource" id="Resource_bjnt2"]
+script = ExtResource("11_8au4t")
+levels = Array[ExtResource("10_k8bko")]([SubResource("Resource_xppm7")])
+
+[sub_resource type="Resource" id="Resource_1brua"]
 script = ExtResource("1_546u1")
 _uniq_id = 8528420441462724
 name = "Manolito 12 er mas molon del circo"
 id = 5
 x = 20
 y = 10
-pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_8au4t"), SubResource("Resource_d1q8m")])
-relationship = SubResource("Resource_fmkon")
-_editor_last_page_used = 1
+pages = Array[ExtResource("2_7i1fv")]([SubResource("Resource_8au4t"), SubResource("Resource_d1q8m"), SubResource("Resource_0sp0a")])
+relationship = SubResource("Resource_bjnt2")
+_editor_last_page_used = 2
 legacy_mode = true
 
 [sub_resource type="Resource" id="Resource_xppuo"]
@@ -4597,4 +4649,4 @@ legacy_mode = true
 
 [resource]
 script = ExtResource("12_m2ele")
-events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_n6ngd"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_vjrld"), SubResource("Resource_ps66w")])
+events = Array[ExtResource("1_546u1")]([SubResource("Resource_em1s3"), SubResource("Resource_lbrkh"), SubResource("Resource_ehbhv"), SubResource("Resource_ixleh"), SubResource("Resource_1brua"), SubResource("Resource_fxc3q"), SubResource("Resource_61jql"), SubResource("Resource_m64xv"), SubResource("Resource_063iu"), SubResource("Resource_jp37q"), SubResource("Resource_ww6ku"), SubResource("Resource_3ufao"), SubResource("Resource_vjrld"), SubResource("Resource_ps66w")])

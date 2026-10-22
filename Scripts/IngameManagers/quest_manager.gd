@@ -1781,6 +1781,10 @@ func _drop_off_escort_npc(active_quest: GameQuest, animate_walk: bool = true) ->
 			if GameManager.game_state.escorted_npcs[i].get("quest_id") == active_quest.id:
 				GameManager.game_state.escorted_npcs.remove_at(i)
 
+	# Re-sync remaining train followers so any subsequent escort NPCs update their target and follower_id
+	if party_manager:
+		party_manager.show_followers(true, false)
+
 	# 5. Animate follower walking towards drop_pos
 	var final_facing_direction = LPCCharacter.DIRECTIONS.DOWN
 	if escort_follower_node and is_instance_valid(escort_follower_node):
@@ -1878,7 +1882,7 @@ func _quest_involves_escort(db_quest: RPGQuest) -> bool:
 		return false
 	if db_quest.type == RPGEnums.QuestMode.ESCORT_NPC and not is_invalid_escort_quest(db_quest):
 		return true
-	if "multi_quests" in db_quest and db_quest.multi_quests is PackedInt64Array:
+	if "multi_quests" in db_quest and not db_quest.multi_quests.is_empty():
 		for sub_id in db_quest.multi_quests:
 			var sub_db = _get_quest_from_database(sub_id)
 			if sub_db and sub_db.type == RPGEnums.QuestMode.ESCORT_NPC and not is_invalid_escort_quest(sub_db):

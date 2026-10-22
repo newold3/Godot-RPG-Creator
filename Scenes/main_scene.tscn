@@ -21,6 +21,78 @@
 [ext_resource type="Script" uid="uid://cqx2v0onhinl4" path="res://Scripts/IngameManagers/quest_icons_canvas.gd" id="17_oyb3p"]
 [ext_resource type="PackedScene" uid="uid://j7uwss7o0a3h" path="res://Scenes/QuestTrackerScene/quest_tracker.tscn" id="18_b48ew"]
 
+[sub_resource type="Shader" id="Shader_66u3i"]
+code = "shader_type canvas_item;
+
+/* Strength of the edge-preserving noise reduction */
+uniform float denoise_strength : hint_range(0.0, 1.0, 0.05) = 0.4;
+
+/* Color similarity threshold to preserve sharp outlines */
+uniform float edge_threshold : hint_range(0.01, 0.5, 0.01) = 0.12;
+
+/* Intensity of the soft glow on bright areas */
+uniform float bloom_intensity : hint_range(0.0, 1.0, 0.05) = 0.25;
+
+/* Luminance threshold required for a pixel to emit glow */
+uniform float bloom_threshold : hint_range(0.3, 1.0, 0.05) = 0.7;
+
+/* Blend factor for the ACES filmic tone mapping curve */
+uniform float aces_tonemap : hint_range(0.0, 1.0, 0.05) = 0.6;
+
+vec3 apply_aces(vec3 x) {
+	float a = 2.51;
+	float b = 0.03;
+	float c = 2.43;
+	float d = 0.59;
+	float e = 0.14;
+	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
+
+void fragment() {
+	vec2 pixel_size = 1.0 / vec2(textureSize(TEXTURE, 0));
+	vec4 center = texture(TEXTURE, UV);
+
+	vec3 accum_color = vec3(0.0);
+	float accum_weight = 0.0;
+	vec3 bloom_accum = vec3(0.0);
+
+	for (int x = -1; x <= 1; x++) {
+		for (int y = -1; y <= 1; y++) {
+			vec2 offset = vec2(float(x), float(y)) * pixel_size;
+			vec3 sample_col = texture(TEXTURE, UV + offset).rgb;
+
+			float color_dist = length(sample_col - center.rgb);
+			float weight = exp(-(color_dist * color_dist) / (2.0 * edge_threshold * edge_threshold));
+
+			accum_color += sample_col * weight;
+			accum_weight += weight;
+
+			float luma = dot(sample_col, vec3(0.299, 0.587, 0.114));
+			float bloom_factor = max(0.0, luma - bloom_threshold);
+			bloom_accum += sample_col * bloom_factor;
+		}
+	}
+
+	vec3 denoised = accum_color / max(accum_weight, 0.0001);
+	vec3 color = mix(center.rgb, denoised, denoise_strength);
+
+	bloom_accum /= 9.0;
+	color += bloom_accum * bloom_intensity * 2.5;
+
+	vec3 mapped = apply_aces(color);
+	color = mix(color, mapped, aces_tonemap);
+
+	COLOR = vec4(clamp(color, 0.0, 1.0), center.a);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jy4m"]
+shader = SubResource("Shader_66u3i")
+shader_parameter/denoise_strength = 0.5000000074506
+shader_parameter/edge_threshold = 0.25999999418847997
+shader_parameter/bloom_intensity = 1.0
+shader_parameter/bloom_threshold = 0.5000000149011701
+shader_parameter/aces_tonemap = 0.05000000074506
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbbkg"]
 frequency = 0.0011
 
@@ -142,6 +214,7 @@ script = ExtResource("9_lhp3t")
 [node name="MainSubViewportContainer" type="SubViewportContainer" parent="." unique_id=1938859068]
 unique_name_in_owner = true
 y_sort_enabled = true
+material = SubResource("ShaderMaterial_3jy4m")
 offset_right = 1152.0
 offset_bottom = 640.0
 focus_mode = 0
@@ -456,4 +529,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/VboxDialogContainer/Dialog/@CanvasLayer@33786/Message" to="MessageCanvas/VboxDialogContainer/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/VboxDialogContainer/Dialog/@CanvasLayer@24841/Message" to="MessageCanvas/VboxDialogContainer/Dialog" method="_on_message_item_rect_changed"]

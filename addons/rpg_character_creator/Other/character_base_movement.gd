@@ -18,6 +18,8 @@ func get_motion(target_position: Vector2) -> Dictionary:
 	var map = GameManager.current_map
 	var motion = Vector2.ZERO
 	var result = {"final_motion": motion, "current_motion": motion}
+	if not is_instance_valid(current_entity) or not current_entity.is_inside_tree() or not current_entity.get_world_2d() or current_entity.get_world_2d().space == RID():
+		return result
 	var disable_motion: bool = false
 	
 	var possible_movements = get_possible_movements(target_position)
