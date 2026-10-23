@@ -159,6 +159,7 @@ func replace_all_tooltips_with_custom(node: Node) -> void:
 
 
 func plugin_replace_all_tooltips_with_custom(node: Node) -> void:
+	if not is_instance_valid(node): return
 	if "tooltip_text" in node:
 		if node.tooltip_text.length() > 0:
 			var tooltip = node.tooltip_text

@@ -128,7 +128,12 @@ custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 tooltip_text = "[title]Auto Fill[/title]
-If your character image is arranged as 0-9, a-z, and A-Z, you can enter \"0\", \"a,\" and \"A\", then click this button to have the rest filled in automatically"
+Fills glyphs in sequential order starting from the character of the first selected panel:
+
+• Multiple panels selected: Fills each selected panel with consecutive characters (e.g. 'a' -> 'b', 'c', 'd'...).
+• Single panel selected: Fills all subsequent panels from this one to the end of the list.
+
+(Active only when at least one panel is selected and has a starting character, number, or symbol)"
 disabled = true
 text = "Auto Fill"
 
@@ -185,7 +190,6 @@ allow_lesser = true
 editable = false
 suffix = " "
 disabled = true
-_custom_value = 0.0
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=969838539]
 layout_mode = 2
@@ -205,7 +209,6 @@ allow_lesser = true
 editable = false
 suffix = " "
 disabled = true
-_custom_value = 0.0
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer3" unique_id=1781604661]
 layout_mode = 2
@@ -275,6 +278,16 @@ selecting_enabled = false
 disabled = true
 metadata/original_text = ""
 
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer" unique_id=2085220993]
+layout_mode = 2
+text = "Preview Modulate:"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer" unique_id=1075769398]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+color = Color(1, 1, 1, 1)
+
 [node name="PreviewLabel" type="Label" parent="MarginContainer/VBoxContainer/CommandConrtainer" unique_id=349613728]
 unique_name_in_owner = true
 layout_mode = 2
@@ -302,4 +315,5 @@ text = "Close"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/SelectNewImage" to="." method="_on_select_new_image_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer2/FixRects" to="." method="_on_visual_editor_button_pressed"]
+[connection signal="color_changed" from="MarginContainer/VBoxContainer/CommandConrtainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

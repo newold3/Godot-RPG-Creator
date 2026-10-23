@@ -27,6 +27,7 @@ var current_preview_font: FontFile
 var current_image_path: String = ""
 
 var busy: bool = false
+var _last_clicked_panel: PanelContainer = null
 
 const CACHE_KEY := "bitmap_to_font"
 
@@ -99,6 +100,7 @@ func _setup_toolbar() -> void:
 	import_button.pressed.connect(_on_import_button_pressed)
 	
 	clear_button.pressed.connect(_on_clear_button_pressed)
+	_update_auto_fill_button_state()
 
 
 func _on_clear_button_pressed() -> void:
@@ -324,16 +326,37 @@ func _parse_bmfont_line(line: String) -> Dictionary:
 
 
 func _on_auto_fill_sequence_pressed() -> void:
-	var current_unicode: int = -1
+	var selected_panels: Array = []
+	for child in main_container.get_children():
+		if child.get("is_selected"):
+			selected_panels.append(child)
+			
+	if selected_panels.is_empty():
+		return
+		
+	var first_panel = selected_panels[0]
+	if first_panel.current_character.is_empty():
+		return
+		
+	var start_unicode: int = first_panel.current_character.unicode_at(0)
 	var updated: bool = false
 	
-	for child in main_container.get_children():
-		if not child.current_character.is_empty():
-			current_unicode = child.current_character.unicode_at(0)
-		elif current_unicode != -1:
-			current_unicode += 1
-			if child.has_method("set_character_silent"):
-				child.set_character_silent(String.chr(current_unicode))
+	if selected_panels.size() > 1:
+		for i in range(1, selected_panels.size()):
+			var panel = selected_panels[i]
+			var next_unicode: int = start_unicode + i
+			if panel.has_method("set_character_silent"):
+				panel.set_character_silent(String.chr(next_unicode))
+				updated = true
+	else:
+		var start_index: int = first_panel.get_index()
+		var total_children: int = main_container.get_child_count()
+		for idx in range(start_index + 1, total_children):
+			var panel = main_container.get_child(idx)
+			var offset: int = idx - start_index
+			var next_unicode: int = start_unicode + offset
+			if panel.has_method("set_character_silent"):
+				panel.set_character_silent(String.chr(next_unicode))
 				updated = true
 				
 	if updated:
@@ -374,6 +397,7 @@ func _on_selection_option_selected(index: int) -> void:
 				
 	selection_option.select(0)
 	_update_spinboxes_from_selection()
+	_update_auto_fill_button_state()
 
 
 func _on_align_x_changed(value: float) -> void:
@@ -543,29 +567,135 @@ func _get_bounding_box(polygon: PackedVector2Array) -> Rect2i:
 	return Rect2i(min_point, max_point - min_point)
 
 
-func _on_letter_char_changed(index: int, char: String) -> void:
+func _on_letter_char_changed(_index: int, _char: String) -> void:
 	_update_preview_font()
 	_update_auto_fill_button_state()
-	
-	var next_index := index + 1
-	
-	if next_index < main_container.get_child_count():
-		var next_letter = main_container.get_child(next_index)
+
+
+func _format_character_sequence_preview(chars: Array[String], is_es: bool) -> String:
+	var total := chars.size()
+	if total == 0:
+		return ""
 		
-		if next_letter.has_method("set_selected"):
-			_on_letter_clicked(next_letter, false, false)
+	var display_chars: Array[String] = []
+	for c in chars:
+		if c == " ":
+			display_chars.append("[espacio]" if is_es else "[space]")
+		elif c.unicode_at(0) < 32:
+			display_chars.append("U+%02X" % c.unicode_at(0))
+		else:
+			display_chars.append(c)
+			
+	const MAX_SHOWN := 48
+	const PER_LINE := 16
+	
+	var lines: Array[String] = []
+	var limit := mini(total, MAX_SHOWN)
+	
+	var current_line_chars: Array[String] = []
+	for i in range(limit):
+		current_line_chars.append(display_chars[i])
+		if current_line_chars.size() == PER_LINE:
+			lines.append(", ".join(current_line_chars))
+			current_line_chars.clear()
+			
+	if not current_line_chars.is_empty():
+		lines.append(", ".join(current_line_chars))
+		
+	if total > MAX_SHOWN:
+		var remaining := total - MAX_SHOWN
+		var last_char := display_chars[total - 1]
+		if is_es:
+			lines.append("... y %d caracteres más (hasta '%s')" % [remaining, last_char])
+		else:
+			lines.append("... and %d more characters (up to '%s')" % [remaining, last_char])
+			
+	return "\n".join(lines)
+
+
+func _set_auto_fill_tooltip(text: String) -> void:
+	if auto_fill_button == null:
+		return
+	auto_fill_button.tooltip_text = text
+	if auto_fill_button.has_meta("current_tooltip"):
+		auto_fill_button.set_meta("current_tooltip", text)
 
 
 func _update_auto_fill_button_state() -> void:
-	var has_empty: bool = false
+	if auto_fill_button == null:
+		return
+		
+	var can_autofill: bool = false
+	var selected_panels: Array = []
 	
 	for child in main_container.get_children():
-		if child.current_character.is_empty():
-			has_empty = true
-			break
+		if child.get("is_selected"):
+			selected_panels.append(child)
 			
-	if auto_fill_button != null:
-		auto_fill_button.disabled = !has_empty
+	var is_es: bool = TranslationServer.get_locale().begins_with("es")
+	var tooltip_str: String = ""
+	
+	if selected_panels.is_empty():
+		if is_es:
+			tooltip_str = "[title]Auto Fill[/title]\nRellena glifos en orden secuencial según el carácter del primer panel seleccionado:\n\n• Selección múltiple: Rellena los paneles seleccionados con caracteres consecutivos.\n• Selección única: Rellena todos los paneles posteriores hasta el final.\n\n(Selecciona un panel y escribe un carácter inicial para previsualizar la secuencia)"
+		else:
+			tooltip_str = "[title]Auto Fill[/title]\nFills glyphs in sequential order starting from the character of the first selected panel:\n\n• Multiple panels selected: Fills each selected panel with consecutive characters.\n• Single panel selected: Fills all subsequent panels from this one to the end of the list.\n\n(Select a panel and enter a starting character, number, or symbol to preview sequence)"
+	else:
+		var first_selected = selected_panels[0]
+		if first_selected.current_character.is_empty():
+			if is_es:
+				tooltip_str = "[title]Auto Fill[/title]\nEl panel seleccionado no tiene ningún carácter asignado.\n\nEscribe una letra, número o símbolo inicial en el panel seleccionado para previsualizar y autorrellenar la secuencia."
+			else:
+				tooltip_str = "[title]Auto Fill[/title]\nThe selected panel does not have a character assigned.\n\nEnter a starting letter, number, or symbol in the selected panel to preview and auto fill the sequence."
+		else:
+			var start_char: String = first_selected.current_character
+			var start_unicode: int = start_char.unicode_at(0)
+			
+			if selected_panels.size() > 1:
+				can_autofill = true
+				var fill_count: int = selected_panels.size() - 1
+				var fill_chars: Array[String] = []
+				for i in range(1, selected_panels.size()):
+					fill_chars.append(String.chr(start_unicode + i))
+				
+				var preview_sequence: String = _format_character_sequence_preview(fill_chars, is_es)
+				if is_es:
+					tooltip_str = "[title]Auto Fill[/title]\nPartiendo de '%s', rellenará los %d paneles seleccionados con:\n\n%s" % [
+						start_char, fill_count, preview_sequence
+					]
+				else:
+					tooltip_str = "[title]Auto Fill[/title]\nStarting from '%s', fills the %d selected panels with:\n\n%s" % [
+						start_char, fill_count, preview_sequence
+					]
+			else:
+				var start_index: int = first_selected.get_index()
+				var last_index: int = main_container.get_child_count() - 1
+				if start_index < last_index:
+					can_autofill = true
+					var fill_count: int = last_index - start_index
+					var fill_chars: Array[String] = []
+					for idx in range(start_index + 1, last_index + 1):
+						var offset: int = idx - start_index
+						fill_chars.append(String.chr(start_unicode + offset))
+						
+					var preview_sequence: String = _format_character_sequence_preview(fill_chars, is_es)
+					if is_es:
+						tooltip_str = "[title]Auto Fill[/title]\nPartiendo de '%s', rellenará %d paneles hasta el final con:\n\n%s" % [
+							start_char, fill_count, preview_sequence
+						]
+					else:
+						tooltip_str = "[title]Auto Fill[/title]\nStarting from '%s', fills %d panels to the end with:\n\n%s" % [
+							start_char, fill_count, preview_sequence
+						]
+				else:
+					if is_es:
+						tooltip_str = "[title]Auto Fill[/title]\nEl panel seleccionado ('%s') es el último de la lista.\n\nNo hay paneles posteriores para autorrellenar." % start_char
+					else:
+						tooltip_str = "[title]Auto Fill[/title]\nThe selected panel ('%s') is the last one in the list.\n\nThere are no subsequent panels to auto fill." % start_char
+						
+	auto_fill_button.disabled = !can_autofill
+	_set_auto_fill_tooltip(tooltip_str)
+
 
 
 func _on_preview_text_changed(new_text: String) -> void:
@@ -851,16 +981,26 @@ func _save_font_to_disk(fnt_path: String, img_path: String) -> void:
 
 
 func _on_letter_clicked(panel: PanelContainer, shift_pressed: bool, ctrl_pressed: bool) -> void:
-	if shift_pressed or ctrl_pressed:
+	if shift_pressed and is_instance_valid(_last_clicked_panel) and _last_clicked_panel.get_parent() == main_container:
+		var start_idx: int = min(_last_clicked_panel.get_index(), panel.get_index())
+		var end_idx: int = max(_last_clicked_panel.get_index(), panel.get_index())
+		for idx in range(start_idx, end_idx + 1):
+			var child = main_container.get_child(idx)
+			if child.has_method("set_selected"):
+				child.set_selected(true)
+	elif shift_pressed or ctrl_pressed:
 		panel.set_selected(not panel.is_selected)
+		_last_clicked_panel = panel
 	else:
 		for child in main_container.get_children():
 			if child != panel:
 				if child.has_method("set_selected") and child.is_selected:
 					child.set_selected(false)
 		panel.set_selected(true)
+		_last_clicked_panel = panel
 		
 	_update_spinboxes_from_selection()
+	_update_auto_fill_button_state()
 
 
 func _update_spinboxes_from_selection() -> void:
@@ -909,3 +1049,7 @@ func _on_visual_editor_button_pressed() -> void:
 
 func _on_cancel_button_pressed() -> void:
 	queue_free()
+
+
+func _on_color_picker_button_color_changed(color: Color) -> void:
+	preview_label.set("theme_override_colors/font_color", color)

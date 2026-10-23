@@ -100,6 +100,8 @@ func set_image(atlas: AtlasTexture) -> void:
 func _on_select_char_focus_entered() -> void:
 	if select_char: 
 		select_char.modulate = Color.GREEN
+	if not is_selected:
+		click.emit(self, false, false)
 
 
 func _on_select_char_focus_exited() -> void:

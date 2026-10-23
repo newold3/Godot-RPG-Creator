@@ -17,38 +17,39 @@ func _enter_tree() -> void:
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom(character_creator_button)
 	
 	ResourceLoader.load_threaded_request(database_scene_path)
-	
-	while ResourceLoader.load_threaded_get_status(database_scene_path) != ResourceLoader.THREAD_LOAD_LOADED:
-		get_tree().process_frame
-	
-	interface = ResourceLoader.load_threaded_get(database_scene_path).instantiate()
-	interface.visibility_changed.connect(_on_interface_visibility_changed)
-	interface.tree_exiting.connect(_on_interface_visibility_changed)
-	interface.transient = false
 
 
 func _on_create_character_button_pressed() -> void:
-	while !interface and ResourceLoader.load_threaded_get_status(database_scene_path) != ResourceLoader.THREAD_LOAD_LOADED:
-		get_tree().process_frame
+	while !interface and ResourceLoader.load_threaded_get_status(database_scene_path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await get_tree().process_frame
 	
 	if !interface:
-		interface = ResourceLoader.load_threaded_get(database_scene_path).instantiate()
-		interface = RPGDialogFunctions.open_dialog(interface, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
-		interface.visibility_changed.connect(_on_interface_visibility_changed)
-		interface.tree_exiting.connect(_on_interface_visibility_changed)
-		interface.propagate_call("set_plugin_enabled", [true])
+		var scene: PackedScene = null
+		if ResourceLoader.load_threaded_get_status(database_scene_path) == ResourceLoader.THREAD_LOAD_LOADED:
+			scene = ResourceLoader.load_threaded_get(database_scene_path)
+		elif ResourceLoader.exists(database_scene_path):
+			scene = load(database_scene_path)
+			
+		if scene:
+			interface = scene.instantiate()
+			interface = RPGDialogFunctions.open_dialog(interface, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
+			interface.visibility_changed.connect(_on_interface_visibility_changed)
+			interface.tree_exiting.connect(_on_interface_visibility_changed)
+			interface.propagate_call("set_plugin_enabled", [true])
+			interface.transient = false
 	else:
 		var dialog = RPGDialogFunctions.open_dialog(interface, RPGDialogFunctions.OPEN_MODE.CENTERED_ON_MOUSE)
 		dialog.transient = false
 	
-	var state = FileCache.options.get("lpc_character_creator_dialog", null)
-	if !state:
-		var s = Vector2i(DisplayServer.screen_get_size() * 0.85)
-		interface.size = s
-		interface.position = DisplayServer.screen_get_size() / 2 - interface.size / 2
-	else:
-		interface.size = state.size
-		interface.position = state.position
+	if interface:
+		var state = FileCache.options.get("lpc_character_creator_dialog", null)
+		if !state:
+			var s = Vector2i(DisplayServer.screen_get_size() * 0.85)
+			interface.size = s
+			interface.position = DisplayServer.screen_get_size() / 2 - interface.size / 2
+		else:
+			interface.size = state.size
+			interface.position = state.position
 
 
 func _on_interface_visibility_changed() -> void:

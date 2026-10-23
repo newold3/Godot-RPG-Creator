@@ -269,6 +269,9 @@ func _load_editor_config(force: bool = false) -> void:
 		grid_gradient = load(DEFAULT_GRID_GRADIENT_PATH)
 	else:
 		grid_gradient = null
+
+	if (grid_gradient == null or grid_gradient.get_point_count() == 0) and ResourceLoader.exists(DEFAULT_GRID_GRADIENT_PATH):
+		grid_gradient = load(DEFAULT_GRID_GRADIENT_PATH)
 		
 	grid_color = config.get_value(EDITOR_CONFIG_SECTION, "grid_color", DEFAULT_GRID_COLOR)
 	cursor_radius = config.get_value(EDITOR_CONFIG_SECTION, "cursor_radius", DEFAULT_CURSOR_RADIUS)

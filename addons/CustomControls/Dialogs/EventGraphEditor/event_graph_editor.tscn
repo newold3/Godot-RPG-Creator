@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2m81graphedit01"]
+
+[ext_resource type="Theme" uid="uid://dkrs350vaq2kh" path="res://addons/RPGMap/Assets/Themes/dialog_theme.tres" id="1_theme"]
+[ext_resource type="Script" uid="uid://dd4rroo33s6yq" path="res://addons/CustomControls/Dialogs/EventGraphEditor/event_graph_editor.gd" id="2_script"]
+
+[node name="EventGraphEditor" type="Window" unique_id=987123456]
+canvas_item_default_texture_filter = 3
+oversampling_override = 1.0
+title = "Event Graph Editor"
+position = Vector2i(0, 36)
+size = Vector2i(1200, 780)
+wrap_controls = true
+transient = true
+exclusive = true
+min_size = Vector2i(800, 500)
+theme = ExtResource("1_theme")
+script = ExtResource("2_script")

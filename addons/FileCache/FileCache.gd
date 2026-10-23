@@ -565,25 +565,31 @@ func cache_file(file_path: String, force_rescan: bool = false) -> void:
 		classify_script_file(file_path)
 
 
-## Analyzes a standalone script file to determine if it inherits from specific base classes like CombatActionBase.
+## Analyzes a standalone script file safely without calling load() in a background thread.
 func classify_script_file(file_path: String) -> void:
-	if !ResourceLoader.exists(file_path):
+	if !FileAccess.file_exists(file_path):
 		return
 		
-	var script_res = load(file_path)
-	if script_res is Script:
-		var current_script = script_res
+	var file_name = file_path.get_file()
+	if file_name == "combat_action_base.gd":
+		_add_to_cache("weapon_attack_scripts", file_path)
+		return
 		
-		# Climb the inheritance tree to see if it extends CombatActionBase
-		while current_script:
-			var global_name = current_script.get_global_name()
-			var script_name = current_script.resource_path.get_file()
-			
-			if global_name == "CombatActionBase" or script_name == "combat_action_base.gd":
+	var f = FileAccess.open(file_path, FileAccess.READ)
+	if not f:
+		return
+		
+	var line_count = 0
+	while not f.eof_reached() and line_count < 50:
+		var line = f.get_line().strip_edges()
+		line_count += 1
+		if line.begins_with("extends "):
+			var extends_target = line.substr(8).strip_edges().trim_prefix("\"").trim_suffix("\"")
+			if "CombatActionBase" in extends_target or "combat_action_base.gd" in extends_target or "melee_base" in extends_target or "projectile_base" in extends_target:
 				_add_to_cache("weapon_attack_scripts", file_path)
+				f.close()
 				return
-				
-			current_script = current_script.get_base_script()
+	f.close()
 
 
 ## Loads and analyzes a Godot resource file safely from the processing thread.

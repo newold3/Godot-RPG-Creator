@@ -22,8 +22,9 @@ signal changed()
 func _ready() -> void:
 	%CharacterImage.custom_copy_and_paste_enabled = true
 	%CharacterImage.clipboard_key = "event_graphic"
-	var parent = get_parent().get_parent().get_parent()
-	%EventPageListEditor.set_current_parent(parent)
+	var parent = get_parent().get_parent().get_parent() if get_parent() and get_parent().get_parent() else null
+	if %EventPageListEditor:
+		%EventPageListEditor.set_current_parent(parent)
 	
 	CustomTooltipManager.plugin_replace_all_tooltips_with_custom.call_deferred(self)
 
@@ -1233,3 +1234,28 @@ func _on_external_allow_player_toggled(toggled_on: bool) -> void:
 			current_page.external_pressure_targets.erase(-1)
 			
 	changed.emit()
+
+
+func _on_edit_graph_pressed() -> void:
+	if not current_page:
+		return
+		
+	var path = "res://addons/CustomControls/Dialogs/EventGraphEditor/event_graph_editor.tscn"
+	var dialog = RPGDialogFunctions.open_dialog(path, RPGDialogFunctions.OPEN_MODE.CENTERED)
+	if not dialog:
+		return
+		
+	var commands: Array[RPGEventCommand] = []
+	if current_page.list != null:
+		commands.assign(current_page.list)
+		
+	dialog.setup(commands, current_page, get_window(), current_event)
+	dialog.applied.connect(
+		func(new_commands: Array[RPGEventCommand]) -> void:
+			current_page.list = new_commands
+			%EventPageListEditor.set_data(current_page.list)
+			%EventPageListEditor.set_visible(false)
+			await get_tree().process_frame
+			%EventPageListEditor.set_visible(true)
+			changed.emit()
+	)

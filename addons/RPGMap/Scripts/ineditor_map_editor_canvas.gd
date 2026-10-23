@@ -498,7 +498,9 @@ func _on_keot_canvas_draw() -> void:
 
 
 func _draw_cursor_highlight() -> void:
-	if not map.grid_gradient or not Engine.is_editor_hint() or not cursor_canvas:
+	if not Engine.is_editor_hint() or not cursor_canvas or not map.grid_gradient:
+		return
+	if map.grid_gradient.get_point_count() == 0 or map.cursor_radius <= 0:
 		return
 	
 	if (not map.editing_events and not map.editing_extraction_events and not map.editing_enemy_spawn_region and not map.editing_event_region):
