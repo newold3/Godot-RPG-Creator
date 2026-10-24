@@ -93,6 +93,7 @@ func _update_data_fields() -> void:
 		%FollowersEnabled.set_pressed_no_signal(data.followers_enabled)
 		%PartyBattleExperience.set_pressed_no_signal(options.get("exp_for_all", true))
 		%PreventsExpOnDead.set_pressed_no_signal(options.get("no_exp_to_dead_members", false))
+		%ReviveWhenBattleEnd.set_pressed_no_signal(options.get("revive_when_battle_is_over", false))
 		
 		%LegacyMode.set_pressed_no_signal(data.legacy_mode == true)
 		%FadePageSwap.set_pressed_no_signal(data.fade_page_swap_enabled == true)
@@ -1484,3 +1485,7 @@ func _on_party_battle_experience_toggled(toggled_on: bool) -> void:
 
 func _on_prevents_exp_on_dead_toggled(toggled_on: bool) -> void:
 	data.options.no_exp_to_dead_members = toggled_on
+
+
+func _on_revive_when_battle_end_toggled(toggled_on: bool) -> void:
+	data.options.revive_when_battle_is_over = toggled_on

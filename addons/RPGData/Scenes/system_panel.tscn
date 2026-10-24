@@ -1436,6 +1436,16 @@ tooltip_text = "Enabling this option prevents allies who are dead after the batt
 mouse_default_cursor_shape = 2
 text = "Characters who die at the end of a battle do not gain experience"
 
+[node name="ReviveWhenBattleEnd" type="CheckBox" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer" unique_id=1131984641]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "come back to life when the battle is over with 1 HP.
+
+[Note]: If the \"Dead allies do not gain experience\" option is enabled, allies who die in battle will not receive experience and will be revived afterward."
+mouse_default_cursor_shape = 2
+text = "Revive when the battle is over"
+
 [node name="HSeparator" type="HSeparator" parent="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer" unique_id=1772851768]
 layout_mode = 2
 
@@ -1866,6 +1876,7 @@ The scenes defined here will be preloaded when the game starts. This is useful f
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/FollowersEnabled" to="." method="_on_followers_enabled_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/PartyBattleExperience" to="." method="_on_party_battle_experience_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/PreventsExpOnDead" to="." method="_on_prevents_exp_on_dead_toggled"]
+[connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/ReviveWhenBattleEnd" to="." method="_on_revive_when_battle_end_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/NumberFormat/UseThousandsSeparator" to="." method="_on_use_thousands_separator_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/NumberFormat/ShowAbbreviatedInMenu" to="." method="_on_show_abbreviated_in_menu_toggled"]
 [connection signal="toggled" from="MainColumn/MarginContainer/VBoxContainer/ControlContainer/MarginContainer/Tab6/Group1/MarginContainer/VBoxContainer/SmoothScrollContainer/HBoxContainer/NumberFormat/ShowAbbreviatedinBattle" to="." method="_on_show_abbreviatedin_battle_toggled"]
