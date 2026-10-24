@@ -91,6 +91,9 @@ func _update_data_fields() -> void:
 		%AutoShowPopups.set_pressed_no_signal(options.get("auto_popup_on_pick_up_items", true))
 		%PauseInMenu.set_pressed_no_signal(data.pause_day_night_in_menu)
 		%FollowersEnabled.set_pressed_no_signal(data.followers_enabled)
+		%PartyBattleExperience.set_pressed_no_signal(options.get("exp_for_all", true))
+		%PreventsExpOnDead.set_pressed_no_signal(options.get("no_exp_to_dead_members", false))
+		
 		%LegacyMode.set_pressed_no_signal(data.legacy_mode == true)
 		%FadePageSwap.set_pressed_no_signal(data.fade_page_swap_enabled == true)
 		
@@ -1473,3 +1476,11 @@ func _on_insert_scene_button_pressed() -> void:
 		data.game_scenes[scene_id] = scene_path
 		fill_game_scenes()
 #endregion
+
+
+func _on_party_battle_experience_toggled(toggled_on: bool) -> void:
+	data.options.exp_for_all = toggled_on
+
+
+func _on_prevents_exp_on_dead_toggled(toggled_on: bool) -> void:
+	data.options.no_exp_to_dead_members = toggled_on
