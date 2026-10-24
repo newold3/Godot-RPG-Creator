@@ -191,6 +191,11 @@ unique_name_in_owner = true
 process_mode = 4
 script = ExtResource("2_j1x1n")
 
+[node name="BattleInterpreter" type="Node" parent="." unique_id=1404614151]
+unique_name_in_owner = true
+process_mode = 4
+script = ExtResource("2_j1x1n")
+
 [node name="PartyManager" type="Node" parent="." unique_id=1226871613]
 unique_name_in_owner = true
 script = ExtResource("5_76v2p")
@@ -529,4 +534,4 @@ bus = &"SE"
 unique_name_in_owner = true
 bus = &"SE"
 
-[connection signal="item_rect_changed" from="MessageCanvas/VboxDialogContainer/Dialog/@CanvasLayer@24841/Message" to="MessageCanvas/VboxDialogContainer/Dialog" method="_on_message_item_rect_changed"]
+[connection signal="item_rect_changed" from="MessageCanvas/VboxDialogContainer/Dialog/@CanvasLayer@30107/Message" to="MessageCanvas/VboxDialogContainer/Dialog" method="_on_message_item_rect_changed"]

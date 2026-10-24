@@ -156,6 +156,7 @@ var busy: bool = false : set = _set_busy  # Flag indicating if the main interpre
 var busy2: bool = false  # Flag indicating if processing parallel interpreters
 var busy3: bool = false  # Flag indicating if processing automatic interpreters group
 var busy4: bool = false # Flag enabled when run event commands
+var busy5: bool = false # flag enabled when battle is active, this flag prevent process
 var showing_message: bool = false  # Flag indicating if a message is being shown
 var showing_any_menu: bool = false  # Flag indicating if any menu/shop is being shown
 var current_command: RPGEventCommand  # The current command being processed
@@ -234,6 +235,8 @@ func _load_command_handlers() -> void:
 
 # Main process loop, called every frame
 func _process(delta: float) -> void:
+	if busy5: return
+	
 	_process_async_tasks()
 	
 	# If busy with a auto run interpreter or parallel interpreter, don't process.
