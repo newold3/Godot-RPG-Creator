@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://l1loopgraphnode01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/Panels/loop_graph_node.gd" id="1_script"]
+
+[node name="LoopGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(250, 0)
+offset_right = 250.0
+offset_bottom = 80.0
+theme_override_font_sizes/title_font_size = 16
+title = "🔁 Loop"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.8, 0.8, 0.8, 1)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.3, 0.85, 0.95, 1)
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 0)
+slot/1/right_enabled = true
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 0.4, 0.3, 1)
+script = ExtResource("1_script")
+
+[node name="Row0" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="InLabel" type="Label" parent="Row0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ In"
+
+[node name="Spacer" type="Control" parent="Row0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BodyLabel" type="Label" parent="Row0"]
+modulate = Color(0.3, 0.85, 0.95, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Body ▶ (Repetir)"
+
+[node name="Row1" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Row1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExitLabel" type="Label" parent="Row1"]
+modulate = Color(1, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "After Break ▶ (Salida)"

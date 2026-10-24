@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1cmdgraphnode01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/command_graph_node.gd" id="1_script"]
+
+[node name="CommandGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(280, 0)
+offset_right = 280.0
+offset_bottom = 120.0
+theme_override_constants/separation = 4
+theme_override_font_sizes/title_font_size = 16
+title = "Command"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.8, 0.8, 0.8, 1)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.4, 0.7, 1, 1)
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 0)
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 0)
+script = ExtResource("1_script")
+
+[node name="FlowRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="InLabel" type="Label" parent="FlowRow"]
+modulate = Color(0.7, 0.7, 0.7, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ In"
+
+[node name="CollapseButton" type="Button" parent="FlowRow"]
+layout_mode = 2
+tooltip_text = "[title]Contraer / Expandir Panel[/title]
+Alterna la visualización del contenido de este comando."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+text = "▼"
+
+[node name="Spacer" type="Control" parent="FlowRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OutLabel" type="Label" parent="FlowRow"]
+modulate = Color(0.4, 0.7, 1, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Out ▶"
+
+[node name="ContentBox" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="SummaryLabel" type="Label" parent="ContentBox"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+max_lines_visible = 4
+text_overrun_behavior = 3
+
+[node name="QuickControlsBox" type="VBoxContainer" parent="ContentBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ActionRow" type="HBoxContainer" parent="ContentBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Spacer" type="Control" parent="ContentBox/ActionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EditCommandButton" type="Button" parent="ContentBox/ActionRow"]
+layout_mode = 2
+tooltip_text = "[title]Configuración Avanzada[/title]
+Abre la ventana de configuración detallada del comando."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "✏️ Edit..."

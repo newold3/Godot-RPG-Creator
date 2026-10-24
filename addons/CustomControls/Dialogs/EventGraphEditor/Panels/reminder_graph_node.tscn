@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://r1remgraphnode01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/reminder_graph_node.gd" id="1_script"]
+
+[node name="ReminderGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(220, 140)
+offset_right = 240.0
+offset_bottom = 160.0
+theme_override_font_sizes/title_font_size = 16
+resizable = true
+script = ExtResource("1_script")
+
+[node name="HeaderHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleEdit" type="LineEdit" parent="HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Título del recordatorio..."
+flat = true
+
+[node name="ColorPaletteButton" type="Button" parent="HeaderHBox"]
+layout_mode = 2
+tooltip_text = "[title]Cambiar Color de Nota[/title]
+Cambia el color de este recordatorio."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+text = "🎨"
+
+[node name="CloseButton" type="Button" parent="HeaderHBox"]
+layout_mode = 2
+tooltip_text = "[title]Eliminar Recordatorio[/title]
+Elimina esta nota del grafo."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+text = "×"
+
+[node name="BodyTextEdit" type="TextEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Escribe tu nota aquí..."
+wrap_mode = 1

@@ -1,0 +1,132 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2battlegraph01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/Panels/battle_graph_node.gd" id="1_script"]
+
+[node name="BattleGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(290, 0)
+offset_right = 290.0
+offset_bottom = 175.0
+theme_override_constants/separation = 4
+theme_override_font_sizes/title_font_size = 16
+title = "⚔️ Start Battle"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.8, 0.8, 0.8, 1)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.2, 0.9, 0.4, 1)
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 0)
+slot/1/right_enabled = true
+slot/1/right_type = 0
+slot/1/right_color = Color(0.3, 0.75, 1, 1)
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 0)
+slot/2/right_enabled = true
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 0.4, 0.3, 1)
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 0)
+slot/3/right_enabled = true
+slot/3/right_type = 0
+slot/3/right_color = Color(0.95, 0.85, 0.2, 1)
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 0)
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 0)
+script = ExtResource("1_script")
+
+[node name="Row0" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="InLabel" type="Label" parent="Row0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ In"
+
+[node name="CollapseButton" type="Button" parent="Row0"]
+layout_mode = 2
+tooltip_text = "[title]Contraer / Expandir Batalla[/title]
+Alterna la visualización del panel de batalla."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+flat = true
+text = "▼"
+
+[node name="Spacer" type="Control" parent="Row0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WinLabel" type="Label" parent="Row0"]
+modulate = Color(0.2, 0.9, 0.4, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Win ▶ (Victoria)"
+
+[node name="Row1" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Row1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EscapeLabel" type="Label" parent="Row1"]
+modulate = Color(0.3, 0.75, 1, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Escape ▶ (Huida)"
+
+[node name="Row2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Row2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DefeatLabel" type="Label" parent="Row2"]
+modulate = Color(1, 0.4, 0.3, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Defeat ▶ (Derrota)"
+
+[node name="Row3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Row3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MergeLabel" type="Label" parent="Row3"]
+modulate = Color(0.95, 0.85, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Continue ▶ (Unión)"
+
+[node name="ContentBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SummaryLabel" type="Label" parent="ContentBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Troop #1"
+
+[node name="ActionRow" type="HBoxContainer" parent="ContentBox"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="ContentBox/ActionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EditBattleButton" type="Button" parent="ContentBox/ActionRow"]
+layout_mode = 2
+tooltip_text = "[title]Editor de Batalla[/title]
+Abre el diálogo de configuración de batalla."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "✏️ Edit Battle..."

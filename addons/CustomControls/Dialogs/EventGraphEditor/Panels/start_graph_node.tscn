@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://s1startgraph01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/Panels/start_graph_node.gd" id="1_script"]
+
+[node name="StartGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(190, 0)
+offset_right = 190.0
+offset_bottom = 55.0
+theme_override_font_sizes/title_font_size = 16
+title = "▶️ Event Start"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 0)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.2, 0.9, 0.4, 1)
+script = ExtResource("1_script")
+
+[node name="Row" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="EntryLabel" type="Label" parent="Row"]
+modulate = Color(0.7, 0.7, 0.7, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Entry Point"
+
+[node name="Spacer" type="Control" parent="Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartLabel" type="Label" parent="Row"]
+modulate = Color(0.2, 0.9, 0.4, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Start ▶"

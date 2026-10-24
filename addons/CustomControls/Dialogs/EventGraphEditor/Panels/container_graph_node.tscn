@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1contgraphnode01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/container_graph_node.gd" id="1_script"]
+
+[node name="ContainerGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(320, 200)
+offset_right = 360.0
+offset_bottom = 240.0
+theme_override_font_sizes/title_font_size = 16
+resizable = true
+script = ExtResource("1_script")
+
+[node name="ContentBody" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2

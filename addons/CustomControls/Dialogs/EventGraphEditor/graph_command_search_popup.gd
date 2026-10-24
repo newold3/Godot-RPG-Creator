@@ -26,7 +26,7 @@ func _build_ui() -> void:
 	var header_hbox = HBoxContainer.new()
 	var title_lbl = Label.new()
 	title_lbl.text = "➕ Add Event Command"
-	title_lbl.add_theme_font_size_override("font_size", 13)
+	title_lbl.add_theme_font_size_override("font_size", 16)
 	title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header_hbox.add_child(title_lbl)
 	main_vbox.add_child(header_hbox)
@@ -35,6 +35,7 @@ func _build_ui() -> void:
 	filter_line_edit = LineEdit.new()
 	filter_line_edit.placeholder_text = "Search command... (e.g. switch, message)"
 	filter_line_edit.clear_button_enabled = true
+	filter_line_edit.add_theme_font_size_override("font_size", 16)
 	filter_line_edit.text_changed.connect(_on_filter_changed)
 	main_vbox.add_child(filter_line_edit)
 	
@@ -42,6 +43,7 @@ func _build_ui() -> void:
 	command_tree = Tree.new()
 	command_tree.hide_root = true
 	command_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	command_tree.add_theme_font_size_override("font_size", 16)
 	command_tree.item_activated.connect(_on_item_activated)
 	main_vbox.add_child(command_tree)
 	

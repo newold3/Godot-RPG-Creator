@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3choicegraphnode01"]
+
+[ext_resource type="Script" path="res://addons/CustomControls/Dialogs/EventGraphEditor/Panels/choice_graph_node.gd" id="1_script"]
+
+[node name="ChoiceGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 300.0
+offset_bottom = 180.0
+theme_override_constants/separation = 4
+theme_override_font_sizes/title_font_size = 16
+title = "❓ Show Choices"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(0.8, 0.8, 0.8, 1)
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(0.3, 0.75, 1, 1)
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 0)
+slot/1/right_enabled = true
+slot/1/right_type = 0
+slot/1/right_color = Color(0.3, 0.75, 1, 1)
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 0)
+slot/2/right_enabled = true
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 0.5, 0.2, 1)
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 0)
+slot/3/right_enabled = true
+slot/3/right_type = 0
+slot/3/right_color = Color(0.95, 0.85, 0.2, 1)
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 0)
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 0)
+script = ExtResource("1_script")
+
+[node name="Row0" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="InLabel" type="Label" parent="Row0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ In"
+
+[node name="ChoiceEdit0" type="LineEdit" parent="Row0"]
+custom_minimum_size = Vector2(130, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Option 1"
+
+[node name="ChoiceOut0" type="Label" parent="Row0"]
+modulate = Color(0.3, 0.75, 1, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "[1] ▶"
+
+[node name="Row1" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ChoiceEdit1" type="LineEdit" parent="Row1"]
+custom_minimum_size = Vector2(130, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "Option 2"
+
+[node name="ChoiceOut1" type="Label" parent="Row1"]
+modulate = Color(0.3, 0.75, 1, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "[2] ▶"
+
+[node name="CancelRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="CancelRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CancelLabel" type="Label" parent="CancelRow"]
+modulate = Color(1, 0.5, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "When Cancel ▶"
+
+[node name="MergeRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="MergeRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MergeLabel" type="Label" parent="MergeRow"]
+modulate = Color(0.95, 0.85, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Continue ▶ (Unión)"
+
+[node name="ActionRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="ActionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EditChoicesButton" type="Button" parent="ActionRow"]
+layout_mode = 2
+tooltip_text = "[title]Editor de Opciones[/title]
+Abre la ventana de configuración avanzada de opciones."
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "✏️ Advanced Choices..."

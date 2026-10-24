@@ -20,41 +20,59 @@ static func setup_node_close_button(node: GraphNode, on_close: Callable) -> void
 			titlebar.add_child(close_btn)
 	if node.has_signal("delete_request"):
 		node.connect("delete_request", on_close)
+
+
+static func configure_option_button(opt: OptionButton) -> OptionButton:
+	if not opt:
+		return opt
+	opt.add_theme_font_size_override("font_size", 16)
+	var popup = opt.get_popup()
+	if popup:
+		popup.add_theme_font_size_override("font_size", 16)
+		popup.add_theme_font_size_override("font_separator_size", 16)
+		var cb = func():
+			popup.add_theme_font_size_override("font_size", 16)
+			popup.add_theme_font_size_override("font_separator_size", 16)
+		if not popup.about_to_popup.is_connected(cb):
+			popup.about_to_popup.connect(cb)
+	return opt
 #endregion
 
 
 #region Start Node
-class StartGraphNode extends GraphNode:
+class EventStartGraphNode extends GraphNode:
 	func _ready() -> void:
 		title = "▶️ Event Start"
 		resizable = false
+		add_theme_font_size_override("title_font_size", 16)
 		custom_minimum_size = Vector2(190, 0)
 		
-		var row = HBoxContainer.new()
-		var lbl = Label.new()
-		lbl.text = "Entry Point"
-		lbl.modulate = Color(0.7, 0.7, 0.7)
-		lbl.add_theme_font_size_override("font_size", 12)
-		
-		var spacer = Control.new()
-		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		
-		var out_lbl = Label.new()
-		out_lbl.text = "Start ▶"
-		out_lbl.modulate = Color(0.2, 0.9, 0.4)
-		out_lbl.add_theme_font_size_override("font_size", 12)
-		
-		row.add_child(lbl)
-		row.add_child(spacer)
-		row.add_child(out_lbl)
-		add_child(row)
-		
+		if get_child_count() == 0:
+			var row = HBoxContainer.new()
+			var lbl = Label.new()
+			lbl.text = "Entry Point"
+			lbl.modulate = Color(0.7, 0.7, 0.7)
+			lbl.add_theme_font_size_override("font_size", 16)
+			
+			var spacer = Control.new()
+			spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			
+			var out_lbl = Label.new()
+			out_lbl.text = "Start ▶"
+			out_lbl.modulate = Color(0.2, 0.9, 0.4)
+			out_lbl.add_theme_font_size_override("font_size", 16)
+			
+			row.add_child(lbl)
+			row.add_child(spacer)
+			row.add_child(out_lbl)
+			add_child(row)
+			
 		set_slot(0, false, 0, Color.TRANSPARENT, true, 0, Color(0.2, 0.9, 0.4))
 #endregion
 
 
 #region Condition Node
-class ConditionGraphNode extends GraphNode:
+class EventConditionGraphNode extends GraphNode:
 	var command: RPGEventCommand
 	var sub_commands: Array[RPGEventCommand] = []
 	var conditions: Array[Dictionary] = []
@@ -78,6 +96,12 @@ class ConditionGraphNode extends GraphNode:
 	func _ready() -> void:
 		resizable = false
 		BranchGraphNodes.setup_node_close_button(self, func(): request_delete.emit(self))
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.double_click and event.is_pressed():
+				accept_event()
+				request_edit_dialog.emit(self)
 		
 	func setup(p_command: RPGEventCommand, p_sub_commands: Array[RPGEventCommand] = []) -> void:
 		command = p_command
@@ -112,135 +136,193 @@ class ConditionGraphNode extends GraphNode:
 
 	func _build_ui() -> void:
 		clear_all_slots()
-		for child in get_children():
-			remove_child(child)
-			child.queue_free()
+		var existing_content = get_node_or_null("ContentBox")
+		var existing_row0 = get_node_or_null("Row0")
+		var existing_row1 = get_node_or_null("Row1")
+		var existing_row2 = get_node_or_null("Row2")
+		
+		if not existing_content or not existing_row0 or not existing_row1 or not existing_row2:
+			for child in get_children():
+				remove_child(child)
+				child.queue_free()
+				
+			# Slot 0: In / True Branch
+			var row0 = HBoxContainer.new()
+			row0.name = "Row0"
+			var in_lbl = Label.new()
+			in_lbl.name = "InLabel"
+			in_lbl.text = "▶ In"
+			in_lbl.add_theme_font_size_override("font_size", 16)
 			
-		# Slot 0: In / True Branch
-		var row0 = HBoxContainer.new()
-		var in_lbl = Label.new()
-		in_lbl.text = "▶ In"
-		in_lbl.add_theme_font_size_override("font_size", 12)
-		
-		collapse_btn = Button.new()
-		collapse_btn.name = "CollapseButton"
-		collapse_btn.text = "▶" if is_collapsed else "▼"
-		collapse_btn.flat = true
-		collapse_btn.tooltip_text = "[title]Contraer / Expandir Condición[/title]\nAlterna la visualización de los controles de la condición."
-		collapse_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		collapse_btn.focus_mode = Control.FOCUS_NONE
-		collapse_btn.pressed.connect(_on_collapse_toggled)
-		
-		var sp0 = Control.new()
-		sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var true_lbl = Label.new()
-		true_lbl.text = "True ▶ (Si)"
-		true_lbl.modulate = Color(0.2, 0.9, 0.4)
-		true_lbl.add_theme_font_size_override("font_size", 12)
-		row0.add_child(in_lbl)
-		row0.add_child(collapse_btn)
-		row0.add_child(sp0)
-		row0.add_child(true_lbl)
-		add_child(row0)
+			collapse_btn = Button.new()
+			collapse_btn.name = "CollapseButton"
+			collapse_btn.text = "▶" if is_collapsed else "▼"
+			collapse_btn.flat = true
+			collapse_btn.tooltip_text = "[title]Contraer / Expandir Condición[/title]\nAlterna la visualización de los controles de la condición."
+			collapse_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			collapse_btn.focus_mode = Control.FOCUS_NONE
+			collapse_btn.pressed.connect(_on_collapse_toggled)
+			
+			var sp0 = Control.new()
+			sp0.name = "Spacer"
+			sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var true_lbl = Label.new()
+			true_lbl.name = "TrueLabel"
+			true_lbl.text = "True ▶ (Si)"
+			true_lbl.modulate = Color(0.2, 0.9, 0.4)
+			true_lbl.add_theme_font_size_override("font_size", 16)
+			row0.add_child(in_lbl)
+			row0.add_child(collapse_btn)
+			row0.add_child(sp0)
+			row0.add_child(true_lbl)
+			add_child(row0)
+			
+			# Slot 1: False Branch (Else)
+			var row1 = HBoxContainer.new()
+			row1.name = "Row1"
+			var sp1 = Control.new()
+			sp1.name = "Spacer"
+			sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var false_lbl = Label.new()
+			false_lbl.name = "FalseLabel"
+			if has_else_branch:
+				false_lbl.text = "False ▶ (No / Else)"
+				false_lbl.modulate = Color(1.0, 0.4, 0.3)
+				row1.add_child(sp1)
+				row1.add_child(false_lbl)
+				add_child(row1)
+			else:
+				false_lbl.text = "Sin Rama Else (Desactivada)"
+				false_lbl.modulate = Color(0.5, 0.5, 0.5, 0.6)
+				row1.add_child(sp1)
+				row1.add_child(false_lbl)
+				add_child(row1)
+			false_lbl.add_theme_font_size_override("font_size", 16)
+			
+			# Slot 2: Continuation / Merge
+			var row2 = HBoxContainer.new()
+			row2.name = "Row2"
+			var sp2 = Control.new()
+			sp2.name = "Spacer"
+			sp2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var cont_lbl = Label.new()
+			cont_lbl.name = "ContinueLabel"
+			cont_lbl.text = "Continue ▶ (Unión)"
+			cont_lbl.modulate = Color(0.95, 0.85, 0.2)
+			cont_lbl.add_theme_font_size_override("font_size", 16)
+			row2.add_child(sp2)
+			row2.add_child(cont_lbl)
+			add_child(row2)
+			
+			# Slot 3: Info, Quick Inline Controls & Action Buttons
+			content_vbox = VBoxContainer.new()
+			content_vbox.name = "ContentBox"
+			content_vbox.add_theme_constant_override("separation", 5)
+			content_vbox.custom_minimum_size = Vector2(290, 0)
+			
+			summary_label = Label.new()
+			summary_label.name = "SummaryLabel"
+			summary_label.custom_minimum_size = Vector2(290, 0)
+			summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			summary_label.max_lines_visible = 4
+			summary_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			summary_label.add_theme_font_size_override("font_size", 16)
+			summary_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
+			content_vbox.add_child(summary_label)
+			
+			quick_controls_box = VBoxContainer.new()
+			quick_controls_box.name = "QuickControlsBox"
+			quick_controls_box.add_theme_constant_override("separation", 4)
+			content_vbox.add_child(quick_controls_box)
+			
+			# Buttons row 1: Add Condition & Toggle Else
+			var btn_row1 = HBoxContainer.new()
+			btn_row1.name = "ButtonRow1"
+			btn_row1.add_theme_constant_override("separation", 6)
+			
+			add_condition_button = Button.new()
+			add_condition_button.name = "AddConditionButton"
+			add_condition_button.text = "➕ Add Condition"
+			add_condition_button.tooltip_text = "[title]Añadir Condición[/title]\nAñade una nueva condición a este bloque condicional."
+			add_condition_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			add_condition_button.focus_mode = Control.FOCUS_NONE
+			add_condition_button.add_theme_font_size_override("font_size", 16)
+			add_condition_button.pressed.connect(_on_add_condition_pressed)
+			btn_row1.add_child(add_condition_button)
+			
+			else_toggle_button = Button.new()
+			else_toggle_button.name = "ToggleElseButton"
+			else_toggle_button.text = "➖ Remove Else" if has_else_branch else "➕ Add Else"
+			else_toggle_button.tooltip_text = "[title]Alternar Rama Else[/title]\nActiva o desactiva la rama 'Si no' (Else)."
+			else_toggle_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			else_toggle_button.focus_mode = Control.FOCUS_NONE
+			else_toggle_button.add_theme_font_size_override("font_size", 16)
+			else_toggle_button.pressed.connect(_on_toggle_else_pressed)
+			btn_row1.add_child(else_toggle_button)
+			
+			content_vbox.add_child(btn_row1)
+			
+			# Buttons row 2: Advanced Dialog
+			var btn_row2 = HBoxContainer.new()
+			btn_row2.name = "ButtonRow2"
+			var btn_sp = Control.new()
+			btn_sp.name = "Spacer"
+			btn_sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			btn_row2.add_child(btn_sp)
+			
+			edit_button = Button.new()
+			edit_button.name = "EditConditionButton"
+			edit_button.text = "✏️ Advanced Condition..."
+			edit_button.tooltip_text = "[title]Editor de Condiciones[/title]\nAbre la ventana de configuración avanzada de condiciones."
+			edit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			edit_button.focus_mode = Control.FOCUS_NONE
+			edit_button.add_theme_font_size_override("font_size", 16)
+			edit_button.pressed.connect(func(): request_edit_dialog.emit(self))
+			btn_row2.add_child(edit_button)
+			
+			content_vbox.add_child(btn_row2)
+			add_child(content_vbox)
+		else:
+			collapse_btn = existing_row0.get_node_or_null("CollapseButton")
+			if collapse_btn and not collapse_btn.pressed.is_connected(_on_collapse_toggled):
+				collapse_btn.pressed.connect(_on_collapse_toggled)
+			
+			var false_lbl = existing_row1.get_node_or_null("FalseLabel")
+			if false_lbl:
+				if has_else_branch:
+					false_lbl.text = "False ▶ (No / Else)"
+					false_lbl.modulate = Color(1.0, 0.4, 0.3)
+				else:
+					false_lbl.text = "Sin Rama Else (Desactivada)"
+					false_lbl.modulate = Color(0.5, 0.5, 0.5, 0.6)
+			
+			content_vbox = existing_content
+			summary_label = content_vbox.get_node_or_null("SummaryLabel")
+			quick_controls_box = content_vbox.get_node_or_null("QuickControlsBox")
+			var btn_row1 = content_vbox.get_node_or_null("ButtonRow1")
+			if btn_row1:
+				add_condition_button = btn_row1.get_node_or_null("AddConditionButton")
+				if add_condition_button and not add_condition_button.pressed.is_connected(_on_add_condition_pressed):
+					add_condition_button.pressed.connect(_on_add_condition_pressed)
+				else_toggle_button = btn_row1.get_node_or_null("ToggleElseButton")
+				if else_toggle_button:
+					else_toggle_button.text = "➖ Remove Else" if has_else_branch else "➕ Add Else"
+					if not else_toggle_button.pressed.is_connected(_on_toggle_else_pressed):
+						else_toggle_button.pressed.connect(_on_toggle_else_pressed)
+			var btn_row2 = content_vbox.get_node_or_null("ButtonRow2")
+			if btn_row2:
+				edit_button = btn_row2.get_node_or_null("EditConditionButton")
+				if edit_button:
+					var cb = func(): request_edit_dialog.emit(self)
+					if not edit_button.pressed.is_connected(cb):
+						edit_button.pressed.connect(cb)
+
 		set_slot(0, true, 0, Color(0.8, 0.8, 0.8), true, 0, Color(0.2, 0.9, 0.4))
-		
-		# Slot 1: False Branch (Else)
-		var row1 = HBoxContainer.new()
-		var sp1 = Control.new()
-		sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var false_lbl = Label.new()
 		if has_else_branch:
-			false_lbl.text = "False ▶ (No / Else)"
-			false_lbl.modulate = Color(1.0, 0.4, 0.3)
-			row1.add_child(sp1)
-			row1.add_child(false_lbl)
-			add_child(row1)
 			set_slot(1, false, 0, Color.TRANSPARENT, true, 0, Color(1.0, 0.4, 0.3))
 		else:
-			false_lbl.text = "Sin Rama Else (Desactivada)"
-			false_lbl.modulate = Color(0.5, 0.5, 0.5, 0.6)
-			row1.add_child(sp1)
-			row1.add_child(false_lbl)
-			add_child(row1)
 			set_slot(1, false, 0, Color.TRANSPARENT, false, 0, Color.TRANSPARENT)
-		false_lbl.add_theme_font_size_override("font_size", 12)
-		
-		# Slot 2: Continuation / Merge
-		var row2 = HBoxContainer.new()
-		var sp2 = Control.new()
-		sp2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var cont_lbl = Label.new()
-		cont_lbl.text = "Continue ▶ (Unión)"
-		cont_lbl.modulate = Color(0.95, 0.85, 0.2)
-		cont_lbl.add_theme_font_size_override("font_size", 12)
-		row2.add_child(sp2)
-		row2.add_child(cont_lbl)
-		add_child(row2)
 		set_slot(2, false, 0, Color.TRANSPARENT, true, 0, Color(0.95, 0.85, 0.2))
-		
-		# Slot 3: Info, Quick Inline Controls & Action Buttons
-		content_vbox = VBoxContainer.new()
-		content_vbox.add_theme_constant_override("separation", 5)
-		content_vbox.custom_minimum_size = Vector2(290, 0)
-		
-		summary_label = Label.new()
-		summary_label.custom_minimum_size = Vector2(290, 0)
-		summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		summary_label.max_lines_visible = 4
-		summary_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		summary_label.add_theme_font_size_override("font_size", 13)
-		summary_label.add_theme_color_override("font_color", Color(0.95, 0.95, 0.95))
-		content_vbox.add_child(summary_label)
-		
-		quick_controls_box = VBoxContainer.new()
-		quick_controls_box.name = "QuickControlsBox"
-		quick_controls_box.add_theme_constant_override("separation", 4)
-		content_vbox.add_child(quick_controls_box)
-		
-		# Buttons row 1: Add Condition & Toggle Else
-		var btn_row1 = HBoxContainer.new()
-		btn_row1.add_theme_constant_override("separation", 6)
-		
-		add_condition_button = Button.new()
-		add_condition_button.name = "AddConditionButton"
-		add_condition_button.text = "➕ Add Condition"
-		add_condition_button.tooltip_text = "[title]Añadir Condición[/title]\nAñade una nueva condición a este bloque condicional."
-		add_condition_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		add_condition_button.focus_mode = Control.FOCUS_NONE
-		add_condition_button.add_theme_font_size_override("font_size", 12)
-		add_condition_button.pressed.connect(_on_add_condition_pressed)
-		btn_row1.add_child(add_condition_button)
-		
-		else_toggle_button = Button.new()
-		else_toggle_button.name = "ToggleElseButton"
-		else_toggle_button.text = "➖ Remove Else" if has_else_branch else "➕ Add Else"
-		else_toggle_button.tooltip_text = "[title]Alternar Rama Else[/title]\nActiva o desactiva la rama 'Si no' (Else)."
-		else_toggle_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		else_toggle_button.focus_mode = Control.FOCUS_NONE
-		else_toggle_button.add_theme_font_size_override("font_size", 12)
-		else_toggle_button.pressed.connect(_on_toggle_else_pressed)
-		btn_row1.add_child(else_toggle_button)
-		
-		content_vbox.add_child(btn_row1)
-		
-		# Buttons row 2: Advanced Dialog
-		var btn_row2 = HBoxContainer.new()
-		var btn_sp = Control.new()
-		btn_sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		btn_row2.add_child(btn_sp)
-		
-		edit_button = Button.new()
-		edit_button.name = "EditConditionButton"
-		edit_button.text = "✏️ Advanced Condition..."
-		edit_button.tooltip_text = "[title]Editor de Condiciones[/title]\nAbre la ventana de configuración avanzada de condiciones."
-		edit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		edit_button.focus_mode = Control.FOCUS_NONE
-		edit_button.add_theme_font_size_override("font_size", 12)
-		edit_button.pressed.connect(func(): request_edit_dialog.emit(self))
-		btn_row2.add_child(edit_button)
-		
-		content_vbox.add_child(btn_row2)
-		add_child(content_vbox)
 		set_slot(3, false, 0, Color.TRANSPARENT, false, 0, Color.TRANSPARENT)
 		
 		_build_quick_controls()
@@ -323,10 +405,10 @@ class ConditionGraphNode extends GraphNode:
 			var lbl_prefix = Label.new()
 			lbl_prefix.text = "Si (IF):" if k == 0 else "Y (AND):"
 			lbl_prefix.modulate = Color(0.3, 0.8, 1.0) if k == 0 else Color(1.0, 0.8, 0.2)
-			lbl_prefix.add_theme_font_size_override("font_size", 12)
+			lbl_prefix.add_theme_font_size_override("font_size", 16)
 			header_row.add_child(lbl_prefix)
 			
-			var type_opt = OptionButton.new()
+			var type_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 			type_opt.add_item("Switch", 0)
 			type_opt.add_item("Variable", 1)
 			type_opt.add_item("Self Switch", 2)
@@ -408,10 +490,10 @@ class ConditionGraphNode extends GraphNode:
 					update_visuals()
 					command_modified.emit(self)
 				)
-				var state_opt = OptionButton.new()
+				var state_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 				state_opt.add_item("ON", 0)
 				state_opt.add_item("OFF", 1)
-				state_opt.select(cond_data.get("value2", 0))
+				state_opt.select(1 if cond_data.get("value2", 0) == 1 else 0)
 				state_opt.item_selected.connect(func(val):
 					conditions[captured_k]["value2"] = val
 					if captured_k == 0: command.parameters["value2"] = val
@@ -432,7 +514,7 @@ class ConditionGraphNode extends GraphNode:
 					update_visuals()
 					command_modified.emit(self)
 				)
-				var cond_opt = OptionButton.new()
+				var cond_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 				var conds = ["==", ">=", "<=", ">", "<", "!="]
 				for idx in range(conds.size()):
 					cond_opt.add_item(conds[idx], idx)
@@ -461,7 +543,7 @@ class ConditionGraphNode extends GraphNode:
 				sub_row.add_child(val_spin)
 				
 			elif item_sel == 2: # Self Switch
-				var sw_opt = OptionButton.new()
+				var sw_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 				sw_opt.add_item("A", 0)
 				sw_opt.add_item("B", 1)
 				sw_opt.add_item("C", 2)
@@ -473,10 +555,10 @@ class ConditionGraphNode extends GraphNode:
 					update_visuals()
 					command_modified.emit(self)
 				)
-				var state_opt = OptionButton.new()
+				var state_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 				state_opt.add_item("ON", 0)
 				state_opt.add_item("OFF", 1)
-				state_opt.select(cond_data.get("value2", 0))
+				state_opt.select(1 if cond_data.get("value2", 0) == 1 else 0)
 				state_opt.item_selected.connect(func(val):
 					conditions[captured_k]["value2"] = val
 					if captured_k == 0: command.parameters["value2"] = val
@@ -487,7 +569,7 @@ class ConditionGraphNode extends GraphNode:
 				sub_row.add_child(state_opt)
 				
 			elif item_sel == 8: # Gold
-				var cond_opt = OptionButton.new()
+				var cond_opt = BranchGraphNodes.configure_option_button(OptionButton.new())
 				cond_opt.add_item(">=", 0)
 				cond_opt.add_item("<=", 1)
 				cond_opt.add_item("<", 2)
@@ -514,7 +596,7 @@ class ConditionGraphNode extends GraphNode:
 			elif item_sel in [9, 10, 11]: # Has Item / Weapon / Armor
 				var id_lbl = Label.new()
 				id_lbl.text = "ID:"
-				id_lbl.add_theme_font_size_override("font_size", 12)
+				id_lbl.add_theme_font_size_override("font_size", 16)
 				var item_spin = SpinBox.new()
 				item_spin.min_value = 1
 				item_spin.max_value = 9999
@@ -534,7 +616,7 @@ class ConditionGraphNode extends GraphNode:
 
 
 #region Choice Node
-class ChoiceGraphNode extends GraphNode:
+class EventChoiceGraphNode extends GraphNode:
 	var command: RPGEventCommand
 	var sub_commands: Array[RPGEventCommand] = []
 	var choice_labels: Array[String] = []
@@ -547,11 +629,18 @@ class ChoiceGraphNode extends GraphNode:
 	func _ready() -> void:
 		resizable = false
 		BranchGraphNodes.setup_node_close_button(self, func(): request_delete.emit(self))
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.double_click and event.is_pressed():
+				accept_event()
+				request_edit_dialog.emit(self)
 		
 	func setup(p_command: RPGEventCommand, p_sub_commands: Array[RPGEventCommand] = []) -> void:
 		command = p_command
 		sub_commands = p_sub_commands
 		title = "❓ Show Choices"
+		add_theme_font_size_override("title_font_size", 16)
 		custom_minimum_size = Vector2(300, 0)
 		_extract_choices_from_subs()
 		_build_ui()
@@ -582,13 +671,13 @@ class ChoiceGraphNode extends GraphNode:
 		var row0 = HBoxContainer.new()
 		var in_lbl = Label.new()
 		in_lbl.text = "▶ In"
-		in_lbl.add_theme_font_size_override("font_size", 12)
+		in_lbl.add_theme_font_size_override("font_size", 16)
 		
 		var c0_edit = LineEdit.new()
 		c0_edit.text = choice_labels[0]
 		c0_edit.custom_minimum_size = Vector2(130, 26)
 		c0_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		c0_edit.add_theme_font_size_override("font_size", 13)
+		c0_edit.add_theme_font_size_override("font_size", 16)
 		c0_edit.text_changed.connect(func(new_text):
 			_update_choice_text(0, new_text)
 		)
@@ -596,7 +685,7 @@ class ChoiceGraphNode extends GraphNode:
 		var c0_out = Label.new()
 		c0_out.text = "[1] ▶"
 		c0_out.modulate = Color(0.3, 0.75, 1.0)
-		c0_out.add_theme_font_size_override("font_size", 12)
+		c0_out.add_theme_font_size_override("font_size", 16)
 		
 		row0.add_child(in_lbl)
 		row0.add_child(c0_edit)
@@ -612,7 +701,7 @@ class ChoiceGraphNode extends GraphNode:
 			c_edit.text = choice_labels[i]
 			c_edit.custom_minimum_size = Vector2(130, 26)
 			c_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			c_edit.add_theme_font_size_override("font_size", 13)
+			c_edit.add_theme_font_size_override("font_size", 16)
 			var captured_idx = i
 			c_edit.text_changed.connect(func(new_text):
 				_update_choice_text(captured_idx, new_text)
@@ -621,7 +710,7 @@ class ChoiceGraphNode extends GraphNode:
 			var c_out = Label.new()
 			c_out.text = "[%d] ▶" % (i + 1)
 			c_out.modulate = Color(0.3, 0.75, 1.0)
-			c_out.add_theme_font_size_override("font_size", 12)
+			c_out.add_theme_font_size_override("font_size", 16)
 			
 			row.add_child(c_edit)
 			row.add_child(c_out)
@@ -636,7 +725,7 @@ class ChoiceGraphNode extends GraphNode:
 		var cancel_lbl = Label.new()
 		cancel_lbl.text = "When Cancel ▶"
 		cancel_lbl.modulate = Color(1.0, 0.5, 0.2)
-		cancel_lbl.add_theme_font_size_override("font_size", 12)
+		cancel_lbl.add_theme_font_size_override("font_size", 16)
 		cancel_row.add_child(cancel_sp)
 		cancel_row.add_child(cancel_lbl)
 		add_child(cancel_row)
@@ -650,7 +739,7 @@ class ChoiceGraphNode extends GraphNode:
 		var merge_lbl = Label.new()
 		merge_lbl.text = "Continue ▶ (Unión)"
 		merge_lbl.modulate = Color(0.95, 0.85, 0.2)
-		merge_lbl.add_theme_font_size_override("font_size", 12)
+		merge_lbl.add_theme_font_size_override("font_size", 16)
 		merge_row.add_child(merge_sp)
 		merge_row.add_child(merge_lbl)
 		add_child(merge_row)
@@ -669,7 +758,7 @@ class ChoiceGraphNode extends GraphNode:
 		edit_button.tooltip_text = "[title]Editor de Opciones[/title]\nAbre la ventana de configuración avanzada de opciones."
 		edit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		edit_button.focus_mode = Control.FOCUS_NONE
-		edit_button.add_theme_font_size_override("font_size", 12)
+		edit_button.add_theme_font_size_override("font_size", 16)
 		edit_button.pressed.connect(func(): request_edit_dialog.emit(self))
 		action_row.add_child(edit_button)
 		
@@ -693,7 +782,7 @@ class ChoiceGraphNode extends GraphNode:
 
 
 #region Loop Node
-class LoopGraphNode extends GraphNode:
+class EventLoopGraphNode extends GraphNode:
 	var command: RPGEventCommand
 	var sub_commands: Array[RPGEventCommand] = []
 	
@@ -703,7 +792,8 @@ class LoopGraphNode extends GraphNode:
 	func _ready() -> void:
 		title = "🔁 Loop"
 		resizable = false
-		custom_minimum_size = Vector2(240, 0)
+		add_theme_font_size_override("title_font_size", 16)
+		custom_minimum_size = Vector2(250, 0)
 		BranchGraphNodes.setup_node_close_button(self, func(): request_delete.emit(self))
 		
 	func setup(p_command: RPGEventCommand, p_sub_commands: Array[RPGEventCommand] = []) -> void:
@@ -711,45 +801,55 @@ class LoopGraphNode extends GraphNode:
 		sub_commands = p_sub_commands
 		
 		clear_all_slots()
-		for child in get_children():
-			remove_child(child)
-			child.queue_free()
+		var existing_row0 = get_node_or_null("Row0")
+		if not existing_row0:
+			for child in get_children():
+				remove_child(child)
+				child.queue_free()
+				
+			# Slot 0: In / Loop Body
+			var row0 = HBoxContainer.new()
+			row0.name = "Row0"
+			var in_lbl = Label.new()
+			in_lbl.name = "InLabel"
+			in_lbl.text = "▶ In"
+			in_lbl.add_theme_font_size_override("font_size", 16)
+			var sp0 = Control.new()
+			sp0.name = "Spacer"
+			sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var body_lbl = Label.new()
+			body_lbl.name = "BodyLabel"
+			body_lbl.text = "Body ▶ (Repetir)"
+			body_lbl.modulate = Color(0.3, 0.85, 0.95)
+			body_lbl.add_theme_font_size_override("font_size", 16)
+			row0.add_child(in_lbl)
+			row0.add_child(sp0)
+			row0.add_child(body_lbl)
+			add_child(row0)
 			
-		# Slot 0: In / Loop Body
-		var row0 = HBoxContainer.new()
-		var in_lbl = Label.new()
-		in_lbl.text = "▶ In"
-		in_lbl.add_theme_font_size_override("font_size", 12)
-		var sp0 = Control.new()
-		sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var body_lbl = Label.new()
-		body_lbl.text = "Body ▶ (Repetir)"
-		body_lbl.modulate = Color(0.3, 0.85, 0.95)
-		body_lbl.add_theme_font_size_override("font_size", 12)
-		row0.add_child(in_lbl)
-		row0.add_child(sp0)
-		row0.add_child(body_lbl)
-		add_child(row0)
+			# Slot 1: Break Loop Exit
+			var row1 = HBoxContainer.new()
+			row1.name = "Row1"
+			var sp1 = Control.new()
+			sp1.name = "Spacer"
+			sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var exit_lbl = Label.new()
+			exit_lbl.name = "ExitLabel"
+			exit_lbl.text = "After Break ▶ (Salida)"
+			exit_lbl.modulate = Color(1.0, 0.4, 0.3)
+			exit_lbl.add_theme_font_size_override("font_size", 16)
+			row1.add_child(sp1)
+			row1.add_child(exit_lbl)
+			add_child(row1)
+
 		set_slot(0, true, 0, Color(0.8, 0.8, 0.8), true, 0, Color(0.3, 0.85, 0.95))
-		
-		# Slot 1: Break Loop Exit
-		var row1 = HBoxContainer.new()
-		var sp1 = Control.new()
-		sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var exit_lbl = Label.new()
-		exit_lbl.text = "After Break ▶ (Salida)"
-		exit_lbl.modulate = Color(1.0, 0.4, 0.3)
-		exit_lbl.add_theme_font_size_override("font_size", 12)
-		row1.add_child(sp1)
-		row1.add_child(exit_lbl)
-		add_child(row1)
 		set_slot(1, false, 0, Color.TRANSPARENT, true, 0, Color(1.0, 0.4, 0.3))
 		size = Vector2.ZERO
 #endregion
 
 
 #region Battle Node
-class BattleGraphNode extends GraphNode:
+class EventBattleGraphNode extends GraphNode:
 	var command: RPGEventCommand
 	var sub_commands: Array[RPGEventCommand] = []
 	var summary_label: Label
@@ -766,110 +866,152 @@ class BattleGraphNode extends GraphNode:
 	func _ready() -> void:
 		title = "⚔️ Start Battle"
 		resizable = false
+		add_theme_font_size_override("title_font_size", 16)
 		custom_minimum_size = Vector2(290, 0)
 		BranchGraphNodes.setup_node_close_button(self, func(): request_delete.emit(self))
+
+	func _gui_input(event: InputEvent) -> void:
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			if event.double_click and event.is_pressed():
+				accept_event()
+				request_edit_dialog.emit(self)
 		
 	func setup(p_command: RPGEventCommand, p_sub_commands: Array[RPGEventCommand] = []) -> void:
 		command = p_command
 		sub_commands = p_sub_commands
 		
 		clear_all_slots()
-		for child in get_children():
-			remove_child(child)
-			child.queue_free()
+		var existing_content = get_node_or_null("ContentBox")
+		var existing_row0 = get_node_or_null("Row0")
+		if not existing_content or not existing_row0:
+			for child in get_children():
+				remove_child(child)
+				child.queue_free()
+				
+			# Slot 0: In / Win
+			var row0 = HBoxContainer.new()
+			row0.name = "Row0"
+			var in_lbl = Label.new()
+			in_lbl.name = "InLabel"
+			in_lbl.text = "▶ In"
+			in_lbl.add_theme_font_size_override("font_size", 16)
 			
-		# Slot 0: In / Win
-		var row0 = HBoxContainer.new()
-		var in_lbl = Label.new()
-		in_lbl.text = "▶ In"
-		in_lbl.add_theme_font_size_override("font_size", 12)
-		
-		collapse_btn = Button.new()
-		collapse_btn.name = "CollapseButton"
-		collapse_btn.text = "▶" if is_collapsed else "▼"
-		collapse_btn.flat = true
-		collapse_btn.tooltip_text = "[title]Contraer / Expandir Batalla[/title]\nAlterna la visualización del panel de batalla."
-		collapse_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		collapse_btn.focus_mode = Control.FOCUS_NONE
-		collapse_btn.pressed.connect(_on_collapse_toggled)
-		
-		var sp0 = Control.new()
-		sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var win_lbl = Label.new()
-		win_lbl.text = "Win ▶ (Victoria)"
-		win_lbl.modulate = Color(0.2, 0.9, 0.4)
-		win_lbl.add_theme_font_size_override("font_size", 12)
-		row0.add_child(in_lbl)
-		row0.add_child(collapse_btn)
-		row0.add_child(sp0)
-		row0.add_child(win_lbl)
-		add_child(row0)
+			collapse_btn = Button.new()
+			collapse_btn.name = "CollapseButton"
+			collapse_btn.text = "▶" if is_collapsed else "▼"
+			collapse_btn.flat = true
+			collapse_btn.tooltip_text = "[title]Contraer / Expandir Batalla[/title]\nAlterna la visualización del panel de batalla."
+			collapse_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			collapse_btn.focus_mode = Control.FOCUS_NONE
+			collapse_btn.pressed.connect(_on_collapse_toggled)
+			
+			var sp0 = Control.new()
+			sp0.name = "Spacer"
+			sp0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var win_lbl = Label.new()
+			win_lbl.name = "WinLabel"
+			win_lbl.text = "Win ▶ (Victoria)"
+			win_lbl.modulate = Color(0.2, 0.9, 0.4)
+			win_lbl.add_theme_font_size_override("font_size", 16)
+			row0.add_child(in_lbl)
+			row0.add_child(collapse_btn)
+			row0.add_child(sp0)
+			row0.add_child(win_lbl)
+			add_child(row0)
+			
+			# Slot 1: Escape
+			var row1 = HBoxContainer.new()
+			row1.name = "Row1"
+			var sp1 = Control.new()
+			sp1.name = "Spacer"
+			sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var esc_lbl = Label.new()
+			esc_lbl.name = "EscapeLabel"
+			esc_lbl.text = "Escape ▶ (Huida)"
+			esc_lbl.modulate = Color(0.3, 0.75, 1.0)
+			esc_lbl.add_theme_font_size_override("font_size", 16)
+			row1.add_child(sp1)
+			row1.add_child(esc_lbl)
+			add_child(row1)
+			
+			# Slot 2: Defeat
+			var row2 = HBoxContainer.new()
+			row2.name = "Row2"
+			var sp2 = Control.new()
+			sp2.name = "Spacer"
+			sp2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var def_lbl = Label.new()
+			def_lbl.name = "DefeatLabel"
+			def_lbl.text = "Defeat ▶ (Derrota)"
+			def_lbl.modulate = Color(1.0, 0.4, 0.3)
+			def_lbl.add_theme_font_size_override("font_size", 16)
+			row2.add_child(sp2)
+			row2.add_child(def_lbl)
+			add_child(row2)
+			
+			# Slot 3: Continue / Merge
+			var row3 = HBoxContainer.new()
+			row3.name = "Row3"
+			var sp3 = Control.new()
+			sp3.name = "Spacer"
+			sp3.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			var merge_lbl = Label.new()
+			merge_lbl.name = "MergeLabel"
+			merge_lbl.text = "Continue ▶ (Unión)"
+			merge_lbl.modulate = Color(0.95, 0.85, 0.2)
+			merge_lbl.add_theme_font_size_override("font_size", 16)
+			row3.add_child(sp3)
+			row3.add_child(merge_lbl)
+			add_child(row3)
+			
+			# Slot 4: Info & Button
+			content_vbox = VBoxContainer.new()
+			content_vbox.name = "ContentBox"
+			summary_label = Label.new()
+			summary_label.name = "SummaryLabel"
+			summary_label.text = "Troop #%s" % command.parameters.get("troop_id", 1)
+			summary_label.add_theme_font_size_override("font_size", 16)
+			content_vbox.add_child(summary_label)
+			
+			var action_row = HBoxContainer.new()
+			action_row.name = "ActionRow"
+			var btn_sp = Control.new()
+			btn_sp.name = "Spacer"
+			btn_sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			action_row.add_child(btn_sp)
+			
+			edit_button = Button.new()
+			edit_button.name = "EditBattleButton"
+			edit_button.text = "✏️ Edit Battle..."
+			edit_button.tooltip_text = "[title]Editor de Batalla[/title]\nAbre el diálogo de configuración de batalla."
+			edit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			edit_button.focus_mode = Control.FOCUS_NONE
+			edit_button.add_theme_font_size_override("font_size", 16)
+			edit_button.pressed.connect(func(): request_edit_dialog.emit(self))
+			action_row.add_child(edit_button)
+			
+			content_vbox.add_child(action_row)
+			add_child(content_vbox)
+		else:
+			collapse_btn = existing_row0.get_node_or_null("CollapseButton")
+			if collapse_btn and not collapse_btn.pressed.is_connected(_on_collapse_toggled):
+				collapse_btn.pressed.connect(_on_collapse_toggled)
+			content_vbox = existing_content
+			summary_label = content_vbox.get_node_or_null("SummaryLabel")
+			var action_row = content_vbox.get_node_or_null("ActionRow")
+			if action_row:
+				edit_button = action_row.get_node_or_null("EditBattleButton")
+				if edit_button:
+					var cb = func(): request_edit_dialog.emit(self)
+					if not edit_button.pressed.is_connected(cb):
+						edit_button.pressed.connect(cb)
+
 		set_slot(0, true, 0, Color(0.8, 0.8, 0.8), true, 0, Color(0.2, 0.9, 0.4))
-		
-		# Slot 1: Escape
-		var row1 = HBoxContainer.new()
-		var sp1 = Control.new()
-		sp1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var esc_lbl = Label.new()
-		esc_lbl.text = "Escape ▶ (Huida)"
-		esc_lbl.modulate = Color(0.3, 0.75, 1.0)
-		esc_lbl.add_theme_font_size_override("font_size", 12)
-		row1.add_child(sp1)
-		row1.add_child(esc_lbl)
-		add_child(row1)
 		set_slot(1, false, 0, Color.TRANSPARENT, true, 0, Color(0.3, 0.75, 1.0))
-		
-		# Slot 2: Defeat
-		var row2 = HBoxContainer.new()
-		var sp2 = Control.new()
-		sp2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var def_lbl = Label.new()
-		def_lbl.text = "Defeat ▶ (Derrota)"
-		def_lbl.modulate = Color(1.0, 0.4, 0.3)
-		def_lbl.add_theme_font_size_override("font_size", 12)
-		row2.add_child(sp2)
-		row2.add_child(def_lbl)
-		add_child(row2)
 		set_slot(2, false, 0, Color.TRANSPARENT, true, 0, Color(1.0, 0.4, 0.3))
-		
-		# Slot 3: Continue / Merge
-		var row3 = HBoxContainer.new()
-		var sp3 = Control.new()
-		sp3.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var merge_lbl = Label.new()
-		merge_lbl.text = "Continue ▶ (Unión)"
-		merge_lbl.modulate = Color(0.95, 0.85, 0.2)
-		merge_lbl.add_theme_font_size_override("font_size", 12)
-		row3.add_child(sp3)
-		row3.add_child(merge_lbl)
-		add_child(row3)
 		set_slot(3, false, 0, Color.TRANSPARENT, true, 0, Color(0.95, 0.85, 0.2))
-		
-		# Slot 4: Info & Button
-		content_vbox = VBoxContainer.new()
-		summary_label = Label.new()
-		summary_label.text = "Troop #%s" % command.parameters.get("troop_id", 1)
-		summary_label.add_theme_font_size_override("font_size", 13)
-		content_vbox.add_child(summary_label)
-		
-		var action_row = HBoxContainer.new()
-		var btn_sp = Control.new()
-		btn_sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		action_row.add_child(btn_sp)
-		
-		edit_button = Button.new()
-		edit_button.name = "EditBattleButton"
-		edit_button.text = "✏️ Edit Battle..."
-		edit_button.tooltip_text = "[title]Editor de Batalla[/title]\nAbre el diálogo de configuración de batalla."
-		edit_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		edit_button.focus_mode = Control.FOCUS_NONE
-		edit_button.add_theme_font_size_override("font_size", 12)
-		edit_button.pressed.connect(func(): request_edit_dialog.emit(self))
-		action_row.add_child(edit_button)
-		
-		content_vbox.add_child(action_row)
-		add_child(content_vbox)
 		set_slot(4, false, 0, Color.TRANSPARENT, false, 0, Color.TRANSPARENT)
+		update_visuals()
 		size = Vector2.ZERO
 		if is_collapsed:
 			set_collapsed(true, false)
@@ -896,3 +1038,11 @@ class BattleGraphNode extends GraphNode:
 			summary_label.text = "Troop #%s" % command.parameters.get("troop_id", 1)
 		size = Vector2.ZERO
 #endregion
+
+
+# Backward compatibility aliases
+const StartGraphNode = EventStartGraphNode
+const ConditionGraphNode = EventConditionGraphNode
+const ChoiceGraphNode = EventChoiceGraphNode
+const LoopGraphNode = EventLoopGraphNode
+const BattleGraphNode = EventBattleGraphNode
